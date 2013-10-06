@@ -1,0 +1,17 @@
+Necessary Tests
+===============
+
+	1) Test with basic sample data.
+	2) Test with developer-generated perfect data. Should be composed of a very large amount of data.
+	3) Test with developer-generated erroneous data that program should be able to fix.
+	4) Test with unseen lab data.
+
+Specifics:
+
++ The first test is designed as a litmus test of a basic run. This is what the system is designed to work for.
++ The second test is designed to prove the capabilities that the system has. It should run through a very large data set. (Approximately 2x to 10x the size of the first sample data provided by the client.)
++ The third test is designed to verify the error-fixing capabilities of the program. It will be a relatively small set of data, but each point will contain certain bits of error that the system should be capable of working with.
++ The fourth test is a blind test of what is assumed to be "random sample data"; this test should emulate any random set of data that the system can take.
+
+- The first three tests will be composed previously-seen data or data derived from previously-seen data.
+- The last test will be composed of a previously-unused and unviewed data file provided by the client.

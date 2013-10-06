@@ -1,0 +1,34 @@
+Reunion 2
+======
+# Curso: CECS 4800
+Fecha: 05/09/2013
+
+Nombre de Projecto: PlasmaGraph
+
+Que hemos hecho:
+	1) SPMP: Trabajo con la parte 1 del documento.
+	2) SRS: Empezar con casos de uso y escenario.
+	3) Lenguaje: Java?
+	4) Herramienta: JFree (Graphing)
+
+Que vamos a hacer para la proxima semana:
+	1) STD: Comenzar proceso de disen~o de pruebas para el sistema.
+	2) SPMP: Hacer Gantt Chart inicial y continuar con Parte 3.
+	3) Logos: Crear logo de grupo y proyecto.
+	4) Encontrar "CSV reader" o crear uno propio.
+	5) SRS: Introduccion.
+
+
+Materiales Utilisados: 2x "Laptops", Acceso al internet, data de ejemplo del Prof. Gonzales
+
+Integrantes:
+		________________________________
+				Gerardo A. Navas
+
+		________________________________
+				Daniel Quintini
+
+
+Profesor:
+		________________________________
+				Prof. Luis A. Ortiz

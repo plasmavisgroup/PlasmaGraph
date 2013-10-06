@@ -1,0 +1,40 @@
+Meeting 6
+======
+Course / Class #: CECS 4800
+Date: 3/10/2013
+
+Project Name: PlasmaGraph
+
+Has been done:
+	1) First version of User Interfaces.
+	2) SRS work: Case use diagrams.
+	3) SPMP work: Chapter 2, 3.
+
+What will be done:
+	1) SRS work. (Tentative: finish first draft of SRS.)
+	2) Preliminary basic program. (Using JChartEditor and fake CSVs.)
+	3) SPMP work. (Tentative: finish first draft of SPMP.)
+	4) Develop basic plan of attack on SDD document.
+	5) Either fix Dropbox desynchronization issue or switch to pure GitHub.
+
+
+Materials Used: 2x Computers, word-processing software, Dropbox, GitHub, internet connections, Dia (diagramming software)
+
+
+Group Members:
+
+
+		________________________________
+				Gerardo A. Navas
+
+
+
+		________________________________
+				Daniel Quintini
+
+
+Professor:
+
+
+		________________________________
+				Prof. Luis A. Ortiz

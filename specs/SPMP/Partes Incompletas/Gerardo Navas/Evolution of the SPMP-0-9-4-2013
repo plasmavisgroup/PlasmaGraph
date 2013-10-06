@@ -1,0 +1,16 @@
+Evolution of the SPMP
+
+Description:
+
+> This subsection of the SPMP shall specify the plans for producing both scheduled and unscheduled updates to the SPMP. Methods of disseminating the updates shall be specified. This subsection shall also specify the mechanisms used to place the initial version of the SPMP under change control and to control subsequent changes to the SPMP.
+
+Content:
+
+This document, as every other document regarding the "PlasmaGraph" project for the PUPR Plasma Lab, will be located on the project's Dropbox account for the express purpose of editing and retrieving it. The Dropbox system will serve as partial version control when combined with the naming system in place for these documents, explained below. Regular weekly compilations of the newest document parts will be done so as to keep the document updated; these parts can be written or updated as needed. Upon release of the initial project (considered to be version 1.0 of the PlasmaGraph program), the document will be presentable to any individual that requests it via a direct link to the document. Before then, the document will not be presented to any external agents.
+
+The version control scheme is composed of two parts: the Dropbox account and the naming scheme used for each file in the account. The Dropbox account is organized first by document, by person, and by document section. (For example, section 1.2 of the SPMP will have its own set of files with the unique naming scheme.) Only the newest document sections will be located in the folder marked with the project member's name; all other files regarding a certain section will be held in a "Previous Versions" subfolder in that folder. The naming scheme presents the user with the following data:
+
+1) A number from 0 to 3, specifying the progress towards release candidacy; 0 stands for pre-alpha or incomplete and unusable status, 1 for alpha or usable but informationally-incomplete status, 2 for beta or informationally-complete but unpolished status, and 3 for release candidate or informationally-complete and polished status. A dash follows this number.
+2) The date of the creation of the document. Date is provided with dashes between month, day, and year (in that order).
+
+This way, each file can be easily analysed in date order.

@@ -1,0 +1,4 @@
+Test Management / Protocol
+==========================
+
+Tests will be designed by one member, and tested by the other. The test-maker will be Gerardo A. Navas; the tester will be Daniel Quintini. This is done so as to avoid any biases from test-creation into the process. Data will be provided by the client (Prof. Angel Gonzales) to the test-maker and will then be provided to the tester during the test.
