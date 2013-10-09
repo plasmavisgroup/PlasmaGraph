@@ -10,7 +10,7 @@ Actores:
 
 2) Operativo le da a PlasmaGraph una lista con todos los archivos en el filesystem.
 
-3) PlasmaGraph le enseña a Usuario la lista de archivos que le dio Operativo y le pide que seleccione uno.
+3) PlasmaGraph le enseï¿½a a Usuario la lista de archivos que le dio Operativo y le pide que seleccione uno.
 
 4) Usuario selecciona uno y se lo dice PlasmaGraph.
 
@@ -32,11 +32,11 @@ Actores:
 
 3) DB le da a PlasmaGraph una lista con los nombres de todos los templates.
 
-5) PlasmaGraph le enseña la lista a Usuario y le pide que seleccione un item de esa lista.
+5) PlasmaGraph le enseï¿½a la lista a Usuario y le pide que seleccione un item de esa lista.
 
 6) Usuario selecciona un item y se lo da a PlasmaGraph.
 
-7) PlasmaGraph crea una grafica y se la enseña a Usuario.
+7) PlasmaGraph crea una grafica y se la enseï¿½a a Usuario.
 
 
 Guardar una Grafica
@@ -69,10 +69,10 @@ Actores:
 1) Usuario le pide a PlasmaGraph que cree un template.
 
 2) PlasmaGraph le pide a Usuario los siguientes datos:
-	 + Nombre del template
-	 + Que columnas se van a graficar
-	 + Que tipo de grafica se va a usar (bar, pie, line)
-	 + Que etiquetas se van a usar
++ Nombre del template
++ Que columnas se van a graficar
++ Que tipo de grafica se va a usar (bar, pie, line)
++ Que etiquetas se van a usar
 
 3) Usuario le da a PlasmaGraph los datos del template.
 
@@ -105,10 +105,10 @@ Actores:
 
 
 8) PlasmaGraph le pide a Usuario que indique cuales son los datos del template que quiere cambiar:
-	 + Nombre del template
-	 + Que columnas se van a graficar
-	 + Que tipo de grafica se va a usar (bar, pie, line)
-	 + Que etiquetas se van a usar
++ Nombre del template
++ Que columnas se van a graficar
++ Que tipo de grafica se va a usar (bar, pie, line)
++ Que etiquetas se van a usar
 
 9) Usuario le da a PlasmaGraph los nuevos valores para los datos del template.
 
