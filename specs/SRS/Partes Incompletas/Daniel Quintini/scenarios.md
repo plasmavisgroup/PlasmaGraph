@@ -54,10 +54,10 @@ Actores:
  + DB (secundario)
 
 1. PlasmaGraph le pide a Usuario los datos del template. Estos datos son:
-+ Nombre del template
-+ Que columnas se van a graficar
-+ Que tipo de grafica se va a usar (bar, pie, line)
-+ Que etiquetas se van a usar
+ + Nombre del template
+ + Que columnas se van a graficar
+ + Que tipo de grafica se va a usar (bar, pie, line)
+ + Que etiquetas se van a usar
 2. Usuario le da a PlasmaGraph los datos del template.
 3. PlasmaGraph recibe los siguientes del template.
 4. DB le pide a PlasmaGraph que le de un template.
