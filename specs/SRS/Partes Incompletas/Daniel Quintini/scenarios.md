@@ -2,120 +2,92 @@ Carga un archivo
 ==================
 
 Actores:
- + Usuario
- + PlasmaGraph
- + Operativo
+ + Usuario (principal)
+ + Operativo (secundario)
 
-1) PlasmaGraph le pide a Operativo que le de una lista con todos los archivos que el contiene.
-
-2) Operativo le da a PlasmaGraph una lista con todos los archivos en el filesystem.
-
-3) PlasmaGraph le ense�a a Usuario la lista de archivos que le dio Operativo y le pide que seleccione uno.
-
-4) Usuario selecciona uno y se lo dice PlasmaGraph.
-
-5) PlasmaGraph lee la data el el archivo seleccionado.
+1. PlasmaGraph le pide a Usuario que le de la direccion de un archivo.
+2. Usuario le da a PlasmaGraph la direccion de un archivo.
+3. PlasmaGraph recibe la direccion de un archivo.
+4. Operativo le pide a PlasmaGraph la direccion de un archivo.
+5. PlasmaGraph le da a Operativo la direccion que le dio Usuario.
+6. Operativo le da a PlasmaGraph la data contenida en el archivo.
+7. PlasmaGraph recibe la la data.
 
 
 Crear una Grafica
 ==================
 
 Actores:
- + Usuario
- + PlasmaGraph
- + Operativo
- + DB
+ + Usuario (principal)
+ + DB (secundario)
 
-1) Usuario le pide a PlasmaGraph que genere una grafica.
-
-2) PlasmaGraph 'carga un archivo' y le pide a DB que le de todos los templates disponibles.
-
-3) DB le da a PlasmaGraph una lista con los nombres de todos los templates.
-
-5) PlasmaGraph le ense�a la lista a Usuario y le pide que seleccione un item de esa lista.
-
-6) Usuario selecciona un item y se lo da a PlasmaGraph.
-
-7) PlasmaGraph crea una grafica y se la ense�a a Usuario.
+1. PlasmaGraph 'carga un archivo' y le pide a DB que le de todos los templates.
+2. DB le da todos los templates a PlasmaGraph.
+3. PlasmaGraph le pide a Usuario que le de el numbre del template que quiere usar.
+4. Usuario le da el nombre de un template a PlasmaGraph.
+5. PlasmaGraph recibe el nombre del template que quiere Usuario.
+6. PlasmaGraph crea una grafica y se la muestra a Usuario.
 
 
 Guardar una Grafica
 ====================
 
 Actores:
- + Usuario
- + PlasmaGraph
- + Operativo
+ + Usuario (principal)
+ + Operativo (secundario)
+Condicion:
+ + PlasmaGraph pudo 'crear una grafica'
 
-1) User le dice a PlasmaGraph que guarde la grafica.
-
-2) PlasmaGraph le pide a Operativo que le de la lista de todos los directorios disponibles para escribir.
-
-3) PlasmaGraph le pide a Usuario que seleccione un directorio.
-
-4) Usuario selecciona un directorio.
-
-5) PlasmaGraph le dice a Operativo que guarde la grafica en el directorio indicado por Usuario.
+1. PlasmaGraph le pide a Usuario que le de una direccion en el file system.
+2. Usuario le da a PlasmaGraph una direccion del file system.
+3. PlasmaGraph recibe una direccion del file system.
+4. Operativo le pide a PlasmaGraph una grafica y una direccion en el file system.
+5. PlasmaGraph le da a Operativo una grafica y una direccion del file system.
+6. Operativo guarda la grafica que recibe en la direccion del file system que recibe.
 
 
 Crear Template
 ==================
 
 Actores:
- + Usuario
- + PlasmaGraph
- + DB
+ + Usuario (principal)
+ + DB (secundario)
 
-1) Usuario le pide a PlasmaGraph que cree un template.
-
-2) PlasmaGraph le pide a Usuario los siguientes datos:
+1. PlasmaGraph le pide a Usuario los datos del template. Estos datos son:
 + Nombre del template
 + Que columnas se van a graficar
 + Que tipo de grafica se va a usar (bar, pie, line)
 + Que etiquetas se van a usar
-
-3) Usuario le da a PlasmaGraph los datos del template.
-
-4) PlasmaGraph crea un nuevo template y se lo da a DB.
-
-5) PlasmaGraph le dice a Usuario que se creo un nuevo template.
+2. Usuario le da a PlasmaGraph los datos del template.
+3. PlasmaGraph recibe los siguientes del template.
+4. DB le pide a PlasmaGraph que le de un template.
+5. PlasmaGraph crea un template con los datos que le dio Usuario y se lo da a DB.
+6. DB recibe un template y lo guarda.
 
 
 Modificar un Template
 ======================
 
 Actores:
- + Usuario
- + PlasmaGraph
- + DB
+ + Usuario (principal)
+ + DB (secundario)
 
-1) Usuario le pide a PlasmaGraph que modifique un template.
-
-2) PlasmaGraph le pide a DB una lista con los nombres de todos los templates.
-
-3) DB le da a PlasmaGraph una lista con los nombres de todos los templates.
-
-4) PlasmaGraph le pide a Usuario que seleccione un template de la lista.
-
-5) Usuario selecciona un template.
-
-6) PlasmaGraph le pide a DB el template que selecciono Usuario.
-
-7) DB le da a PlasmaGraph el template que tiene el mismo nombre que selecciono Usuario.
-
-
-8) PlasmaGraph le pide a Usuario que indique cuales son los datos del template que quiere cambiar:
+1. PlasmaGraph le pide a Usuario que le de el nombrte de un template.
+2. Usuario le da a PlasmaGraph el nombre de un template.
+3. PlasmaGraph recibe el nombre de un template.
+4. DB le pide a PlasmaGraph el nombre de un template.
+5. PlasmaGraph le da a DB el nombre del template que le dio Usuario.
+6. DB recibe el nombre de un template.
+7. PlasmaGraph le pide a DB un template.
+8. DB le da a PlasmaGraph el template que conincede con el nombre que el le dio.
+9. PlasmaGraph recibe un template.
+10. PlasmaGraph le pide a Usuario que le de los datos nuevos del template.
+11. Usuario le da a PlasmaGraph los datos del template:
 + Nombre del template
 + Que columnas se van a graficar
 + Que tipo de grafica se va a usar (bar, pie, line)
 + Que etiquetas se van a usar
-
-9) Usuario le da a PlasmaGraph los nuevos valores para los datos del template.
-
-10) PlasmaGraph actualiza los datos del template.
-
-11) PlasmaGraph le da el template a DB.
-
-12) DB guarda el template.
-
-13) PlasmaGraph le dice a Usuario que el template se modifico.
+12. PlasmaGraph recibe los nuevos datos del template.
+13. DB le pide un template a PlasmaGraph.
+14. PlasmaGraph le da a DB el template con los datos que modifico Usuario.
+15. DB recibe un template y lo guarda.
