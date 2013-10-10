@@ -82,11 +82,11 @@ Actores:
 8. DB le da a PlasmaGraph el template que conincede con el nombre que el le dio.
 9. PlasmaGraph recibe un template.
 10. PlasmaGraph le pide a Usuario que le de los datos nuevos del template.
-11. Usuario le da a PlasmaGraph los datos del template:
-+ Nombre del template
-+ Que columnas se van a graficar
-+ Que tipo de grafica se va a usar (bar, pie, line)
-+ Que etiquetas se van a usar
+11. Usuario le da a PlasmaGraph los datos del template.
+ + Nombre del template
+ + Que columnas se van a graficar
+ + Que tipo de grafica se va a usar (bar, pie, line)
+ + Que etiquetas se van a usar
 12. PlasmaGraph recibe los nuevos datos del template.
 13. DB le pide un template a PlasmaGraph.
 14. PlasmaGraph le da a DB el template con los datos que modifico Usuario.
