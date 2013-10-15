@@ -31,6 +31,7 @@ Guardar una Grafica
 Actores:
  + Usuario (principal)
  + Operativo (secundario)
+
 Condicion:
  + PlasmaGraph pudo 'crear una grafica'
 
