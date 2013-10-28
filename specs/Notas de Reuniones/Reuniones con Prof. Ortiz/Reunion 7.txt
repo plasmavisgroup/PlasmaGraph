@@ -1,0 +1,37 @@
+﻿Meeting 7
+---------------------
+Course / Class #: CECS 4800
+Date: 10 October 2013
+
+Project Name: PlasmaGraph
+
+Has been done:
+	1) Migrated product design documents to GitHub under “/specs” folder.
+	2) Updated Scenarios and use case diagrams.
+	3) Notes on SPMP changes now that GitHub is in place in stead of Dropbox.
+
+What will be done:
+	1) Reinstatement of weekly meetings on Tuesdays and/or Wednesdays from 5:30 PM to 6:30 PM.
+	2) Make document changes due to removal of Dropbox and use of GitHub.
+	3) Finish SPMP and SRS.
+	4) Merging of paths on Thursdays @ 12 PM EST.
+
+Materials Used: Two Computers, Internet Connections, GitHub, Prof. Luis A. Ortiz.
+
+Group Members:
+
+
+		________________________________
+				Gerardo A. Navas
+
+
+
+		________________________________
+				Daniel Quintini
+
+
+Professor:
+
+
+		________________________________
+				Prof. Luis A. Ortiz
