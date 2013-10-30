@@ -5,9 +5,13 @@ Assumptions, Dependencies, and Constraints
 While creating this product, we have depended on a series of limitations that force our final result to be shaped the way it is. The following is a list of the assumptions and constraints we have followed in the creation of this product and are based on the work mentioned in Section 2.4 of the SRS of this product.
 
 Constraints:
-	1. The product must be fast enough to deal with arbitrary amounts of data.
-	2. The product must be portable enough to be used on most platforms with minimal installation work.
+	1. The product must be able to process arbitrarily-sized data sets.
+	2. The product must not become unresponsive due to the processing of large data sets.
+	3. The product must be portable enough to be used on most platforms with minimal installation work.
 
 Assumptions:
 	1. The programming language must follow with the same limitation as Constraint 1.
-	2. 
+	2. The system must accept files in the ".csv" format as user input.
+
+Dependencies:
+	None. This project is not a branch of any other projects.
