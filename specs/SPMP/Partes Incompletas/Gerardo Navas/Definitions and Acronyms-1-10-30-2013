@@ -8,11 +8,12 @@ Content:
 
 Definitions
 
-	PlasmaGraph: The product; a CSV-File sanitizer and grapher.
+	PlasmaGraph; Product: a CSV-File error-checking grapher made specifically for the PUPR Plasma Laboratory.
 	Client: Professor Angel Gonzales-Lizardo; Person responsible for the request of this product.
 	Senior Project Professor: Professor Luis A. Ortiz; Overseer of the project's progress.
 	JFreeChart: A set of tools written in the programming language "Java" that create graphical representations of data provided to it.
 	Java: Programming language relied on for its portability between multiple types of computers and flexible capabilities.
+	Project Group; Group: The creators and maintainers of the project and all its end products. Composed of Gerardo A. Navas Morales, Daniel Quintini, and Professor Luis A. Ortiz.
 
 Acronyms
 

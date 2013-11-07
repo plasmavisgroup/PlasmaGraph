@@ -29,7 +29,7 @@ A. During Creation:
 		The document repository used for the creation of the final product, as mentioned above, will be GitHub. Note that the documentation repository will be located in the sub-directory named "specs".
 B. During Usage: 
 	1. Operating System
-		The Operating System (OS) used to run this program is any OS that contains a valid version of the Java Runtime Engine. (JRE)
+		The Operating System (OS) used to run this program is any OS that contains a valid version of the Java Runtime Engine (JRE) or a similar Java Engine. For the purposes of this project, a valid version of Java refers to an updated version of Java 7 or above.
 
 	2. Java Version
 		The Java Version of any computer that wishes to run this program must be at least version 7. (JRE Version 7.) It is highly suggested to maintain an up-to-date version of the JRE on the computer running this program, however, so as to reduce potential Java-related problems.

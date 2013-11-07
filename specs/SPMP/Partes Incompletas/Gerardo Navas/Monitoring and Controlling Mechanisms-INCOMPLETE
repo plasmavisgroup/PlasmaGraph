@@ -2,3 +2,28 @@
 
 > Content:
 
+We will discuss how this product will be distributed and managed during its development in this section.
+
+A. Project Repository
+
+The PlasmaGraph project's files will all be distributed and managed via the project's GitHub page. Said service is a version control system designed to manage multiple versions of files, allowing for easy access while providing excellent error-correction mechanisms. 
+
+Due to the nature of the GitHub service, any person may make a copy of the project's contents and begin work on their own "fork" of the project. Therefore, simple access to the files, that is, being able to view the contents, of said repository will be available to anyone, but modification access to the contents of the main branch of the project will only be provided to the group members via the "Contributor" status. The Project Lead will only be able to grant this status, therefore, to people that request integration into the project group. Any group member that leaves the project will have his or her modification rights revoked. This way, access to the main branch of the project, called the "master" branch, will be protected from malicious users.
+
+The project's GitHub web page is located in: https://github.com/CherimaeNemeta/PlasmaGraph
+
+B. Repository Organization
+
+C. Repository Management
+
+Each project member will maintain their own personal version of the project's contents; this is known as a "branch" in GitHub. This will serve to isolate their changes and manage their individual work until it (their work) is ready to be added to the main branch's ("master") contents. This section will discuss how the project members will perform these changes, view their changes, and include their work into the project's "master" branch.
+
+	1. Documenting Changes (and format)
+		Once some amount of work is completed, a project member can use GitHub's (or Git's, in the case of Linux computers) "Commit" function to document said changes to that point. 
+
+		Commits contain the full list of changes, allowing for easy viewing of the details changed per commit. However, the commit's message allows the member to write a summary of the changes made, facilitating future reviewing. The user must submit a descriptive message, noting the general changes that were made to the project. For example, if the user has programmed a prototype XML data cleaner for the product's code, then the member must write a commit message that mentions that they have created said prototype and describe (briefly) what it does.
+		
+	2. Reviewing Changes
+	3. Moving Changes to the Master Branch
+
+Solution to the various possible problems that may arise will be considered on a per-situation basis. Solutions such as large-scale deletion/merging, or drastic tools such as "rebase" will be used only when absolutely necessary.

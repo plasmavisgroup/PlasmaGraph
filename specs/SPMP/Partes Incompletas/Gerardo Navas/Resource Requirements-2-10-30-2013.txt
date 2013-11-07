@@ -13,8 +13,8 @@ The following resources will be needed for the completion of this project:
 			- Microsoft Word / LibreOffice Writer / SublimeText 2: Document-writing software.
 			- Microsoft PowerPoint / LibreOffice Impress: Presentation-making software.
 			- LibreOffice Calc: Table-making software.
-			- SublimeText 2 / Eclipse: Programming software.
-			- Git (via GitHub): File Version Control Software.
+			- SublimeText 2 / Eclipse / NetBeans IDE: Programming software.
+			- Git (via GitHub): File Version Control Software service.
 			- GIMP / Paint.NET / MSPaint: Image manipulation software.
 			- Mozilla Firefox / Google Chrome: Internet browsing software.
 
@@ -29,6 +29,7 @@ The following resources will be needed for the completion of this project:
 			No permanent locations will be needed for the purposes of finishing this project.	
 	c. Human Resources
 		The Project and Design Leads will work on all work packages together, save the SRS (Design Lead) and SPMP. (Project Lead) The Project Lead will manage the GitHub file repository. Presentations will be given by both members.
+		The Senior Project Professor will be used for the entirety of the project as a reference to guide the project correctly.
 	d. Meeting Logs
 		Meeting Logs with the Senior Project Professor will be maintained by the Project Lead and will be provided in the final package along with the rest of the items.
 	e. Time
