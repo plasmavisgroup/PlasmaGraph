@@ -1,0 +1,9 @@
+5.2 Dependencies
+
+Description
+
+> This subsection of the SPMP shall specify the ordering relations among work packages to account for interdependencies among them and dependencies on external events. Techniques such as dependency lists, activity networks, and the critical path method may be used to depict dependencies among work packages.
+
+Content
+
+> 
