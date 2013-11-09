@@ -1,0 +1,26 @@
+3.5 Staffing Plan
+
+> Content: 
+
+Three persons will be required to complete this product; these persons, as well as the requirements for each, are as follows:
+
+a. Project Lead
+	The Project Lead is the director of the group, orchestrating the meetings between client(s), professors, and group members, maintaining the SPMP, designing the testing to be done via the STD, and managing the tools used by the group.
+
+	This person must be a student at the university in which the Senior Project Professor works and must have the necessary course requirements to take the class "Computer Science Senior Project". Furthermore, the person must have previous experience with working with IEEE project design documents, namely the SRS, SDD, STD, and SPMP documents, and should have extensive university-level class experience in programming and program design. (Said experience should result from taking the required coursework for a Computer Science or Engineering Bachellor's degree.) Said person should also have some experience with managing a team, but this is not vital to the role of this member, as the group size is small.
+
+b. Design Lead
+	The Design Lead is the other part of the success of this project; said person is the mastermind of the SRS, detailing how the product will interact with the external environment, and even working a lot with how it will perform its functions.
+
+	This person must be a student at the university in which the Senior Project Professor works and must have the necessary course requirements to take the class "Computer Science Senior Project". Furthermore, the person must have previous experience with working with IEEE project design documents, namely the SRS, SDD, STD, and SPMP documents, and should have extensive university-level class experience in programming and program design. (Said experience should result from taking the required coursework for a Computer Science or Engineering Bachellor's degree.)
+
+c. Senior Project Professor
+	The Senior Project Professor is of equal importance to the success of the project as either the Project or Design Leads; s/he is the person that evaluates the project based on the IEEE documentation standards as well as coursework / official qualification standards. Without this person, the project cannot be labelled "completed" at any point in time.
+
+	This person must be a professor at the university in which the Project and Design Leads study, and must be officially recognized as a qualified person to evaluate the course "Computer Science Senior Project". Furthermore, the person must be well-acquainted with the project design standards (IEEE documentation; specifically, the SRS, SDD, STD, and SPMP document formats.), programming design standards (proper coding and documentation standards), and project management standards (group management, scheduling, and vital milestone requirements).
+
+---------------------
+
+Any elimination of current personnel must be done with (1) a new qualified person ready for immediate assignment, and (2) the approval of all university faculty overseeing completion of the course, including the Senior Project Professor if s/he is not being substituted. Changes in personnel should be directed to the Client(s) in the interest of keeping them abreast of the group's status.
+
+Training will be provided by the Project Lead or Design Lead to the new member(s) of the project group as needed.

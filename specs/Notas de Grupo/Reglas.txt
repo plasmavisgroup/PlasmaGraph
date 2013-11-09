@@ -7,7 +7,14 @@ Reglas de Grupo de "CS Senior Project"
 
 2. Informacion de contacto de los integrantes esta en el documento llamado "Informacion de Contacto.txt" en este mismo directorio.
 
-3. Codigos de la version de cada documento seguiran el siguiente formato: Un numero del 0 hasta el 3, y la fecha del documento despues.
+3. No se puede borrar versiones de documentos. Pon las versiones anteriores en un sub-directorio en el directorio con tu nombre y manten la version mas reciente en el directorio con tu nombre.
+
+4. Por favor manten la tabla de revisiones "updated".
+
+=====================
+Deprecated
+
+X. Codigos de la version de cada documento seguiran el siguiente formato: Un numero del 0 hasta el 3, y la fecha del documento despues.
 
 Ejemplo: 0-8-26-2013 o 0.8.26.2013 
 
@@ -24,7 +31,3 @@ Ejemplo: 0-8-26-2013 o 0.8.26.2013
 + El formato que se utilizara en el contenido de los documentos sera el de puntos; es decir, 0.8.26.2013 en el ejemplo anterior.
 
 	Ej: El documento de STD de "Release Candidate" de la fecha Octubre 10, 2013 tendra el codigo "3.10.10.2013" en la primera pagina.
-
-4. No se puede borrar versiones de documentos. Pon las versiones anteriores en un sub-directorio en el directorio con tu nombre y manten la version mas reciente en el directorio con tu nombre.
-
-5. Por favor manten la tabla de revisiones "updated".

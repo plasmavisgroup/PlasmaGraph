@@ -1,0 +1,36 @@
+Risk Management
+
+> Content:
+
+Problematic situations may occur throughout the duration of this project. This list will detail what are the measures that will be taken to minimize risk:
+
+A. Project Members
+	1. Constant communication is mandatory, whether through phone, e-mail, or meetings on university grounds. 
+
+	2. Whenever a meeting is scheduled, all project members must participate in that meeting. Persons that do not participate in at least half the group meetings without valid reasons will be removed from the project group.
+
+	3. Work will be divided evenly. In such a case that a member believes the task given to them are uneven or unsuited to them, they can bring up the complaint to the Project Leader via any communication medium.
+
+	4. If a project member does not participate in a meeting, they must be contacted via any communication medium to update them of the meeting's main topics, and the member must send confirmation of having received the information. This avoids leaving members without vital information.
+
+	5. All project members must perform roughly equal work to be credited properly. Any members that do not will be eliminated from the group. (For the purposes of this point, "roughly equal work" refers to a 50/50% split, with a variance of 15%.)
+
+	6. If the document-hosting service or the code-hosting service is terminated by either the Project Manager or a third party, the Project Manager's version of these documents or code will be used as the basis (Read: Master stream) of all future development. These files will then be uploaded onto another service with similar privacy protection as agreed upon by the Project Manager. Once this is done, this change must be communicated to all project members via any medium, and must explain the change and how to access the new versions.
+
+B. Client
+
+	1. Meetings with the Client will occur when a milestone has been reached, but communication regarding the group's current progress should occur periodically so as to provide some amount of feedback to the Client.
+
+	2. Meetings with the Client will have their primary points written down so as to record the content of the discussions.
+
+	3. Features requested after the first meeting are not guaranteed to appear in the first version of the finished product. Instead, they will be accomodated as possible into the schedule.
+
+	4. If the Client wishes to drop the project, the project will continue to its conclusion, relying on the Senior Project Professor as backup client.
+
+C. Senior Project Professor
+
+	1. Meetings with the Senior Project Professor will occur weekly on Thursdays at 4:00 PM to 4:30 PM either in Room 2 of the EPL lab, Room L-309's side room, or Room L-310. Project group members will come with a log of their weekly accomplishments and the following week's proposed tasks.
+
+	2. If a certain part of the project requires multiple rounds of feedback from the professor, additional meetings between the project member(s) and the professor should be scheduled throughout the week.
+
+	3. If the Senior Project Professor finds himself unable to continue work on the project or unwilling to provide adequate feedback on the components for multiple months for whatever reason, the project members will submit a request to the university (PUPR) for a new professor willing to provide assistance to the project.

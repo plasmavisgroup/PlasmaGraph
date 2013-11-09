@@ -1,0 +1,37 @@
+Meeting 10
+======
+Course / Class #: CECS 4800
+Date: 31 October 2013
+
+Project Name: PlasmaGraph
+
+Has been done:
+	1) SRS: Scenarios - Exceptions & Scenarios - Alternates.
+	2) SPMP: Majority done. (Need Gantt Chart, Budget Chart, finalize list of Resources, and three small sections.)
+
+What will be done:
+	1) SRS: Section 3 & Fixes to Scenarios as necessary.
+	2) SPMP: Tentatively Finish SPMP.
+	3) Demo program for Client.
+	4) Start work on package C5: Product / Project Description Presentation.
+
+
+Materials Used: Two Computers, Internet Connections, GitHub, Prof. Luis A. Ortiz, Dia (Diagramming Tool).
+
+Group Members:
+
+
+		________________________________
+				Gerardo A. Navas
+
+
+
+		________________________________
+				Daniel Quintini
+
+
+Professor:
+
+
+		________________________________
+				Prof. Luis A. Ortiz

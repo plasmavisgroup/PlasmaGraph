@@ -1,0 +1,13 @@
+Organizational Boundaries and Interfaces
+
+Content: 
+
+The project group will handle the following items related to the project:
+
+a. Creation and maintenance of the SRS, SDD, STD, and SPMP documents.
+b. Research and development of the project's product.
+c. Presentation of the product.
+d. Meetings with both the client and the professor in charge.
+e. Compilation and transferral of all project components to client.
+
+This project group will perform only what is necessary to fulfill the requirements for the product.

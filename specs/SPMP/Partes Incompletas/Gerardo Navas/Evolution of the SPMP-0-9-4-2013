@@ -14,3 +14,5 @@ The version control scheme is composed of two parts: the Dropbox account and the
 2) The date of the creation of the document. Date is provided with dashes between month, day, and year (in that order).
 
 This way, each file can be easily analysed in date order.
+
+[Explain how to shift between each of the versions. Also explain how versions can be skipped.]
