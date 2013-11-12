@@ -1,6 +1,14 @@
 package org.plasmagraph.template;
 
+import java.io.BufferedReader;
+import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.FileReader;
+import java.io.FileWriter;
+import java.io.IOException;
+
 import org.jfree.chart.plot.PlotOrientation;
+import org.jfree.data.io.CSV;
 
 public class Template {
 	// Variables
@@ -109,11 +117,120 @@ public class Template {
 		this.y_maximum			= y_max;
 	}
 	
+	/**
+	 * Constructor for Template objects.
+	 * Provides user-assigned values to new Template object based on file selected.
+	 * Essentially, this is the nonexistent "openTemplate (...)" method.
+	 * @param f File being opened.
+	 * @returns Nothing.
+	 */
+	public Template (File f) {
+		// See if we can get this to work. Otherwise, throw an error!
+		try {
+			// Can we get the Readers working?
+			BufferedReader reader = new BufferedReader (new FileReader (f));
+			String output;
+			// Now, read and put in the correct place!
+			// Classifications
+			output = reader.readLine();
+			this.chart_type = output;
+			output = reader.readLine();
+			this.chart_sub_type = output;
+
+			// Label names.
+			output = reader.readLine();
+			this.chart_name = output;
+			output = reader.readLine();
+			this.x_axis_name = output;
+			output = reader.readLine();
+			this.y_axis_name = output;
+
+			// Including Features.
+			output = reader.readLine();
+			this.using_legend = new Boolean (output);
+			output = reader.readLine();
+			this.using_tooltips = new Boolean (output);
+			output = reader.readLine();
+			this.generate_urls = new Boolean (output);
+
+			// Layout Features
+			output = reader.readLine();
+			if (output == "PlotOrientation.HORIZONTAL") {
+				this.orientation = PlotOrientation.HORIZONTAL;
+			} else {
+				this.orientation = PlotOrientation.VERTICAL;
+			}
+			output = reader.readLine();
+			this.x_minimum = new Integer (output);
+			output = reader.readLine();
+			this.x_maximum = new Integer (output);
+			output = reader.readLine();
+			this.y_minimum = new Integer (output);
+			output = reader.readLine();
+			this.y_maximum = new Integer (output);
+			
+			// Close the File-Reading Stream "reader".
+			reader.close();
+		} catch (FileNotFoundException e) {
+			// Catch for File "f" not found.
+			// TODO Properly deal with this exception.
+			e.printStackTrace();
+		} catch (IOException e) {
+			// Catch for BufferedReader "reader" giving problems that don't include null!
+			// TODO Properly deal with this exception.
+			e.printStackTrace();
+		}
+
+	}
+	
+	/**
+	 * @TODO
+	 * @return
+	 */
 	public int getMinimumDrawWidth () {
 		return (this.x_maximum - this.x_minimum);
 	}
 	
+	/**
+	 * @TODO
+	 * @return
+	 */
 	public int getMinimumDrawHeight () {
 		return (this.y_maximum - this.y_minimum);
+	}
+	
+	/**
+	 * @TODO
+	 * @param f
+	 */
+	public void saveTemplate (File f) {
+		// See if we can get this to work. Otherwise, throw an error!
+		try {
+			// Can we get the Readers working?
+			FileWriter writer = new FileWriter (f);
+			// Okay. Write all the things into the file.
+			// Classifications
+			writer.write(new String ("" + this.chart_type + "\n"));
+			writer.write(new String ("" + this.chart_sub_type + "\n"));
+			// Label names.
+			writer.write(new String ("" + this.chart_name + "\n"));
+			writer.write(new String ("" + this.x_axis_name + "\n"));
+			writer.write(new String ("" + this.y_axis_name + "\n"));
+			// Including Features.
+			writer.write(new String ("" + Boolean.toString(this.using_legend) + "\n"));
+			writer.write(new String ("" + Boolean.toString(this.using_tooltips) + "\n"));
+			writer.write(new String ("" + Boolean.toString(this.generate_urls) + "\n"));
+			// Layout Features
+			writer.write(new String ("" + this.orientation.toString() + "\n"));
+			writer.write(new String ("" + this.x_minimum + "\n"));
+			writer.write(new String ("" + this.x_maximum + "\n"));
+			writer.write(new String ("" + this.y_minimum + "\n"));
+			writer.write(new String ("" + this.y_maximum + "\n"));
+			
+		} catch (IOException e) {
+			// Catch for File "f" not being writable.
+			// TODO Properly deal with this exception.
+			e.printStackTrace();
+		}
 	}
 }

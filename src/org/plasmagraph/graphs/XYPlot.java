@@ -7,14 +7,9 @@ import javax.swing.JPanel;
 
 // JFreeChart
 import org.jfree.chart.*;
-import org.jfree.chart.editor.ChartEditor;
-import org.jfree.chart.editor.ChartEditorFactory;
-import org.jfree.chart.editor.ChartEditorManager;
-import org.jfree.chart.plot.*;
 import org.jfree.data.xy.DefaultXYDataset;
 // http://www.jfree.org/jfreechart/api/javadoc/org/jfree/data/xy/DefaultXYDataset.html
 import org.jfree.data.xy.XYDataset;
-import org.jfree.ui.RectangleInsets;
 
 // PlasmaGraph
 import org.plasmagraph.template.Template;
@@ -61,12 +56,6 @@ public class XYPlot extends JFrame{
 				set, t.orientation, t.using_legend, t.using_tooltips, t.generate_urls);
 		
 		org.jfree.chart.plot.XYPlot plot = chart.getXYPlot();
-		
-		//RectangleInsets insets = new RectangleInsets ();
-		//plot.setInsets(insets);
-		//plot.setSectionOutlinesVisible(true);
-		//plot.setLabelFont(new Font ("SansSerif", Font.PLAIN, 12));
-		//plot.setCircular(false);
 		
 		return (chart);
 	}
