@@ -6,6 +6,7 @@ import javax.swing.JPanel;
 
 import org.jfree.chart.*;
 import org.jfree.chart.plot.*;
+import org.jfree.data.category.CategoryDataset;
 import org.jfree.data.general.*;
 import org.plasmagraph.template.Template;
 
@@ -17,26 +18,29 @@ public class PieChart extends JFrame{
 	 * How unique it may be is questionable, but it should work well enough.
 	 */
          // Let Eclipse do it.
-         // static JFreeChart chart;
-	// Constructors
-	public PieChart (Template t) {
+        JFreeChart chart;
+        CategoryDataset imported_data;
+	
+        // Constructors
+	public PieChart (Template t, CategoryDataset d) {
 		super(t.chart_name);
+                this.imported_data = d;
 		setContentPane (createJPanel (t));
 	}
 	
-	public static JPanel createJPanel (Template t) {
-		JFreeChart chart = createChart (createDataset(t), t);
+	private JPanel createJPanel (Template t) {
+		chart = createChart (createDataset(t), t);
 		return (new ChartPanel (chart, true, true, true, true, true));
 	}
 	
-	private static PieDataset createDataset (Template t) {
+	private PieDataset createDataset (Template t) {
 		DefaultPieDataset set = new DefaultPieDataset ();
-                generateTestDataset (set, t);
+                generateTestDataset (set);
 		
 		return (set);
 	}
 	
-	private static void generateTestDataset(DefaultPieDataset set, Template t) {
+	private void generateTestDataset(DefaultPieDataset set) {
 		set.setValue ("http", new Double (53.2));
 		set.setValue ("ftp", new Double (10.0));
 		set.setValue ("ssh", new Double (27.5));
@@ -45,15 +49,15 @@ public class PieChart extends JFrame{
 		set.setValue ("rlogin", new Double (19.4));
 	}
 	
-	private static JFreeChart createChart (PieDataset set, Template t) {
-		JFreeChart chart = ChartFactory.createPieChart
+	private JFreeChart createChart (PieDataset set, Template t) {
+		JFreeChart c = ChartFactory.createPieChart
                         (t.chart_name, set, t.using_legend, t.using_tooltips, t.generate_urls);
-		PiePlot plot = (PiePlot) chart.getPlot();
+		PiePlot plot = (PiePlot) c.getPlot();
 		
 		plot.setSectionOutlinesVisible(true);
 		plot.setLabelFont(new Font ("SansSerif", Font.PLAIN, 12));
 		plot.setCircular(false);
 		
-		return (chart);
+		return (c);
 	}
 }

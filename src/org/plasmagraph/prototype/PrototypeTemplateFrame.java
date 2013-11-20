@@ -16,6 +16,7 @@ import java.io.IOException;
 import javax.swing.JFileChooser;
 import javax.swing.JOptionPane;
 import org.jfree.chart.plot.PlotOrientation;
+import org.jfree.data.category.CategoryDataset;
 import org.plasmagraph.graphs.*;
 import org.plasmagraph.template.Template;
 
@@ -26,7 +27,7 @@ import org.plasmagraph.template.Template;
 public class PrototypeTemplateFrame extends javax.swing.JFrame {
 
     public Template current_template;
-    public File current_data;
+    public CategoryDataset current_data;
     
     /** Creates new form PrototypeTemplateFrame */
     public PrototypeTemplateFrame() {
@@ -34,10 +35,10 @@ public class PrototypeTemplateFrame extends javax.swing.JFrame {
         current_template = new Template ();
     }
     
-    public PrototypeTemplateFrame(String c_type) {
+    public PrototypeTemplateFrame(String chart_type) {
         initComponents();
         current_template = new Template ();
-        current_template.chart_type = c_type;
+        current_template.chart_type = chart_type;
     }
 
     /** This method is called from within the constructor to
@@ -339,22 +340,22 @@ private void PrototypeGenerateChartButtonActionPerformed(java.awt.event.ActionEv
     
     // Generate Chart based on Model's Data.
     if (current_template.chart_type.compareTo("Pie Chart") == 0) {
-        PieChart chart = new PieChart (this.current_template);
+        PieChart chart = new PieChart (this.current_template, this.current_data);
         chart.pack ();
         chart.setVisible (true);
         
     } else if (current_template.chart_type.compareTo("Bar Chart") == 0) {
-        BarChart chart = new BarChart (this.current_template);
+        BarChart chart = new BarChart (this.current_template, this.current_data);
         chart.pack ();
         chart.setVisible (true);
         
     } else if (current_template.chart_type.compareTo("Line Chart") == 0) {
-        LineChart chart = new LineChart (this.current_template);
+        LineChart chart = new LineChart (this.current_template, this.current_data);
         chart.pack ();
         chart.setVisible (true);
         
     } else { // XY Plot
-        XYPlot chart = new XYPlot (this.current_template);
+        XYPlot chart = new XYPlot (this.current_template, this.current_data);
         chart.pack ();
         chart.setVisible (true);
         
@@ -476,7 +477,7 @@ private void PrototypeLoadDataMenuOptionActionPerformed(java.awt.event.ActionEve
         File f = this.PrototypeFileChooser.getSelectedFile ();
 
         // Open the file.
-        this.current_data = new File(f.toURI());
+        this.current_data = this.toDataset (new File(f.toURI()));
         
         // Inform the user that the process was completed successfully.
         JOptionPane.showMessageDialog
@@ -485,6 +486,10 @@ private void PrototypeLoadDataMenuOptionActionPerformed(java.awt.event.ActionEve
         // @TODO: Create a Dialog stating the problem.
     }
 }//GEN-LAST:event_PrototypeLoadDataMenuOptionActionPerformed
+
+    private CategoryDataset toDataset(File file) {
+        throw new UnsupportedOperationException("Not yet implemented");
+    }
 
     /**
      * @param args the command line arguments
@@ -561,5 +566,4 @@ private void PrototypeLoadDataMenuOptionActionPerformed(java.awt.event.ActionEve
     private javax.swing.JLabel PrototypeYMinimumLabel;
     private javax.swing.JTextField PrototypeYMinimumTextField;
     // End of variables declaration//GEN-END:variables
-
 }

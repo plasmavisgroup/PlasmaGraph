@@ -24,39 +24,41 @@ public class BarChart extends JFrame{
 	 * How unique it may be is questionable, but it should work well enough.
 	 */
         // Let Eclipse do it.
-	static JFreeChart chart;
+	JFreeChart chart;
+        CategoryDataset imported_data;
 
 	// Constructors
-	public BarChart (Template t) {
+	public BarChart (Template t, CategoryDataset d) {
 		super(t.chart_name);
+                imported_data = d;
 		setContentPane (createJPanel (t));
 	}
 	
-	public static JPanel createJPanel (Template t) {
+	private JPanel createJPanel (Template t) {
 		chart = createChart (createDataset(t), t);
 		return (new ChartPanel (chart, true, true, true, true, true));
 	}
 	
-	private static DefaultCategoryDataset createDataset (Template t) {
+	private DefaultCategoryDataset createDataset (Template t) {
 		DefaultCategoryDataset set = new DefaultCategoryDataset ();
-		generateTestDataset (set, t);
+		generateTestDataset (set);
 		
 		return (set);
 	}
 	
-	private static void generateTestDataset(DefaultCategoryDataset set, Template t) {
+	private void generateTestDataset(DefaultCategoryDataset set) {
 		for (int i = 1; i <= 6; ++i) {
 			
                         set.addValue(new Integer(i), "Size " + (i), new Integer (i));
 		}
 	}
 
-	private static JFreeChart createChart (DefaultCategoryDataset set, Template t) {
-		JFreeChart chart = ChartFactory.createBarChart (t.chart_name, t.y_axis_name, t.x_axis_name, 
+	private JFreeChart createChart (DefaultCategoryDataset set, Template t) {
+		JFreeChart c = ChartFactory.createBarChart (t.chart_name, t.y_axis_name, t.x_axis_name, 
 			set, t.orientation, t.using_legend, t.using_tooltips, t.generate_urls);
 		
 		//org.jfree.chart.plot.BarChart plot = chart.getBarChart();
 		
-		return (chart);
+		return (c);
 	}
 }

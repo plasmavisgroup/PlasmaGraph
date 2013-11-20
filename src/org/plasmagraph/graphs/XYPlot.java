@@ -7,6 +7,7 @@ import javax.swing.JPanel;
 
 // JFreeChart
 import org.jfree.chart.*;
+import org.jfree.data.category.CategoryDataset;
 import org.jfree.data.xy.DefaultXYDataset;
 // http://www.jfree.org/jfreechart/api/javadoc/org/jfree/data/xy/DefaultXYDataset.html
 import org.jfree.data.xy.XYDataset;
@@ -21,27 +22,29 @@ public class XYPlot extends JFrame{
 	 * How unique it may be is questionable, but it should work well enough.
 	 */
 	private static final long serialVersionUID = -5204846354493237573L;
-	static JFreeChart chart;
+	JFreeChart chart;
+        CategoryDataset imported_data;
 
 	// Constructors
-	public XYPlot (Template t) {
+	public XYPlot (Template t, CategoryDataset d) {
 		super(t.chart_name);
+                this.imported_data = d;
 		setContentPane (createJPanel (t));
 	}
 	
-	public static JPanel createJPanel (Template t) {
+	private JPanel createJPanel (Template t) {
 		chart = createChart (createDataset(t), t);
 		return (new ChartPanel (chart, true, true, true, true, true));
 	}
 	
-	private static XYDataset createDataset (Template t) {
+	private XYDataset createDataset (Template t) {
 		DefaultXYDataset set = new DefaultXYDataset ();
 		generateTestDataset (set, t);
 		
 		return (set);
 	}
 	
-	private static void generateTestDataset(DefaultXYDataset set, Template t) {
+	private void generateTestDataset(DefaultXYDataset set, Template t) {
 		double[][] data = new double [2][6];
 		for (int i = 0; i < 6; ++i) {
 			for (int j = 0; j < 2; ++j) {
@@ -51,12 +54,12 @@ public class XYPlot extends JFrame{
 		set.addSeries(t.x_axis_name, data);
 	}
 
-	private static JFreeChart createChart (XYDataset set, Template t) {
-		JFreeChart chart = ChartFactory.createScatterPlot(t.chart_name, t.y_axis_name, t.x_axis_name, 
+	private JFreeChart createChart (XYDataset set, Template t) {
+		JFreeChart c = ChartFactory.createScatterPlot(t.chart_name, t.y_axis_name, t.x_axis_name, 
 				set, t.orientation, t.using_legend, t.using_tooltips, t.generate_urls);
 		
-		org.jfree.chart.plot.XYPlot plot = chart.getXYPlot();
+		//org.jfree.chart.plot.XYPlot plot = c.getXYPlot();
 		
-		return (chart);
+		return (c);
 	}
 }

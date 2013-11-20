@@ -210,22 +210,22 @@ public class Template {
 			FileWriter writer = new FileWriter (f);
 			// Okay. Write all the things into the file.
 			// Classifications
-			writer.write(new String ("" + this.chart_type + "\n"));
-			writer.write(new String ("" + this.chart_sub_type + "\n"));
+			writer.write("" + this.chart_type + "\n");
+			writer.write("" + this.chart_sub_type + "\n");
 			// Label names.
-			writer.write(new String ("" + this.chart_name + "\n"));
-			writer.write(new String ("" + this.x_axis_name + "\n"));
-			writer.write(new String ("" + this.y_axis_name + "\n"));
+			writer.write("" + this.chart_name + "\n");
+			writer.write("" + this.x_axis_name + "\n");
+			writer.write("" + this.y_axis_name + "\n");
 			// Including Features.
-			writer.write(new String ("" + Boolean.toString(this.using_legend) + "\n"));
-			writer.write(new String ("" + Boolean.toString(this.using_tooltips) + "\n"));
-			writer.write(new String ("" + Boolean.toString(this.generate_urls) + "\n"));
+			writer.write("" + Boolean.toString(this.using_legend) + "\n");
+			writer.write("" + Boolean.toString(this.using_tooltips) + "\n");
+			writer.write("" + Boolean.toString(this.generate_urls) + "\n");
 			// Layout Features
-			writer.write(new String ("" + this.orientation.toString() + "\n"));
-			writer.write(new String ("" + this.x_minimum + "\n"));
-			writer.write(new String ("" + this.x_maximum + "\n"));
-			writer.write(new String ("" + this.y_minimum + "\n"));
-			writer.write(new String ("" + this.y_maximum + "\n"));
+			writer.write("" + this.orientation.toString() + "\n");
+			writer.write("" + this.x_minimum + "\n");
+			writer.write("" + this.x_maximum + "\n");
+			writer.write("" + this.y_minimum + "\n");
+			writer.write("" + this.y_maximum + "\n");
 			
 		} catch (IOException e) {
 			// Catch for File "f" not being writable.
