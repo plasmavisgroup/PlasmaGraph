@@ -13,6 +13,7 @@ import org.jfree.data.category.DefaultCategoryDataset;
 import org.jfree.data.general.PieDataset;
 import org.jfree.data.io.CSV;
 import org.jfree.data.xy.XYDataset;
+import org.jfree.data.xy.XYSeriesCollection;
 
 /**
  *
@@ -42,14 +43,14 @@ public class BasicCSV {
         return (returned_dataset);
     }
     
-    public XYDataset outputLineChartData () {
+    public XYSeriesCollection outputLineChartData () {
         CategoryDataset returned_dataset = new DefaultCategoryDataset ();
         try {
             returned_dataset = this.csv_file.readCategoryDataset(this.reader);
         } catch (IOException ex) {
             ex.printStackTrace();
         }
-        return (toXYDataset (returned_dataset));
+        return (toXYSeriesCollection (returned_dataset));
     }
     
     public PieDataset outputPieChartData () {
@@ -73,10 +74,15 @@ public class BasicCSV {
     }
 
     private XYDataset toXYDataset(CategoryDataset returned_dataset) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	private XYSeriesCollection toXYSeriesCollection (CategoryDataset returned_dataset) {
         throw new UnsupportedOperationException("Not yet implemented");
     }
 
-    private PieDataset toPieDataset(CategoryDataset returned_dataset) {
+    private PieDataset toPieDataset (CategoryDataset returned_dataset) {
         throw new UnsupportedOperationException("Not yet implemented");
     }
     

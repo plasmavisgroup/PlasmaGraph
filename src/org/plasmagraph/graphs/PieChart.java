@@ -1,5 +1,6 @@
 package org.plasmagraph.graphs;
 
+import java.awt.Dimension;
 import java.awt.Font;
 import javax.swing.JFrame;
 import javax.swing.JPanel;
@@ -30,7 +31,9 @@ public class PieChart extends JFrame{
 	
 	private JPanel createJPanel (Template t) {
 		chart = createChart (createDataset(t), t);
-		return (new ChartPanel (chart, true, true, true, true, true));
+		ChartPanel c = new ChartPanel (chart, true, true, true, true, true);
+                c.setPreferredSize(new Dimension (t.x_minimum, t.y_minimum));
+		return (c);
 	}
 	
 	private PieDataset createDataset (Template t) {

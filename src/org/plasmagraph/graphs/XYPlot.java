@@ -1,6 +1,7 @@
 package org.plasmagraph.graphs;
 
 // Swing / AWT
+import java.awt.Dimension;
 import java.awt.Font;
 import javax.swing.JFrame;
 import javax.swing.JPanel;
@@ -23,18 +24,20 @@ public class XYPlot extends JFrame{
 	 */
 	private static final long serialVersionUID = -5204846354493237573L;
 	JFreeChart chart;
-        CategoryDataset imported_data;
+    CategoryDataset imported_data;
 
 	// Constructors
 	public XYPlot (Template t, CategoryDataset d) {
 		super(t.chart_name);
-                this.imported_data = d;
+        this.imported_data = d;
 		setContentPane (createJPanel (t));
 	}
 	
 	private JPanel createJPanel (Template t) {
 		chart = createChart (createDataset(t), t);
-		return (new ChartPanel (chart, true, true, true, true, true));
+		ChartPanel c = new ChartPanel (chart, true, true, true, true, true);
+                c.setPreferredSize(new Dimension (t.x_minimum, t.y_minimum));
+		return (c);
 	}
 	
 	private XYDataset createDataset (Template t) {
@@ -47,11 +50,17 @@ public class XYPlot extends JFrame{
 	private void generateTestDataset(DefaultXYDataset set, Template t) {
 		double[][] data = new double [2][6];
 		for (int i = 0; i < 6; ++i) {
-			for (int j = 0; j < 2; ++j) {
-				data[j][i] = i + 1;
-			}
+                    data[0][i] = i + 1;
+                    data[1][i] = i + 1;
 		}
-		set.addSeries(t.x_axis_name, data);
+		set.addSeries("Set 1", data);
+                
+                double[][] data2 = new double [2][6];
+		for (int i = 0; i < 6; ++i) {
+                    data2[0][i] = i + 1;
+                    data2[1][i] = 6 - i;
+		}
+		set.addSeries("Set 2", data2);
 	}
 
 	private JFreeChart createChart (XYDataset set, Template t) {

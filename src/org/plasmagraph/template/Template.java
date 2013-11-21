@@ -50,10 +50,10 @@ public class Template {
 		this.using_tooltips 	= true;
 		this.generate_urls 		= false;
 		this.orientation 		= PlotOrientation.HORIZONTAL;
-		this.x_minimum			= 0;
-		this.x_maximum 			= 0;
-		this.y_minimum			= 0;
-		this.y_maximum			= 0;
+		this.x_minimum			= 640;
+		this.x_maximum 			= 640;
+		this.y_minimum			= 480;
+		this.y_maximum			= 480;
 	}
 	
 	/**

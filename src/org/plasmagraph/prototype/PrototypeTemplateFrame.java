@@ -11,8 +11,9 @@
 package org.plasmagraph.prototype;
 
 import java.io.File;
-import java.io.FileNotFoundException;
 import java.io.IOException;
+
+import javax.swing.ButtonGroup;
 import javax.swing.JFileChooser;
 import javax.swing.JOptionPane;
 import org.jfree.chart.plot.PlotOrientation;
@@ -26,19 +27,27 @@ import org.plasmagraph.template.Template;
  */
 public class PrototypeTemplateFrame extends javax.swing.JFrame {
 
-    public Template current_template;
+    /**
+	 * 
+	 */
+	private static final long serialVersionUID = 758983562798952794L;
+	public Template current_template;
     public CategoryDataset current_data;
     
     /** Creates new form PrototypeTemplateFrame */
     public PrototypeTemplateFrame() {
-        initComponents();
-        current_template = new Template ();
+        this ("Pie Chart");
     }
     
     public PrototypeTemplateFrame(String chart_type) {
         initComponents();
         current_template = new Template ();
         current_template.chart_type = chart_type;
+        updateTemplateView ();
+        
+        ButtonGroup orientation_group = new ButtonGroup ();
+        orientation_group.add(this.PrototypeHorizontalPlotOrientationSelection);
+        orientation_group.add(this.PrototypeVerticalPlotOrientationSelection);
     }
 
     /** This method is called from within the constructor to
@@ -145,7 +154,7 @@ public class PrototypeTemplateFrame extends javax.swing.JFrame {
 
         PrototypeYMaximumTextField.setText("480");
 
-        PrototypeChartTypeComboBox.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "Pie Chart", "Bar Chart", "Line Graph", "XY Plot" }));
+        PrototypeChartTypeComboBox.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "Pie Chart", "Bar Chart", "Line Chart", "XY Plot" }));
 
         javax.swing.GroupLayout PrototypeOptionsPanelLayout = new javax.swing.GroupLayout(PrototypeOptionsPanel);
         PrototypeOptionsPanel.setLayout(PrototypeOptionsPanelLayout);
@@ -363,8 +372,7 @@ private void PrototypeGenerateChartButtonActionPerformed(java.awt.event.ActionEv
 }//GEN-LAST:event_PrototypeGenerateChartButtonActionPerformed
 
 private void PrototypeSaveTemplateMenuOptionActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_PrototypeSaveTemplateMenuOptionActionPerformed
-// @TODO: Create try / catch block around this.
-    int response_value = this.PrototypeFileChooser.showSaveDialog (this);
+	int response_value = this.PrototypeFileChooser.showSaveDialog (this);
     
     if (response_value == JFileChooser.APPROVE_OPTION) {
         File f = this.PrototypeFileChooser.getSelectedFile ();
@@ -381,7 +389,6 @@ private void PrototypeSaveTemplateMenuOptionActionPerformed(java.awt.event.Actio
 }//GEN-LAST:event_PrototypeSaveTemplateMenuOptionActionPerformed
 
 private void PrototypeLoadTemplateMenuOptionActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_PrototypeLoadTemplateMenuOptionActionPerformed
-// @TODO: Create try / catch block around this.
     int response_value = this.PrototypeFileChooser.showOpenDialog (this);
 
     if (response_value == JFileChooser.APPROVE_OPTION) {
@@ -397,7 +404,7 @@ private void PrototypeLoadTemplateMenuOptionActionPerformed(java.awt.event.Actio
         JOptionPane.showMessageDialog 
                 (this, "Template was loaded successfully.", "Template Loaded.", JOptionPane.INFORMATION_MESSAGE);
     } else {
-        // @TODO: Create a Dialog stating the problem.
+    	JOptionPane.showMessageDialog(this, "Template was not loaded.");
     }
 }//GEN-LAST:event_PrototypeLoadTemplateMenuOptionActionPerformed
 
@@ -470,7 +477,6 @@ private void PrototypeExitMenuOptionActionPerformed(java.awt.event.ActionEvent e
 }//GEN-LAST:event_PrototypeExitMenuOptionActionPerformed
 
 private void PrototypeLoadDataMenuOptionActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_PrototypeLoadDataMenuOptionActionPerformed
-// @TODO: Create try / catch block around this.
     int response_value = this.PrototypeFileChooser.showOpenDialog (this);
 
     if (response_value == JFileChooser.APPROVE_OPTION) {
@@ -483,13 +489,14 @@ private void PrototypeLoadDataMenuOptionActionPerformed(java.awt.event.ActionEve
         JOptionPane.showMessageDialog
                 (this, "Data was loaded successfully.", "Data Loaded.", JOptionPane.INFORMATION_MESSAGE);
     } else {
-        // @TODO: Create a Dialog stating the problem.
+    	JOptionPane.showMessageDialog(this, "Data was not loaded.");
     }
 }//GEN-LAST:event_PrototypeLoadDataMenuOptionActionPerformed
 
-    private CategoryDataset toDataset(File file) {
-        throw new UnsupportedOperationException("Not yet implemented");
-    }
+private CategoryDataset toDataset(File file) {
+	// @TODO: Create try / catch block around this.
+    throw new UnsupportedOperationException("Not yet implemented");
+}
 
     /**
      * @param args the command line arguments
@@ -526,6 +533,7 @@ private void PrototypeLoadDataMenuOptionActionPerformed(java.awt.event.ActionEve
             }
         });
     }
+    
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JLabel PrototypeChartNameLabel;
     private javax.swing.JTextField PrototypeChartNameTextField;
