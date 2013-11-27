@@ -17,7 +17,7 @@ public class DumbTest {
         System.out.println ("Let's see if this works...");
         try {
             double num = Double.parseDouble(s);
-            System.out.println ("The number we've got is: " + num + ".");
+            System.out.println ("The number we've got is: " + num + "; it works!");
         } catch (NumberFormatException ex) {
             System.out.println ("Nope, doesn't work!");
         }

@@ -13,6 +13,7 @@ import org.jfree.data.xy.DefaultXYDataset;
 // http://www.jfree.org/jfreechart/api/javadoc/org/jfree/data/xy/DefaultXYDataset.html
 import org.jfree.data.xy.XYDataset;
 
+import org.plasmagraph.sanitizer.ChartConverter;
 // PlasmaGraph
 import org.plasmagraph.template.Template;
 
@@ -23,11 +24,12 @@ public class XYPlot extends JFrame{
 	 * How unique it may be is questionable, but it should work well enough.
 	 */
 	private static final long serialVersionUID = -5204846354493237573L;
+	
 	JFreeChart chart;
-    CategoryDataset imported_data;
+	ChartConverter imported_data;
 
 	// Constructors
-	public XYPlot (Template t, CategoryDataset d) {
+	public XYPlot (Template t, ChartConverter d) {
 		super(t.chart_name);
         this.imported_data = d;
 		setContentPane (createJPanel (t));
@@ -42,7 +44,8 @@ public class XYPlot extends JFrame{
 	
 	private XYDataset createDataset (Template t) {
 		DefaultXYDataset set = new DefaultXYDataset ();
-		generateTestDataset (set, t);
+		set = this.imported_data.toXYDataset(0, 1);
+		//generateTestDataset (set, t);
 		
 		return (set);
 	}

@@ -19,6 +19,7 @@ import javax.swing.JOptionPane;
 import org.jfree.chart.plot.PlotOrientation;
 import org.jfree.data.category.CategoryDataset;
 import org.plasmagraph.graphs.*;
+import org.plasmagraph.sanitizer.ChartConverter;
 import org.plasmagraph.template.Template;
 
 /**
@@ -32,7 +33,7 @@ public class PrototypeTemplateFrame extends javax.swing.JFrame {
 	 */
 	private static final long serialVersionUID = 758983562798952794L;
 	public Template current_template;
-    public CategoryDataset current_data;
+    public ChartConverter current_data;
     
     /** Creates new form PrototypeTemplateFrame */
     public PrototypeTemplateFrame() {
@@ -482,12 +483,15 @@ private void PrototypeLoadDataMenuOptionActionPerformed(java.awt.event.ActionEve
     if (response_value == JFileChooser.APPROVE_OPTION) {
         File f = this.PrototypeFileChooser.getSelectedFile ();
 
+        // Currently unimplemented.
+        JOptionPane.showMessageDialog(this, "Currently not implemented.");
+        
         // Open the file.
-        this.current_data = this.toDataset (new File(f.toURI()));
+        //this.current_data = this.toDataset (new File(f.toURI()));
         
         // Inform the user that the process was completed successfully.
-        JOptionPane.showMessageDialog
-                (this, "Data was loaded successfully.", "Data Loaded.", JOptionPane.INFORMATION_MESSAGE);
+        //JOptionPane.showMessageDialog
+        //        (this, "Data was loaded successfully.", "Data Loaded.", JOptionPane.INFORMATION_MESSAGE);
     } else {
     	JOptionPane.showMessageDialog(this, "Data was not loaded.");
     }
