@@ -9,6 +9,6 @@ public class MainTest {
 		//t.testPieChart ();
 		//t.testBarChart ();
 		//t.testXYPlot ();
-		t.testLineChart ();
+		//t.testLineChart ();
 	}
 }

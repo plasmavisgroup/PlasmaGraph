@@ -31,6 +31,12 @@ public class BarChart extends JFrame{
 	ChartConverter imported_data;
 
 	// Constructors
+	/* Test Constructor */
+	public BarChart (Template t) {
+		super(t.chart_name);
+		setContentPane (createJPanel (t));
+	}
+	
 	public BarChart (Template t, ChartConverter d) {
 		super(t.chart_name);
                 imported_data = d;
@@ -46,8 +52,8 @@ public class BarChart extends JFrame{
 	
 	private DefaultCategoryDataset createDataset (Template t) {
 		DefaultCategoryDataset set = new DefaultCategoryDataset ();
-		set = this.imported_data.toCategoryDataset();
-		//generateTestDataset (set);
+		//set = this.imported_data.toCategoryDataset();
+		generateTestDataset (set);
 		
 		return (set);
 	}

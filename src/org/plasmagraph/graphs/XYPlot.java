@@ -29,6 +29,12 @@ public class XYPlot extends JFrame{
 	ChartConverter imported_data;
 
 	// Constructors
+	/* Test Constructor */
+	public XYPlot (Template t) {
+		super(t.chart_name);
+		setContentPane (createJPanel (t));
+	}
+	
 	public XYPlot (Template t, ChartConverter d) {
 		super(t.chart_name);
         this.imported_data = d;
@@ -44,8 +50,8 @@ public class XYPlot extends JFrame{
 	
 	private XYDataset createDataset (Template t) {
 		DefaultXYDataset set = new DefaultXYDataset ();
-		set = this.imported_data.toXYDataset(0, 1);
-		//generateTestDataset (set, t);
+		//set = this.imported_data.toXYDataset(0, 1);
+		generateTestDataset (set, t);
 		
 		return (set);
 	}

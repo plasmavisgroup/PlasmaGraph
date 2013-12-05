@@ -350,22 +350,22 @@ private void PrototypeGenerateChartButtonActionPerformed(java.awt.event.ActionEv
     
     // Generate Chart based on Model's Data.
     if (current_template.chart_type.compareTo("Pie Chart") == 0) {
-        PieChart chart = new PieChart (this.current_template, this.current_data);
+        PieChart chart = new PieChart (this.current_template);//, this.current_data);
         chart.pack ();
         chart.setVisible (true);
         
     } else if (current_template.chart_type.compareTo("Bar Chart") == 0) {
-        BarChart chart = new BarChart (this.current_template, this.current_data);
+        BarChart chart = new BarChart (this.current_template);//, this.current_data);
         chart.pack ();
         chart.setVisible (true);
         
     } else if (current_template.chart_type.compareTo("Line Chart") == 0) {
-        LineChart chart = new LineChart (this.current_template, this.current_data);
+        LineChart chart = new LineChart (this.current_template);//, this.current_data);
         chart.pack ();
         chart.setVisible (true);
         
     } else { // XY Plot
-        XYPlot chart = new XYPlot (this.current_template, this.current_data);
+        XYPlot chart = new XYPlot (this.current_template);//, this.current_data);
         chart.pack ();
         chart.setVisible (true);
         

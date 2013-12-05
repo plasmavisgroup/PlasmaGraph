@@ -26,6 +26,11 @@ public class PieChart extends JFrame{
 	private ChartConverter imported_data;
 	
     // Constructors
+	/* Test Constructor */
+	public PieChart (Template t) {
+		super(t.chart_name);
+		setContentPane (createJPanel (t));
+	}
 	
     public PieChart (Template t, ChartConverter c) {
 		super(t.chart_name);
@@ -41,9 +46,19 @@ public class PieChart extends JFrame{
 	}
 	
 	private PieDataset createDataset (Template t) {
-		return (imported_data.toPieDataset(true, 1));
+		return (generateTestDataset()); //(imported_data.toPieDataset(true, 1));
 	}
 	
+	private PieDataset generateTestDataset() {
+		DefaultPieDataset set = new DefaultPieDataset ();
+		set.setValue("a", (Double) 5.0);
+		set.setValue("b", (Double) 25.0);
+		set.setValue("c", (Double) 30.0);
+		set.setValue("d", (Double) 20.0);
+		set.setValue("e", (Double) 20.0);
+		return set;
+	}
+
 	private JFreeChart createChart (PieDataset set, Template t) {
 		JFreeChart c = ChartFactory.createPieChart
                         (t.chart_name, set, t.using_legend, t.using_tooltips, t.generate_urls);

@@ -33,6 +33,12 @@ public class LineChart extends JFrame{
 	ChartConverter imported_data;
 
 	// Constructors
+	/* Test Constructor */
+	public LineChart (Template t) {
+		super(t.chart_name);
+		setContentPane (createJPanel (t));
+	}
+	
 	public LineChart (Template t, ChartConverter d) {
 		super(t.chart_name);
                 this.imported_data = d;
@@ -48,8 +54,8 @@ public class LineChart extends JFrame{
 	
 	private XYSeriesCollection createDataset (Template t) {
 		XYSeriesCollection set = new XYSeriesCollection ();
-		//generateTestDataset (set, t);
-		set = this.imported_data.toXYSeriesCollection(0, 1);
+		generateTestDataset (set, t);
+		//set = this.imported_data.toXYSeriesCollection(0, 1);
 		
 		return (set);
 	}
