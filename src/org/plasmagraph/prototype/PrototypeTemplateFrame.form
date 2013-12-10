@@ -1,0 +1,412 @@
+<?xml version="1.1" encoding="UTF-8" ?>
+
+<Form version="1.3" maxVersion="1.7" type="org.netbeans.modules.form.forminfo.JFrameFormInfo">
+  <NonVisualComponents>
+    <Component class="javax.swing.JFileChooser" name="PrototypeFileChooser">
+    </Component>
+    <Menu class="javax.swing.JMenuBar" name="PrototypeMenuBar">
+      <SubComponents>
+        <Menu class="javax.swing.JMenu" name="PrototypeFileMenu">
+          <Properties>
+            <Property name="text" type="java.lang.String" value="File"/>
+          </Properties>
+          <AccessibilityProperties>
+            <Property name="AccessibleContext.accessibleDescription" type="java.lang.String" value=""/>
+          </AccessibilityProperties>
+          <SubComponents>
+            <Menu class="javax.swing.JMenu" name="PrototypeDataMenu">
+              <Properties>
+                <Property name="text" type="java.lang.String" value="Data"/>
+              </Properties>
+              <SubComponents>
+                <MenuItem class="javax.swing.JMenuItem" name="PrototypeLoadDataMenuOption">
+                  <Properties>
+                    <Property name="accelerator" type="javax.swing.KeyStroke" editor="org.netbeans.modules.form.editors.KeyStrokeEditor">
+                      <KeyStroke key="Ctrl+L"/>
+                    </Property>
+                    <Property name="text" type="java.lang.String" value="Load Data"/>
+                  </Properties>
+                  <Events>
+                    <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="PrototypeLoadDataMenuOptionActionPerformed"/>
+                  </Events>
+                </MenuItem>
+              </SubComponents>
+            </Menu>
+            <Menu class="javax.swing.JMenu" name="PrototypeTemplatesMenu">
+              <Properties>
+                <Property name="text" type="java.lang.String" value="Templates"/>
+              </Properties>
+              <SubComponents>
+                <MenuItem class="javax.swing.JMenuItem" name="PrototypeLoadTemplateMenuOption">
+                  <Properties>
+                    <Property name="accelerator" type="javax.swing.KeyStroke" editor="org.netbeans.modules.form.editors.KeyStrokeEditor">
+                      <KeyStroke key="Shift+Ctrl+L"/>
+                    </Property>
+                    <Property name="text" type="java.lang.String" value="Load Template"/>
+                  </Properties>
+                  <Events>
+                    <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="PrototypeLoadTemplateMenuOptionActionPerformed"/>
+                  </Events>
+                </MenuItem>
+                <MenuItem class="javax.swing.JMenuItem" name="PrototypeSaveTemplateMenuOption">
+                  <Properties>
+                    <Property name="accelerator" type="javax.swing.KeyStroke" editor="org.netbeans.modules.form.editors.KeyStrokeEditor">
+                      <KeyStroke key="Shift+Ctrl+S"/>
+                    </Property>
+                    <Property name="text" type="java.lang.String" value="Save Template"/>
+                  </Properties>
+                  <Events>
+                    <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="PrototypeSaveTemplateMenuOptionActionPerformed"/>
+                  </Events>
+                </MenuItem>
+              </SubComponents>
+            </Menu>
+            <MenuItem class="javax.swing.JMenuItem" name="PrototypeExitMenuOption">
+              <Properties>
+                <Property name="accelerator" type="javax.swing.KeyStroke" editor="org.netbeans.modules.form.editors.KeyStrokeEditor">
+                  <KeyStroke key="Ctrl+X"/>
+                </Property>
+                <Property name="text" type="java.lang.String" value="Exit"/>
+              </Properties>
+              <Events>
+                <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="PrototypeExitMenuOptionActionPerformed"/>
+              </Events>
+            </MenuItem>
+          </SubComponents>
+        </Menu>
+        <Menu class="javax.swing.JMenu" name="PrototypeEditMenu">
+          <Properties>
+            <Property name="text" type="java.lang.String" value="Edit"/>
+          </Properties>
+        </Menu>
+      </SubComponents>
+    </Menu>
+  </NonVisualComponents>
+  <Properties>
+    <Property name="defaultCloseOperation" type="int" value="3"/>
+    <Property name="title" type="java.lang.String" value="PlasmaGraph Prototype"/>
+  </Properties>
+  <SyntheticProperties>
+    <SyntheticProperty name="menuBar" type="java.lang.String" value="PrototypeMenuBar"/>
+    <SyntheticProperty name="formSizePolicy" type="int" value="1"/>
+  </SyntheticProperties>
+  <AuxValues>
+    <AuxValue name="FormSettings_autoResourcing" type="java.lang.Integer" value="0"/>
+    <AuxValue name="FormSettings_autoSetComponentName" type="java.lang.Boolean" value="false"/>
+    <AuxValue name="FormSettings_generateFQN" type="java.lang.Boolean" value="true"/>
+    <AuxValue name="FormSettings_generateMnemonicsCode" type="java.lang.Boolean" value="false"/>
+    <AuxValue name="FormSettings_i18nAutoMode" type="java.lang.Boolean" value="false"/>
+    <AuxValue name="FormSettings_layoutCodeTarget" type="java.lang.Integer" value="1"/>
+    <AuxValue name="FormSettings_listenerGenerationStyle" type="java.lang.Integer" value="0"/>
+    <AuxValue name="FormSettings_variablesLocal" type="java.lang.Boolean" value="false"/>
+    <AuxValue name="FormSettings_variablesModifier" type="java.lang.Integer" value="2"/>
+  </AuxValues>
+
+  <Layout>
+    <DimensionLayout dim="0">
+      <Group type="103" groupAlignment="0" attributes="0">
+          <Component id="PrototypeOptionsPanel" alignment="0" max="32767" attributes="0"/>
+      </Group>
+    </DimensionLayout>
+    <DimensionLayout dim="1">
+      <Group type="103" groupAlignment="0" attributes="0">
+          <Component id="PrototypeOptionsPanel" alignment="0" max="32767" attributes="0"/>
+      </Group>
+    </DimensionLayout>
+  </Layout>
+  <SubComponents>
+    <Container class="javax.swing.JPanel" name="PrototypeOptionsPanel">
+
+      <Layout>
+        <DimensionLayout dim="0">
+          <Group type="103" groupAlignment="0" attributes="0">
+              <Group type="102" attributes="0">
+                  <EmptySpace max="-2" attributes="0"/>
+                  <Group type="103" groupAlignment="0" attributes="0">
+                      <Component id="PrototypeChartNameLabel" alignment="0" min="-2" max="-2" attributes="0"/>
+                      <Component id="PrototypeXAxisLabel" alignment="0" min="-2" max="-2" attributes="0"/>
+                      <Component id="PrototypeYAxisLabel" alignment="0" min="-2" max="-2" attributes="0"/>
+                      <Component id="PrototypeChartTypeLabel" alignment="0" min="-2" max="-2" attributes="0"/>
+                  </Group>
+                  <EmptySpace type="separate" max="-2" attributes="0"/>
+                  <Group type="103" groupAlignment="0" attributes="0">
+                      <Component id="PrototypeYAxisLabelTextField" alignment="0" pref="0" max="32767" attributes="0"/>
+                      <Component id="PrototypeChartNameTextField" alignment="0" pref="0" max="32767" attributes="0"/>
+                      <Component id="PrototypeXAxisLabelTextField" alignment="1" pref="0" max="32767" attributes="0"/>
+                      <Component id="PrototypeChartTypeComboBox" alignment="0" pref="0" max="32767" attributes="0"/>
+                  </Group>
+                  <EmptySpace type="separate" max="-2" attributes="0"/>
+                  <Group type="103" groupAlignment="0" attributes="0">
+                      <Component id="PrototypeTooltipLabel" alignment="0" min="-2" max="-2" attributes="0"/>
+                      <Component id="PrototypeURLLabel" alignment="0" min="-2" max="-2" attributes="0"/>
+                      <Component id="PrototypeLegendLabel" alignment="0" min="-2" max="-2" attributes="0"/>
+                  </Group>
+                  <EmptySpace min="-2" pref="43" max="-2" attributes="0"/>
+                  <Group type="103" groupAlignment="0" attributes="0">
+                      <Component id="PrototypeURLCheckBox" alignment="0" min="-2" max="-2" attributes="0"/>
+                      <Component id="PrototypeTooltipCheckBox" alignment="0" min="-2" max="-2" attributes="0"/>
+                      <Component id="PrototypeLegendCheckBox" min="-2" max="-2" attributes="0"/>
+                  </Group>
+                  <EmptySpace max="-2" attributes="0"/>
+              </Group>
+              <Group type="102" alignment="0" attributes="0">
+                  <EmptySpace max="-2" attributes="0"/>
+                  <Component id="PrototypePlotOrientationLabel" min="-2" max="-2" attributes="0"/>
+                  <EmptySpace pref="293" max="32767" attributes="0"/>
+              </Group>
+              <Group type="102" alignment="0" attributes="0">
+                  <EmptySpace max="-2" attributes="0"/>
+                  <Component id="PrototypeHorizontalPlotOrientationSelection" min="-2" max="-2" attributes="0"/>
+                  <EmptySpace max="-2" attributes="0"/>
+                  <Component id="PrototypeVerticalPlotOrientationSelection" min="-2" max="-2" attributes="0"/>
+                  <EmptySpace pref="224" max="32767" attributes="0"/>
+              </Group>
+              <Group type="102" alignment="0" attributes="0">
+                  <EmptySpace max="-2" attributes="0"/>
+                  <Group type="103" groupAlignment="1" attributes="0">
+                      <Component id="PrototypeXMinimumTextField" alignment="0" pref="65" max="32767" attributes="0"/>
+                      <Component id="PrototypeXMinimumLabel" alignment="0" min="-2" max="-2" attributes="0"/>
+                  </Group>
+                  <EmptySpace type="separate" max="-2" attributes="0"/>
+                  <Group type="103" groupAlignment="0" max="-2" attributes="0">
+                      <Component id="PrototypeXMaximumTextField" min="0" pref="0" max="32767" attributes="1"/>
+                      <Component id="PrototypeXMaximumLabel" alignment="0" max="32767" attributes="1"/>
+                  </Group>
+                  <EmptySpace min="-2" pref="46" max="-2" attributes="0"/>
+                  <Group type="103" groupAlignment="0" max="-2" attributes="0">
+                      <Component id="PrototypeYMinimumTextField" min="0" pref="0" max="32767" attributes="1"/>
+                      <Component id="PrototypeYMinimumLabel" alignment="0" max="32767" attributes="1"/>
+                  </Group>
+                  <EmptySpace type="separate" max="-2" attributes="0"/>
+                  <Group type="103" groupAlignment="0" max="-2" attributes="0">
+                      <Component id="PrototypeYMaximumTextField" min="0" pref="0" max="32767" attributes="1"/>
+                      <Component id="PrototypeYMaximumLabel" alignment="0" max="32767" attributes="1"/>
+                  </Group>
+                  <EmptySpace min="-2" pref="43" max="-2" attributes="0"/>
+              </Group>
+              <Group type="102" alignment="0" attributes="0">
+                  <EmptySpace min="-2" pref="133" max="-2" attributes="0"/>
+                  <Component id="PrototypeGenerateChartButton" min="-2" max="-2" attributes="0"/>
+                  <EmptySpace pref="161" max="32767" attributes="0"/>
+              </Group>
+              <Group type="102" alignment="0" attributes="0">
+                  <EmptySpace min="-2" pref="128" max="-2" attributes="0"/>
+                  <Component id="PrototypeOptionsLabel" min="-2" max="-2" attributes="0"/>
+                  <EmptySpace pref="136" max="32767" attributes="0"/>
+              </Group>
+          </Group>
+        </DimensionLayout>
+        <DimensionLayout dim="1">
+          <Group type="103" groupAlignment="0" attributes="0">
+              <Group type="102" attributes="0">
+                  <EmptySpace max="-2" attributes="0"/>
+                  <Component id="PrototypeOptionsLabel" min="-2" max="-2" attributes="0"/>
+                  <EmptySpace min="-2" pref="26" max="-2" attributes="0"/>
+                  <Group type="103" groupAlignment="0" attributes="0">
+                      <Group type="103" groupAlignment="3" attributes="0">
+                          <Component id="PrototypeChartNameLabel" alignment="3" min="-2" max="-2" attributes="0"/>
+                          <Component id="PrototypeChartNameTextField" alignment="3" min="-2" max="-2" attributes="0"/>
+                          <Component id="PrototypeLegendLabel" alignment="3" min="-2" max="-2" attributes="0"/>
+                      </Group>
+                      <Component id="PrototypeLegendCheckBox" min="-2" max="-2" attributes="0"/>
+                  </Group>
+                  <EmptySpace max="-2" attributes="0"/>
+                  <Group type="103" groupAlignment="0" attributes="0">
+                      <Component id="PrototypeTooltipLabel" alignment="0" min="-2" max="-2" attributes="0"/>
+                      <Component id="PrototypeTooltipCheckBox" min="-2" max="-2" attributes="0"/>
+                      <Group type="103" groupAlignment="3" attributes="0">
+                          <Component id="PrototypeChartTypeComboBox" alignment="3" min="-2" max="-2" attributes="0"/>
+                          <Component id="PrototypeChartTypeLabel" alignment="3" min="-2" max="-2" attributes="0"/>
+                      </Group>
+                  </Group>
+                  <EmptySpace max="-2" attributes="0"/>
+                  <Group type="103" groupAlignment="0" attributes="0">
+                      <Component id="PrototypeURLCheckBox" min="-2" max="-2" attributes="0"/>
+                      <Group type="103" alignment="0" groupAlignment="3" attributes="0">
+                          <Component id="PrototypeXAxisLabelTextField" alignment="3" min="-2" max="-2" attributes="0"/>
+                          <Component id="PrototypeXAxisLabel" alignment="3" min="-2" max="-2" attributes="0"/>
+                          <Component id="PrototypeURLLabel" alignment="3" min="-2" max="-2" attributes="0"/>
+                      </Group>
+                      <Group type="102" alignment="0" attributes="0">
+                          <EmptySpace min="-2" pref="37" max="-2" attributes="0"/>
+                          <Group type="103" groupAlignment="3" attributes="0">
+                              <Component id="PrototypeYAxisLabelTextField" alignment="3" min="-2" max="-2" attributes="0"/>
+                              <Component id="PrototypeYAxisLabel" alignment="3" min="-2" max="-2" attributes="0"/>
+                          </Group>
+                      </Group>
+                  </Group>
+                  <EmptySpace min="-2" pref="183" max="-2" attributes="0"/>
+                  <Component id="PrototypePlotOrientationLabel" min="-2" max="-2" attributes="0"/>
+                  <EmptySpace max="-2" attributes="0"/>
+                  <Group type="103" groupAlignment="3" attributes="0">
+                      <Component id="PrototypeHorizontalPlotOrientationSelection" alignment="3" min="-2" max="-2" attributes="0"/>
+                      <Component id="PrototypeVerticalPlotOrientationSelection" alignment="3" min="-2" max="-2" attributes="0"/>
+                  </Group>
+                  <EmptySpace max="-2" attributes="0"/>
+                  <Group type="103" groupAlignment="3" attributes="0">
+                      <Component id="PrototypeXMinimumLabel" alignment="3" min="-2" max="-2" attributes="0"/>
+                      <Component id="PrototypeXMaximumLabel" alignment="3" min="-2" max="-2" attributes="0"/>
+                      <Component id="PrototypeYMinimumLabel" alignment="3" min="-2" max="-2" attributes="0"/>
+                      <Component id="PrototypeYMaximumLabel" alignment="3" min="-2" max="-2" attributes="0"/>
+                  </Group>
+                  <EmptySpace max="-2" attributes="0"/>
+                  <Group type="103" groupAlignment="3" attributes="0">
+                      <Component id="PrototypeXMinimumTextField" alignment="3" min="-2" max="-2" attributes="0"/>
+                      <Component id="PrototypeXMaximumTextField" alignment="3" min="-2" max="-2" attributes="0"/>
+                      <Component id="PrototypeYMinimumTextField" alignment="3" min="-2" max="-2" attributes="0"/>
+                      <Component id="PrototypeYMaximumTextField" alignment="3" min="-2" max="-2" attributes="0"/>
+                  </Group>
+                  <EmptySpace max="-2" attributes="0"/>
+                  <Component id="PrototypeGenerateChartButton" min="-2" max="-2" attributes="0"/>
+                  <EmptySpace max="32767" attributes="0"/>
+              </Group>
+          </Group>
+        </DimensionLayout>
+      </Layout>
+      <SubComponents>
+        <Component class="javax.swing.JLabel" name="PrototypeOptionsLabel">
+          <Properties>
+            <Property name="font" type="java.awt.Font" editor="com.sun.beans.editors.FontEditor">
+              <SerializedValue value="-84,-19,0,5,115,114,0,13,106,97,118,97,46,97,119,116,46,70,111,110,116,-59,-95,53,-26,-52,-34,86,115,3,0,6,73,0,25,102,111,110,116,83,101,114,105,97,108,105,122,101,100,68,97,116,97,86,101,114,115,105,111,110,70,0,9,112,111,105,110,116,83,105,122,101,73,0,4,115,105,122,101,73,0,5,115,116,121,108,101,76,0,20,102,82,101,113,117,101,115,116,101,100,65,116,116,114,105,98,117,116,101,115,116,0,21,76,106,97,118,97,47,117,116,105,108,47,72,97,115,104,116,97,98,108,101,59,76,0,4,110,97,109,101,116,0,18,76,106,97,118,97,47,108,97,110,103,47,83,116,114,105,110,103,59,120,112,0,0,0,1,66,16,0,0,0,0,0,36,0,0,0,0,112,116,0,6,68,105,97,108,111,103,120"/>
+            </Property>
+            <Property name="text" type="java.lang.String" value="Options"/>
+          </Properties>
+        </Component>
+        <Component class="javax.swing.JButton" name="PrototypeGenerateChartButton">
+          <Properties>
+            <Property name="text" type="java.lang.String" value="Generate Chart"/>
+          </Properties>
+          <Events>
+            <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="PrototypeGenerateChartButtonActionPerformed"/>
+          </Events>
+        </Component>
+        <Component class="javax.swing.JTextField" name="PrototypeChartNameTextField">
+          <Properties>
+            <Property name="text" type="java.lang.String" value="Default Chart"/>
+          </Properties>
+        </Component>
+        <Component class="javax.swing.JLabel" name="PrototypeChartNameLabel">
+          <Properties>
+            <Property name="text" type="java.lang.String" value="Chart Name"/>
+          </Properties>
+        </Component>
+        <Component class="javax.swing.JLabel" name="PrototypeChartTypeLabel">
+          <Properties>
+            <Property name="text" type="java.lang.String" value="Chart Type"/>
+          </Properties>
+        </Component>
+        <Component class="javax.swing.JLabel" name="PrototypeXAxisLabel">
+          <Properties>
+            <Property name="text" type="java.lang.String" value="X Axis Label"/>
+          </Properties>
+        </Component>
+        <Component class="javax.swing.JLabel" name="PrototypeYAxisLabel">
+          <Properties>
+            <Property name="text" type="java.lang.String" value="Y Axis Label"/>
+          </Properties>
+        </Component>
+        <Component class="javax.swing.JTextField" name="PrototypeXAxisLabelTextField">
+          <Properties>
+            <Property name="text" type="java.lang.String" value="X Axis"/>
+          </Properties>
+        </Component>
+        <Component class="javax.swing.JTextField" name="PrototypeYAxisLabelTextField">
+          <Properties>
+            <Property name="text" type="java.lang.String" value="Y Axis"/>
+          </Properties>
+        </Component>
+        <Component class="javax.swing.JCheckBox" name="PrototypeLegendCheckBox">
+        </Component>
+        <Component class="javax.swing.JLabel" name="PrototypeLegendLabel">
+          <Properties>
+            <Property name="text" type="java.lang.String" value="Legend?"/>
+          </Properties>
+        </Component>
+        <Component class="javax.swing.JLabel" name="PrototypeTooltipLabel">
+          <Properties>
+            <Property name="text" type="java.lang.String" value="Tooltips?"/>
+          </Properties>
+        </Component>
+        <Component class="javax.swing.JCheckBox" name="PrototypeTooltipCheckBox">
+        </Component>
+        <Component class="javax.swing.JLabel" name="PrototypeURLLabel">
+          <Properties>
+            <Property name="text" type="java.lang.String" value="URLs?"/>
+          </Properties>
+        </Component>
+        <Component class="javax.swing.JCheckBox" name="PrototypeURLCheckBox">
+        </Component>
+        <Component class="javax.swing.JLabel" name="PrototypePlotOrientationLabel">
+          <Properties>
+            <Property name="text" type="java.lang.String" value="Plot Orientation"/>
+          </Properties>
+        </Component>
+        <Component class="javax.swing.JRadioButton" name="PrototypeHorizontalPlotOrientationSelection">
+          <Properties>
+            <Property name="model" type="javax.swing.ButtonModel" editor="org.netbeans.modules.form.ComponentChooserEditor">
+              <ComponentRef name="null"/>
+            </Property>
+            <Property name="text" type="java.lang.String" value="Horizontal"/>
+          </Properties>
+        </Component>
+        <Component class="javax.swing.JRadioButton" name="PrototypeVerticalPlotOrientationSelection">
+          <Properties>
+            <Property name="text" type="java.lang.String" value="Vertical"/>
+          </Properties>
+        </Component>
+        <Component class="javax.swing.JLabel" name="PrototypeXMinimumLabel">
+          <Properties>
+            <Property name="text" type="java.lang.String" value="X Minimum"/>
+          </Properties>
+        </Component>
+        <Component class="javax.swing.JLabel" name="PrototypeXMaximumLabel">
+          <Properties>
+            <Property name="text" type="java.lang.String" value="X Maximum"/>
+          </Properties>
+        </Component>
+        <Component class="javax.swing.JLabel" name="PrototypeYMinimumLabel">
+          <Properties>
+            <Property name="text" type="java.lang.String" value="Y Minimum"/>
+          </Properties>
+        </Component>
+        <Component class="javax.swing.JLabel" name="PrototypeYMaximumLabel">
+          <Properties>
+            <Property name="text" type="java.lang.String" value="Y Maximum"/>
+          </Properties>
+        </Component>
+        <Component class="javax.swing.JTextField" name="PrototypeXMinimumTextField">
+          <Properties>
+            <Property name="text" type="java.lang.String" value="640"/>
+          </Properties>
+        </Component>
+        <Component class="javax.swing.JTextField" name="PrototypeXMaximumTextField">
+          <Properties>
+            <Property name="text" type="java.lang.String" value="640"/>
+          </Properties>
+        </Component>
+        <Component class="javax.swing.JTextField" name="PrototypeYMinimumTextField">
+          <Properties>
+            <Property name="text" type="java.lang.String" value="480"/>
+          </Properties>
+        </Component>
+        <Component class="javax.swing.JTextField" name="PrototypeYMaximumTextField">
+          <Properties>
+            <Property name="text" type="java.lang.String" value="480"/>
+          </Properties>
+        </Component>
+        <Component class="javax.swing.JComboBox" name="PrototypeChartTypeComboBox">
+          <Properties>
+            <Property name="model" type="javax.swing.ComboBoxModel" editor="org.netbeans.modules.form.editors2.ComboBoxModelEditor">
+              <StringArray count="4">
+                <StringItem index="0" value="Pie Chart"/>
+                <StringItem index="1" value="Bar Chart"/>
+                <StringItem index="2" value="Line Chart"/>
+                <StringItem index="3" value="XY Plot"/>
+              </StringArray>
+            </Property>
+          </Properties>
+        </Component>
+      </SubComponents>
+    </Container>
+  </SubComponents>
+</Form>
