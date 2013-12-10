@@ -202,7 +202,7 @@ public class ChartConverter {
 	 * Uses the data provided to create and populate an XYZDataset via the DefaultXYZDataset class.
 	 * @return A populated DefaultXYZDataset.
 	 */
-	public XYZDataset toDefaultXYZDataset () {
+	public XYZDataset toXYZDataset () {
 		DefaultXYZDataset set = new DefaultXYZDataset ();
 		
 		double data [][] = this.toArray (this.values);

@@ -80,4 +80,8 @@ public class XYPlot extends JFrame{
 		
 		return (c);
 	}
+
+	private void createInterpolationCurve (JFreeChart chart) {
+		// TODO: Create interpolation system.
+	}
 }
