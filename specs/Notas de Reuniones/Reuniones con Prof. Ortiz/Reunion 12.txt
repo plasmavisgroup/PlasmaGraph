@@ -1,0 +1,42 @@
+Meeting #
+======
+Course / Class #: CECS 4800
+Date: 12 December 2013
+
+Project Name: PlasmaGraph
+
+Has been done:
+	1) Presentation of current work to Client. (Prof. Angel Gonzales)
+		a) Conveying current progress.
+		b) Showcasing prototype.
+		c) Gathering further input. (Interpolation, Error Checking on data [read: remove data points that are extremely out of place with the rest of the data.], MATLAB file importing [as an option in addition to CSV].)
+	2) Work on CSV and MATLAB file-reading tools. (Documents for MATLAB found and read. Work pending.)
+	3) SDD: Work on Class Diagram.
+	4) Mid-Project Presentation to Senior Project Professor. (Prof. Luis A. Ortiz)
+
+What will be done:
+	1) CSV and MATLAB file-reading.
+	2) SDD: Finalize Class Diagram. Work on Package and Sequence Diagrams.
+	3) Analyze impact of new input on previous documents and work on integrating them.
+
+
+Materials Used: Two Computers, Internet Connections, GitHub, LibreOffice Impress / Microsoft PowerPoint (Presentation Creation Tools), Umbrello (Class Diagram UML Tool), Eclipse / NetBeans IDE (Java Development Environments).
+
+
+Group Members:
+
+
+		________________________________
+				Gerardo A. Navas
+
+
+
+		________________________________
+				Daniel Quintini
+
+
+Professor:
+
+
+		________________________________
+				Prof. Luis A. Ortiz
