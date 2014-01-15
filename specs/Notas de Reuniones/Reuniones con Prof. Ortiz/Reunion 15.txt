@@ -1,0 +1,38 @@
+Meeting 15
+======
+Course / Class #: CECS 4800
+Date: 16 January 2014
+
+Project Name: PlasmaGraph
+
+Has been done:
+	1) SDD revision 1! (Still needs frames around most diagrams, and a number of modifications.)
+	2) Preparation for work on product.
+
+What will be done:
+	1) SDD revision 2 will be handed to Prof. Luis A. Ortiz before next meeting.
+	2) Begin work on product. (New GUI and data importing will be prioritized first.)
+	3) Begin work on STD. (Drafting up unit tests (for individual methods) and procedure tests (for individual classes or groups of classes) for all the various modules.)
+
+
+Materials Used: 2x Computers, internet connections, Eclipse / NetBeans IDE (Programming), Dia / Microsoft Visio (Diagramming)
+
+
+Group Members:
+
+
+		________________________________
+				Gerardo A. Navas
+
+
+
+		________________________________
+				Daniel Quintini
+
+
+Professor:
+
+
+
+		________________________________
+				Prof. Luis A. Ortiz
