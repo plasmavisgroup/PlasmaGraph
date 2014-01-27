@@ -1,0 +1,27 @@
+package controllers;
+
+import models.AestheticModel;
+import views.AestheticView;
+
+public class AestheticController {
+	/** */
+	private AestheticModel aesthetic_model;
+	/***/
+	private AestheticView aesthetic_view;
+	
+	public AestheticController(AestheticModel aesthetic_model,
+			AestheticView aesthetic_view) {
+		// TODO Auto-generated constructor stub
+		// Set related objects into proper positions in object.
+		this.aesthetic_model = aesthetic_model;
+		this.aesthetic_view = aesthetic_view;
+		
+		// Automatically add listeners to Aesthetic Tab via view.
+		// TODO ChartNameListener
+		// TODO XAxisLabelListener
+		// TODO YAxisLabelListener
+		// TODO HorizontalOrientationListener
+		// TODO VerticalOrientationListener
+	}
+
+}

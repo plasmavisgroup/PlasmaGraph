@@ -1,0 +1,32 @@
+package plasmagraph;
+
+import models.*;
+import views.*;
+import utils.data.DataSet;
+import utils.template.*;
+
+public class PlasmaGraph {
+
+	public static void main (String [] args) {
+		// Create all necessary objects.
+		Template t = new Template ();
+		DataSet ds = new DataSet ();
+		
+		// Create all MVC components and connect them.
+		MainModel main_model = new MainModel ();
+		MainView main_view = new MainView (main_model);
+		MainController main_controller = new MainController (main_model, main_view);
+		
+		AestheticModel aesthetic_model = new AestheticModel ();
+		AestheticView aesthetic_view = new AestheticView (aesthetic_model);
+		AestheticController aesthetic_controller = new AestheticController (aesthetic_model, aesthetic_view);
+		
+		DataSetModel data_model = new DataSetModel ();
+		DataSetView data_view = new DataSetView (data_model);
+		DataSetController data_controller = new DataSetController (data_model, data_view);
+		
+		ToolModel tool_model = new ToolModel ();
+		ToolView tool_view = new ToolView (tool_model);
+		ToolController tool_controller = new ToolController (tool_model, tool_view);
+	}
+}

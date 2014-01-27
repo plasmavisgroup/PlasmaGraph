@@ -1,2 +1,8 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<qualifiedTypeNameHistroy/>
+<qualifiedTypeNameHistroy>
+<fullyQualifiedTypeName name="views.MainView"/>
+<fullyQualifiedTypeName name="utils.template.Template"/>
+<fullyQualifiedTypeName name="views.AestheticView"/>
+<fullyQualifiedTypeName name="views.ToolView"/>
+<fullyQualifiedTypeName name="models.MainModel"/>
+</qualifiedTypeNameHistroy>

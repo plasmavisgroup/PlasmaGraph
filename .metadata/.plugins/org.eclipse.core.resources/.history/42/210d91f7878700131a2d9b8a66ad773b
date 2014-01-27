@@ -1,0 +1,12 @@
+package org.pvg.plasmagraph.controllers;
+
+import models.ToolModel;
+import views.ToolView;
+
+public class ToolController {
+
+	public ToolController(ToolModel tool_model, ToolView tool_view) {
+		// TODO Auto-generated constructor stub
+	}
+
+}

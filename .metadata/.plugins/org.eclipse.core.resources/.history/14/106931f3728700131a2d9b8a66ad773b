@@ -1,0 +1,10 @@
+package plasmagraph;
+
+import models.MainModel;
+
+public class PlasmaGraph {
+
+	public static void main (String [] args) {
+		MainModel primary_window = new MainModel ();
+	}
+}

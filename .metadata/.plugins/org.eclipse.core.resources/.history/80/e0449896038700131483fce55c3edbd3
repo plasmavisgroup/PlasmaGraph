@@ -1,0 +1,22 @@
+package models;
+
+import utils.template.Template;
+import views.AestheticView;
+
+public class AestheticModel {
+	/** Reference to MainModel's Template, passed via constructor reference. */
+	Template t;
+	/** Reference to MainModel's DataSet, passed via constructor reference. */
+	// TODO
+	/** View for this Model; GUI for manipulating aesthetic features of the graph. */
+	AestheticView aesthetic_view;
+	
+	public AestheticModel (Template t_reference) {
+		// Update currently-used Template and Data Sources.
+		t = t_reference;
+		
+		// Create AestheticView.
+		
+		// Update current view.
+	}
+}

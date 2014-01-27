@@ -1,0 +1,8 @@
+package plasmagraph;
+
+public class PlasmaGraph {
+
+	public static void main (String [] args) {
+		
+	}
+}

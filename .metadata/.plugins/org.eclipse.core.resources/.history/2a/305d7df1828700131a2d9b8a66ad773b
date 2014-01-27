@@ -1,0 +1,13 @@
+package controllers;
+
+import models.AestheticModel;
+import views.AestheticView;
+
+public class AestheticController {
+
+	public AestheticController(AestheticModel aesthetic_model,
+			AestheticView aesthetic_view) {
+		// TODO Auto-generated constructor stub
+	}
+
+}

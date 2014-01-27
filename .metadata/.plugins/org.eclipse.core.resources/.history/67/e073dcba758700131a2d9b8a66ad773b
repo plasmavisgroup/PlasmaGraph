@@ -1,0 +1,27 @@
+package models;
+
+import utils.template.Template;
+import views.MainView;
+
+public class MainModel {
+	MainView view;
+	AestheticModel ae_model;
+	DataSetModel data_set_model;
+	ToolModel tool_model;
+	
+	Template t;
+
+	public MainModel (Template t2) {
+		view = new MainView ();
+		
+		ae_model = new AestheticModel (t);
+		data_set_model = new DataSetModel (t);
+		tool_model = new ToolModel (t);
+		
+		t = new Template ();
+	}
+	
+	
+	
+	
+}

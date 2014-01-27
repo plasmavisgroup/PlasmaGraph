@@ -1,0 +1,16 @@
+package models;
+
+import utils.template.Template;
+import views.MainView;
+
+public class MainModel {
+	Template t;
+
+	public MainModel (Template t_reference) {
+		t = t_reference;
+	}
+	
+	
+	
+	
+}

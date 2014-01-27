@@ -1,0 +1,118 @@
+package controllers;
+
+import java.awt.event.FocusEvent;
+import java.awt.event.FocusListener;
+
+import models.AestheticModel;
+import views.AestheticView;
+
+public class AestheticController {
+	/** Reference to model related to this controller. */
+	private AestheticModel aesthetic_model;
+	/** Reference to view related to this controller. */
+	private AestheticView aesthetic_view;
+	
+	/**
+     * Creates a new Controller for the AestheticModel/View.
+     * Manages messages (mostly FocusGained/Lost messages) sent by the user via the View.
+     * Relies on the Model to change data.
+     * 
+     * @param aesthetic_model Model component reference of the Aesthetic Panel.
+     * @param aesthetic_view View component reference of the Aesthetic Panel.
+     */
+	public AestheticController(AestheticModel aesthetic_model,
+			AestheticView aesthetic_view) {
+		// TODO Auto-generated constructor stub
+		// Set related objects into proper positions in object.
+		this.aesthetic_model = aesthetic_model;
+		this.aesthetic_view = aesthetic_view;
+		
+		// Automatically add listeners to Aesthetic Tab via view.
+		aesthetic_view.addChartNameListener (new ChartNameListener ());
+		aesthetic_view.addXAxisLabelListener (new XAxisLabelListener ());
+		aesthetic_view.addYAxisLabelListener (new YAxisLabelListener ());
+		aesthetic_view.addHorizontalOrientationListener (new HorizontalOrientationListener ());
+		aesthetic_view.addVerticalOrientationListener (new VerticalOrientationListener ());
+
+	}
+	
+	class ChartNameListener implements FocusListener {
+
+		@Override
+		public void focusGained(FocusEvent arg0) {
+			// TODO Auto-generated method stub
+			
+		}
+
+		@Override
+		public void focusLost(FocusEvent arg0) {
+			// TODO Auto-generated method stub
+			
+		}
+		
+	}
+	
+	class XAxisLabelListener implements FocusListener {
+
+		@Override
+		public void focusGained(FocusEvent e) {
+			// TODO Auto-generated method stub
+			
+		}
+
+		@Override
+		public void focusLost(FocusEvent e) {
+			// TODO Auto-generated method stub
+			
+		}
+		
+	}
+	
+	class YAxisLabelListener implements FocusListener {
+
+		@Override
+		public void focusGained(FocusEvent e) {
+			// TODO Auto-generated method stub
+			
+		}
+
+		@Override
+		public void focusLost(FocusEvent e) {
+			// TODO Auto-generated method stub
+			
+		}
+		
+	}
+
+	class HorizontalOrientationListener implements FocusListener {
+
+		@Override
+		public void focusGained(FocusEvent e) {
+			// TODO Auto-generated method stub
+			
+		}
+
+		@Override
+		public void focusLost(FocusEvent e) {
+			// TODO Auto-generated method stub
+			
+		}
+		
+	}
+	
+	class VerticalOrientationListener implements FocusListener {
+
+		@Override
+		public void focusGained(FocusEvent e) {
+			// TODO Auto-generated method stub
+			
+		}
+
+		@Override
+		public void focusLost(FocusEvent e) {
+			// TODO Auto-generated method stub
+			
+		}
+		
+	}
+}

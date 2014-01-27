@@ -1,0 +1,52 @@
+package models;
+
+//Class Import Block
+import utils.template.Template;
+import utils.data.DataSet;
+import utils.data.DataFilter;
+
+/**
+ * Primary Model for the PlasmaGraph product. 
+ * Controls the primary JFrame's (MainView) view.
+ * Manages MainView's menu option selections.
+ * 
+ * @author Gerardo A. Navas Morales
+ */
+public class MainModel {
+	/** Reference to MainModel's Template, passed via constructor reference. */
+	Template t;
+	/** Reference to MainModel's DataSet, passed via constructor reference. */
+	DataSet ds;
+	/** Reference to MainModel's Template, passed via constructor reference. */
+	DataFilter df;
+
+	/**
+	 * Creates a new MainModel with references to the data, settings and filter,
+	 * as well as creates and updates its respective view.
+	 * 
+	 * @param t_reference Settings - Template reference provided by PlasmaGraph.
+	 * @param ds_reference Data - DataSet reference provided by PlasmaGraph.
+	 * @param df_reference Filter - DataFilter reference provided by PlasmaGraph.
+	 */
+	public MainModel (Template t_reference, DataSet ds_reference, DataFilter df_reference) {
+		// Update currently-used Template, Data, and Data Filter Sources.
+		t = t_reference;
+		ds = ds_reference;
+		df = df_reference;
+		
+		// Update current view.
+		updateMainView ();
+	}
+
+	/**
+	 * 
+	 */
+	private void updateMainView() {
+		// TODO Auto-generated method stub
+		
+	}
+	
+	
+	
+	
+}

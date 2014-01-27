@@ -1,0 +1,11 @@
+package models;
+
+import utils.template.Template;
+
+public class AestheticModel {
+	Template t;
+	
+	public AestheticModel (Template t_reference) {
+		
+	}
+}

@@ -1,0 +1,12 @@
+package controllers;
+
+import models.DataSetModel;
+import views.DataSetView;
+
+public class DataSetController {
+
+	public DataSetController(DataSetModel data_model, DataSetView data_view) {
+		// TODO Auto-generated constructor stub
+	}
+
+}

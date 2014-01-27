@@ -1,0 +1,11 @@
+package models;
+
+import views.*;
+
+public class MainModel {
+	MainView view;
+
+	public MainModel () {
+		view = new MainView ();
+	}
+}
