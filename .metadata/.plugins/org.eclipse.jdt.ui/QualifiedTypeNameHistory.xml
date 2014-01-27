@@ -5,4 +5,9 @@
 <fullyQualifiedTypeName name="views.AestheticView"/>
 <fullyQualifiedTypeName name="views.ToolView"/>
 <fullyQualifiedTypeName name="models.MainModel"/>
+<fullyQualifiedTypeName name="utils.data.DataSet"/>
+<fullyQualifiedTypeName name="utils.data.DataColumn"/>
+<fullyQualifiedTypeName name="utils.data.DataFilter"/>
+<fullyQualifiedTypeName name="java.awt.event.FocusListener"/>
+<fullyQualifiedTypeName name="org.jfree.chart.plot.PlotOrientation"/>
 </qualifiedTypeNameHistroy>

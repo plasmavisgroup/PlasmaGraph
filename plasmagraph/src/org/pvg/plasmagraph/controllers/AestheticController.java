@@ -1,9 +1,14 @@
 package org.pvg.plasmagraph.controllers;
 
 //Class Import Block
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.awt.event.FocusEvent;
 import java.awt.event.FocusListener;
 
+import javax.swing.JTextField;
+
+import org.jfree.chart.plot.PlotOrientation;
 import org.pvg.plasmagraph.models.AestheticModel;
 import org.pvg.plasmagraph.views.AestheticView;
 
@@ -16,9 +21,9 @@ import org.pvg.plasmagraph.views.AestheticView;
  */
 public class AestheticController {
 	/** Reference to model related to this controller. */
-	private AestheticModel aesthetic_model;
+	protected AestheticModel aesthetic_model;
 	/** Reference to view related to this controller. */
-	private AestheticView aesthetic_view;
+	protected AestheticView aesthetic_view;
 	
 	/**
      * Creates a new Controller for the AestheticModel/View.
@@ -47,18 +52,17 @@ public class AestheticController {
 	 */
 	class ChartNameListener implements FocusListener {
 
-		/** TODO */
+		/** Empty; This class doesn't do anything when focus is gained. */
 		@Override
-		public void focusGained(FocusEvent arg0) {
-			// TODO Auto-generated method stub
+		public void focusGained(FocusEvent e) {
+			// Empty.
 			
 		}
 
-		/** TODO */
+		/** Calls an AestheticModel method to change the Chart Title on the Template. */
 		@Override
-		public void focusLost(FocusEvent arg0) {
-			// TODO Auto-generated method stub
-			
+		public void focusLost(FocusEvent e) {
+			aesthetic_model.changeChartTitle(((JTextField) e.getSource()).getText());
 		}
 		
 	}
@@ -68,17 +72,17 @@ public class AestheticController {
 	 */
 	class XAxisLabelListener implements FocusListener {
 
-		/** TODO */
+		/** Empty; This class doesn't do anything when focus is gained. */
 		@Override
 		public void focusGained(FocusEvent e) {
-			// TODO Auto-generated method stub
+			// Empty.
 			
 		}
 
-		/** TODO */
+		/** Calls an AestheticModel method to change the X Axis Label on the Template. */
 		@Override
 		public void focusLost(FocusEvent e) {
-			// TODO Auto-generated method stub
+			aesthetic_model.changeXAxisLabel(((JTextField) e.getSource()).getText());
 			
 		}
 		
@@ -89,17 +93,17 @@ public class AestheticController {
 	 */
 	class YAxisLabelListener implements FocusListener {
 
-		/** TODO */
+		/** Empty; This class doesn't do anything when focus is gained. */
 		@Override
 		public void focusGained(FocusEvent e) {
-			// TODO Auto-generated method stub
+			// Empty.
 			
 		}
 
-		/** TODO */
+		/** Calls an AestheticModel method to change the Y Axis Label on the Template. */
 		@Override
 		public void focusLost(FocusEvent e) {
-			// TODO Auto-generated method stub
+			aesthetic_model.changeYAxisLabel (((JTextField) e.getSource()).getText());
 			
 		}
 		
@@ -108,42 +112,28 @@ public class AestheticController {
 	/** Listener for the "horizontal_orientation" radio button part of the AestheticView. 
 	 * Relies on FocusListener in order to manage messages.
 	 */
-	class HorizontalOrientationListener implements FocusListener {
+	class HorizontalOrientationListener implements ActionListener {
 
-		/** TODO */
+		/** Calls an AestheticModel method to change the Plot Orientation on the Template to PlotOrientation.HORIZONTAL. */
 		@Override
-		public void focusGained(FocusEvent e) {
-			// TODO Auto-generated method stub
-			
+		public void actionPerformed(ActionEvent arg0) {
+			aesthetic_model.changePlotOrientation (PlotOrientation.HORIZONTAL);
 		}
 
-		/** TODO */
-		@Override
-		public void focusLost(FocusEvent e) {
-			// TODO Auto-generated method stub
-			
-		}
+
 		
 	}
 	
 	/** Listener for the "vertical_orientation" radio button part of the AestheticView. 
 	 * Relies on FocusListener in order to manage messages.
 	 */
-	class VerticalOrientationListener implements FocusListener {
+	class VerticalOrientationListener implements ActionListener {
 
-		/** TODO */
+		/** Calls an AestheticModel method to change the Plot Orientation on the Template to PlotOrientation.VERTICAL. */
 		@Override
-		public void focusGained(FocusEvent e) {
-			// TODO Auto-generated method stub
-			
+		public void actionPerformed(ActionEvent e) {
+			aesthetic_model.changePlotOrientation (PlotOrientation.VERTICAL);
 		}
 
-		/** TODO */
-		@Override
-		public void focusLost(FocusEvent e) {
-			// TODO Auto-generated method stub
-			
-		}
-		
 	}
 }

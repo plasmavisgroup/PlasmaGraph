@@ -6,6 +6,7 @@
 
 package org.pvg.plasmagraph.views;
 
+import java.awt.event.ActionListener;
 import java.awt.event.FocusListener;
 
 import org.jfree.chart.plot.PlotOrientation;
@@ -41,16 +42,30 @@ public class AestheticView extends javax.swing.JPanel {
     	
     	// Initialize visual components, as per NetBeans IDE code.
         initComponents();
+        
+        // Initialize values from template, just in case.
+        updateView ();
     }
     
     /**
+	 * Updates AestheticView's TextBoxes and RadioButton Groups based on the current state of the Template.
+	 */
+	private void updateView () {
+		this.chart_title_text_box.setText (t.chart_name);
+		this.x_axis_text_box.setText (t.x_axis_label);
+		this.y_axis_text_box.setText (t.y_axis_label);
+		this.horizontal_orientation.setSelected (t.orientation == PlotOrientation.HORIZONTAL);
+		this.vertical_orientation.setSelected (t.orientation == PlotOrientation.VERTICAL);
+	}
+
+	/**
      * Registers the "chart_name" text box as an object that should be
      * listened upon gaining and/or losing focus by the user.
      * 
      * @param chartNameListener FocusListener object provided by its Controller.
      */
 	public void addChartNameListener (FocusListener chartNameListener) {
-		this.chart_title_text_box.addFocusListener(chartNameListener);
+		this.chart_title_text_box.addFocusListener (chartNameListener);
 	}
 
 	/**
@@ -60,7 +75,7 @@ public class AestheticView extends javax.swing.JPanel {
      * @param xAxisLabelListener FocusListener object provided by its Controller.
      */
 	public void addXAxisLabelListener (FocusListener xAxisLabelListener) {
-		this.x_axis_text_box.addFocusListener(xAxisLabelListener);
+		this.x_axis_text_box.addFocusListener (xAxisLabelListener);
 	}
 
 	/**
@@ -70,7 +85,7 @@ public class AestheticView extends javax.swing.JPanel {
      * @param yAxisLabelListener FocusListener object provided by its Controller.
      */
 	public void addYAxisLabelListener (FocusListener yAxisLabelListener) {
-		this.y_axis_text_box.addFocusListener(yAxisLabelListener);
+		this.y_axis_text_box.addFocusListener (yAxisLabelListener);
 	}
 
 	/**
@@ -79,18 +94,18 @@ public class AestheticView extends javax.swing.JPanel {
      * 
      * @param horizontalOrientationListener FocusListener object provided by its Controller.
      */
-	public void addHorizontalOrientationListener (FocusListener horizontalOrientationListener) {
-		this.horizontal_orientation.addFocusListener(horizontalOrientationListener);
+	public void addHorizontalOrientationListener (ActionListener horizontalOrientationListener) {
+		this.horizontal_orientation.addActionListener (horizontalOrientationListener);
 	}
 
-	/**
+	/**W
      * Registers the "vertical_orientation" radio button as an object that should be
      * listened upon gaining and/or losing focus by the user.
      * 
      * @param verticalOrientationListener FocusListener object provided by its Controller.
      */
-	public void addVerticalOrientationListener (FocusListener verticalOrientationListener) {
-		this.vertical_orientation.addFocusListener(verticalOrientationListener);
+	public void addVerticalOrientationListener (ActionListener verticalOrientationListener) {
+		this.vertical_orientation.addActionListener (verticalOrientationListener);
 	}
 	/**
 	 * Returns data from previous settings back to what the Template reference provides.
