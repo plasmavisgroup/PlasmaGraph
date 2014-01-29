@@ -6,27 +6,102 @@
 
 package org.pvg.plasmagraph.views;
 
+import java.awt.event.ActionListener;
+import java.util.ArrayList;
+
+import javax.swing.event.ListDataListener;
+
 import org.pvg.plasmagraph.models.DataSetModel;
 import org.pvg.plasmagraph.utils.data.DataColumn;
 import org.pvg.plasmagraph.utils.data.DataSet;
 import org.pvg.plasmagraph.utils.template.Template;
 
 /**
- *
- * @author Andrew Navas
+ * View for the data set modification pane.
+ * Defines the visual organization of a JPanel embedded
+ * into MainView's JTabbedPane, and communicates changes
+ * done to the View to the Model via the Controller's Listeners.
+ * 
+ * @author Gerardo A. Navas Morales
  */
 @SuppressWarnings("serial")
 public class DataSetView extends javax.swing.JPanel {
-
+	// Externally-contained variables.
+	/** Reference to model related to this controller. */
+	private DataSetModel data_model;
+	
     /**
      * Creates new form DataSetView
      * @param t 
      * @param data_model 
      * @param ds 
      */
-    public DataSetView(DataSetModel data_model, Template t, DataSet ds) {
+    public DataSetView (DataSetModel dm) {
+    	data_model = dm;
+    	
+    	// Prepare visual components.
         initComponents();
+        
+        // Initialize values from template, just in case.
+        updateView ();
     }
+    
+    /**
+     * Updates DataSetView's ComboBox based on the current state of the Template.
+     */
+    private void updateView () {
+    	this.chart_type_combo_box.setSelectedItem (this.data_model.getChartType());
+    }
+    
+    /**
+     * Registers the "chart_type" JComboBox as an object that should be
+     * listened upon a new selection being made.
+     * 
+     * @param changeChartTypeListener ActionListener object provided by its Controller.
+     */
+    public void addChartTypeListener (ActionListener changeChartTypeListener) {
+    	this.chart_type_combo_box.addActionListener (changeChartTypeListener);
+    }
+    
+    /**
+     * Registers the "add_button" JButton as an object that should be listened
+     * upon being pressed by the user.
+     * 
+     * @param addButtonListener ActionListener object provided by its Controller.
+     */
+    public void addAddButtonListener (ActionListener addButtonListener) {
+    	this.add_button.addActionListener (addButtonListener);
+    }
+    
+    /**
+     * Registers the "remove_button" JButton as an object that should be listened
+     * upon being pressed by the user.
+     * 
+     * @param removeButtonListener ActionListener object provided by its Controller.
+     */
+    public void addRemoveButtonListener (ActionListener removeButtonListener) {
+    	this.remove_button.addActionListener (removeButtonListener);
+    }
+    
+    /**
+     * Getter method. Provides all datasets selected in the "available_datasets_list"
+     * JList object.
+     * 
+     * @return An ArrayList<String> object containing all selected datasets.
+     */
+    public ArrayList<String> getSelectedDatasetsToAdd() {
+		return ((ArrayList<String>) this.available_datasets_list.getSelectedValuesList());
+	}
+
+    /**
+     * Getter method. Provides all datasets selected in the "selected_datasets_list"
+     * JList object.
+     * 
+     * @return An ArrayList<String> object containing all selected datasets.
+     */
+	public ArrayList<String> getSelectedDatasetsToRemove() {
+		return ((ArrayList<String>) this.selected_datasets_list.getSelectedValuesList());
+	}
 
     /**
      * This method is called from within the constructor to initialize the form.
@@ -37,15 +112,14 @@ public class DataSetView extends javax.swing.JPanel {
     // <editor-fold defaultstate="collapsed" desc="Generated Code">                          
     private void initComponents() {
 
-        available_datasets_pane = new javax.swing.JScrollPane();
-        available_datasets_list = new javax.swing.JList<DataColumn>();
-        selected_datasets_pane = new javax.swing.JScrollPane();
-        selected_datasets_list = new javax.swing.JList<DataSet>();
-        chart_type_combo_box = new javax.swing.JComboBox<String>();
-        chart_type_label = new javax.swing.JLabel();
-        add_button = new javax.swing.JButton();
-        pair_button = new javax.swing.JButton();
-        remove_button = new javax.swing.JButton();
+        available_datasets_pane = new javax.swing.JScrollPane ();
+        available_datasets_list = new javax.swing.JList<String> (this.data_model.getAvailableListModel ());
+        selected_datasets_pane = new javax.swing.JScrollPane ();
+        selected_datasets_list = new javax.swing.JList<String> (this.data_model.getSelectedListModel ());
+        chart_type_combo_box = new javax.swing.JComboBox<String> ();
+        chart_type_label = new javax.swing.JLabel ();
+        add_button = new javax.swing.JButton ();
+        remove_button = new javax.swing.JButton ();
 
         available_datasets_list.setCursor(new java.awt.Cursor(java.awt.Cursor.DEFAULT_CURSOR));
         available_datasets_pane.setViewportView(available_datasets_list);
@@ -57,8 +131,6 @@ public class DataSetView extends javax.swing.JPanel {
         chart_type_label.setText("Chart Type");
 
         add_button.setText("Add");
-
-        pair_button.setText("Pair");
 
         remove_button.setText("Remove");
 
@@ -79,8 +151,7 @@ public class DataSetView extends javax.swing.JPanel {
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
                             .addGroup(layout.createSequentialGroup()
                                 .addComponent(add_button, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                                .addComponent(pair_button, javax.swing.GroupLayout.PREFERRED_SIZE, 89, javax.swing.GroupLayout.PREFERRED_SIZE))
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED))
                             .addComponent(available_datasets_pane, javax.swing.GroupLayout.PREFERRED_SIZE, 226, javax.swing.GroupLayout.PREFERRED_SIZE))))
                 .addGap(18, 18, 18)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
@@ -102,7 +173,6 @@ public class DataSetView extends javax.swing.JPanel {
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(add_button)
-                    .addComponent(pair_button)
                     .addComponent(remove_button))
                 .addContainerGap(32, Short.MAX_VALUE))
         );
@@ -111,13 +181,12 @@ public class DataSetView extends javax.swing.JPanel {
 
     // Variables declaration - do not modify                     
     private javax.swing.JButton add_button;
-    private javax.swing.JList<DataColumn> available_datasets_list;
+    private javax.swing.JList<String> available_datasets_list;
     private javax.swing.JScrollPane available_datasets_pane;
     private javax.swing.JComboBox<String> chart_type_combo_box;
     private javax.swing.JLabel chart_type_label;
-    private javax.swing.JButton pair_button;
     private javax.swing.JButton remove_button;
-    private javax.swing.JList<DataSet> selected_datasets_list;
+    private javax.swing.JList<String> selected_datasets_list;
     private javax.swing.JScrollPane selected_datasets_pane;
     // End of variables declaration                   
 }

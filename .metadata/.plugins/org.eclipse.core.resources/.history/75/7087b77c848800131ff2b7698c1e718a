@@ -1,0 +1,13 @@
+package org.pvg.plasmagraph.utils.data;
+
+import java.util.Iterator;
+
+public class DataSet implements Iterable {
+
+	@Override
+	public Iterator iterator() {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+}

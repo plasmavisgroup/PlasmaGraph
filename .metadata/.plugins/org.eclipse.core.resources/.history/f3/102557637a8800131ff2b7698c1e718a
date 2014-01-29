@@ -1,0 +1,88 @@
+package org.pvg.plasmagraph.models;
+
+// Class Import Block
+import java.util.ArrayList;
+
+import javax.swing.DefaultListModel;
+import javax.swing.ListModel;
+
+import org.pvg.plasmagraph.utils.data.DataColumn;
+import org.pvg.plasmagraph.utils.data.DataSet;
+import org.pvg.plasmagraph.utils.template.Template;
+
+/**
+ * Model for the modification of PlasmaGraph's data sets.
+ * Manipulates both the data sets that will be used in the
+ * graphs as well as the DataSetView itself.
+ * 
+ * @author Gerardo A. Navas Morales
+ */
+public class DataSetModel {
+	/** Reference to MainModel's Template, passed via constructor reference. */
+	private Template t;
+	/** Reference to MainModel's DataSet, passed via constructor reference. */
+	private DataSet ds;
+	/** Container for all DataColumns found in the "available_dataset_list" JList. */
+	private DefaultListModel<String> list_available;
+	/** Container for all DataSets found in the "selected_dataset_list" JList. */
+	private DefaultListModel<String> list_selected;
+	
+	/**
+	 * Creates a new DataSetModel with references to the data and settings,
+	 * as well as creates and updates its respective view.
+	 * 
+	 * @param t_reference Settings - Template reference provided by PlasmaGraph.
+	 * @param ds_reference Data - DataSet reference provided by PlasmaGraph.
+	 */
+	public DataSetModel (Template t_reference, DataSet ds_reference) {
+		// Update currently-used Template and Data Sources.
+		t = t_reference;
+		ds = ds_reference;
+		
+		// Initialize ListModels
+		resetListModels ();
+	}
+
+	private void resetListModels() {
+		// Reset the old lists.
+		list_available = new DefaultListModel<String> ();
+		list_selected = new DefaultListModel<String> ();
+		
+		// Populate AvailableDatasetsList's ListModel
+		for (DataColumn dc : ds) {
+			list_available.addElement (dc.toString());
+		}
+		
+		// Populate SelectedDatasetsList's ListModel
+		// Do not need to populate SelectedDatasetsList's ListModel
+	}
+	
+	public String getChartType () {
+		return (t.getChartType());
+	}
+
+	public ListModel<String> getAvailableListModel () {
+		return (list_available);
+	}
+
+	public ListModel<String> getSelectedListModel () {
+		return (list_selected);
+	}
+
+	public void changeChartType (String source) {
+		this.t.setChartType (source);
+	}
+
+	public void addToSelectedDataset (ArrayList<String> arrayList) {
+		// TODO: Verify that the number of selected DataColumns equals the desired chart type.
+		if ()
+	}
+
+	public void removeFromSelectedDataset (ArrayList<String> arrayList) {
+		if (this.list_selected.contains (arrayList)) {
+			this.list_selected.removeElement(arrayList);
+		}
+	}
+	
+	
+}

@@ -1,0 +1,28 @@
+package org.pvg.plasmagraph.utils.graphs;
+
+public final class ChartType {
+	/** Reference for a "Pie Graph" Chart. */
+	public static final ChartType PIE_GRAPH = new ChartType ("ChartType.PIE_GRAPH");
+	
+	/** Name of chart type. */
+	private String name;
+	
+	private ChartType (String name) {
+		this.name = name;
+	}
+	
+	@Override
+	public String toString () {
+		return (name);
+	}
+	
+	@Override
+	public boolean equals (Object obj) {
+		if (this == obj) { return (true); }
+		if (!(obj instanceof ChartType )) { return (false); }
+		ChartType c = (ChartType) obj;
+		
+		if (!this.name.equals(c.toString())) { return (false); }
+		return (true);
+	}
+}

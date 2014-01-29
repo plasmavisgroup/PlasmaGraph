@@ -1,0 +1,58 @@
+package org.pvg.plasmagraph.utils.data;
+
+import java.util.ArrayList;
+
+// TODO: Add JavaDoc comments to everything.
+/**
+ * 
+ * @author Tako
+ *
+ */
+public class DataSetRelations {
+	/***/
+	boolean pie;
+	/***/
+	private ArrayList table;
+	
+	public DataSetRelations (boolean is_pie_graph) {
+		pie = is_pie_graph;
+		
+		if (is_pie_graph) {
+			table = new ArrayList<Integer> ();
+		} else {
+			table = new ArrayList<Pair> ();
+		}
+		
+		public void add ()
+		
+	}
+
+}
+
+/**
+ * 
+ * @author Tako
+ *
+ */
+class Pair {
+	/***/
+	private final int index1;
+	/***/
+	private final int index2;
+	
+	public Pair (int i, int j) {
+		index1 = i;
+		index2 = j;
+	}
+	
+	public int getIndex1 () {
+		return index1;
+		
+	}
+	
+	public int getIndex2 () {
+		return index2;
+		
+	}
+	
+}

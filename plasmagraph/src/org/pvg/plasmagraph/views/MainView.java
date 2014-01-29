@@ -18,10 +18,9 @@ public class MainView extends javax.swing.JFrame {
 
     /**
      * Creates new form MainView
-     * @param t 
      * @param main_model 
      */
-    public MainView(MainModel main_model, Template t) {
+    public MainView(MainModel main_model) {
         initComponents();
     }
 

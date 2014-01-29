@@ -15,15 +15,15 @@ import org.pvg.plasmagraph.views.AestheticView;
 /**
  * Controller for the visual modification pane, AestheticView.
  * Controls a JPanel embedded into MainView's JTabbedPane, and
- * allows for communication between the View and Model.
+ * allows for communication between its View and Model.
  * 
  * @author Gerardo A. Navas Morales
  */
 public class AestheticController {
 	/** Reference to model related to this controller. */
-	protected AestheticModel aesthetic_model;
+	private AestheticModel aesthetic_model;
 	/** Reference to view related to this controller. */
-	protected AestheticView aesthetic_view;
+	private AestheticView aesthetic_view;
 	
 	/**
      * Creates a new Controller for the AestheticModel/View.

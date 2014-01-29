@@ -1,0 +1,148 @@
+package org.pvg.plasmagraph.utils.data;
+
+import java.util.ArrayList;
+
+import org.pvg.plasmagraph.utils.graphs.ChartType;
+
+// TODO: Add JavaDoc comments to everything.
+/**
+ * 
+ * @author Tako
+ *
+ */
+public class DataReference {
+	/***/
+	private ArrayList<Pair> table;
+	
+	/**
+	 */
+	public DataReference () {
+		table = new ArrayList <Pair> ();
+	}
+	
+	/**
+	 * 
+	 * @param p
+	 * @return
+	 */
+	public boolean add (Pair p) {
+		return (table.add(p));
+	}
+
+	/**
+	 * 
+	 * @param index
+	 * @return
+	 */
+	public Pair remove (int index) {
+		return (table.remove(index));
+	}
+	
+	/**
+	 * 
+	 * @param p
+	 * @return
+	 */
+	public boolean remove (Pair p) {
+		return (table.remove(p));
+	}
+	
+	/**
+	 * 
+	 * @param p
+	 * @return
+	 */
+	public int find (Pair p) {
+		return (table.indexOf(p));
+	}
+	
+	/**
+	 * 
+	 * @param p
+	 * @return
+	 */
+	private boolean add (Pair p) {
+		return (table.add(p));
+	}
+	
+	/**
+	 * 
+	 * @param p
+	 * @return
+	 */
+	private boolean remove (Pair p) {
+		return (table.remove(p));
+	}
+	
+	/**
+	 * 
+	 * @param p
+	 * @return
+	 */
+	private int find (Pair p) {
+		return (table.indexOf(p));
+	}
+	
+	/**
+	 * 
+	 * @author Tako
+	 *
+	 */
+	class Pair {
+		/***/
+		private final int index1;
+		/***/
+		private final int index2;
+		
+		/**
+		 * 
+		 * @param i
+		 * @param j
+		 */
+		public Pair (int i, int j) {
+			index1 = i;
+			index2 = j;
+		}
+		
+		/**
+		 * 
+		 * @return
+		 */
+		public int getIndex1 () {
+			return index1;
+			
+		}
+		
+		/**
+		 * 
+		 * @return
+		 */
+		public int getIndex2 () {
+			return index2;
+			
+		}
+		
+		@Override
+		public String toString () {
+			return ("" + index1 + ", " + index2);
+		}
+		
+		@Override
+		public boolean equals (Object obj) {
+			// Same object?
+			if (this == obj) { return (true); }
+			
+			// Not the same class?
+			if (!(obj instanceof Pair )) { return (false); }
+			Pair c = (Pair) obj;
+			
+			// Same name?
+			if (!this.toString().equals(c.toString())) { return (false); }
+			
+			// Then they're the same type of Pair.
+			return (true);
+		}
+		
+	}
+	
+}

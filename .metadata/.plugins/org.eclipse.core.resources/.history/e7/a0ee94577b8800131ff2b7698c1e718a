@@ -1,0 +1,6 @@
+package org.pvg.plasmagraph.errors;
+
+@SuppressWarnings("serial")
+public class EmptyArrayException extends Exception {
+
+}

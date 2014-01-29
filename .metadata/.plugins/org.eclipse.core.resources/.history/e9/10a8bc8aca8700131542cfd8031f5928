@@ -1,0 +1,52 @@
+package org.pvg.plasmagraph.controllers;
+
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+
+import javax.swing.JComboBox;
+
+import org.pvg.plasmagraph.controllers.AestheticController.ChartNameListener;
+import org.pvg.plasmagraph.controllers.AestheticController.XAxisLabelListener;
+import org.pvg.plasmagraph.models.AestheticModel;
+import org.pvg.plasmagraph.models.ToolModel;
+import org.pvg.plasmagraph.views.AestheticView;
+import org.pvg.plasmagraph.views.ToolView;
+
+public class ToolController {
+	/** Reference to model related to this controller. */
+	private ToolModel tool_model;
+	/** Reference to view related to this controller. */
+	private ToolView tool_view;
+
+	public ToolController(ToolModel tool_model, ToolView tool_view) {
+		// Set related objects into proper positions in object.
+		this.tool_model = tool_model;
+		this.tool_view = tool_view;
+		
+		// Automatically add listeners to Aesthetic Tab via view.
+		tool_view.addInterpolationListener (new InterpolationListener ());
+		tool_view.addOutlierListener (new OutlierListener ());
+	}
+	
+	class InterpolationListener implements ActionListener {
+
+		@Override
+		public void actionPerformed(ActionEvent arg0) {
+			// TODO Auto-generated method stub
+			tool_model.interpolate ((String) ((JComboBox<String>) arg0.getSource()).getSelectedItem());
+		}
+		
+	}
+	
+	class OutlierListener implements ActionListener {
+
+		@Override
+		public void actionPerformed(ActionEvent arg0) {
+			// TODO Auto-generated method stub
+			
+		}
+		
+	}
+
+	
+}

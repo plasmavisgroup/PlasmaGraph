@@ -13,9 +13,9 @@ import org.pvg.plasmagraph.utils.template.Template;
  */
 public class AestheticModel {
 	/** Reference to MainModel's Template, passed via constructor reference. */
-	Template t;
+	private Template t;
 	///** Reference to MainModel's DataSet, passed via constructor reference. */
-	//DataSet ds;
+	//private DataSet ds;
 	
 	/**
 	 * Creates a new AestheticModel with references to MainModel's graph-manipulation objects,
@@ -26,9 +26,6 @@ public class AestheticModel {
 	public AestheticModel (Template t_reference) {
 		// Update currently-used Template and Data Sources.
 		t = t_reference;
-		
-		// Update current view.
-		updateAestheticView ();
 	}
 
 	/**
@@ -39,7 +36,7 @@ public class AestheticModel {
 	 * @param text String containing change to Template parameter chart_title.
 	 */
 	public void changeChartTitle (String text) {
-		this.t.chart_name = text;
+		this.t.setChartName(text);
 	}
 
 	/**
@@ -50,7 +47,7 @@ public class AestheticModel {
 	 * @param text String containing change to Template parameter x_axis_label.
 	 */
 	public void changeXAxisLabel (String text) {
-		this.t.x_axis_label = text;
+		this.t.setXAxisLabel(text);
 	}
 	
 	/**
@@ -61,7 +58,7 @@ public class AestheticModel {
 	 * @param text String containing change to Template parameter y_axis_label.
 	 */
 	public void changeYAxisLabel (String text) {
-		this.t.y_axis_label = text;
+		this.t.setYAxisLabel(text);
 	}
 	
 	/**
@@ -72,6 +69,17 @@ public class AestheticModel {
 	 * @param o PlotOrientation object containing change to Template parameter orientation.
 	 */
 	public void changePlotOrientation(PlotOrientation o) {
-		this.t.orientation = o;
+		this.t.setOrientation(o);
+	}
+
+	/**
+	 * Getter method. Returns template.
+	 * Used for AestheticView's "updateView ()" method.
+	 * 
+	 * @return t, a reference to the Template object.
+	 */
+	public Template getTemplate() {
+		// TODO Auto-generated method stub
+		return (t);
 	}
 }

@@ -1,0 +1,13 @@
+package org.pvg.plasmagraph.utils.graphs;
+
+public class ChartType {
+	/** Reference for a "Pie Graph" Chart. */
+	public static final ChartType PIE_GRAPH = new ChartType ("ChartType.PIE_GRAPH");
+	
+	/** Name of chart type. */
+	private String name;
+	
+	private ChartType (String name) {
+		this.name = name;
+	}
+}

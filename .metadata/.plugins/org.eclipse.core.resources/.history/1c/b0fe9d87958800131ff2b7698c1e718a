@@ -1,0 +1,97 @@
+package org.pvg.plasmagraph.utils.data;
+
+import java.util.ArrayList;
+import java.util.Iterator;
+import java.util.NoSuchElementException;
+
+// TODO: Add JavaDoc comments to everything.
+/**
+ * A 
+ * @author Gerardo A. Navas Morales
+ */
+public class DataReference implements Iterator<Pair>, Iterable<Pair>{
+	/***/
+	private ArrayList<Pair> table;
+	/***/
+	private int position = 0;
+	
+	/**
+	 */
+	public DataReference () {
+		table = new ArrayList <Pair> ();
+	}
+	
+	/**
+	 * 
+	 * @param p
+	 * @return
+	 */
+	public boolean add (Pair p) {
+		return (table.add(p));
+	}
+
+	/**
+	 * 
+	 * @param index
+	 * @return
+	 */
+	public Pair remove (int index) {
+		return (table.remove(index));
+	}
+	
+	/**
+	 * 
+	 * @param p
+	 * @return
+	 */
+	public boolean remove (Pair p) {
+		return (table.remove(p));
+	}
+	
+	/**
+	 * 
+	 * @param p
+	 * @return
+	 */
+	public int find (Pair p) {
+		return (table.indexOf(p));
+	}
+	
+	/**
+	 * 
+	 * @param s
+	 * @return
+	 */
+	public int find (String s) {
+		int j = 0; boolean found = false;
+		for (int i = 0; (i < table.size()) || !found; ++i) {
+			if (table.get(i).equals(s)) {
+				j = i; found = true;
+			}
+		}
+		return (j);
+	}
+
+	@Override
+	public Iterator<Pair> iterator () {
+		return (this);
+	}
+
+	@Override
+	public boolean hasNext () {
+		return (position < table.size());
+	}
+
+	@Override
+	public Pair next () {
+		if (position == table.size()) { throw new NoSuchElementException (); }
+	    return (table.get(++position));
+	}
+
+	@Override
+	public void remove () {
+		// TODO: Want to really keep it unsupported?
+		throw new UnsupportedOperationException();
+	}
+	
+}

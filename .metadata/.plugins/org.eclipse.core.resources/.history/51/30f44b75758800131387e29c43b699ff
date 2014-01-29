@@ -1,0 +1,80 @@
+package org.pvg.plasmagraph.controllers;
+
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+
+import org.pvg.plasmagraph.controllers.AestheticController.ChartNameListener;
+import org.pvg.plasmagraph.controllers.AestheticController.HorizontalOrientationListener;
+import org.pvg.plasmagraph.controllers.AestheticController.VerticalOrientationListener;
+import org.pvg.plasmagraph.controllers.AestheticController.XAxisLabelListener;
+import org.pvg.plasmagraph.controllers.AestheticController.YAxisLabelListener;
+import org.pvg.plasmagraph.models.AestheticModel;
+import org.pvg.plasmagraph.models.DataSetModel;
+import org.pvg.plasmagraph.views.AestheticView;
+import org.pvg.plasmagraph.views.DataSetView;
+
+/**
+ * Controller for the data set modification pane, DataSetView.
+ * Controls a JPanel embedded into MainView's JTabbedPane, and
+ * allows for communication between its View and Model.
+ * @author Gerardo A. Navas Morales
+ */
+public class DataSetController {
+	/** Reference to model related to this controller. */
+	private DataSetModel data_model;
+	/** Reference to view related to this controller. */
+	private DataSetView data_view;
+	
+	public DataSetController(DataSetModel data_model, DataSetView data_view) {
+		// Set related objects into proper positions in object.
+		this.data_model = data_model;
+		this.data_view = data_view;
+		
+		// Automatically add listeners to Data Set Tab via view.
+		data_view.addChartTypeListener (new ChartTypeListener ());
+		data_view.addAddButtonListener (new AddButtonListener ());
+		data_view.addRemoveButtonListener (new RemoveButtonListener ());
+	}
+	
+	/**
+	 * 
+	 * @author Gerardo A. Navas Morales
+	 */
+	class ChartTypeListener implements ActionListener {
+
+		@Override
+		public void actionPerformed(ActionEvent arg0) {
+			// TODO Auto-generated method stub
+			data_model.changeChartType ((String) arg0.getSource());
+		}
+		
+	}
+
+	/**
+	 * 
+	 * @author Gerardo A. Navas Morales
+	 */
+	class AddButtonListener implements ActionListener {
+
+		@Override
+		public void actionPerformed(ActionEvent arg0) {
+			// TODO Auto-generated method stub
+			
+		}
+		
+	}
+	
+	/**
+	 * 
+	 * @author Gerardo A. Navas Morales
+	 */
+	class RemoveButtonListener implements ActionListener {
+
+		@Override
+		public void actionPerformed(ActionEvent arg0) {
+			// TODO Auto-generated method stub
+			
+		}
+		
+	}
+}

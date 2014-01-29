@@ -23,8 +23,6 @@ import org.pvg.plasmagraph.utils.template.Template;
  */
 @SuppressWarnings("serial")
 public class AestheticView extends javax.swing.JPanel {
-	/** Reference to MainModel's Template, passed via constructor reference. */
-	private Template t;
 	/** Reference to model related to this controller. */
 	private AestheticModel aesthetic_model;
 	
@@ -35,9 +33,7 @@ public class AestheticView extends javax.swing.JPanel {
      * @param t_reference Template reference provided by PlasmaGraph.
      * @param aesthetic_model Model reference provided by PlasmaGraph.
      */
-    public AestheticView (AestheticModel aesthetic_model, Template t_reference) {
-    	// Set private reference variables.
-    	t = t_reference;
+    public AestheticView (AestheticModel aesthetic_model) {
     	this.aesthetic_model = aesthetic_model;
     	
     	// Initialize visual components, as per NetBeans IDE code.
@@ -48,14 +44,17 @@ public class AestheticView extends javax.swing.JPanel {
     }
     
     /**
-	 * Updates AestheticView's TextBoxes and RadioButton Groups based on the current state of the Template.
+	 * Updates AestheticView's TextBoxes and RadioButton Groups based
+	 * on the current state of the Template.
+	 * 
+	 * TODO: Remove getTemplate and make it less terrible. Add Getters to model, too?
 	 */
 	private void updateView () {
-		this.chart_title_text_box.setText (t.chart_name);
-		this.x_axis_text_box.setText (t.x_axis_label);
-		this.y_axis_text_box.setText (t.y_axis_label);
-		this.horizontal_orientation.setSelected (t.orientation == PlotOrientation.HORIZONTAL);
-		this.vertical_orientation.setSelected (t.orientation == PlotOrientation.VERTICAL);
+		this.chart_title_text_box.setText (this.aesthetic_model.getTemplate().getChartName());
+		this.x_axis_text_box.setText (this.aesthetic_model.getTemplate().getXAxisLabel());
+		this.y_axis_text_box.setText (this.aesthetic_model.getTemplate().getYAxisLabel());
+		this.horizontal_orientation.setSelected (this.aesthetic_model.getTemplate().getOrientation() == PlotOrientation.HORIZONTAL);
+		this.vertical_orientation.setSelected (this.aesthetic_model.getTemplate().getOrientation() == PlotOrientation.VERTICAL);
 	}
 
 	/**
@@ -106,16 +105,6 @@ public class AestheticView extends javax.swing.JPanel {
      */
 	public void addVerticalOrientationListener (ActionListener verticalOrientationListener) {
 		this.vertical_orientation.addActionListener (verticalOrientationListener);
-	}
-	/**
-	 * Returns data from previous settings back to what the Template reference provides.
-	 */
-	private void reset () {
-		this.chart_title_text_box.setText (t.chart_name);
-		this.x_axis_text_box.setText (t.x_axis_label);
-		this.y_axis_text_box.setText (t.y_axis_label);
-		this.horizontal_orientation.setSelected(t.orientation == PlotOrientation.HORIZONTAL);
-		this.vertical_orientation.setSelected(t.orientation == PlotOrientation.VERTICAL);
 	}
 
     /**

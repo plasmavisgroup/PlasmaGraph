@@ -9,5 +9,19 @@
 <fullyQualifiedTypeName name="utils.data.DataColumn"/>
 <fullyQualifiedTypeName name="utils.data.DataFilter"/>
 <fullyQualifiedTypeName name="java.awt.event.FocusListener"/>
+<fullyQualifiedTypeName name="javax.swing.JTextField"/>
 <fullyQualifiedTypeName name="org.jfree.chart.plot.PlotOrientation"/>
+<fullyQualifiedTypeName name="java.awt.event.ActionListener"/>
+<fullyQualifiedTypeName name="javax.swing.JComboBox"/>
+<fullyQualifiedTypeName name="org.pvg.plasmagraph.utils.data.DataColumn"/>
+<fullyQualifiedTypeName name="org.pvg.plasmagraph.utils.data.DataSet"/>
+<fullyQualifiedTypeName name="javax.swing.JOptionPane"/>
+<fullyQualifiedTypeName name="javax.swing.JDialog"/>
+<fullyQualifiedTypeName name="org.pvg.plasmagraph.errors.ExceptionHandler"/>
+<fullyQualifiedTypeName name="org.pvg.plasmagraph.utils.graphs.ChartType"/>
+<fullyQualifiedTypeName name="org.pvg.plasmagraph.utils.data.DataReference"/>
+<fullyQualifiedTypeName name="org.pvg.plasmagraph.utils.data.Pair"/>
+<fullyQualifiedTypeName name="java.util.ArrayList"/>
+<fullyQualifiedTypeName name="java.util.Iterator"/>
+<fullyQualifiedTypeName name="java.util.NoSuchElementException"/>
 </qualifiedTypeNameHistroy>

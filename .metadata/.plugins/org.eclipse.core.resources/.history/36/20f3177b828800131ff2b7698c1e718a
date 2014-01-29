@@ -1,0 +1,38 @@
+package org.pvg.plasmagraph.utils.data;
+
+import java.util.ArrayList;
+
+public class DataSetRelations {
+	private ArrayList table;
+	
+	public DataSetRelations (boolean is_pie_graph) {
+		if (is_pie_graph) {
+			table = new ArrayList<Integer> ();
+		} else {
+			table = new ArrayList<Pair> ();
+		}
+		
+	}
+	
+	class Pair {
+		private final int index1;
+		private final int index2;
+		
+		public Pair (int i, int j) {
+			index1 = i;
+			index2 = j;
+		}
+		
+		public int getIndex1 () {
+			return index1;
+			
+		}
+		
+		public int getIndex2 () {
+			return index2;
+			
+		}
+		
+	}
+
+}

@@ -6,7 +6,12 @@
 
 package org.pvg.plasmagraph.views;
 
+import java.awt.event.ActionListener;
+
+import javax.swing.JComboBox;
+
 import org.pvg.plasmagraph.models.ToolModel;
+import org.pvg.plasmagraph.utils.data.DataSet;
 import org.pvg.plasmagraph.utils.template.Template;
 
 /**
@@ -15,15 +20,49 @@ import org.pvg.plasmagraph.utils.template.Template;
  */
 @SuppressWarnings("serial")
 public class ToolView extends javax.swing.JPanel {
-
+	/** Reference to MainModel's Template, passed via constructor reference. */
+	private Template t;
+	/** Reference to model related to this controller. */
+	private ToolModel tool_model;
+	/** Reference to MainModel's DataSet, passed via constructor reference. */
+	private DataSet ds;
+	
     /**
      * Creates new form ToolView
-     * @param t 
-     * @param tool_model 
+     * @param tool_model Reference to current ToolModel object.
      */
-    public ToolView(ToolModel tool_model, Template t) {
+    public ToolView(ToolModel tool_model) {
+    	// Set object variables.
+    	t = t_reference;
+    	ds = ds_reference;
+    	this.tool_model = tool_model;
+    	
+    	// Initialize View organization as per NetBeans IDE code.
         initComponents();
     }
+    /**
+     * 
+     * @param interpolationListener
+     */
+    public void addInterpolationListener (ActionListener interpolationListener) {
+		this.interpolation_button.addActionListener (interpolationListener);
+	}
+
+    /**
+     * 
+     * @param outlierListener
+     */
+	public void addOutlierListener (ActionListener outlierListener) {
+		this.outlier_button.addActionListener (outlierListener);
+	}
+	/**
+	 * Resets the settings that compose this View back to their
+	 * default states.
+	 */
+	private void reset () {
+		this.interpolation_type_combo_box.setSelectedItem (this.t.getInterpolationType ());
+		this.outlier_action_combo_box.setSelectedItem (this.t.getOutlierResponse ());
+	}
 
     /**
      * This method is called from within the constructor to initialize the form.
@@ -36,6 +75,7 @@ public class ToolView extends javax.swing.JPanel {
 
         interpolation_label = new javax.swing.JLabel();
         interpolation_type_combo_box = new javax.swing.JComboBox<String>();
+        target_data_set_combo_box = new javax.swing.JComboBox<String>();
         outlier_search_label = new javax.swing.JLabel();
         interpolation_outlier_separator = new javax.swing.JSeparator();
         interpolation_button = new javax.swing.JButton();
@@ -53,6 +93,8 @@ public class ToolView extends javax.swing.JPanel {
         outlier_action_combo_box.setModel(new javax.swing.DefaultComboBoxModel<String>(new String[] { "Warn", "Remove" }));
 
         outlier_button.setText("Search for Outliers");
+        
+        target_data_set_combo_box.setModel(new javax.swing.DefaultComboBoxModel<String> (new String [] {})); // TODO Set up proper Data selection for both.
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(this);
         this.setLayout(layout);
@@ -102,7 +144,8 @@ public class ToolView extends javax.swing.JPanel {
     private javax.swing.JSeparator interpolation_outlier_separator;
     private javax.swing.JComboBox<String> interpolation_type_combo_box;
     private javax.swing.JComboBox<String> outlier_action_combo_box;
+    private javax.swing.JComboBox<String> target_data_set_combo_box;
     private javax.swing.JButton outlier_button;
     private javax.swing.JLabel outlier_search_label;
-    // End of variables declaration                   
+    // End of variables declaration
 }
