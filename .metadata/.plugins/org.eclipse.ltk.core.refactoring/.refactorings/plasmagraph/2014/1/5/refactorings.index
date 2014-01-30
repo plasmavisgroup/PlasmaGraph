@@ -12,3 +12,5 @@
 1390850451339	Rename package 'views'
 1390954908298	Delete element
 1390958600631	Rename type 'DataSetRelations'
+1391032799928	Rename package 'org.pvg.plasmagraph.errors'
+1391032835487	Rename package 'org.pvg.plasmagraph.utils.errors'

@@ -15,13 +15,23 @@
 <fullyQualifiedTypeName name="javax.swing.JComboBox"/>
 <fullyQualifiedTypeName name="org.pvg.plasmagraph.utils.data.DataColumn"/>
 <fullyQualifiedTypeName name="org.pvg.plasmagraph.utils.data.DataSet"/>
-<fullyQualifiedTypeName name="javax.swing.JOptionPane"/>
 <fullyQualifiedTypeName name="javax.swing.JDialog"/>
-<fullyQualifiedTypeName name="org.pvg.plasmagraph.errors.ExceptionHandler"/>
 <fullyQualifiedTypeName name="org.pvg.plasmagraph.utils.graphs.ChartType"/>
 <fullyQualifiedTypeName name="org.pvg.plasmagraph.utils.data.DataReference"/>
 <fullyQualifiedTypeName name="org.pvg.plasmagraph.utils.data.Pair"/>
-<fullyQualifiedTypeName name="java.util.ArrayList"/>
-<fullyQualifiedTypeName name="java.util.Iterator"/>
 <fullyQualifiedTypeName name="java.util.NoSuchElementException"/>
+<fullyQualifiedTypeName name="javax.swing.JFileChooser"/>
+<fullyQualifiedTypeName name="javax.swing.filechooser.FileNameExtensionFilter"/>
+<fullyQualifiedTypeName name="javax.swing.filechooser.FileFilter"/>
+<fullyQualifiedTypeName name="java.io.File"/>
+<fullyQualifiedTypeName name="org.pvg.plasmagraph.errors.ExceptionHandler"/>
+<fullyQualifiedTypeName name="org.pvg.plasmagraph.utils.FileUtilities"/>
+<fullyQualifiedTypeName name="java.awt.List"/>
+<fullyQualifiedTypeName name="java.util.Iterator"/>
+<fullyQualifiedTypeName name="java.util.List"/>
+<fullyQualifiedTypeName name="java.util.ArrayList"/>
+<fullyQualifiedTypeName name="javax.swing.DefaultListModel"/>
+<fullyQualifiedTypeName name="javax.swing.JOptionPane"/>
+<fullyQualifiedTypeName name="javax.swing.ListSelectionModel"/>
+<fullyQualifiedTypeName name="org.pvg.plasmagraph.utils.data.DataFilterWindow"/>
 </qualifiedTypeNameHistroy>

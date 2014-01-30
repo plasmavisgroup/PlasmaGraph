@@ -1,9 +1,0 @@
-package models;
-
-public class MainModel {
-
-	
-	public MainModel () {
-		MainView view = new MainView ();
-	}
-}

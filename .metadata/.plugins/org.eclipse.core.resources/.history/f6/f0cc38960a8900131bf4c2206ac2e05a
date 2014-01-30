@@ -1,0 +1,18 @@
+package org.pvg.plasmagraph.controllers;
+
+import org.pvg.plasmagraph.models.AestheticModel;
+import org.pvg.plasmagraph.models.MainModel;
+import org.pvg.plasmagraph.views.AestheticView;
+import org.pvg.plasmagraph.views.MainView;
+
+public class MainController {
+	/** Reference to model related to this controller. */
+	private MainModel main_model;
+	/** Reference to view related to this controller. */
+	private MainView main_view;
+
+	public MainController(MainModel main_model, MainView main_view) {
+		// TODO Auto-generated constructor stub
+	}
+
+}

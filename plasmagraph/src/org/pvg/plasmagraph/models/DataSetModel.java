@@ -6,7 +6,7 @@ import java.util.ArrayList;
 import javax.swing.DefaultListModel;
 import javax.swing.ListModel;
 
-import org.pvg.plasmagraph.errors.ExceptionHandler;
+import org.pvg.plasmagraph.utils.ExceptionHandler;
 import org.pvg.plasmagraph.utils.data.DataColumn;
 import org.pvg.plasmagraph.utils.data.DataReference;
 import org.pvg.plasmagraph.utils.data.DataSet;
@@ -14,6 +14,7 @@ import org.pvg.plasmagraph.utils.data.Pair;
 import org.pvg.plasmagraph.utils.graphs.ChartType;
 import org.pvg.plasmagraph.utils.template.Template;
 
+//TODO: Add more JavaDoc comments!
 /**
  * Model for the modification of PlasmaGraph's data sets.
  * Manipulates both the data sets that will be used in the

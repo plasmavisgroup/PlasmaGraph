@@ -6,17 +6,30 @@
 
 package org.pvg.plasmagraph.utils.data;
 
+import javax.swing.JOptionPane;
+
 /**
- *
- * @author Tako
+ * Isolated JFrame designed to allow the user to easily modify a
+ * DataFilter. Does not follow the Model-View-Controller GUI pattern
+ * the rest of the program follows due to the lack of required
+ * flexibility.
+ * 
+ * @author Gerardo A. Navas Morales
  */
 @SuppressWarnings("serial")
 public class DataFilterWindow extends javax.swing.JFrame {
+	// Externally-controlled variables
+	/** Reference variable passed by its parent. */
+	private DataFilter df;
 
     /**
      * Creates new form DataFilterFrame
      */
-    public DataFilterWindow () {
+    public DataFilterWindow (DataFilter df_reference) {
+    	// Initialize private variables.
+    	df = df_reference;
+    	
+    	// Initialize visual components.
         initComponents();
     }
 
@@ -28,29 +41,24 @@ public class DataFilterWindow extends javax.swing.JFrame {
     // <editor-fold defaultstate="collapsed" desc="Generated Code">                          
     private void initComponents() {
 
+    	data_filter_list_model = new javax.swing.DefaultListModel<String>();
         data_filter_text_box = new javax.swing.JTextField();
         view_input_separator = new javax.swing.JSeparator();
         data_filter_scroll_pane = new javax.swing.JScrollPane();
-        data_filter_list = new javax.swing.JList<String>();
+        data_filter_list = new javax.swing.JList<String>(data_filter_list_model);
         add_button = new javax.swing.JButton();
         remove_button = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
-        addWindowListener(new java.awt.event.WindowAdapter() {
-            public void windowClosed(java.awt.event.WindowEvent evt) {
-                formWindowClosed(evt);
-            }
-        });
 
         data_filter_text_box.setToolTipText("Enter text to add or remove to the Data Filter.");
-
+        
+        // Set the selection mode for the list to only a single option.
         data_filter_list.setSelectionMode(javax.swing.ListSelectionModel.SINGLE_SELECTION);
+        
         data_filter_list.setToolTipText("");
-        data_filter_list.addMouseListener(new java.awt.event.MouseAdapter() {
-            public void mouseClicked(java.awt.event.MouseEvent evt) {
-                data_filter_listMouseClicked(evt);
-            }
-        });
+
+        
         data_filter_scroll_pane.setViewportView(data_filter_list);
 
         add_button.setText("Add to Filter");
@@ -106,24 +114,79 @@ public class DataFilterWindow extends javax.swing.JFrame {
         pack();
     }// </editor-fold>                        
 
-    private void add_buttonActionPerformed(java.awt.event.ActionEvent evt) {                                           
-        // TODO add your handling code here:
+    /**
+     * Adds a String to filter from any data being used.
+     * 
+     * @param evt The ActionEvent that triggered this method.
+     */
+    private void add_buttonActionPerformed(java.awt.event.ActionEvent evt) {
+    	// If the text box isn't empty, take that data and put it into the list!
+    	if (!this.data_filter_text_box.getText().isEmpty()) {
+    		
+    		String s = this.data_filter_text_box.getText();
+            data_filter_list_model.addElement(s);
+            // Also add it to the DataFilter object!
+            df.add (s);
+            
+    	} else {
+    		
+    		// Otherwise, throw an error window explaining what went wrong.
+    		// TODO: Move this to ExceptionHandler?
+    		JOptionPane.showMessageDialog(rootPane, "There was no data to add to the data filter.\n"
+    				+ "Please type some data to filter before pressing the \"Add\" Button.",
+    				"Error - No data to add to list.", JOptionPane.ERROR_MESSAGE);
+    		
+    	}
     }                                          
 
-    private void remove_buttonActionPerformed(java.awt.event.ActionEvent evt) {                                              
-        // TODO add your handling code here:
-    }                                             
-
-    private void data_filter_listMouseClicked(java.awt.event.MouseEvent evt) {                                              
-        // TODO add your handling code here:
-    }                                             
-
-    private void formWindowClosed(java.awt.event.WindowEvent evt) {                                  
-        // TODO add your handling code here:
-    }                                 
-
+    /**
+     * Removes either an object selected on the list, or an object whose name is in
+     * the data_filter_text_box Text Field in this window; it does not do both at the
+     * same time.
+     * 
+     * @param evt The ActionEvent that triggered this method.
+     */
+    private void remove_buttonActionPerformed (java.awt.event.ActionEvent evt) {                                   
+    	// Did they select something from the list to remove?
+    	int index = this.data_filter_list.getSelectedIndex ();
+    	if (index != -1) {
+    		
+    		data_filter_list_model.remove (index);
+    		// Also remove it from the DataFilter object!
+    		df.remove (index);
+    		
+    	}
+    	// Otherwise, if the text box isn't empty, take that data and put it into the list!
+    	else if (!this.data_filter_text_box.getText().isEmpty ()) {
+    		
+    		String s = this.data_filter_text_box.getText ();
+            if (!data_filter_list_model.removeElement (s)) {
+            	
+            	// Otherwise, throw an error window explaining what went wrong.
+        		// TODO: Move this to ExceptionHandler?
+        		JOptionPane.showMessageDialog(rootPane, "The .\n"
+        				+ "Please type the name of a  before pressing the \"Add\" Button.",
+        				"Error - String not found.", JOptionPane.ERROR_MESSAGE);
+        		
+            } else {
+            	// Also remove it from the DataFilter object!
+            	df.remove (s);
+            }
+            
+    	} 
+    	// Otherwise, throw an error window explaining what went wrong.
+    	else {
+    		// TODO: Move this to ExceptionHandler?
+    		JOptionPane.showMessageDialog(rootPane, "There was no data to remove from the data filter.\n"
+    				+ "Please type the name of a  before pressing the \"Add\" Button.",
+    				"Error - No data to add to list.", JOptionPane.ERROR_MESSAGE);
+    		
+    	}
+    }
+    
     // Variables declaration - do not modify                     
     private javax.swing.JButton add_button;
+    private javax.swing.DefaultListModel<String> data_filter_list_model;
     private javax.swing.JList<String> data_filter_list;
     private javax.swing.JScrollPane data_filter_scroll_pane;
     private javax.swing.JTextField data_filter_text_box;

@@ -1,5 +1,13 @@
 package org.pvg.plasmagraph.utils.data;
 
-public class DataColumn {
+import java.util.ArrayList;
+
+// TODO: Everything.
+public class DataColumn<T> {
+	ArrayList<T> values;
+	
+	public DataColumn () {
+		values = new ArrayList<T> ();
+	}
 
 }

@@ -1,0 +1,22 @@
+package org.pvg.plasmagraph.utils.data;
+
+import java.io.File;
+
+// TODO: Everything.
+public class DataFilter {
+	File f;
+	
+	public DataFilter() {
+		// TODO Auto-generated constructor stub
+	}
+
+	public DataFilter (File f) {
+		// TODO Auto-generated constructor stub
+	}
+
+	public void save (File f) {
+		// TODO Auto-generated method stub
+		
+	}
+
+}

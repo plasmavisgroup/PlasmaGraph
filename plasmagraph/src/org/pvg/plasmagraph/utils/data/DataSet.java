@@ -3,11 +3,13 @@ package org.pvg.plasmagraph.utils.data;
 import java.util.ArrayList;
 import java.util.Iterator;
 
+
+//TODO: Everything.
 public class DataSet implements Iterable<DataColumn>, Iterator<DataColumn> {
 	ArrayList<DataColumn> values;
 	
 	public DataSet () {
-		values = ArrayList<DataColumn> ();
+		values = new ArrayList<DataColumn> ();
 	}
 	
 	@Override
@@ -44,5 +46,10 @@ public class DataSet implements Iterable<DataColumn>, Iterator<DataColumn> {
 	public void remove () {
 		// TODO Auto-generated method stub
 		// throw new UnsupportedOperationException();
+	}
+
+	public int find(String string) {
+		// TODO Auto-generated method stub
+		return 0;
 	}
 }

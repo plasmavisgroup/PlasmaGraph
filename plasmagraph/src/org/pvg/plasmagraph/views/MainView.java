@@ -6,6 +6,9 @@
 
 package org.pvg.plasmagraph.views;
 
+//TODO: Add more JavaDoc comments!
+import java.awt.event.ActionListener;
+
 import org.pvg.plasmagraph.models.MainModel;
 import org.pvg.plasmagraph.utils.template.Template;
 
@@ -23,6 +26,63 @@ public class MainView extends javax.swing.JFrame {
     public MainView(MainModel main_model) {
         initComponents();
     }
+    
+    // Data Listener Methods
+    /**
+     * 
+     * @param dataImportMenuListener
+     */
+    public void addDataImportMenuListener (ActionListener dataImportMenuListener) {
+		this.import_data_option.addActionListener(dataImportMenuListener);
+		
+	}
+    
+    // Template Listener Methods
+    /**
+     * 
+     * @param templateImportMenuListener
+     */
+    public void addTemplateImportMenuListener (ActionListener templateImportMenuListener) {
+		this.import_template_option.addActionListener(templateImportMenuListener);
+		
+	}
+
+    /**
+     * 
+     * @param templateSaveMenuListener
+     */
+	public void addTemplateSaveMenuListener (ActionListener templateSaveMenuListener) {
+		this.save_template_option.addActionListener(templateSaveMenuListener);
+		
+	}
+
+	// Data Filter Listener Methods
+	/**
+	 * 
+	 * @param dataFilterImportMenuListener
+	 */
+	public void addDataFilterImportMenuListener (ActionListener dataFilterImportMenuListener) {
+		this.import_data_filter_option.addActionListener(dataFilterImportMenuListener);
+		
+	}
+
+	/**
+	 * 
+	 * @param dataFilterEditMenuListener
+	 */
+	public void addDataFilterEditMenuListener (ActionListener dataFilterEditMenuListener) {
+		this.modify_data_filter_option.addActionListener(dataFilterEditMenuListener);
+		
+	}
+
+	/**
+	 * 
+	 * @param dataFilterSaveMenuListener
+	 */
+	public void addDataFilterSaveMenuListener (ActionListener dataFilterSaveMenuListener) {
+		this.save_data_filter_option.addActionListener(dataFilterSaveMenuListener);
+		
+	}
 
     /**
      * This method is called from within the constructor to initialize the form.
@@ -142,5 +202,5 @@ public class MainView extends javax.swing.JFrame {
     private javax.swing.JMenuItem save_template_option;
     private javax.swing.JTabbedPane tab_pane;
     private javax.swing.JMenu template_menu;
-    // End of variables declaration                   
+    // End of variables declaration
 }
