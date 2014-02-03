@@ -6,6 +6,7 @@
 
 package org.pvg.plasmagraph.utils.data;
 
+import javax.swing.DefaultListModel;
 import javax.swing.JOptionPane;
 
 /**
@@ -40,8 +41,9 @@ public class DataFilterWindow extends javax.swing.JFrame {
      */
     // <editor-fold defaultstate="collapsed" desc="Generated Code">                          
     private void initComponents() {
+        this.setTitle ("Edit Data Filter Window");
 
-    	data_filter_list_model = new javax.swing.DefaultListModel<String>();
+    	data_filter_list_model = initialize_model ();
         data_filter_text_box = new javax.swing.JTextField();
         view_input_separator = new javax.swing.JSeparator();
         data_filter_scroll_pane = new javax.swing.JScrollPane();
@@ -49,7 +51,7 @@ public class DataFilterWindow extends javax.swing.JFrame {
         add_button = new javax.swing.JButton();
         remove_button = new javax.swing.JButton();
 
-        setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
+        setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
 
         data_filter_text_box.setToolTipText("Enter text to add or remove to the Data Filter.");
         
@@ -114,28 +116,46 @@ public class DataFilterWindow extends javax.swing.JFrame {
         pack();
     }// </editor-fold>                        
 
+    private DefaultListModel <String> initialize_model () {
+        DefaultListModel <String> m = new javax.swing.DefaultListModel<String>();
+        
+        for (String s : df) {
+            m.addElement (s);
+        }
+        
+        return (m);
+    }
+
     /**
      * Adds a String to filter from any data being used.
      * 
      * @param evt The ActionEvent that triggered this method.
      */
-    private void add_buttonActionPerformed(java.awt.event.ActionEvent evt) {
+    private void add_buttonActionPerformed (java.awt.event.ActionEvent evt) {
     	// If the text box isn't empty, take that data and put it into the list!
-    	if (!this.data_filter_text_box.getText().isEmpty()) {
+    	if (this.data_filter_text_box.getText().isEmpty()) {
     		
-    		String s = this.data_filter_text_box.getText();
-            data_filter_list_model.addElement(s);
-            // Also add it to the DataFilter object!
-            df.add (s);
+    	    // Otherwise, throw an error window explaining what went wrong.
+            // TODO: Move this to ExceptionHandler?
+            JOptionPane.showMessageDialog (rootPane, "No word or phrase found.\n"
+                    + "Please type a word or phrase to filter before pressing the \"Add\" Button.",
+                    "Error - Empty Input.", JOptionPane.ERROR_MESSAGE);
+            
+    	} else if (this.data_filter_list_model.contains (this.data_filter_text_box.getText ())) {
+    	    
+    	    // Otherwise, throw an error window explaining what went wrong.
+            // TODO: Move this to ExceptionHandler?
+            JOptionPane.showMessageDialog (rootPane, "The new word or phrase to be added already exists in the list.\n"
+                    + "Please type a new word or phrase to filter before pressing the \"Add\" Button.",
+                    "Error - Duplicate Word / Phrase.", JOptionPane.ERROR_MESSAGE);
             
     	} else {
     		
-    		// Otherwise, throw an error window explaining what went wrong.
-    		// TODO: Move this to ExceptionHandler?
-    		JOptionPane.showMessageDialog(rootPane, "There was no data to add to the data filter.\n"
-    				+ "Please type some data to filter before pressing the \"Add\" Button.",
-    				"Error - No data to add to list.", JOptionPane.ERROR_MESSAGE);
-    		
+    		String s = this.data_filter_text_box.getText();
+            data_filter_list_model.addElement(s);
+            
+            // Also add it to the DataFilter object!
+            df.add (s);
     	}
     }                                          
 
@@ -160,12 +180,16 @@ public class DataFilterWindow extends javax.swing.JFrame {
     	else if (!this.data_filter_text_box.getText().isEmpty ()) {
     		
     		String s = this.data_filter_text_box.getText ();
-            if (!data_filter_list_model.removeElement (s)) {
+    		if (data_filter_list_model.isEmpty ()) {
+    		    JOptionPane.showMessageDialog(rootPane, "The list is empty!\n",
+                        "Error - Empty List.", JOptionPane.ERROR_MESSAGE);
+    		}
+    		else if (!data_filter_list_model.removeElement (s)) {
             	
             	// Otherwise, throw an error window explaining what went wrong.
         		// TODO: Move this to ExceptionHandler?
-        		JOptionPane.showMessageDialog(rootPane, "The .\n"
-        				+ "Please type the name of a  before pressing the \"Add\" Button.",
+        		JOptionPane.showMessageDialog(rootPane, "The word selected does not exist.\n"
+        				+ "Please type a filtered word before pressing the \"Remove\" Button.",
         				"Error - String not found.", JOptionPane.ERROR_MESSAGE);
         		
             } else {

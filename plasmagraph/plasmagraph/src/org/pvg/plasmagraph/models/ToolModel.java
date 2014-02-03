@@ -67,4 +67,13 @@ public class ToolModel {
     public String [] getDataReferenceNames () {
         return (dr.getNames ());
     }
+    
+    /**
+     * Support method to add listeners to the Template.
+     * 
+     * @param c Listener to add to Template Notifier.
+     */
+    public void addChangeListener (javax.swing.event.ChangeListener c) {
+        t.addChangeListener (c);
+    }
 }

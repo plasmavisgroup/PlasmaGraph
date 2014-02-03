@@ -1,0 +1,81 @@
+package org.pvg.plasmagraph.tests;
+
+import static org.junit.Assert.*;
+import org.pvg.plasmagraph.utils.data.DataReference;
+import org.pvg.plasmagraph.utils.data.Pair;
+import org.junit.Test;
+
+public class ReferenceTests {
+    
+    @Test
+    public void testAdd () {
+        // Set up
+        DataReference r1 = new DataReference ();
+        
+        // Tests
+        assertTrue ("Basic Add: ", r1.add (new Pair (1, 2, "Dummy Reference 1 vs. Dummy Reference 2")));
+        assertFalse ("Adding Negative Indexes: ", r1.add (new Pair (-1, Integer.MIN_VALUE, "Dummy Reference -1 vs. Dummy Reference -2^16 or something")));
+        assertFalse ("Adding Pairs with Incorrect Names: ", r1.add (new Pair (2, 3, "Derp")));
+        assertFalse ("Adding Pairs with No Names: ", r1.add (new Pair (3, 4, "")));
+        
+        // Clean up
+        r1 = null;
+    }
+    
+    @Test
+    public void testRemoveInt () {
+        // Set up
+        DataReference r1 = new DataReference ();
+        r1.add (new Pair (1, 3, "Position vs. Velocity"));
+        r1.add (new Pair (1, 4, "Position vs. Acceleration"));
+        r1.add (new Pair (2, 1, "Time vs. Position"));
+        
+        // Tests
+        assertFalse (r1.remove (-5), false);
+        
+        // Clean up
+        r1 = null;
+        
+    }
+    
+    @Test
+    public void testRemovePair () {
+        fail ("Not yet implemented");
+    }
+    
+    @Test
+    public void testFindPair () {
+        fail ("Not yet implemented");
+    }
+    
+    @Test
+    public void testFindString () {
+        fail ("Not yet implemented");
+    }
+    
+    @Test
+    public void testGetPair () {
+        fail ("Not yet implemented");
+    }
+    
+    @Test
+    public void testGetNames () {
+        fail ("Not yet implemented");
+    }
+    
+    @Test
+    public void testCreatePair () {
+        fail ("Not yet implemented");
+    }
+    
+    @Test
+    public void testContains () {
+        fail ("Not yet implemented");
+    }
+    
+    @Test
+    public void testToString () {
+        fail ("Not yet implemented");
+    }
+    
+}

@@ -1,18 +1,29 @@
 package org.pvg.plasmagraph.utils.template;
 
 import java.io.BufferedReader;
+import java.io.BufferedWriter;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
+import java.util.HashSet;
+import java.util.Set;
+
+import javax.swing.JFileChooser;
+import javax.swing.event.ChangeEvent;
+import javax.swing.event.ChangeListener;
 
 import org.jfree.chart.plot.PlotOrientation;
+import org.pvg.plasmagraph.utils.graphs.ChartType;
 
 public class Template {
 	// Variables
+    // Event Firing
+    private Set <ChangeListener> listeners = new HashSet <ChangeListener> ();
+    
 	// Classifications
-	private String chart_type;
+	private ChartType chart_type;
 	
 	// Label names.
 	private String chart_name;
@@ -28,8 +39,8 @@ public class Template {
 	private PlotOrientation orientation;
 	
 	// Tool Features
-	private String default_interpolation_type;
-	private String default_outlier_reaction;
+	private InterpolationType default_interpolation_type;
+	private OutlierResponse default_outlier_reaction;
 	
 	// Constructors
 	/**
@@ -40,16 +51,16 @@ public class Template {
 	 */
 	public Template () {
 		// Use the defaults!
-		this.chart_name 				= "Default Chart Name";
-		this.chart_type 				= "XY Chart";
+		this.chart_name 				= "Empty vs. Variable";
+		this.chart_type 				= ChartType.XY_GRAPH;
 		this.x_axis_label				= "X Axis";
 		this.y_axis_label				= "Y Axis";
 		this.using_legend 				= true;
 		this.using_tooltips 			= true;
 		this.generate_urls 				= false;
 		this.orientation 				= PlotOrientation.HORIZONTAL;
-		this.default_interpolation_type = "Polynomial";
-		this.default_outlier_reaction 	= "Warn";
+		this.default_interpolation_type = InterpolationType.LINEAR;
+		this.default_outlier_reaction 	= OutlierResponse.WARN;
 	}
 	
 	/**
@@ -64,9 +75,9 @@ public class Template {
 	 * @param o The orientation of the range axis. (PlotOrientation) [PlotOrientation.HORIZONTAL or PlotOrientation.VERTICAL.]
 	 * @returns Nothing.
 	 */
-	public Template (String name, String type, String x, String y, 
+	public Template (String name, ChartType type, String x, String y, 
 			boolean legend, boolean tooltips, boolean urls, PlotOrientation o,
-			String interpolation, String outlier) {
+			InterpolationType interpolation, OutlierResponse outlier) {
 		this.chart_name 				= name;
 		this.chart_type 				= type;
 		this.x_axis_label 				= x;
@@ -80,119 +91,163 @@ public class Template {
 	}
 	
 	/**
-	 * Constructor for Template objects.
 	 * Provides user-assigned values to new Template object based on file selected.
-	 * Essentially, this is the nonexistent "openTemplate (...)" method.
+	 * 
 	 * @param f File being opened.
-	 * @returns Nothing.
 	 */
-	public Template (File f) {
-		// See if we can get this to work. Otherwise, throw an error!
-		try {
-			// Can we get the Readers working?
-			BufferedReader reader = new BufferedReader (new FileReader (f));
-			String output;
-			// Now, read and put in the correct place!
-			// Classifications
-			output = reader.readLine();
-			this.chart_type = output;
+	public void openTemplate (File f) {
+	 // See if we can get this to work. Otherwise, throw an error!
+        try (BufferedReader reader = new BufferedReader (new FileReader (f))) {
+            System.out.println (f.getName ());
 
-			// Label names.
-			output = reader.readLine();
-			this.chart_name = output;
-			output = reader.readLine();
-			this.x_axis_label = output;
-			output = reader.readLine();
-			this.y_axis_label = output;
+            // Now, read and put in the correct place!
+            // Classifications
+            String output = reader.readLine();
+            if (output.equals (ChartType.XY_GRAPH.toString ())) {
+                this.chart_type = ChartType.XY_GRAPH;
+            } else if (output.equals (ChartType.LINE_GRAPH.toString ())) {
+                this.chart_type = ChartType.LINE_GRAPH;
+            } else if (output.equals (ChartType.BAR_GRAPH.toString ())) {
+                this.chart_type = ChartType.BAR_GRAPH;
+            } else {
+                this.chart_type = ChartType.PIE_GRAPH;
+            }
 
-			// Including Features.
-			output = reader.readLine();
-			this.using_legend = new Boolean (output);
-			output = reader.readLine();
-			this.using_tooltips = new Boolean (output);
-			output = reader.readLine();
-			this.generate_urls = new Boolean (output);
+            // Label names.
+            output = reader.readLine();
+            this.chart_name = output;
+            output = reader.readLine();
+            this.x_axis_label = output;
+            output = reader.readLine();
+            this.y_axis_label = output;
 
-			// Layout Features
-			output = reader.readLine();
-			if (output.equals(PlotOrientation.HORIZONTAL.toString())) {
-				this.orientation = PlotOrientation.HORIZONTAL;
-			} else {
-				this.orientation = PlotOrientation.VERTICAL;
-			}
-			
-			// Tool Features
-			output = reader.readLine();
-			this.default_interpolation_type = output;
-			output = reader.readLine();
-			this.default_outlier_reaction = output;
-			
-			
-			// Close the File-Reading Stream "reader".
-			reader.close();
-		} catch (FileNotFoundException e) {
-			// Catch for File "f" not found.
-			// TODO Properly deal with this exception.
-			e.printStackTrace();
-		} catch (IOException e) {
-			// Catch for BufferedReader "reader" giving problems that don't include null!
-			// TODO Properly deal with this exception.
-			e.printStackTrace();
-		}
+            // Including Features.
+            output = reader.readLine();
+            this.using_legend = new Boolean (output);
+            output = reader.readLine();
+            this.using_tooltips = new Boolean (output);
+            output = reader.readLine();
+            this.generate_urls = new Boolean (output);
+
+            // Layout Features
+            output = reader.readLine();
+            if (output.equals (PlotOrientation.HORIZONTAL.toString())) {
+                this.orientation = PlotOrientation.HORIZONTAL;
+            } else {
+                this.orientation = PlotOrientation.VERTICAL;
+            }
+            
+            // Tool Features
+            output = reader.readLine();
+            if (output.equals (InterpolationType.LINEAR.toString ())) {
+                this.default_interpolation_type = InterpolationType.LINEAR;
+            } else if (output.equals (InterpolationType.POLYNOMIAL.toString ())) {
+                this.default_interpolation_type = InterpolationType.POLYNOMIAL;
+            } else {
+                this.default_interpolation_type = InterpolationType.POWER;
+            }
+            
+            output = reader.readLine();
+            if (output.equals (OutlierResponse.WARN.toString())) {
+                this.default_outlier_reaction = OutlierResponse.WARN;
+            } else {
+                this.default_outlier_reaction = OutlierResponse.REMOVE;
+            }
+            
+            // Tell everyone that you updated something!
+            for (ChangeListener c : listeners) {
+                System.out.println ("Listenter: " + c.toString ());
+            }
+            this.notifyListeners ();
+
+        } catch (FileNotFoundException e) {
+            // Catch for File "f" not found.
+            // TODO Properly deal with this exception.
+            e.printStackTrace();
+            
+        } catch (IOException e) {
+            // Catch for BufferedReader "reader" giving problems that don't include null!
+            System.out.println ("Uh, we have a problem! There's a Saving error!");
+            e.printStackTrace ();
+        }
 
 	}
 	
 	/**
+     * Saves template in a plain text format for simplicity.
+     * Uses BufferedWriter in order to create and manipulate said object.
+     * 
+     * @param f File name to be opened in order to save template.
+     */
+	public void saveTemplate (String file_name) {
+	 // See if we can get this to work. Otherwise, throw an error!
+        try (BufferedWriter writer = new BufferedWriter (new FileWriter (new File (file_name)))){
+            // Combine the entirety of the data to write in a single string!
+            StringBuilder sb = new StringBuilder ();
+            
+            // Classifications
+            sb.append (this.chart_type.toString () + System.getProperty ("line.separator"));
+            // Label names.
+            sb.append (this.chart_name + System.getProperty ("line.separator"));
+            sb.append (this.x_axis_label + System.getProperty ("line.separator"));
+            sb.append (this.y_axis_label + System.getProperty ("line.separator"));
+            // Including Features.
+            sb.append (Boolean.toString (using_legend) + System.getProperty ("line.separator"));
+            sb.append (Boolean.toString (using_tooltips) + System.getProperty ("line.separator"));
+            sb.append (Boolean.toString (generate_urls) + System.getProperty ("line.separator"));
+            // Layout Features
+            sb.append (this.orientation.toString () + System.getProperty ("line.separator"));
+            // Tool Features
+            sb.append (this.default_interpolation_type.toString () + System.getProperty ("line.separator"));
+            sb.append (this.default_outlier_reaction.toString () + System.getProperty ("line.separator"));
+
+            // Write it to the BufferedWriter
+            writer.write (sb.toString ());
+            
+        } catch (IOException e) {
+            // Catch for File "f" not being writable.
+            // TODO Properly deal with this exception.
+            e.printStackTrace();
+        }
+	}
+	
+	/**
 	 * Saves template in a plain text format for simplicity.
-	 * Uses FileWriter in order to create and manipulate said object.
+	 * Calls on the string version to save the file.
 	 * 
-	 * @param f File to be opened in order to save template.
+	 * @param f JFileChooser with selected file name.
 	 */
-	public void saveTemplate (File f) {
-		// See if we can get this to work. Otherwise, throw an error!
-		try {
-			// Can we get the Readers working?
-			FileWriter writer = new FileWriter (f);
-			// Okay. Write all the things into the file.
-			// Classifications
-			writer.write("" + this.chart_type + "\n");
-			// Label names.
-			writer.write("" + this.chart_name + "\n");
-			writer.write("" + this.x_axis_label + "\n");
-			writer.write("" + this.y_axis_label + "\n");
-			// Including Features.
-			writer.write("" + Boolean.toString(this.using_legend) + "\n");
-			writer.write("" + Boolean.toString(this.using_tooltips) + "\n");
-			writer.write("" + Boolean.toString(this.generate_urls) + "\n");
-			// Layout Features
-			writer.write("" + this.orientation.toString() + "\n");
-			// Tool Features
-			writer.write("" + this.default_interpolation_type + "\n");
-			writer.write("" + this.default_outlier_reaction + "\n");
-			
-			writer.close();
-		} catch (IOException e) {
-			// Catch for File "f" not being writable.
-			// TODO Properly deal with this exception.
-			e.printStackTrace();
-		}
+	public void saveTemplate (JFileChooser f) {
+		saveTemplate (f.getSelectedFile () + ".tem");
 	}
 
+	@Override
+	public String toString () {
+	    String s = "";
+	    s += ("Type: " + chart_type.toString () + "\n" + 
+	        "Name: " + chart_name + "\n" + 
+	        "X Axis: " + x_axis_label + "\n" + 
+	        "Y Axis: " + y_axis_label + "\n" + 
+            "Orientation: " + orientation.toString () + "\n" + 
+            "Interpolation: " + default_interpolation_type.toString () + "\n" + 
+            "Outlier Reaction: " + default_outlier_reaction.toString ());
+	    return (s);
+	}
 	
 	// Getters and Setters
 	
 	/**
 	 * @return the chart_type
 	 */
-	public final String getChartType () {
+	public final ChartType getChartType () {
 		return chart_type;
 	}
 
 	/**
-	 * @param chart_type the chart_type to set
+	 * @param graph the chart_type to set
 	 */
-	public final void setChartType (String chart_type) {
-		this.chart_type = chart_type;
+	public final void setChartType (ChartType graph) {
+		this.chart_type = graph;
 	}
 
 	/**
@@ -296,29 +351,61 @@ public class Template {
 	/**
 	 * @return the default_interpolation_type
 	 */
-	public final String getInterpolationType () {
+	public final InterpolationType getInterpolationType () {
 		return default_interpolation_type;
 	}
 
 	/**
 	 * @param default_interpolation_type the default_interpolation_type to set
 	 */
-	public final void setInterpolationType (String default_interpolation_type) {
+	public final void setInterpolationType (InterpolationType default_interpolation_type) {
 		this.default_interpolation_type = default_interpolation_type;
 	}
 
 	/**
 	 * @return the default_outlier_reaction
 	 */
-	public final String getOutlierResponse () {
+	public final OutlierResponse getOutlierResponse () {
 		return default_outlier_reaction;
 	}
 
 	/**
 	 * @param default_outlier_reaction the default_outlier_reaction to set
 	 */
-	public final void setOutlierResponse (String default_outlier_reaction) {
+	public final void setOutlierResponse (OutlierResponse default_outlier_reaction) {
 		this.default_outlier_reaction = default_outlier_reaction;
+	}
+	
+	// Event Methods
+	/**
+	 * Adds the listener provided to the notification list.
+	 * 
+	 * @param listener Listener to add to the notification list.
+	 */
+	public void addChangeListener (ChangeListener listener) {
+	    System.out.println ("Added someone!");
+	    this.listeners.add (listener);
+	}
+	
+	/**
+	 * Removes the listener provided from the notification list.
+	 * 
+	 * @param listener Listener to remove from notification list.
+	 */
+	public void removeChangeListener (ChangeListener listener) {
+	    System.out.println ("Removed someone!");
+	    this.listeners.remove (listener);
+	}
+	
+	/**
+	 * Sends a ChangeEvent to all listeners of this object,
+	 * declaring that this Template object has been changed in some way.
+	 */
+	public void notifyListeners () {
+	    for (ChangeListener c : listeners) {
+	        System.out.println ("Notifying: " + c.toString ());
+	        c.stateChanged (new ChangeEvent (this));
+	    }
 	}
 
 }

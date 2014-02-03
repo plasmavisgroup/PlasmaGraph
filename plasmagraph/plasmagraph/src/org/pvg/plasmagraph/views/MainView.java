@@ -11,6 +11,7 @@ import java.awt.event.ActionListener;
 
 import javax.swing.JTabbedPane;
 import javax.swing.event.ChangeEvent;
+import javax.swing.event.ChangeListener;
 
 import org.pvg.plasmagraph.models.MainModel;
 
@@ -23,33 +24,17 @@ public class MainView extends javax.swing.JFrame {
     // Externally-referenced variables.
     /** Reference to model related to this controller. */
     private MainModel main_model;
-    /** Reference to AestheticView included in this Frame's JTabbedFrame. */
-    private AestheticView aesthetic_view;
-    /** Reference to DataSetView included in this Frame's JTabbedFrame. */
-    private DataSetView data_view;
-    /** Reference to ToolView included in this Frame's JTabbedFrame. */
-    private ToolView tool_view;
+    
     
     /**
      * Creates new form MainView
      * 
      * @param main_model_reference
      *            Reference to PlasmaGraph's initialized variable.
-     * @param tool_view_reference
-     *            Reference to PlasmaGraph's initialized variable.
-     * @param data_view_reference
-     *            Reference to PlasmaGraph's initialized variable.
-     * @param aesthetic_view_reference
-     *            Reference to PlasmaGraph's initialized variable.
      */
-    public MainView (MainModel main_model_reference,
-            AestheticView aesthetic_view_reference,
-            DataSetView data_view_reference, ToolView tool_view_reference) {
+    public MainView (MainModel main_model_reference) {
         // Initialize model and view references.
         main_model = main_model_reference;
-        aesthetic_view = aesthetic_view_reference;
-        data_view = data_view_reference;
-        tool_view = tool_view_reference;
         
         // Initialize visual components.
         initComponents ();
@@ -144,7 +129,7 @@ public class MainView extends javax.swing.JFrame {
         this.create_graph_option.addActionListener (graphMenuListener);
     }
     
-    // Exit Listener Methods
+    // Exit Listener Method
     /**
      * Creates a new ActionListener for the Exit menu function.
      * 
@@ -155,15 +140,11 @@ public class MainView extends javax.swing.JFrame {
         this.exit_menu.addActionListener (exitMenuListener);
     }
     
-    /**
-     * Updates views on all three JTabbedPane Panel views.
-     * Used for Importing Data / Template functions.
-     */
-    public void updateViews () {
-        this.aesthetic_view.updateView ();
-        this.data_view.updateView ();
-        this.tool_view.updateView ();
+    // Tab Listener Method
+    public void addTabListener (javax.swing.event.ChangeListener tabListener) {
+        this.tab_pane.addChangeListener (tabListener);
     }
+
     
     /**
      * This method is called from within the constructor to initialize the form.
@@ -287,43 +268,6 @@ public class MainView extends javax.swing.JFrame {
         // Prepare JMenuBar
         setJMenuBar (menu_bar);
         
-        // Adding Tabs to JTabbedPane
-        this.tab_pane.addTab (this.aesthetic_view.getName (),
-                this.aesthetic_view);
-        this.tab_pane.addTab (this.data_view.getName (), this.data_view);
-        this.tab_pane.addTab (this.tool_view.getName (), this.tool_view);
-        
-        // Adding effects to JTabbedPane
-        this.tab_pane.setTabLayoutPolicy (JTabbedPane.SCROLL_TAB_LAYOUT);
-        this.tab_pane.setMnemonicAt (0, java.awt.event.KeyEvent.VK_A);
-        this.tab_pane.setMnemonicAt (1, java.awt.event.KeyEvent.VK_D);
-        this.tab_pane.setMnemonicAt (2, java.awt.event.KeyEvent.VK_T);
-        
-        // Adding view updating listener to JTabbedPane
-        this.tab_pane
-                .addChangeListener (new javax.swing.event.ChangeListener () {
-                    
-                    @Override
-                    public void stateChanged (ChangeEvent arg0) {
-                        if (arg0.getSource () instanceof JTabbedPane) {
-                            switch (tab_pane.getSelectedComponent ().getName ()) {
-                                case "Aesthetic View":
-                                    aesthetic_view.updateView ();
-                                    break;
-                                case "Data Set View":
-                                    data_view.updateView ();
-                                    break;
-                                case "Tool View":
-                                    tool_view.updateView ();
-                                    break;
-                                default:
-                                    break;
-                            }
-                        }
-                    }
-                    
-                });
-        
         // Editing overall layout.
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout (
                 getContentPane ());
@@ -360,4 +304,8 @@ public class MainView extends javax.swing.JFrame {
     private javax.swing.JTabbedPane tab_pane;
     private javax.swing.JMenu template_menu;
     // End of variables declaration
+
+    public JTabbedPane getTabPane () {
+        return (this.tab_pane);
+    }
 }

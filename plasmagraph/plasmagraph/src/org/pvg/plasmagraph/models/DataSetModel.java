@@ -140,7 +140,7 @@ public class DataSetModel {
                     // TODO: Do we need to do error checking with these
                     // operations?
                     this.list_selected.removeElement (s);
-                    dr.remove (dr.find (s));
+                    dr.remove (dr.findIndex (s));
                 }
             }
             
@@ -160,5 +160,14 @@ public class DataSetModel {
     public Template getTemplate () {
         // TODO Auto-generated method stub
         return (t);
+    }
+    
+    /**
+     * Support method to add listeners to the Template.
+     * 
+     * @param c Listener to add to Template Notifier.
+     */
+    public void addChangeListener (javax.swing.event.ChangeListener c) {
+        t.addChangeListener (c);
     }
 }

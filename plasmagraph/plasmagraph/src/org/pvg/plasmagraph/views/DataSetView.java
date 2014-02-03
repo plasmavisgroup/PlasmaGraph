@@ -8,13 +8,8 @@ package org.pvg.plasmagraph.views;
 
 import java.awt.event.ActionListener;
 import java.util.ArrayList;
-
-import javax.swing.event.ListDataListener;
-
 import org.pvg.plasmagraph.models.DataSetModel;
-import org.pvg.plasmagraph.utils.data.DataColumn;
-import org.pvg.plasmagraph.utils.data.DataSet;
-import org.pvg.plasmagraph.utils.template.Template;
+import org.pvg.plasmagraph.utils.graphs.ChartType;
 
 /**
  * View for the data set modification pane.
@@ -44,7 +39,7 @@ public class DataSetView extends javax.swing.JPanel {
         this.initComponents ();
         
         // Initialize values from template, just in case.
-        this.updateView ();
+        //this.updateView ();
     }
     
     /**
@@ -53,7 +48,7 @@ public class DataSetView extends javax.swing.JPanel {
      */
     public void updateView () {
         this.chart_type_combo_box.setSelectedItem (this.data_model
-                .getTemplate ().getChartType ());
+                .getTemplate ().getChartType ().toString ());
         this.data_model.resetListModels ();
     }
     
@@ -89,30 +84,6 @@ public class DataSetView extends javax.swing.JPanel {
      */
     public void addRemoveButtonListener (ActionListener removeButtonListener) {
         this.remove_button.addActionListener (removeButtonListener);
-    }
-    
-    /**
-     * Getter method. Provides all datasets selected in the
-     * "available_datasets_list"
-     * JList object.
-     * 
-     * @return An ArrayList<String> object containing all selected datasets.
-     */
-    public ArrayList <String> getSelectedDatasetsToAdd () {
-        return ((ArrayList <String>) this.available_datasets_list
-                .getSelectedValuesList ());
-    }
-    
-    /**
-     * Getter method. Provides all datasets selected in the
-     * "selected_datasets_list"
-     * JList object.
-     * 
-     * @return An ArrayList<String> object containing all selected datasets.
-     */
-    public ArrayList <String> getSelectedDatasetsToRemove () {
-        return ((ArrayList <String>) this.selected_datasets_list
-                .getSelectedValuesList ());
     }
     
     /**
@@ -258,4 +229,42 @@ public class DataSetView extends javax.swing.JPanel {
     private javax.swing.JList <String> selected_datasets_list;
     private javax.swing.JScrollPane selected_datasets_pane;
     // End of variables declaration
+
+    public ChartType getSelectedChartType () {
+        String c_type = (String) this.chart_type_combo_box.getSelectedItem ();
+
+        if (c_type.equals (ChartType.XY_GRAPH.toString ())) {
+            return (ChartType.XY_GRAPH);
+        } else if (c_type.equals (ChartType.LINE_GRAPH.toString ())) {
+            return (ChartType.LINE_GRAPH);
+        } else if (c_type.equals (ChartType.BAR_GRAPH.toString ())) {
+            return (ChartType.BAR_GRAPH);
+        } else {
+            return (ChartType.PIE_GRAPH);
+        }
+    }
+    
+    /**
+     * Getter method. Provides all datasets selected in the
+     * "available_datasets_list"
+     * JList object.
+     * 
+     * @return An ArrayList<String> object containing all selected datasets.
+     */
+    public ArrayList <String> getSelectedDatasetsToAdd () {
+        return ((ArrayList <String>) this.available_datasets_list
+                .getSelectedValuesList ());
+    }
+    
+    /**
+     * Getter method. Provides all datasets selected in the
+     * "selected_datasets_list"
+     * JList object.
+     * 
+     * @return An ArrayList<String> object containing all selected datasets.
+     */
+    public ArrayList <String> getSelectedDatasetsToRemove () {
+        return ((ArrayList <String>) this.selected_datasets_list
+                .getSelectedValuesList ());
+    }
 }

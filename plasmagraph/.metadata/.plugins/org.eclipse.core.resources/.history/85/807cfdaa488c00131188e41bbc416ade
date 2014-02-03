@@ -1,0 +1,27 @@
+package org.pvg.plasmagraph.tests;
+
+import static org.junit.Assert.*;
+
+import org.junit.Test;
+import org.pvg.plasmagraph.utils.graphs.ChartType;
+import org.pvg.plasmagraph.utils.template.InterpolationType;
+import org.pvg.plasmagraph.utils.template.OutlierResponse;
+import org.pvg.plasmagraph.utils.template.Template;
+
+public class TemplateTests {
+    
+    @Test
+    public void testTemplateFile () {
+        Template t1 = new Template ();
+        t1.setChartName ("Name");
+        t1.setChartType (ChartType.XY_GRAPH);
+        t1.setInterpolationType (InterpolationType.POWER);
+        t1.setOutlierResponse (OutlierResponse.REMOVE);
+    }
+    
+    @Test
+    public void testSaveTemplate () {
+        fail ("Not yet implemented");
+    }
+    
+}

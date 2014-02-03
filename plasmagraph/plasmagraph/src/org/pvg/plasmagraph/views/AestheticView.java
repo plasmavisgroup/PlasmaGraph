@@ -42,7 +42,7 @@ public class AestheticView extends javax.swing.JPanel {
         this.initComponents ();
         
         // Initialize values from template, just in case.
-        this.updateView ();
+        //this.updateView ();
     }
     
     /**
@@ -53,6 +53,7 @@ public class AestheticView extends javax.swing.JPanel {
      * too?
      */
     public void updateView () {
+        System.out.println ("Is this on the EDT?: " + javax.swing.SwingUtilities.isEventDispatchThread ());
         this.chart_title_text_box.setText (this.aesthetic_model.getTemplate ()
                 .getChartName ());
         this.x_axis_text_box.setText (this.aesthetic_model.getTemplate ()
@@ -64,6 +65,8 @@ public class AestheticView extends javax.swing.JPanel {
                         .getOrientation () == PlotOrientation.HORIZONTAL);
         this.vertical_orientation.setSelected (this.aesthetic_model
                 .getTemplate ().getOrientation () == PlotOrientation.VERTICAL);
+        
+        
     }
     
     /**
@@ -144,7 +147,7 @@ public class AestheticView extends javax.swing.JPanel {
         y_axis_label = new javax.swing.JLabel ();
         plot_orientation_label = new javax.swing.JLabel ();
         label_orientation_separator = new javax.swing.JSeparator ();
-        chart_title_text_box = new javax.swing.JTextField ();
+        chart_title_text_box = new javax.swing.JTextField (50);
         x_axis_text_box = new javax.swing.JTextField ();
         y_axis_text_box = new javax.swing.JTextField ();
         horizontal_orientation = new javax.swing.JRadioButton ();
@@ -157,12 +160,6 @@ public class AestheticView extends javax.swing.JPanel {
         y_axis_label.setText ("Y Axis Name");
         
         plot_orientation_label.setText ("Plot Orientation");
-        
-        chart_title_text_box.setText ("Default Title");
-        
-        x_axis_text_box.setText ("X Axis");
-        
-        y_axis_text_box.setText ("Y Axis");
         
         plot_orientation_button_group.add (horizontal_orientation);
         horizontal_orientation.setText ("Horizontal");

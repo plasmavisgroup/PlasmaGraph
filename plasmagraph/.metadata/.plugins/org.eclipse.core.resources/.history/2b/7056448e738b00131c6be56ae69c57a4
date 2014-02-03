@@ -1,0 +1,47 @@
+package org.pvg.plasmagraph.utils.data;
+
+import java.io.File;
+import java.util.ArrayList;
+import java.util.Iterator;
+
+// TODO: Everything.
+// TODO: Add more JavaDoc comments!
+public class DataFilter implements Iterator <String>, Iterable <String> {
+	ArrayList <String> filter;
+	
+	
+	public DataFilter() {
+		// TODO Auto-generated constructor stub
+	}
+
+	public DataFilter (File f) {
+		// TODO Auto-generated constructor stub
+	}
+
+	public void save (File f) {
+		// TODO Auto-generated method stub
+		
+	}
+	
+	public void remove (int index) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	public void remove (String s) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	public void add (String s) {
+		// TODO Auto-generated method stub
+		
+	}
+
+    @Override
+    public Iterator <String> iterator () {
+        // TODO Auto-generated method stub
+        return null;
+    }
+
+}

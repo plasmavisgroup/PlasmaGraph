@@ -5,6 +5,7 @@ import java.io.File;
 
 import javax.swing.JFileChooser;
 import javax.swing.JOptionPane;
+import javax.swing.SwingWorker;
 import javax.swing.filechooser.FileNameExtensionFilter;
 
 import org.pvg.plasmagraph.utils.ExceptionHandler;
@@ -31,6 +32,13 @@ public class MainModel {
     DataSet ds;
     /** Reference to MainModel's Template, passed via constructor reference. */
     DataFilter df;
+    
+    // Constants
+    String TEMPLATE_EXTENSION = ".tem";
+    String DATA_FILTER_EXTENSION = ".df";
+    String default_data_path = "../test/data/";
+    String default_template_path = "../test/template/";
+    String default_filter_path = "../test/data_filter/";
     
     // Internally-controlled variables
     // /** Open File selection dialog. Disabled in favor of on-demand
@@ -67,9 +75,8 @@ public class MainModel {
      * Allows the user to specify the location wherein it will be loaded from.
      */
     public void importData () {
-        // TODO: Set the correct Initial Directory for the JFileChooser!
         // Prepare the JFileChooser for use.
-        JFileChooser open_file = new JFileChooser ("./Data/");
+        JFileChooser open_file = new JFileChooser ();
         createOpenFileChooser (open_file);
         
         // Prepare the FileFilter
@@ -83,6 +90,10 @@ public class MainModel {
         open_file.addChoosableFileFilter (mat_filter);
         // TODO: Decide if you want to keep "supporting" CSV files.
         open_file.addChoosableFileFilter (csv_filter);
+        // Set the default file filter.
+        open_file.setFileFilter (mat_filter);
+        // Set the current directory
+        open_file.setCurrentDirectory (new File (default_data_path));
         
         // Open the Dialog!
         int return_value = open_file.showOpenDialog (null);
@@ -123,17 +134,20 @@ public class MainModel {
      * Allows the user to specify the location wherein it will be loaded from.
      */
     public void importTemplate () {
-        // TODO: Set the correct Initial Directory for the JFileChooser!
         // Prepare the JFileChooser for use.
-        JFileChooser open_file = new JFileChooser ("./Templates/");
+        JFileChooser open_file = new JFileChooser ();
         createOpenFileChooser (open_file);
         
         // Prepare the FileFilter
         FileNameExtensionFilter template_filter = new FileNameExtensionFilter (
-                "Template Files", "template");
+                "Template Files", "tem");
         
         // Insert the FileFilter into the JFileChooser
         open_file.addChoosableFileFilter (template_filter);
+        // Set the default file filter.
+        open_file.setFileFilter (template_filter);
+        // Set the current directory
+        open_file.setCurrentDirectory (new File (default_template_path));
         
         // Open the dialog!
         int return_value = open_file.showOpenDialog (null);
@@ -142,26 +156,19 @@ public class MainModel {
         if (return_value == JFileChooser.APPROVE_OPTION) {
             File f = open_file.getSelectedFile ();
             
-            if (FileUtilities.getExtension (f).equals (
-                    template_filter.getExtensions ()[0])) {
-                // Dialog: Ask if overwrite data?
-                if (JOptionPane.showConfirmDialog (null,
-                        "Do you wish to overwrite the current settings?",
-                        "Overwrite Template", JOptionPane.YES_NO_OPTION) == JOptionPane.YES_OPTION) {
-                    
-                    // Read the data.
-                    t = new Template (f);
-                    
-                } else {
-                    JOptionPane.showMessageDialog (null,
-                            "The current settings will not be overwritten.",
-                            "Overwrite Template - Stopped",
-                            JOptionPane.PLAIN_MESSAGE);
-                }
+            // Dialog: Ask if overwrite data?
+            if (JOptionPane.showConfirmDialog (null,
+                    "Do you wish to overwrite the current settings?",
+                    "Overwrite Template", JOptionPane.YES_NO_OPTION) == JOptionPane.YES_OPTION) {
+                
+                // Read the data.
+                t.openTemplate (f);
                 
             } else {
-                ExceptionHandler.createFileSelectionException ("Template");
-                
+                JOptionPane.showMessageDialog (null,
+                        "The current settings will not be overwritten.",
+                        "Overwrite Template - Stopped",
+                        JOptionPane.PLAIN_MESSAGE);
             }
         } else if (return_value == JFileChooser.ERROR_OPTION) {
             ExceptionHandler.createFileSelectionException ("Template");
@@ -174,34 +181,30 @@ public class MainModel {
      * Allows the user to specify the location wherein it will be saved.
      */
     public void saveTemplate () {
-        // TODO: Set the correct Initial Directory for the JFileChooser!
         // Prepare the JFileChooser for use.
-        JFileChooser save_file = new JFileChooser ("./Templates/");
+        JFileChooser save_file = new JFileChooser ();
         createSaveFileChooser (save_file);
         
         // Prepare the FileFilter
         FileNameExtensionFilter template_filter = new FileNameExtensionFilter (
-                "Template Files", "template");
+                "Template Files", "tem");
         
         // Insert the FileFilter into the JFileChooser
         save_file.addChoosableFileFilter (template_filter);
-        
+        // Set the default file filter.
+        save_file.setFileFilter (template_filter);
+        // Set the current directory
+        save_file.setCurrentDirectory (new File (default_template_path));
+      
         // Open the dialog!
         int return_value = save_file.showSaveDialog (null);
         
         // Check to see what the user selected, and act on it!
         if (return_value == JFileChooser.APPROVE_OPTION) {
-            File f = save_file.getSelectedFile ();
             
-            if (FileUtilities.getExtension (f).equals (
-                    template_filter.getExtensions ()[0])) {
-                // Save the data.
-                t.saveTemplate (f);
-                
-            } else {
-                ExceptionHandler.createFileSelectionException ("Template");
-                
-            }
+            // Save the data.
+            t.saveTemplate (save_file);
+
         } else if (return_value == JFileChooser.ERROR_OPTION) {
             ExceptionHandler.createFileSelectionException ("Template");
         }
@@ -215,43 +218,39 @@ public class MainModel {
      */
     public void importDataFilter () {
         // Prepare the JFileChooser for use.
-        JFileChooser open_file = new JFileChooser ("./Filters/");
+        JFileChooser open_file = new JFileChooser ();
         createOpenFileChooser (open_file);
         
         // Prepare the FileFilter
         FileNameExtensionFilter data_filter = new FileNameExtensionFilter (
-                "Data Filter Files", "df");
+                "Data Filter Files", "daf");
         
         // Insert the FileFilter into the JFileChooser
         open_file.addChoosableFileFilter (data_filter);
+        // Set the default file filter.
+        open_file.setFileFilter (data_filter);
+        // Set the current directory
+        open_file.setCurrentDirectory (new File (default_filter_path));
         
         // Open the dialog!
         int return_value = open_file.showOpenDialog (null);
         
         // Check to see what the user selected, and act on it!
         if (return_value == JFileChooser.APPROVE_OPTION) {
-            File f = open_file.getSelectedFile ();
-            
-            if (FileUtilities.getExtension (f).equals (
-                    data_filter.getExtensions ()[0])) {
+
+            // Dialog: Ask if overwrite data?
+            if (JOptionPane.showConfirmDialog (null,
+                    "Do you wish to overwrite the current data filter?",
+                    "Overwrite Data Filter", JOptionPane.YES_NO_OPTION) == JOptionPane.YES_OPTION) {
                 
-                // Dialog: Ask if overwrite data?
-                if (JOptionPane.showConfirmDialog (null,
-                        "Do you wish to overwrite the current data filter?",
-                        "Overwrite Data Filter", JOptionPane.YES_NO_OPTION) == JOptionPane.YES_OPTION) {
-                    
-                    // Read the data.
-                    df = new DataFilter (f);
-                    
-                } else {
-                    JOptionPane.showMessageDialog (null,
-                            "The current data filter will not be overwritten.",
-                            "Overwrite Data Filter - Stopped",
-                            JOptionPane.PLAIN_MESSAGE);
-                }
+                // Read the data.
+                df = new DataFilter (open_file);
+                
             } else {
-                ExceptionHandler.createFileSelectionException ("Data Filter");
-                
+                JOptionPane.showMessageDialog (null,
+                        "The current data filter will not be overwritten.",
+                        "Overwrite Data Filter - Stopped",
+                        JOptionPane.PLAIN_MESSAGE);
             }
         } else if (return_value == JFileChooser.ERROR_OPTION) {
             ExceptionHandler
@@ -281,31 +280,28 @@ public class MainModel {
      */
     public void saveDataFilter () {
         // Prepare the JFileChooser for use.
-        JFileChooser save_file = new JFileChooser ("./Filters/");
+        JFileChooser save_file = new JFileChooser ();
         createOpenFileChooser (save_file);
         
         // Prepare the FileFilter
         FileNameExtensionFilter data_filter = new FileNameExtensionFilter (
-                "Data Filter Files", "df");
+                "Data Filter Files", "daf");
         
         // Insert the FileFilter into the JFileChooser
         save_file.addChoosableFileFilter (data_filter);
+        // Set the default file filter.
+        save_file.setFileFilter (data_filter);
+        // Set the current directory
+        save_file.setCurrentDirectory (new File (default_filter_path));
         
         int return_value = save_file.showSaveDialog (null);
         
         // Check to see what the user selected, and act on it!
         if (return_value == JFileChooser.APPROVE_OPTION) {
-            File f = save_file.getSelectedFile ();
             
-            if (FileUtilities.getExtension (f).equals (
-                    data_filter.getExtensions ()[0])) {
+            // Save the data.
+            df.save (save_file);
                 
-                // Save the data.
-                df.save (f);
-                
-            } else {
-                ExceptionHandler.createFileSelectionException ("Data Filter");
-            }
         } else if (return_value == JFileChooser.ERROR_OPTION) {
             ExceptionHandler.createFileSelectionException ("Save Data Filter");
         }
@@ -345,9 +341,11 @@ public class MainModel {
      */
     private JFileChooser createSaveFileChooser (JFileChooser save_file) {
         // File Chooser must select any kind of file or directory.
-        save_file.setFileSelectionMode (JFileChooser.FILES_AND_DIRECTORIES);
+        save_file.setFileSelectionMode (JFileChooser.FILES_ONLY);
         // It can only select one file.
         save_file.setMultiSelectionEnabled (false);
+        // Never show full file path.
+        save_file.setFileHidingEnabled (true);
         
         return (save_file);
     }
@@ -385,6 +383,10 @@ public class MainModel {
         JOptionPane.showMessageDialog (null, 
                 "Bang! (Sorry, we don't have anything here yet!)", 
                 "Unimplemented Function Error!", JOptionPane.PLAIN_MESSAGE);
+    }
+
+    public Template getTemplate () {
+        return (t);
     }
     
 }

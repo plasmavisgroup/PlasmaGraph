@@ -7,6 +7,9 @@ import java.awt.event.FocusEvent;
 import java.awt.event.FocusListener;
 
 import javax.swing.JTextField;
+import javax.swing.SwingWorker;
+import javax.swing.event.ChangeEvent;
+import javax.swing.event.ChangeListener;
 
 import org.jfree.chart.plot.PlotOrientation;
 import org.pvg.plasmagraph.models.AestheticModel;
@@ -51,6 +54,7 @@ public class AestheticController {
         aesthetic_view
                 .addVerticalOrientationListener (new VerticalOrientationListener ());
         
+       aesthetic_model.addChangeListener (new AestheticChangeListener ());
     }
     
     /**
@@ -162,6 +166,32 @@ public class AestheticController {
         @Override
         public void actionPerformed (ActionEvent e) {
             aesthetic_model.changePlotOrientation (PlotOrientation.VERTICAL);
+        }
+        
+    }
+    
+    /**
+     * Listener for the Template that contains all settings for the program.
+     * Relies on ChangeListener in order to know that a change has occurred
+     * in the Template. 
+     * 
+     * @author Gerardo A. Navas Morales
+     */
+    class AestheticChangeListener implements ChangeListener {
+
+        @Override
+        public void stateChanged (ChangeEvent e) {
+            SwingWorker <Void, Void> view_worker = new SwingWorker <Void, Void> () {
+
+                @Override
+                protected Void doInBackground () throws Exception {
+                    aesthetic_view.updateView ();
+                    return null;
+                }
+                
+            };
+            
+            view_worker.run ();
         }
         
     }

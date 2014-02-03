@@ -1,0 +1,61 @@
+package org.pvg.plasmagraph.tests;
+
+import static org.junit.Assert.*;
+import org.pvg.plasmagraph.utils.data.DataReference;
+import org.pvg.plasmagraph.utils.data.Pair;
+import org.junit.Test;
+
+public class ReferenceTests {
+    
+    @Test
+    public void testAdd () {
+        DataReference r1 = new DataReference ();
+        assertTrue (r1.add (new Pair));
+    }
+    
+    @Test
+    public void testRemoveInt () {
+        fail ("Not yet implemented");
+    }
+    
+    @Test
+    public void testRemovePair () {
+        fail ("Not yet implemented");
+    }
+    
+    @Test
+    public void testFindPair () {
+        fail ("Not yet implemented");
+    }
+    
+    @Test
+    public void testFindString () {
+        fail ("Not yet implemented");
+    }
+    
+    @Test
+    public void testGetPair () {
+        fail ("Not yet implemented");
+    }
+    
+    @Test
+    public void testGetNames () {
+        fail ("Not yet implemented");
+    }
+    
+    @Test
+    public void testCreatePair () {
+        fail ("Not yet implemented");
+    }
+    
+    @Test
+    public void testContains () {
+        fail ("Not yet implemented");
+    }
+    
+    @Test
+    public void testToString () {
+        fail ("Not yet implemented");
+    }
+    
+}

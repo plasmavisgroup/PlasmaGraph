@@ -7,6 +7,8 @@
 package org.pvg.plasmagraph.views;
 
 import org.pvg.plasmagraph.models.ToolModel;
+import org.pvg.plasmagraph.utils.template.InterpolationType;
+import org.pvg.plasmagraph.utils.template.OutlierResponse;
 
 /**
  * 
@@ -32,7 +34,7 @@ public class ToolView extends javax.swing.JPanel {
         this.initComponents ();
         
         // Update modifiable parts to current template status.
-        this.updateView ();
+        //this.updateView ();
     }
     
     /**
@@ -40,9 +42,9 @@ public class ToolView extends javax.swing.JPanel {
      */
     public void updateView () {
         this.interpolation_type_combo_box.setSelectedItem (this.tool_model
-                .getTemplate ().getInterpolationType ());
+                .getTemplate ().getInterpolationType ().toString ());
         this.outlier_action_combo_box.setSelectedItem (this.tool_model
-                .getTemplate ().getOutlierResponse ());
+                .getTemplate ().getOutlierResponse ().toString ());
         updateTargetDataSetComboBox ();
     }
     
@@ -69,9 +71,9 @@ public class ToolView extends javax.swing.JPanel {
      * @param interpolationTypeListener
      */
     public void addInterpolationTypeListener (
-            java.awt.event.ItemListener interpolationTypeListener) {
+            java.awt.event.ActionListener interpolationTypeListener) {
         this.interpolation_type_combo_box
-                .addItemListener (interpolationTypeListener);
+                .addActionListener (interpolationTypeListener);
     }
     
     /**
@@ -79,8 +81,8 @@ public class ToolView extends javax.swing.JPanel {
      * @param outlierResponseListener
      */
     public void addOutlierResponseListener (
-            java.awt.event.ItemListener outlierResponseListener) {
-        this.outlier_action_combo_box.addItemListener (outlierResponseListener);
+            java.awt.event.ActionListener outlierResponseListener) {
+        this.outlier_action_combo_box.addActionListener (outlierResponseListener);
         
     }
     
@@ -102,20 +104,22 @@ public class ToolView extends javax.swing.JPanel {
         interpolation_button = new javax.swing.JButton ();
         outlier_action_combo_box = new javax.swing.JComboBox <String> ();
         outlier_button = new javax.swing.JButton ();
+        outlier_model = new javax.swing.DefaultComboBoxModel <String> (
+                new String [] { "Warn", "Remove" });
+        interpolation_model = new javax.swing.DefaultComboBoxModel <String> (
+                new String [] { "Linear", "Polynomial", "Power" });
         
         interpolation_label.setText ("Interpolation");
         
         interpolation_type_combo_box
-                .setModel (new javax.swing.DefaultComboBoxModel <String> (
-                        new String [] { "Linear", "Polynomial", "Power" }));
+                .setModel (interpolation_model);
         
         outlier_search_label.setText ("Outlier Search");
         
         interpolation_button.setText ("Create Interpolation");
         
         outlier_action_combo_box
-                .setModel (new javax.swing.DefaultComboBoxModel <String> (
-                        new String [] { "Warn", "Remove" }));
+                .setModel (outlier_model);
         
         outlier_button.setText ("Search for Outliers");
         
@@ -215,15 +219,31 @@ public class ToolView extends javax.swing.JPanel {
     private javax.swing.JComboBox <String> target_data_set_combo_box;
     private javax.swing.JButton outlier_button;
     private javax.swing.JLabel outlier_search_label;
+    private javax.swing.DefaultComboBoxModel <String> outlier_model;
+    private javax.swing.DefaultComboBoxModel <String> interpolation_model;
     
-    // End of variables declaration
-    
-    public String getOutlierResponseTypeStatus () {
-        return (String) (this.interpolation_type_combo_box.getSelectedItem ());
+    // End of variables declaration  
+    public InterpolationType getInterpolationType () {
+        String i_type = (String) this.interpolation_type_combo_box.getSelectedItem ();
+
+        if (i_type.equals (InterpolationType.LINEAR.toString ())) {
+            return (InterpolationType.LINEAR);
+        } else if (i_type.equals (InterpolationType.POLYNOMIAL.toString ())) {
+            return (InterpolationType.POLYNOMIAL);
+        } else {
+            return (InterpolationType.POWER);
+        }
+        
     }
     
-    public String getInterpolationTypeStatus () {
-        return (String) (this.outlier_action_combo_box.getSelectedItem ());
+    public OutlierResponse getOutlierResponseType () {
+        String o_type = (String) this.outlier_action_combo_box.getSelectedItem ();
+        
+        if (o_type.equals (OutlierResponse.WARN.toString ())) {
+            return (OutlierResponse.WARN);
+        } else {
+            return (OutlierResponse.REMOVE); 
+        }
     }
 
     public int getSelectedDataPairIndex () {

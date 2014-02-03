@@ -3,14 +3,11 @@ package org.pvg.plasmagraph.controllers;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
-import org.pvg.plasmagraph.controllers.AestheticController.ChartNameListener;
-import org.pvg.plasmagraph.controllers.AestheticController.HorizontalOrientationListener;
-import org.pvg.plasmagraph.controllers.AestheticController.VerticalOrientationListener;
-import org.pvg.plasmagraph.controllers.AestheticController.XAxisLabelListener;
-import org.pvg.plasmagraph.controllers.AestheticController.YAxisLabelListener;
-import org.pvg.plasmagraph.models.AestheticModel;
+import javax.swing.SwingWorker;
+import javax.swing.event.ChangeEvent;
+import javax.swing.event.ChangeListener;
+
 import org.pvg.plasmagraph.models.DataSetModel;
-import org.pvg.plasmagraph.views.AestheticView;
 import org.pvg.plasmagraph.views.DataSetView;
 
 /**
@@ -36,6 +33,8 @@ public class DataSetController {
         data_view.addChartTypeListener (new ChartTypeListener ());
         data_view.addAddButtonListener (new AddButtonListener ());
         data_view.addRemoveButtonListener (new RemoveButtonListener ());
+        
+        data_model.addChangeListener (new DataViewListener ());
     }
     
     /**
@@ -51,7 +50,7 @@ public class DataSetController {
          */
         @Override
         public void actionPerformed (ActionEvent arg0) {
-            data_model.getTemplate ().setChartType ((String) arg0.getSource ());
+            data_model.getTemplate ().setChartType (data_view.getSelectedChartType ());
         }
         
     }
@@ -92,6 +91,32 @@ public class DataSetController {
         public void actionPerformed (ActionEvent arg0) {
             data_model.removeFromSelectedDataset (data_view
                     .getSelectedDatasetsToRemove ());
+        }
+        
+    }
+    
+    /**
+     * Listener for the Template that contains all settings for the program.
+     * Relies on ChangeListener in order to know that a change has occurred
+     * in the Template. 
+     * 
+     * @author Gerardo A. Navas Morales
+     */
+    class DataViewListener implements ChangeListener {
+
+        @Override
+        public void stateChanged (ChangeEvent e) {
+            SwingWorker <Void, Void> view_worker = new SwingWorker <Void, Void> () {
+
+                @Override
+                protected Void doInBackground () throws Exception {
+                    data_view.updateView ();
+                    return null;
+                }
+                
+            };
+            
+            view_worker.run ();
         }
         
     }

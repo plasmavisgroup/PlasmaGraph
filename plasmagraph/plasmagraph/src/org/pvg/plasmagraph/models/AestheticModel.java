@@ -91,4 +91,13 @@ public class AestheticModel {
         // TODO Auto-generated method stub
         return (t);
     }
+    
+    /**
+     * Support method to add listeners to the Template.
+     * 
+     * @param c Listener to add to Template Notifier.
+     */
+    public void addChangeListener (javax.swing.event.ChangeListener c) {
+        t.addChangeListener (c);
+    }
 }

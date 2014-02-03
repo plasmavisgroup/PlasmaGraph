@@ -1,0 +1,21 @@
+package org.pvg.plasmagraph.tests;
+
+import static org.junit.Assert.*;
+
+import org.junit.Test;
+import org.pvg.plasmagraph.utils.template.Template;
+
+public class TemplateTests {
+    
+    @Test
+    public void testTemplateFile () {
+        Template t1 = new Template ();
+        
+    }
+    
+    @Test
+    public void testSaveTemplate () {
+        fail ("Not yet implemented");
+    }
+    
+}

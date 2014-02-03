@@ -1,0 +1,14 @@
+package org.pvg.plasmagraph.tests;
+
+import static org.junit.Assert.*;
+
+import org.junit.Test;
+
+public class TemplateTexts {
+    
+    @Test
+    public void test () {
+        fail ("Not yet implemented");
+    }
+    
+}
