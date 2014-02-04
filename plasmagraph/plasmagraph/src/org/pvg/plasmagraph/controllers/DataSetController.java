@@ -30,11 +30,12 @@ public class DataSetController {
         this.data_view = data_view;
         
         // Automatically add listeners to Data Set Tab via view.
+        // Update Template or DataReference Listeners
         data_view.addChartTypeListener (new ChartTypeListener ());
         data_view.addAddButtonListener (new AddButtonListener ());
         data_view.addRemoveButtonListener (new RemoveButtonListener ());
-        
-        data_model.addChangeListener (new DataViewListener ());
+        // Update View Listener
+        data_model.addChangeListener (new DataViewTemplateListener ());
     }
     
     /**
@@ -102,8 +103,11 @@ public class DataSetController {
      * 
      * @author Gerardo A. Navas Morales
      */
-    class DataViewListener implements ChangeListener {
+    class DataViewTemplateListener implements ChangeListener {
 
+        /**
+         * Updates the DataSetView's current Template-based state.
+         */
         @Override
         public void stateChanged (ChangeEvent e) {
             SwingWorker <Void, Void> view_worker = new SwingWorker <Void, Void> () {

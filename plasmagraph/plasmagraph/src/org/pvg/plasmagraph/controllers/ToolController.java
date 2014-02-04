@@ -11,6 +11,7 @@ import org.pvg.plasmagraph.models.ToolModel;
 import org.pvg.plasmagraph.views.ToolView;
 
 public class ToolController {
+    // Externally-contained variables.
     /** Reference to model related to this controller. */
     private ToolModel tool_model;
     /** Reference to view related to this controller. */
@@ -26,14 +27,15 @@ public class ToolController {
         this.tool_model = tool_model;
         this.tool_view = tool_view;
         
-        // Automatically add listeners to Tools Tab via view.
+        // Automatically add listeners to Tools Tab via view
+        // Activate Optional Feature Listeners
         tool_view.addInterpolationListener (new InterpolationListener ());
         tool_view.addOutlierListener (new OutlierListener ());
-        
+        // Update Template Listeners
         tool_view.addInterpolationTypeListener (new InterpolationTypeListener ());
         tool_view.addOutlierResponseListener (new OutlierResponseListener ());
-        
-        tool_model.addChangeListener (new ToolViewListener ());
+        // Update View Listeners
+        tool_model.addChangeListener (new ToolViewTemplateListener ());
     }
     
     /**
@@ -48,7 +50,6 @@ public class ToolController {
         /**
          * Calls a ToolModel method to begin the interpolation process.
          */
-        @SuppressWarnings ("unchecked")
         @Override
         public void actionPerformed (ActionEvent arg0) {
             tool_model.interpolate (tool_view.getSelectedDataPairIndex ());
@@ -68,7 +69,6 @@ public class ToolController {
         /**
          * Calls a ToolModel method to being the Outlier Search process.
          */
-        @SuppressWarnings ("unchecked")
         @Override
         public void actionPerformed (ActionEvent arg0) {
             tool_model.outlier_search (tool_view.getSelectedDataPairIndex ());
@@ -109,7 +109,7 @@ public class ToolController {
     class OutlierResponseListener implements ActionListener {
         
         /**
-         * Response Type value.
+         * Updates the Template's Outlier Response value.
          */
         @Override
         public void actionPerformed (ActionEvent e) {
@@ -126,8 +126,11 @@ public class ToolController {
      * 
      * @author Gerardo A. Navas Morales
      */
-    class ToolViewListener implements ChangeListener {
+    class ToolViewTemplateListener implements ChangeListener {
 
+        /**
+         * Updates the ToolView's current Template-based state.
+         */
         @Override
         public void stateChanged (ChangeEvent e) {
             SwingWorker <Void, Void> view_worker = new SwingWorker <Void, Void> () {

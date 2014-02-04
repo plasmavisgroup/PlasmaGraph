@@ -20,34 +20,43 @@ import org.pvg.plasmagraph.utils.graphs.ChartType;
 public class Template {
 	// Variables
     // Event Firing
+    /** Collection of listeners for any change that occurs in this Template. */
     private Set <ChangeListener> listeners = new HashSet <ChangeListener> ();
     
 	// Classifications
+    /** Type of the Chart. Can be XY/Line/Bar/Line_Chart. */
 	private ChartType chart_type;
 	
 	// Label names.
+	/** Name of the chart. */
 	private String chart_name;
+	/** Name of the X Axis. */
 	private String x_axis_label;
+	/** Name of the Y Axis. */
 	private String y_axis_label;
 	
 	// Including Features.
+	/** Boolean concerning the usage of the JFreeChart Legend Graph Component. */
 	private boolean using_legend;
+	/**  Boolean concerning the usage of the JFreeChart Tooltip Graph Component.  */
 	private boolean using_tooltips;
+	/** Boolean concerning the usage of JFreeChart HTML / URL Graph Creation. */
 	private boolean generate_urls;
 	
 	// Layout Features
+	/** The orientation of the graph. (HORIZONTAL or VERTICAL) Provided by JFreeChart. */
 	private PlotOrientation orientation;
 	
 	// Tool Features
+	/** The type of interpolation that is default to this Template. (LINEAR, POLYNOMIAL or POWER) */
 	private InterpolationType default_interpolation_type;
+	/** The type of response an outlier search will provide upon finding mild or extreme outliers. (WARN or REMOVE) */
 	private OutlierResponse default_outlier_reaction;
 	
 	// Constructors
 	/**
-	 *  Constructor for Template objects.
+	 *  (Default) Constructor for Template objects.
 	 *  Provides default values to new Template object.
-	 *  @param Nothing.
-	 *  @returns Nothing.
 	 */
 	public Template () {
 		// Use the defaults!
@@ -73,7 +82,6 @@ public class Template {
 	 * @param tooltips If tool tips will be available on the chart. (boolean)
 	 * @param urls If URLs will be generated for the chart. (boolean)
 	 * @param o The orientation of the range axis. (PlotOrientation) [PlotOrientation.HORIZONTAL or PlotOrientation.VERTICAL.]
-	 * @returns Nothing.
 	 */
 	public Template (String name, ChartType type, String x, String y, 
 			boolean legend, boolean tooltips, boolean urls, PlotOrientation o,
@@ -138,6 +146,7 @@ public class Template {
             }
             
             // Tool Features
+            // Interpolation Type
             output = reader.readLine();
             if (output.equals (InterpolationType.LINEAR.toString ())) {
                 this.default_interpolation_type = InterpolationType.LINEAR;
@@ -146,7 +155,7 @@ public class Template {
             } else {
                 this.default_interpolation_type = InterpolationType.POWER;
             }
-            
+            // Outlier Response
             output = reader.readLine();
             if (output.equals (OutlierResponse.WARN.toString())) {
                 this.default_outlier_reaction = OutlierResponse.WARN;
@@ -162,12 +171,14 @@ public class Template {
 
         } catch (FileNotFoundException e) {
             // Catch for File "f" not found.
-            // TODO Properly deal with this exception.
+            // TODO Create an ExceptionHandler method for this.
+            System.out.println ("Error in Template's \'openTemplate (File f)\' method: File was not found.");
             e.printStackTrace();
             
         } catch (IOException e) {
             // Catch for BufferedReader "reader" giving problems that don't include null!
-            System.out.println ("Uh, we have a problem! There's a Saving error!");
+            // TODO Create an ExceptionHandler method for this.
+            System.out.println ("Error in Template's \'openTemplate (File f)\' method: IO procedures gave an error.");
             e.printStackTrace ();
         }
 
@@ -184,22 +195,23 @@ public class Template {
         try (BufferedWriter writer = new BufferedWriter (new FileWriter (new File (file_name)))){
             // Combine the entirety of the data to write in a single string!
             StringBuilder sb = new StringBuilder ();
+            String ls = System.getProperty ("line.separator");
             
             // Classifications
-            sb.append (this.chart_type.toString () + System.getProperty ("line.separator"));
+            sb.append (this.chart_type.toString () + ls);
             // Label names.
-            sb.append (this.chart_name + System.getProperty ("line.separator"));
-            sb.append (this.x_axis_label + System.getProperty ("line.separator"));
-            sb.append (this.y_axis_label + System.getProperty ("line.separator"));
+            sb.append (this.chart_name + ls);
+            sb.append (this.x_axis_label + ls);
+            sb.append (this.y_axis_label + ls);
             // Including Features.
-            sb.append (Boolean.toString (using_legend) + System.getProperty ("line.separator"));
-            sb.append (Boolean.toString (using_tooltips) + System.getProperty ("line.separator"));
-            sb.append (Boolean.toString (generate_urls) + System.getProperty ("line.separator"));
+            sb.append (Boolean.toString (using_legend) + ls);
+            sb.append (Boolean.toString (using_tooltips) + ls);
+            sb.append (Boolean.toString (generate_urls) + ls);
             // Layout Features
-            sb.append (this.orientation.toString () + System.getProperty ("line.separator"));
+            sb.append (this.orientation.toString () + ls);
             // Tool Features
-            sb.append (this.default_interpolation_type.toString () + System.getProperty ("line.separator"));
-            sb.append (this.default_outlier_reaction.toString () + System.getProperty ("line.separator"));
+            sb.append (this.default_interpolation_type.toString () + ls);
+            sb.append (this.default_outlier_reaction.toString () + ls);
 
             // Write it to the BufferedWriter
             writer.write (sb.toString ());
@@ -221,159 +233,193 @@ public class Template {
 		saveTemplate (f.getSelectedFile () + ".tem");
 	}
 
+	/**
+	 * Provides a textual representation of this Template object.
+	 * Uses StringBuilder in order to allow for increasing complexity while avoiding the eyesore of mile-long concatenated strings.
+	 * @return A String object containing a description of this object.
+	 */
 	@Override
 	public String toString () {
-	    String s = "";
-	    s += ("Type: " + chart_type.toString () + "\n" + 
-	        "Name: " + chart_name + "\n" + 
-	        "X Axis: " + x_axis_label + "\n" + 
-	        "Y Axis: " + y_axis_label + "\n" + 
-            "Orientation: " + orientation.toString () + "\n" + 
-            "Interpolation: " + default_interpolation_type.toString () + "\n" + 
-            "Outlier Reaction: " + default_outlier_reaction.toString ());
-	    return (s);
+	    // Prepare the tools for this procedure.
+	    StringBuilder sb = new StringBuilder ();
+	    String ls = System.getProperty ("line.separator");
+	    
+	    // Append all the properties of this Template object.
+	    sb.append ("Type: " + chart_type.toString () + ls);
+	    sb.append ("Name: " + chart_name + ls);
+	    sb.append ("X Axis: " + x_axis_label + ls);
+	    sb.append ("Y Axis: " + y_axis_label + ls);
+	    sb.append ("Orientation: " + orientation.toString () + ls);
+	    sb.append ("Legend?: " + Boolean.toString (using_legend) + ls);
+	    sb.append ("Tooltips?: " + Boolean.toString (using_tooltips) + ls);
+	    sb.append ("URL Generation?: " + Boolean.toString (generate_urls) + ls);
+	    sb.append ("Interpolation: " + default_interpolation_type.toString () + ls);
+	    sb.append ("Outlier Reaction: " + default_outlier_reaction.toString ());
+	    
+	    // Create the String to be returned.
+	    return (sb.toString ());
 	}
 	
 	// Getters and Setters
 	
 	/**
-	 * @return the chart_type
+	 * Getter Method. Provides the "chart_type" variable.
+	 * @return A ChartType variable, "chart_type", contained by this object.
 	 */
 	public final ChartType getChartType () {
 		return chart_type;
 	}
 
 	/**
-	 * @param graph the chart_type to set
+	 * Setter Method. Changes the "chart_name" variable.
+	 * @param graph The new ChartType variable to replace this object's "chart_type" variable's contents.
 	 */
 	public final void setChartType (ChartType graph) {
 		this.chart_type = graph;
 	}
 
 	/**
-	 * @return the chart_name
+	 * Getter Method. Provides the "chart_name" variable.
+     * @return A String variable, "chart_name", contained by this object.
 	 */
 	public final String getChartName () {
 		return chart_name;
 	}
 
 	/**
-	 * @param chart_name the chart_name to set
+	 * Setter Method. Changes the "chart_name" variable.
+     * @param name The new ChartType variable to replace this object's "chart_type" variable's contents.
 	 */
-	public final void setChartName (String chart_name) {
-		this.chart_name = chart_name;
+	public final void setChartName (String name) {
+		this.chart_name = name;
 	}
 
 	/**
-	 * @return the x_axis_label
+	 * Getter Method. Provides the "x_axis_label" variable.
+     * @return A String variable, "x_axis_label", contained by this object.
 	 */
 	public final String getXAxisLabel () {
 		return x_axis_label;
 	}
 
 	/**
-	 * @param x_axis_label the x_axis_label to set
+	 * Setter Method. Changes the "x_axis_label" variable.
+     * @param label The new String variable to replace this object's "x_axis_label" variable's contents.
 	 */
-	public final void setXAxisLabel (String x_axis_label) {
-		this.x_axis_label = x_axis_label;
+	public final void setXAxisLabel (String label) {
+		this.x_axis_label = label;
 	}
 
 	/**
-	 * @return the y_axis_label
+	 * Getter Method. Provides the "y_axis_label" variable.
+     * @return A String variable, "y_axis_label", contained by this object.
 	 */
 	public final String getYAxisLabel () {
 		return y_axis_label;
 	}
 
 	/**
-	 * @param y_axis_label the y_axis_label to set
+	 * Setter Method. Changes the "y_axis_label" variable.
+     * @param label The new String variable to replace this object's "y_axis_label" variable's contents.
 	 */
-	public final void setYAxisLabel (String y_axis_label) {
-		this.y_axis_label = y_axis_label;
+	public final void setYAxisLabel (String label) {
+		this.y_axis_label = label;
 	}
 
 	/**
-	 * @return the using_legend
+	 * Getter Method. Provides the "using_legend" variable.
+     * @return A boolean variable, "using_legend", contained by this object.
 	 */
 	public final boolean generatesLegend () {
 		return using_legend;
 	}
 
 	/**
-	 * @param using_legend the using_legend to set
+	 * Setter Method. Changes the "using_legend" variable.
+     * @param legend The new boolean variable to replace this object's "using_legend" variable's contents.
 	 */
-	public final void setLegend (boolean using_legend) {
-		this.using_legend = using_legend;
+	public final void setLegend (boolean legend) {
+		this.using_legend = legend;
 	}
 
 	/**
-	 * @return the using_tooltips
+	 * Getter Method. Provides the "using_tooltips" variable.
+     * @return A boolean variable, "using_tooltips", contained by this object.
 	 */
 	public final boolean generatesTooltips () {
 		return using_tooltips;
 	}
 
 	/**
-	 * @param using_tooltips the using_tooltips to set
+	 * Setter Method. Changes the "using_tooltips" variable.
+     * @param tooltips The new boolean variable to replace this object's "using_tooltips" variable's contents.
 	 */
-	public final void setTooltips (boolean using_tooltips) {
-		this.using_tooltips = using_tooltips;
+	public final void setTooltips (boolean tooltips) {
+		this.using_tooltips = tooltips;
 	}
 
 	/**
-	 * @return the generate_urls
+	 * Getter Method. Provides the "generate_urls" variable.
+     * @return A boolean variable, "generate_urls", contained by this object.
 	 */
 	public final boolean generatesURLs () {
 		return generate_urls;
 	}
 
 	/**
-	 * @param generate_urls the generate_urls to set
+	 * Setter Method. Changes the "generate_urls" variable.
+     * @param urls The new boolean variable to replace this object's "generate_urls" variable's contents.
 	 */
-	public final void setURLs (boolean generate_urls) {
-		this.generate_urls = generate_urls;
+	public final void setURLs (boolean urls) {
+		this.generate_urls = urls;
 	}
 
 	/**
-	 * @return the orientation
+	 * Getter Method. Provides the "orientation" variable.
+     * @return A PlotOrientation variable, "orientation", contained by this object.
 	 */
 	public final PlotOrientation getOrientation () {
 		return orientation;
 	}
 
 	/**
-	 * @param orientation the orientation to set
+	 * Setter Method. Changes the "orientation" variable.
+     * @param orientation The new PlotOrientation variable to replace this object's "orientation" variable's contents.
 	 */
 	public final void setOrientation (PlotOrientation orientation) {
 		this.orientation = orientation;
 	}
 
 	/**
-	 * @return the default_interpolation_type
+	 * Getter Method. Provides the "default_interpolation_type" variable.
+     * @return An InterpolationType variable, "default_interpolation_type", contained by this object.
 	 */
 	public final InterpolationType getInterpolationType () {
 		return default_interpolation_type;
 	}
 
 	/**
-	 * @param default_interpolation_type the default_interpolation_type to set
+	 * Setter Method. Changes the "default_interpolation_type" variable.
+     * @param type The new InterpolationType variable to replace this object's "default_interpolation_type" variable's contents.
 	 */
-	public final void setInterpolationType (InterpolationType default_interpolation_type) {
-		this.default_interpolation_type = default_interpolation_type;
+	public final void setInterpolationType (InterpolationType type) {
+		this.default_interpolation_type = type;
 	}
 
 	/**
-	 * @return the default_outlier_reaction
+	 * Getter Method. Provides the "default_outlier_reaction" variable.
+     * @return An OutlierResponse variable, "default_outlier_reaction", contained by this object.
 	 */
 	public final OutlierResponse getOutlierResponse () {
 		return default_outlier_reaction;
 	}
 
 	/**
-	 * @param default_outlier_reaction the default_outlier_reaction to set
+	 * Setter Method. Changes the "default_outlier_reaction" variable.
+     * @param reaction The new OutlierResponse variable to replace this object's "default_outlier_reaction" variable's contents.
 	 */
-	public final void setOutlierResponse (OutlierResponse default_outlier_reaction) {
-		this.default_outlier_reaction = default_outlier_reaction;
+	public final void setOutlierResponse (OutlierResponse reaction) {
+		this.default_outlier_reaction = reaction;
 	}
 	
 	// Event Methods

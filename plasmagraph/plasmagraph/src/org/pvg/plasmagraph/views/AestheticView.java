@@ -11,7 +11,6 @@ import java.awt.event.FocusListener;
 
 import org.jfree.chart.plot.PlotOrientation;
 import org.pvg.plasmagraph.models.AestheticModel;
-import org.pvg.plasmagraph.utils.template.Template;
 
 /**
  * View for the visual modification pane.
@@ -27,117 +26,32 @@ public class AestheticView extends javax.swing.JPanel {
     private AestheticModel aesthetic_model;
     
     /**
-     * Creates a new AestheticView, containing references to its
-     * model and the underlying settings container.
-     * 
-     * @param t_reference
-     *            Template reference provided by PlasmaGraph.
-     * @param aesthetic_model
-     *            Model reference provided by PlasmaGraph.
+     * Creates a new AestheticView form, containing references to itsmodel and the underlying settings container.
+     * @param aesthetic_model Model reference provided by PlasmaGraph.
      */
     public AestheticView (AestheticModel aesthetic_model) {
         this.aesthetic_model = aesthetic_model;
         
         // Initialize visual components, as per NetBeans IDE code.
         this.initComponents ();
-        
-        // Initialize values from template, just in case.
-        //this.updateView ();
     }
     
+    // Created by Gerardo A. Navas Morales.
     /**
-     * Updates AestheticView's TextBoxes and RadioButton Groups based
-     * on the current state of the Template.
-     * 
-     * TODO: Remove getTemplate and make it less terrible. Add Getters to model,
-     * too?
+     * Updates AestheticView's TextBoxes and RadioButton Groups based on the current state of the Template.
      */
     public void updateView () {
-        System.out.println ("Is this on the EDT?: " + javax.swing.SwingUtilities.isEventDispatchThread ());
-        this.chart_title_text_box.setText (this.aesthetic_model.getTemplate ()
-                .getChartName ());
-        this.x_axis_text_box.setText (this.aesthetic_model.getTemplate ()
-                .getXAxisLabel ());
-        this.y_axis_text_box.setText (this.aesthetic_model.getTemplate ()
-                .getYAxisLabel ());
-        this.horizontal_orientation
-                .setSelected (this.aesthetic_model.getTemplate ()
-                        .getOrientation () == PlotOrientation.HORIZONTAL);
-        this.vertical_orientation.setSelected (this.aesthetic_model
-                .getTemplate ().getOrientation () == PlotOrientation.VERTICAL);
-        
-        
+        this.chart_title_text_box.setText (this.aesthetic_model.getTemplate ().getChartName ());
+        this.x_axis_text_box.setText (this.aesthetic_model.getTemplate ().getXAxisLabel ());
+        this.y_axis_text_box.setText (this.aesthetic_model.getTemplate ().getYAxisLabel ());
+        this.horizontal_orientation.setSelected (this.aesthetic_model.getTemplate ().getOrientation () == PlotOrientation.HORIZONTAL);
+        this.vertical_orientation.setSelected (this.aesthetic_model.getTemplate ().getOrientation () == PlotOrientation.VERTICAL);
     }
     
+    // Created by NetBeans IDE.
     /**
-     * Registers the "chart_name" text box as an object that should be
-     * listened upon gaining and/or losing focus by the user.
-     * 
-     * @param chartNameListener
-     *            FocusListener object provided by its Controller.
+     * Initializes the visual components of this view form.
      */
-    public void addChartNameListener (FocusListener chartNameListener) {
-        this.chart_title_text_box.addFocusListener (chartNameListener);
-    }
-    
-    /**
-     * Registers the "x_axis_label" text box as an object that should be
-     * listened upon gaining and/or losing focus by the user.
-     * 
-     * @param xAxisLabelListener
-     *            FocusListener object provided by its Controller.
-     */
-    public void addXAxisLabelListener (FocusListener xAxisLabelListener) {
-        this.x_axis_text_box.addFocusListener (xAxisLabelListener);
-    }
-    
-    /**
-     * Registers the "y_axis_label" text box as an object that should be
-     * listened upon gaining and/or losing focus by the user.
-     * 
-     * @param yAxisLabelListener
-     *            FocusListener object provided by its Controller.
-     */
-    public void addYAxisLabelListener (FocusListener yAxisLabelListener) {
-        this.y_axis_text_box.addFocusListener (yAxisLabelListener);
-    }
-    
-    /**
-     * Registers the "horizontal_orientation" radio button as an object that
-     * should be
-     * listened upon gaining and/or losing focus by the user.
-     * 
-     * @param horizontalOrientationListener
-     *            FocusListener object provided by its Controller.
-     */
-    public void addHorizontalOrientationListener (
-            ActionListener horizontalOrientationListener) {
-        this.horizontal_orientation
-                .addActionListener (horizontalOrientationListener);
-    }
-    
-    /**
-     * W
-     * Registers the "vertical_orientation" radio button as an object that
-     * should be
-     * listened upon gaining and/or losing focus by the user.
-     * 
-     * @param verticalOrientationListener
-     *            FocusListener object provided by its Controller.
-     */
-    public void addVerticalOrientationListener (
-            ActionListener verticalOrientationListener) {
-        this.vertical_orientation
-                .addActionListener (verticalOrientationListener);
-    }
-    
-    /**
-     * This method is called from within the constructor to initialize the form.
-     * WARNING: Do NOT modify this code. The content of this method is always
-     * regenerated by the Form Editor.
-     */
-    
-    // <editor-fold defaultstate="collapsed" desc="Generated Code">
     private void initComponents () {
         this.setName ("Aesthetic View");
         
@@ -281,7 +195,7 @@ public class AestheticView extends javax.swing.JPanel {
                                                 .addComponent (
                                                         vertical_orientation))
                                 .addContainerGap (144, Short.MAX_VALUE)));
-    }// </editor-fold>
+    }
     
     // Variables declaration - do not modify
     private javax.swing.JLabel chart_title_label;
@@ -296,4 +210,65 @@ public class AestheticView extends javax.swing.JPanel {
     private javax.swing.JLabel y_axis_label;
     private javax.swing.JTextField y_axis_text_box;
     // End of variables declaration
+    
+
+    // Created by Gerardo A. Navas Morales.
+    /**
+     * Registers the "chart_name" text box as an object that should be
+     * listened upon gaining and/or losing focus by the user.
+     * 
+     * @param chartNameListener
+     *            FocusListener object provided by its Controller.
+     */
+    public void addChartNameListener (FocusListener chartNameListener) {
+        this.chart_title_text_box.addFocusListener (chartNameListener);
+    }
+    
+    /**
+     * Registers the "x_axis_label" text box as an object that should be
+     * listened upon gaining and/or losing focus by the user.
+     * 
+     * @param xAxisLabelListener
+     *            FocusListener object provided by its Controller.
+     */
+    public void addXAxisLabelListener (FocusListener xAxisLabelListener) {
+        this.x_axis_text_box.addFocusListener (xAxisLabelListener);
+    }
+    
+    /**
+     * Registers the "y_axis_label" text box as an object that should be
+     * listened upon gaining and/or losing focus by the user.
+     * 
+     * @param yAxisLabelListener
+     *            FocusListener object provided by its Controller.
+     */
+    public void addYAxisLabelListener (FocusListener yAxisLabelListener) {
+        this.y_axis_text_box.addFocusListener (yAxisLabelListener);
+    }
+    
+    /**
+     * Registers the "horizontal_orientation" radio button as an object that
+     * should be listened upon gaining and/or losing focus by the user.
+     * 
+     * @param horizontalOrientationListener
+     *            FocusListener object provided by its Controller.
+     */
+    public void addHorizontalOrientationListener (
+            ActionListener horizontalOrientationListener) {
+        this.horizontal_orientation
+                .addActionListener (horizontalOrientationListener);
+    }
+    
+    /**
+     * Registers the "vertical_orientation" radio button as an object that
+     * should be listened upon gaining and/or losing focus by the user.
+     * 
+     * @param verticalOrientationListener
+     *            FocusListener object provided by its Controller.
+     */
+    public void addVerticalOrientationListener (
+            ActionListener verticalOrientationListener) {
+        this.vertical_orientation
+                .addActionListener (verticalOrientationListener);
+    }
 }

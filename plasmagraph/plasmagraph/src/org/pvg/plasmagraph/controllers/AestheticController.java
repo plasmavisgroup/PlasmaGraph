@@ -23,6 +23,7 @@ import org.pvg.plasmagraph.views.AestheticView;
  * @author Gerardo A. Navas Morales
  */
 public class AestheticController {
+    
     /** Reference to model related to this controller. */
     private AestheticModel aesthetic_model;
     /** Reference to view related to this controller. */
@@ -34,10 +35,8 @@ public class AestheticController {
      * the View.
      * Relies on the Model to change data.
      * 
-     * @param aesthetic_model
-     *            Model component reference of the Aesthetic Panel.
-     * @param aesthetic_view
-     *            View component reference of the Aesthetic Panel.
+     * @param aesthetic_model Model component reference of the Aesthetic Panel.
+     * @param aesthetic_view View component reference of the Aesthetic Panel.
      */
     public AestheticController (AestheticModel aesthetic_model,
             AestheticView aesthetic_view) {
@@ -46,15 +45,14 @@ public class AestheticController {
         this.aesthetic_view = aesthetic_view;
         
         // Automatically add listeners to Aesthetic Tab via view.
+        // Update Template Listeners
         aesthetic_view.addChartNameListener (new ChartNameListener ());
         aesthetic_view.addXAxisLabelListener (new XAxisLabelListener ());
         aesthetic_view.addYAxisLabelListener (new YAxisLabelListener ());
-        aesthetic_view
-                .addHorizontalOrientationListener (new HorizontalOrientationListener ());
-        aesthetic_view
-                .addVerticalOrientationListener (new VerticalOrientationListener ());
-        
-       aesthetic_model.addChangeListener (new AestheticChangeListener ());
+        aesthetic_view.addHorizontalOrientationListener (new HorizontalOrientationListener ());
+        aesthetic_view.addVerticalOrientationListener (new VerticalOrientationListener ());
+        // Update View Listener
+        aesthetic_model.addChangeListener (new AestheticChangeTemplateListener ());
     }
     
     /**
@@ -177,8 +175,11 @@ public class AestheticController {
      * 
      * @author Gerardo A. Navas Morales
      */
-    class AestheticChangeListener implements ChangeListener {
+    class AestheticChangeTemplateListener implements ChangeListener {
 
+        /**
+         * Updates the AestheticView's current Template-based state.
+         */
         @Override
         public void stateChanged (ChangeEvent e) {
             SwingWorker <Void, Void> view_worker = new SwingWorker <Void, Void> () {
