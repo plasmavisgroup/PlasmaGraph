@@ -175,7 +175,7 @@ public class Template {
                 this.default_interpolation_type = InterpolationType.QUARTIC;
             } 
             else {
-                this.default_interpolation_type = InterpolationType.POWER;
+                this.default_interpolation_type = InterpolationType.SPLINE;
             }
             
             // Interpolation ranges and interval

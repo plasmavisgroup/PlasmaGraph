@@ -151,4 +151,14 @@ public class DataColumn implements Iterable<Object>, Iterator<Object> {
 		this.position = 0;
 		return (this);
 	}
+
+	public double [] toArray () {
+		double [] arr = new double [this.values.size ()];
+		
+		for (int i = 0; (i < this.values.size ()); ++i) {
+			arr[i] = (double) this.values.get (i);
+		}
+		
+		return (arr);
+	}
 }

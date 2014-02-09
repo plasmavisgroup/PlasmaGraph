@@ -10,6 +10,8 @@
 <fullyQualifiedTypeName name="org.jfree.data.general.DatasetUtilities"/>
 <fullyQualifiedTypeName name="org.jfree.data.function.PolynomialFunction2D"/>
 <fullyQualifiedTypeName name="org.jfree.data.xy.XYSeriesCollection"/>
-<fullyQualifiedTypeName name="org.jfree.data.xy.XYSeries"/>
 <fullyQualifiedTypeName name="org.pvg.plasmagraph.utils.graphs.XYGraph"/>
+<fullyQualifiedTypeName name="org.jfree.data.xy.DefaultXYDataset"/>
+<fullyQualifiedTypeName name="java.awt.event.FocusListener"/>
+<fullyQualifiedTypeName name="org.jfree.data.xy.XYSeries"/>
 </qualifiedTypeNameHistroy>

@@ -56,7 +56,7 @@ public class ToolView extends javax.swing.JPanel {
         } else if (i_type.equals (InterpolationType.QUARTIC.toString ())) {
             return (InterpolationType.QUARTIC);
         } else {
-            return (InterpolationType.POWER);
+            return (InterpolationType.SPLINE);
         }
         
     }
