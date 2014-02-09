@@ -2,7 +2,7 @@ package org.pvg.plasmagraph.utils.data;
 
 /**
  * Container object for the DataReference class.
- * Contains the indexes of two different DataColumns in the main DataSet and
+ * Contains the indexes of two different Data Columns in the main DataSet and
  * their name on the ListModel.
  * 
  * @author Gerardo A. Navas Morales
