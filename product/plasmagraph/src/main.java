@@ -33,7 +33,7 @@ public class main {
         //DataSet data = mlr.toDataSet(dummy, filter);
         //mlr.toString(dummy);
         DataSet data = mlr.toDataSet(dummy);
-        System.out.println(data.toString());
+        //System.out.println(data.toString());
     }
     
 }

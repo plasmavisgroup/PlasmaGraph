@@ -21,57 +21,82 @@ import java.util.logging.Logger;
  */
 public class MatlabReader {
     
+   /**
+    *
+    * 
+    */
     public DataSet toDataSet(File f){
+        
+        /** variables definition **/
         MatFileReader mfr = new MatFileReader(); 
-        DataSet r = new DataSet();
+        DataSet result = new DataSet();
+        
         try {
-            Map <String, MLArray> dataMap = mfr.read(f);
-            ArrayList <DataColumn> column_list = new ArrayList ();            
             
-            DataColumn first_column = new DataColumn();
-            DataColumn n_column = new DataColumn();
+            /** variables definition **/
+            Map <String, MLArray> dataMap = mfr.read(f);
+            ArrayList <DataColumn> column_list = new <DataColumn> ArrayList ();            
+            DataColumn first_column = new DataColumn(MLArray.mxCHAR_CLASS, "name");
+            ArrayList <DataColumn> other_columns = new <DataColumn> ArrayList();
+            
+            /** iterate every cell group in the .mat file **/
             for (Iterator iterator = dataMap.values().iterator(); iterator.hasNext();){
                 
                 MLCell cell_group = (MLCell) iterator.next();
                 
-                // first cell group has the header's names
+                /** first cell group has the header names **/
                 if(first_column.isEmpty()){
-                                     
+                    
                 }
                 
-                // fill first column with the variable's name
+                /** add group name to first column as many times as rows in the group **/
                 for(int i = 0; i < cell_group.getM(); i++) {
                     first_column.add(cell_group.name);
                 }
                 
-                // fill first column with the variable's name
-                //column.add(column);
-                
-                //column = getColumn(cell_group, 0);                               
+                /** get every column from the group and place them in the result DataSet **/
+                for(int i = 0; i < cell_group.getN(); i++){
+                    DataColumn column = getColumn(cell_group, i);
+                    other_columns.add(column);
+                }
+                                               
             }
             
-              r.add(first_column);
+                /** add columns to result **/
+                result.add(first_column);
+                for(int i = 0; i < other_columns.size(); i++){
+                    result.add(other_columns.get(i));
+                }
             
             
         } catch (IOException ex) {
             Logger.getLogger(MatlabReader.class.getName()).log(Level.SEVERE, null, ex);
         }  
         
-        return r;
+        return result;
     }
-    
+
+   /**
+    *
+    * 
+    */
     private DataColumn getColumn(MLCell cell, int index){
         
-        DataColumn column = new DataColumn();
+        DataColumn column = new DataColumn(cell.getType());
         for ( int m = 0; m < cell.getM(); m++ )
         {
-           Object item = cell.get(m,index);
+           String item = cell.get(m,index).contentToString();
+           //System.out.println(item.toString());
            column.add(item);
         }
         
         return column;
     }
     
+   /**
+    *
+    * 
+    */
     public String toString(File f){
         
         MatFileReader mfr = new MatFileReader();
@@ -117,14 +142,23 @@ public class MatlabReader {
         
         return s;       
     }
-    
-    public static void writeToFile(String pFilename, StringBuffer pData) throws IOException {  
+
+   /**
+    *
+    * 
+    */    
+    private static void writeToFile(String pFilename, StringBuffer pData) throws IOException {  
         BufferedWriter out = new BufferedWriter(new FileWriter(pFilename));  
         out.write(pData.toString());  
         out.flush();  
         out.close();  
-    }  
-    public static StringBuffer readFromFile(String pFilename) throws IOException {  
+    } 
+    
+   /**
+    *
+    * 
+    */    
+    private static StringBuffer readFromFile(String pFilename) throws IOException {  
         BufferedReader in = new BufferedReader(new FileReader(pFilename));  
         StringBuffer data = new StringBuffer();  
         int c = 0;  

@@ -5,27 +5,46 @@
 package utils.data;
 
 import java.util.ArrayList;
+import java.util.Iterator;
+import java.util.NoSuchElementException;
+import com.jmatio.types.MLArray;
 
 /**
  *
  * @author DangoMango-Win
  */
-public class DataColumn {
+public class DataColumn implements Iterable<Object>, Iterator<Object>{
     private String name;
-    private String value_type;
-    private ArrayList <Object> values;
+    private int value_type;
+    private ArrayList values;
+    
+   /** Position of Iterator object; 
+    * used for the implementation of Iterator and Iterable. */
+    private int position = 0;
     
 /** 
  * Class constructor.
  */
-    public DataColumn(String name, String value_type){
-        this.name = name;
-        this.value_type = value_type;
+    public DataColumn (int column_type) {
+        if (column_type == MLArray.mxDOUBLE_CLASS) {
+                values = new ArrayList<Double> ();
+                value_type = MLArray.mxDOUBLE_CLASS;
+        } else if (column_type == MLArray.mxCHAR_CLASS) {
+                values = new ArrayList<String> ();
+                value_type = MLArray.mxCHAR_CLASS;
+        }
+        name = "empty";
     }
-    
-    public DataColumn(){
-        this.name = null;
-        this.value_type = null;
+	
+    public DataColumn (int column_type, String n) {
+        if (column_type == MLArray.mxDOUBLE_CLASS) {
+                values = new ArrayList<Double> ();
+                value_type = MLArray.mxDOUBLE_CLASS;
+        } else if (column_type == MLArray.mxCHAR_CLASS) {
+                values = new ArrayList<String> ();
+                value_type = MLArray.mxCHAR_CLASS;
+        }
+        name = n;
     }
 
 /** 
@@ -35,7 +54,7 @@ public class DataColumn {
         this.name = name;
     }
     
-    public void setType(String value_type){
+    public void setType(int value_type){
         this.value_type = value_type;
     }
     
@@ -47,7 +66,7 @@ public class DataColumn {
         return this.name;
     }
     
-    public String getType(){
+    public int getType(){
         return this.value_type;
     }
     
@@ -58,7 +77,7 @@ public class DataColumn {
 /** 
  * Add & Remove.
  */
-    public boolean add(Object datum){
+    public boolean add(Object datum){     
         return this.values.add(datum);
     }
     
@@ -84,5 +103,35 @@ public class DataColumn {
     
     public boolean isEmpty(){
         return (this.values == null);
+    }
+    
+    @Override
+    public String toString () {
+            return (this.values.toString ());
+    }
+
+    // Iterator / Iterable methods.
+    @Override
+    public boolean hasNext () {
+            return (position < values.size ());
+    }
+
+    @Override
+    public Object next () {
+            if (position == values.size ()) {
+                    throw new NoSuchElementException ();
+            }
+            return (values.get (++position));
+    }
+
+    @Override
+    public void remove () {
+            this.values.remove (position--);
+    }
+
+    @Override
+    public Iterator<Object> iterator () {
+            this.position = 0;
+            return (this);
     }
 }
