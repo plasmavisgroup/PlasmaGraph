@@ -50,6 +50,7 @@ public class Interpolator {
     	DefaultXYDataset regression_set = new DefaultXYDataset ();
     	regression_set.addSeries (interpolation_dataset.getKey (),
     			interpolation_dataset.toArray ());
+    	PearsonsCorrelation p_correlation = new PearsonsCorrelation ();
     	
     	// Perform the regression and get the dataset out of it, depending on the type
     	// of regression to perform.
@@ -120,7 +121,6 @@ public class Interpolator {
         	result = createSeries (func, t);
         	
         	// Obtain r_squared value from data.
-        	PearsonsCorrelation p_correlation = new PearsonsCorrelation ();
         	r_squared = p_correlation.correlation (createArrayFromSeries (result, true), 
         			createArrayFromSeries (result, false));
         	 
