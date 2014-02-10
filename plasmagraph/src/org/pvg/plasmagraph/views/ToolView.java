@@ -1,8 +1,8 @@
 package org.pvg.plasmagraph.views;
 
 import org.pvg.plasmagraph.models.ToolModel;
-import org.pvg.plasmagraph.utils.template.InterpolationType;
-import org.pvg.plasmagraph.utils.template.OutlierResponse;
+import org.pvg.plasmagraph.utils.types.InterpolationType;
+import org.pvg.plasmagraph.utils.types.OutlierResponse;
 
 /**
 * View for the optional tools modification pane.
@@ -141,9 +141,9 @@ public class ToolView extends javax.swing.JPanel {
         upper_bound_text_field = new javax.swing.JTextField();
         interval_text_field = new javax.swing.JTextField();
         outlier_model = new javax.swing.DefaultComboBoxModel <String> (
-                new String [] { "Warn", "Remove" });
-        interpolation_model = new javax.swing.DefaultComboBoxModel <String> (
-                new String [] { "Linear", "Polynomial", "Power" });
+                OutlierResponse.getOptions ());
+        interpolation_model = new javax.swing.DefaultComboBoxModel <String>
+        		(InterpolationType.getOptions ());
         target_data_model = new javax.swing.DefaultComboBoxModel <String> (
         		new String [] {"Derp", "Nope"});
         interpolation_type_combo_box = new javax.swing.JComboBox <String>

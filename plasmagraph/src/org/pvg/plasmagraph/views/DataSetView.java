@@ -2,8 +2,9 @@ package org.pvg.plasmagraph.views;
 
 import java.awt.event.ActionListener;
 import java.util.ArrayList;
+
 import org.pvg.plasmagraph.models.DataSetModel;
-import org.pvg.plasmagraph.utils.graphs.ChartType;
+import org.pvg.plasmagraph.utils.types.ChartType;
 
 /**
  * View for the data set modification pane.
@@ -44,18 +45,17 @@ public class DataSetView extends javax.swing.JPanel {
     /**
      * Getter Method. Provides this object's "chart_type_combo_box"'s value as one of the options provided by the ChartType class.
      * @return A ChartType object based on the representation in the "chart_type_combo_box" JComboBox object.
+     * @throws Exception 
      */
-    public ChartType getSelectedChartType () {
+    public ChartType getSelectedChartType () throws Exception {
         String c_type = (String) this.chart_type_combo_box.getSelectedItem ();
 
         if (c_type.equals (ChartType.XY_GRAPH.toString ())) {
             return (ChartType.XY_GRAPH);
-        } else if (c_type.equals (ChartType.LINE_GRAPH.toString ())) {
-            return (ChartType.LINE_GRAPH);
         } else if (c_type.equals (ChartType.BAR_GRAPH.toString ())) {
             return (ChartType.BAR_GRAPH);
         } else {
-            return (ChartType.PIE_GRAPH);
+        	throw (new Exception ("No such graph type"));
         }
     }
     
@@ -96,7 +96,8 @@ public class DataSetView extends javax.swing.JPanel {
         selected_datasets_pane = new javax.swing.JScrollPane ();
         selected_datasets_list = new javax.swing.JList <String> (
                 this.data_model.getSelectedListModel ());
-        chart_type_combo_box = new javax.swing.JComboBox <String> ();
+        chart_type_combo_box = new javax.swing.JComboBox <String>
+        		(ChartType.getOptions ());
         chart_type_label = new javax.swing.JLabel ();
         add_button = new javax.swing.JButton ();
         remove_button = new javax.swing.JButton ();
@@ -106,12 +107,7 @@ public class DataSetView extends javax.swing.JPanel {
         available_datasets_pane.setViewportView (available_datasets_list);
         
         selected_datasets_pane.setViewportView (selected_datasets_list);
-        
-        chart_type_combo_box
-                .setModel (new javax.swing.DefaultComboBoxModel <String> (
-                        new String [] { "Bar Graph", "XY Graph", "Pie Graph",
-                                "Line Graph" }));
-        
+
         chart_type_label.setText ("Chart Type");
         
         add_button.setText ("Add");

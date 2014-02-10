@@ -6,100 +6,28 @@ import java.util.NoSuchElementException;
 
 import com.jmatio.types.MLArray;
 
-public class DataColumn implements Iterable<Object>, Iterator<Object> {
-	/** Container for DataColumns. */
-	@SuppressWarnings ("rawtypes")
-	private ArrayList values;
-	
-	/** Name of the Column. */
-	private String name;
-	
-	/** Type of the item contained, as per JMatIO's MLArray class.*/
-	int type;
-	
-	/** Position of Iterator object; 
-	 * used for the implementation of Iterator and Iterable. */
-	private int position = 0;
-
-	public DataColumn (int column_type) {
-		if (column_type == MLArray.mxDOUBLE_CLASS) {
-			values = new ArrayList<Double> ();
-			type = MLArray.mxDOUBLE_CLASS;
-		} else if (column_type == MLArray.mxCHAR_CLASS) {
-			values = new ArrayList<String> ();
-			type = MLArray.mxCHAR_CLASS;
-		}
-		name = "empty";
-	}
-	
-	public DataColumn (int column_type, String n) {
-		if (column_type == MLArray.mxDOUBLE_CLASS) {
-			values = new ArrayList<Double> ();
-			type = MLArray.mxDOUBLE_CLASS;
-		} else if (column_type == MLArray.mxCHAR_CLASS) {
-			values = new ArrayList<String> ();
-			type = MLArray.mxCHAR_CLASS;
-		}
-		name = n;
-	}
-
-	@SuppressWarnings ("unchecked")
-	public boolean add (Number o) {
-		if (this.containsDoubles ()) {
-			return (this.values.add ((Double) o));
-		} else {
-			throw (new UnsupportedOperationException ("Not a double, or putting a Double in a String list."));
-		}
-	}
-	
-	@SuppressWarnings ("unchecked")
-	public boolean add (String o) {
-		if (this.containsStrings ()) {
-			return (this.values.add (o));
-		} else {
-			throw (new UnsupportedOperationException ("Not a String, or putting String in Double list."));
-		}
-	}
-
-	public boolean remove (Object o) {
-		return (this.values.remove (o));
-	}
-
-	public Object remove (int i) {
-		return (this.values.remove (i));
-	}
-
-	public int find (Object o) {
-		return (this.values.indexOf (o));
-	}
-	
-	public boolean contains (Object o) {
-		return (this.values.contains (o));
-	}
-
-	public Object get (int i) {
-			return (this.values.get (i));
-	}
-
-	public int size () {
-		return (this.values.size ());
-	}
-	
-	public String getColumnName () {
-		return (name);
-	}
-	
-	public String getType () {
-		return (MLArray.typeToString (type));
-	}
+public interface DataColumn {
 
 	/**
+	 * Getter method. Provides the current used size of the underlying ArrayList.
 	 * 
-	 * @return
+	 * @return An integer containing the size of the ArrayList.
 	 */
-	public int getTypeValue () {
-		return (type);
-	}
+	public int size ();
+	
+	/**
+	 * Getter method. Provides the column's name.
+	 * 
+	 * @return A string containing the name of this column.
+	 */
+	public String getColumnName ();
+	
+	/**
+	 * Getter method. Provides the string representation of the "type" variable.
+	 * 
+	 * @return A String containing the type of the column.
+	 */
+	public String getType ();
 	
 	/**
 	 * Comparing method. Type variable is compared to the MLArray types in JMatIO.
@@ -107,9 +35,7 @@ public class DataColumn implements Iterable<Object>, Iterator<Object> {
 	 * 
 	 * @return Boolean containing whether the Objects of this class are Doubles.
 	 */
-	public boolean containsDoubles () {
-		return (type == MLArray.mxDOUBLE_CLASS);
-	}
+	public boolean containsDoubles ();
 	
 	/**
 	 * Comparing method. Type variable is compared to the MLArray types in JMatIO.
@@ -118,47 +44,14 @@ public class DataColumn implements Iterable<Object>, Iterator<Object> {
 	 * 
 	 * @return Boolean containing whether the Objects of this class are Strings.
 	 */
-	public boolean containsStrings () {
-		return (type == MLArray.mxCHAR_CLASS);
-	}
+	public boolean containsStrings ();
 	
+	/**
+	 * Getter method. Provides a string representation of the entire column.
+	 * 
+	 * @return A String containing the name, type, and values of the entire 
+	 * DataColumn.
+	 */
 	@Override
-	public String toString () {
-		return (this.values.toString ());
-	}
-
-	// Iterator / Iterable methods.
-	@Override
-	public boolean hasNext () {
-		return (position < values.size ());
-	}
-
-	@Override
-	public Object next () {
-		if (position == values.size ()) {
-			throw new NoSuchElementException ();
-		}
-		return (values.get (++position));
-	}
-
-	@Override
-	public void remove () {
-		this.values.remove (position--);
-	}
-
-	@Override
-	public Iterator<Object> iterator () {
-		this.position = 0;
-		return (this);
-	}
-
-	public double [] toArray () {
-		double [] arr = new double [this.values.size ()];
-		
-		for (int i = 0; (i < this.values.size ()); ++i) {
-			arr[i] = (double) this.values.get (i);
-		}
-		
-		return (arr);
-	}
+	public String toString ();
 }

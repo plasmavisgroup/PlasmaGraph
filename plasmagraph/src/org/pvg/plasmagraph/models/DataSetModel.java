@@ -11,8 +11,8 @@ import org.pvg.plasmagraph.utils.data.DataColumn;
 import org.pvg.plasmagraph.utils.data.DataReference;
 import org.pvg.plasmagraph.utils.data.DataSet;
 import org.pvg.plasmagraph.utils.data.Pair;
-import org.pvg.plasmagraph.utils.graphs.ChartType;
 import org.pvg.plasmagraph.utils.template.Template;
+import org.pvg.plasmagraph.utils.types.ChartType;
 
 //TODO: Add more JavaDoc comments!
 /**

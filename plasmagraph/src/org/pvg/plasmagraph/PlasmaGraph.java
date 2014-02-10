@@ -5,9 +5,9 @@ import javax.swing.SwingUtilities;
 
 import org.pvg.plasmagraph.controllers.*;
 import org.pvg.plasmagraph.models.*;
-import org.pvg.plasmagraph.utils.data.DataFilter;
 import org.pvg.plasmagraph.utils.data.DataReference;
 import org.pvg.plasmagraph.utils.data.DataSet;
+import org.pvg.plasmagraph.utils.data.filter.DataFilter;
 import org.pvg.plasmagraph.utils.template.*;
 import org.pvg.plasmagraph.views.*;
 

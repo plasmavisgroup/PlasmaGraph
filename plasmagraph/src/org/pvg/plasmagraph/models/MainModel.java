@@ -9,9 +9,9 @@ import javax.swing.filechooser.FileNameExtensionFilter;
 
 import org.pvg.plasmagraph.utils.ExceptionHandler;
 import org.pvg.plasmagraph.utils.FileUtilities;
-import org.pvg.plasmagraph.utils.data.DataFilter;
-import org.pvg.plasmagraph.utils.data.DataFilterWindow;
 import org.pvg.plasmagraph.utils.data.DataSet;
+import org.pvg.plasmagraph.utils.data.filter.DataFilter;
+import org.pvg.plasmagraph.utils.data.filter.DataFilterWindow;
 import org.pvg.plasmagraph.utils.template.Template;
 
 /**

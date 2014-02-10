@@ -13,7 +13,7 @@ import org.pvg.plasmagraph.utils.data.DataColumn;
 import org.pvg.plasmagraph.utils.data.DataSet;
 import org.pvg.plasmagraph.utils.graphs.XYGraph;
 import org.pvg.plasmagraph.utils.template.Template;
-import org.pvg.plasmagraph.utils.template.InterpolationType;
+import org.pvg.plasmagraph.utils.types.InterpolationType;
 
 public class Interpolator {
   

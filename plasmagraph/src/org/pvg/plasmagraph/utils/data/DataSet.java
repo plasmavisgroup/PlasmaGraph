@@ -59,18 +59,20 @@ public class DataSet implements Iterable<DataColumn>, Iterator<DataColumn> {
 	}
 	
 	/**
+	 * Searches all DataColumns for the column provided.
 	 * 
-	 * @param o
-	 * @return
+	 * @param o The column being searched.
+	 * @return The integer index of the DataColumn being searched for.
 	 */
 	public int find (DataColumn o) {
 		return (this.values.indexOf (o));
 	}
 	
 	/**
+	 * Searches all DataColumns for the column name provided.
 	 * 
-	 * @param o
-	 * @return
+	 * @param o The name being searched for.
+	 * @return The integer index of the DataColumn being searched for.
 	 */
 	public int find (String o) {
 		int index = -1;
@@ -85,9 +87,10 @@ public class DataSet implements Iterable<DataColumn>, Iterator<DataColumn> {
 	}
 
 	/**
+	 * Searches for a specific DataColumn. Responds if it found it or not.
 	 * 
-	 * @param o
-	 * @return
+	 * @param o Column being searched for.
+	 * @return A boolean stating if the column was found or not.
 	 */
 	public boolean contains (DataColumn o) {
 		return (this.values.contains (o));
@@ -101,30 +104,73 @@ public class DataSet implements Iterable<DataColumn>, Iterator<DataColumn> {
 	public DataColumn get (int i) {
 		return (this.values.get (i));
 	}
+	
+	/**
+	 * Getter method. Provides whether the entire DataSet is populated by DoubleColumns.
+	 * 
+	 * @return Boolean stating if all the columns are of type Double.
+	 */
+	public boolean isDouble () {
+		boolean b = true;
+		
+		for (DataColumn c : values) {
+			b = c.containsDoubles () && b;
+		}
+		return (b);
+	}
+	
+	/**
+	 * Getter method. Provides whether the one DataColumn is a DoubleColumn.
+	 * 
+	 * @param index Integer value specifying the target column.
+	 * @return Boolean stating if the column if of type Double.
+	 */
+	public boolean isDouble (int index) {
+		return (this.values.get (index).containsDoubles ());
+	}
+	
+	/**
+	 * Getter method. Provides whether the entire DataSet is populated by StringColumns.
+	 * 
+	 * @return Boolean stating if all the columns are of type String.
+	 */
+	public boolean isString () {
+		boolean b = true;
+		
+		for (DataColumn c : values) {
+			b = c.containsStrings () && b;
+		}
+		return (b);
+	}
+	
+	/**
+	 * Getter method. Provides whether the one DataColumn is a StringColumn.
+	 * 
+	 * @param index Integer value specifying the target column.
+	 * @return Boolean stating if the column if of type String.
+	 */
+	public boolean isString (int index) {
+		return (this.values.get (index).containsStrings ());
+	}
 
 	/**
+	 * Getter method. Provides the size of the ArrayList contained.
 	 * 
-	 * @return
+	 * @return Integer value of the current size of the ArrayList.
 	 */
 	public int size () {
 		return (this.values.size ());
 	}
 
 	/**
+	 * Getter method. Provides a string representation of the ArrayList.
 	 * 
+	 * @return A String representation of the entire ArrayList.
 	 */
 	@Override
 	public String toString () {
 		return (this.values.toString ());
 	}
-	
-	/**
-	 * 
-	 * @return
-	 */
-	//public String getType (int column) {
-	//	return (this.values.get (column).getType ());
-	//}
 
 	// Iterator / Iterable methods.
 	@Override
@@ -155,14 +201,23 @@ public class DataSet implements Iterable<DataColumn>, Iterator<DataColumn> {
 		 // TODO: Use DataReference to provide this!
 		XYSeries series = new XYSeries (this.getDataSetName ());
 
-		for (int row = 0; row < this.getColumnLength (); ++row) {
-			// TODO: Implement check for strings and change type casts
-			// manually per check.
-			series.add ((Double) this.values.get (0).get (row),
-					(Double) this.values.get (1).get (row));
+		if (this.isDouble ()) {
+			for (int row = 0; row < this.getColumnLength (); ++row) {
+				series.add (((DoubleColumn) this.values.get (0)).get (row),
+						((DoubleColumn) this.values.get (1)).get (row));
+			}
 		}
 		
 		return (series);
+	}
+	
+	public DefaultCategoryDataset toBarGraphDataset () {
+		DefaultCategoryDataset dataset = new DefaultCategoryDataset ();
+		
+		// TODO: COMPLICATED. AUGH.
+		return (null);
+		
+		//return (dataset);
 	}
 
 	private Comparable<String> getDataSetName () {
@@ -180,20 +235,5 @@ public class DataSet implements Iterable<DataColumn>, Iterator<DataColumn> {
 		} else {
 			return (0);
 		}
-	}
-
-	public PieDataset toPieGraphDataset () {
-		// TODO Auto-generated method stub
-		return null;
-	}
-
-	public XYSeriesCollection toLineGraphDataset () {
-		// TODO Auto-generated method stub
-		return null;
-	}
-
-	public DefaultCategoryDataset toBarGraphDataset () {
-		// TODO Auto-generated method stub
-		return null;
 	}
 }

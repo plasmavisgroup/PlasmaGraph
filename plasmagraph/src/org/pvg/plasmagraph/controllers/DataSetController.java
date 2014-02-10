@@ -51,7 +51,11 @@ public class DataSetController {
          */
         @Override
         public void actionPerformed (ActionEvent arg0) {
-            data_model.getTemplate ().setChartType (data_view.getSelectedChartType ());
+            try {
+				data_model.getTemplate ().setChartType (data_view.getSelectedChartType ());
+			} catch (Exception e) {
+				// TODO Throw a Dialog Exception
+			}
         }
         
     }

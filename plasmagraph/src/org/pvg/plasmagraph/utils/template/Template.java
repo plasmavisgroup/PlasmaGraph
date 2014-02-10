@@ -15,8 +15,18 @@ import javax.swing.event.ChangeEvent;
 import javax.swing.event.ChangeListener;
 
 import org.jfree.chart.plot.PlotOrientation;
-import org.pvg.plasmagraph.utils.graphs.ChartType;
+import org.pvg.plasmagraph.utils.types.ChartType;
+import org.pvg.plasmagraph.utils.types.InterpolationType;
+import org.pvg.plasmagraph.utils.types.OutlierResponse;
 
+/**
+ * Settings container for all of PlasmaGraph.
+ * Maintains every possible setting that can and will be used in graphing
+ * or using the optional tools.
+ * 
+ * @version 0.8.4
+ * @author Gerardo A. Navas Morales
+ */
 public class Template {
 	// Variables
     // Event Firing
@@ -127,13 +137,9 @@ public class Template {
             String output = reader.readLine();
             if (output.equals (ChartType.XY_GRAPH.toString ())) {
                 this.chart_type = ChartType.XY_GRAPH;
-            } else if (output.equals (ChartType.LINE_GRAPH.toString ())) {
-                this.chart_type = ChartType.LINE_GRAPH;
-            } else if (output.equals (ChartType.BAR_GRAPH.toString ())) {
+            } else {//if (output.equals (ChartType.BAR_GRAPH.toString ())) {
                 this.chart_type = ChartType.BAR_GRAPH;
-            } else {
-                this.chart_type = ChartType.PIE_GRAPH;
-            }
+            } 
 
             // Label names.
             output = reader.readLine();
