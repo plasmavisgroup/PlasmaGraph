@@ -76,8 +76,17 @@ public class DataColumn implements Iterable<Object>, Iterator<Object>{
 
 /** 
  * Add & Remove.
- */
-    public boolean add(Object datum){     
+ 
+    public boolean add(Object datum){
+        System.out.println(datum.toString());
+        return this.values.add(datum);
+    }
+    */
+    public boolean add(Double datum){
+        return this.values.add(datum);
+    }
+    
+    public boolean add(String datum){
         return this.values.add(datum);
     }
     
@@ -133,5 +142,15 @@ public class DataColumn implements Iterable<Object>, Iterator<Object>{
     public Iterator<Object> iterator () {
             this.position = 0;
             return (this);
+    }
+
+    void append(DataColumn column) {
+        if(this.values.isEmpty()){
+            this.values = column.getValues();
+        }else{
+            for(int i = 0; i < this.values.size(); i++){
+                this.values.add(column.getValues().get(i).toString());
+            } 
+        }               
     }
 }

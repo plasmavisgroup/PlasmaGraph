@@ -16,6 +16,7 @@ public class DataSet {
     ArrayList <DataColumn> values;
     
     public DataSet DataSet(){
+        this.values = new <DataColumn> ArrayList();
         return this;
     }
     

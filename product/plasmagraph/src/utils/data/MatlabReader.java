@@ -30,14 +30,14 @@ public class MatlabReader {
         /** variables definition **/
         MatFileReader mfr = new MatFileReader(); 
         DataSet result = new DataSet();
+        ArrayList <DataColumn> column_list = new <DataColumn> ArrayList ();            
+        DataColumn first_column = new DataColumn(MLArray.mxCHAR_CLASS, "name");
+        ArrayList <DataColumn> other_columns = new <DataColumn> ArrayList();
         
         try {
             
             /** variables definition **/
-            Map <String, MLArray> dataMap = mfr.read(f);
-            ArrayList <DataColumn> column_list = new <DataColumn> ArrayList ();            
-            DataColumn first_column = new DataColumn(MLArray.mxCHAR_CLASS, "name");
-            ArrayList <DataColumn> other_columns = new <DataColumn> ArrayList();
+            Map <String, MLArray> dataMap = mfr.read(f);            
             
             /** iterate every cell group in the .mat file **/
             for (Iterator iterator = dataMap.values().iterator(); iterator.hasNext();){
@@ -57,21 +57,31 @@ public class MatlabReader {
                 /** get every column from the group and place them in the result DataSet **/
                 for(int i = 0; i < cell_group.getN(); i++){
                     DataColumn column = getColumn(cell_group, i);
-                    other_columns.add(column);
+                    // every cell group has their own columns which must be agregated to the corresponding column in the result set **/ 
+                    if(other_columns.size() ==  cell_group.getN()){
+                        DataColumn tmp = other_columns.get(i);
+                        for(int j = 0; j < column.getValues().size(); i++){
+                            tmp.add(column.getValues().get(i).toString());
+                        }
+                        other_columns.set(i, tmp);
+                    }else{
+                        other_columns.add(column);
+                    }
+                    //result.add((DataColumn) column);
                 }
                                                
-            }
-            
-                /** add columns to result **/
-                result.add(first_column);
-                for(int i = 0; i < other_columns.size(); i++){
-                    result.add(other_columns.get(i));
-                }
-            
+            }           
             
         } catch (IOException ex) {
             Logger.getLogger(MatlabReader.class.getName()).log(Level.SEVERE, null, ex);
         }  
+        
+        /** add columns to result **/
+       // result.add(first_column);
+        System.out.println(other_columns.size());
+        for(int i = 0; i < other_columns.size(); i++){
+            //result.add(other_columns.get(i));
+        }
         
         return result;
     }
@@ -81,12 +91,10 @@ public class MatlabReader {
     * 
     */
     private DataColumn getColumn(MLCell cell, int index){
-        
-        DataColumn column = new DataColumn(cell.getType());
+        DataColumn column = new DataColumn(MLArray.mxCHAR_CLASS);
         for ( int m = 0; m < cell.getM(); m++ )
         {
-           String item = cell.get(m,index).contentToString();
-           //System.out.println(item.toString());
+            String item = cell.get(m,index).contentToString();
            column.add(item);
         }
         
