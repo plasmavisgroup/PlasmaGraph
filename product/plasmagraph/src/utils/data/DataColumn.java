@@ -72,7 +72,12 @@ public class DataColumn implements Iterable<Object>, Iterator<Object>{
     
     public ArrayList getValues(){
         return this.values;
-    }  
+    }
+    
+    public Object get(int index){
+        ArrayList list = this.getValues();
+        return list.get(index);
+    }
 
 /** 
  * Add & Remove.
@@ -84,6 +89,21 @@ public class DataColumn implements Iterable<Object>, Iterator<Object>{
     */
     public boolean add(Double datum){
         return this.values.add(datum);
+    }
+    
+    public boolean add(DataColumn column){
+        
+        boolean rvalue = false;
+        
+        if(column.getType() == this.getType()){
+            for(int i = 0; i < column.getValues().size(); i++){
+                this.values.add(column.get(i));
+            }
+            
+            rvalue = true;
+        }
+        
+        return rvalue;
     }
     
     public boolean add(String datum){

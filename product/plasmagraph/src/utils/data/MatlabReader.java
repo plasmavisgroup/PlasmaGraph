@@ -55,19 +55,19 @@ public class MatlabReader {
                 }
                 
                 /** get every column from the group and place them in the result DataSet **/
-                for(int i = 0; i < cell_group.getN(); i++){
-                    DataColumn column = getColumn(cell_group, i);
-                    // every cell group has their own columns which must be agregated to the corresponding column in the result set **/ 
-                    if(other_columns.size() ==  cell_group.getN()){
-                        DataColumn tmp = other_columns.get(i);
-                        for(int j = 0; j < column.getValues().size(); i++){
-                            tmp.add(column.getValues().get(i).toString());
-                        }
-                        other_columns.set(i, tmp);
-                    }else{
-                        other_columns.add(column);
+                // is this the first column?
+                if(first_column.isEmpty()){
+                    //  start column list
+                    for(int i = 0; i < cell_group.getN(); i++){
+                        DataColumn column = getColumn(cell_group, i);
+                        result.add(column);
                     }
-                    //result.add((DataColumn) column);
+                }else{
+                    //  add each column from this cell into the list
+                    for(int i = 0; i < cell_group.getN(); i++){
+                        DataColumn column = getColumn(cell_group, i);                        
+                        result.add(column, i);
+                    }
                 }
                                                
             }           
@@ -78,10 +78,10 @@ public class MatlabReader {
         
         /** add columns to result **/
        // result.add(first_column);
-        System.out.println(other_columns.size());
-        for(int i = 0; i < other_columns.size(); i++){
+        System.out.println(result.columns.toString());
+        //for(int i = 0; i < other_columns.size(); i++){
             //result.add(other_columns.get(i));
-        }
+        //}
         
         return result;
     }
