@@ -42,6 +42,25 @@ public class DataReference implements Iterator<Pair>, Iterable<Pair>{
 	        return (false);
 	    }
 	}
+	
+	/**
+	 * Interfacing method between the exterior and the table contained in this object.
+	 * Adds the Pair object components provided to it and responds if the process succeeded or not.
+	 * 
+	 * @param p1 Index position of the first half of the pair object.
+	 * @param p2 Index position of the second half of the pair object.
+	 * @param name Name of the Pair.
+	 * @return A boolean specifying method success (true) or failure (false).
+	 */
+	public boolean add (int p1, int p2, String name) {
+	    // Check to see if the indices are even possible.
+	    // Also check to see if the name of the Pair is even useful.
+	    if ((p1 > 0) && (p2 > 0) && (name.contains ("vs."))) {
+	        return (table.add (new Pair (p1, p2, name)));
+	    } else {
+	        return (false);
+	    }
+	}
 
 	/**
 	 * Interfacing method between the exterior and the table contained in this object.
@@ -85,8 +104,8 @@ public class DataReference implements Iterator<Pair>, Iterable<Pair>{
 	 * @return Index location of the object in the ArrayList.
 	 */
 	public int findIndex (String s) {
-		int j = 0; boolean found = false;
-		for (int i = 0; (i < table.size()) || !found; ++i) {
+		int j = -1; boolean found = false;
+		for (int i = 0; (i < table.size()) && !found; ++i) {
 			if (table.get(i).getName().equals(s)) {
 				j = i; found = true;
 			}
@@ -115,7 +134,7 @@ public class DataReference implements Iterator<Pair>, Iterable<Pair>{
      */
     public Pair findPair (String s) {
         int j = 0; boolean found = false;
-        for (int i = 0; (i < table.size()) || !found; ++i) {
+        for (int i = 0; (i < table.size()) && !found; ++i) {
             if (table.get(i).getName().equals(s)) {
                 j = i; found = true;
             }
