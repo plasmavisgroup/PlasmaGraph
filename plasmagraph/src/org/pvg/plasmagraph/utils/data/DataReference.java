@@ -179,8 +179,8 @@ public class DataReference implements Iterator<Pair>, Iterable<Pair>{
         
         Pair p = get (pair_position);
         	
-    	d.add (main_dataset.get(p.getIndex1 ()));
-        d.add (main_dataset.get(p.getIndex2 ()));
+    	d.add (main_dataset.get(p.getIndex1 () - 1));
+        d.add (main_dataset.get(p.getIndex2 () - 1));
         
         return (d);
     }
