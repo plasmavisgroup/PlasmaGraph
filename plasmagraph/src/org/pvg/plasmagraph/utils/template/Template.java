@@ -136,7 +136,7 @@ public class Template {
 	public void openTemplate (File f) {
 	 // See if we can get this to work. Otherwise, throw an error!
         try (BufferedReader reader = new BufferedReader (new FileReader (f))) {
-            System.out.println (f.getName ());
+            //System.out.println (f.getName ());
 
             // Now, read and put in the correct place!
             // Classifications
@@ -194,14 +194,6 @@ public class Template {
                 this.default_interpolation_type = InterpolationType.SPLINE;
             }
             
-            // Interpolation ranges and interval
-            output = reader.readLine();
-            this.interpolation_lower_range 		= Double.parseDouble (output);
-            output = reader.readLine();
-    		this.interpolation_upper_range		= Double.parseDouble (output);
-    		output = reader.readLine();
-    		this.interpolation_point_intervals	= Integer.parseInt (output);
-            
             // Outlier Response
             output = reader.readLine();
             if (output.equals (OutlierResponse.WARN.toString())) {
@@ -209,6 +201,14 @@ public class Template {
             } else {
                 this.default_outlier_reaction = OutlierResponse.REMOVE;
             }
+            
+            // Interpolation ranges and interval
+            output = reader.readLine();
+            this.interpolation_lower_range 		= Double.parseDouble (output);
+            output = reader.readLine();
+    		this.interpolation_upper_range		= Double.parseDouble (output);
+    		output = reader.readLine();
+    		this.interpolation_point_intervals	= Integer.parseInt (output);
 
         } catch (FileNotFoundException e) {
             // Catch for File "f" not found.
@@ -220,6 +220,12 @@ public class Template {
             // Catch for BufferedReader "reader" giving problems that don't include null!
             // TODO Create an ExceptionHandler method for this.
             System.out.println ("Error in Template's \'openTemplate (File f)\' method: IO procedures gave an error.");
+            e.printStackTrace ();
+            
+        } catch (NumberFormatException e) {
+            // Catch for BufferedReader "reader" giving problems that don't include null!
+            // TODO Create an ExceptionHandler method for this.
+            System.out.println ("Error in Template's \'openTemplate (File f)\' method: ParseDouble gave an error.");
             e.printStackTrace ();
         }
 
