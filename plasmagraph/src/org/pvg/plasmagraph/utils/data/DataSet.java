@@ -32,18 +32,29 @@ public class DataSet implements Iterable<DataColumn>, Iterator<DataColumn> {
 	}
 
 	/**
+	 * Allows a new DataColumn into the DataSet if and only if its length
+	 * is the same as every other column. (Read: The first one is checked.)
 	 * 
 	 * @param o
-	 * @return
+	 * @return Boolean describing the success or failure of the action.
 	 */
 	public boolean add (DataColumn o) {
-		return (this.values.add (o));
+		if (this.size () == 0) {
+			return (this.values.add (o));
+		} else {
+			if (this.values.get (0).size () == o.size ()) {
+				return (this.values.add (o));
+			} else {
+				return (false);
+			}
+		}
 	}
 
 	/**
+	 * Removes a DataColumn from the DataSet.
 	 * 
-	 * @param o
-	 * @return
+	 * @param o The DataColumn to remove.
+	 * @return Boolean describing the success or failure of the action.
 	 */
 	public boolean remove (DataColumn o) {
 		return (this.values.remove (o));
@@ -198,7 +209,6 @@ public class DataSet implements Iterable<DataColumn>, Iterator<DataColumn> {
 	}
 
 	public XYSeries toXYGraphDataset () {
-		 // TODO: Use DataReference to provide this!
 		XYSeries series = new XYSeries (this.getDataSetName ());
 
 		if (this.isDouble ()) {
@@ -249,5 +259,9 @@ public class DataSet implements Iterable<DataColumn>, Iterator<DataColumn> {
 		} else {
 			return (0);
 		}
+	}
+	
+	public int getColumnLength (int index) {
+		return (this.values.get (index).size ());
 	}
 }

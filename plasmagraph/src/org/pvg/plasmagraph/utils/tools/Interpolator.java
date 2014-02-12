@@ -115,7 +115,7 @@ public class Interpolator {
         	
         	SplineInterpolator spline = new SplineInterpolator ();
         	PolynomialSplineFunction func = spline.interpolate
-        			 (ds.get (0).toArray (), ds.get (1).toArray ());
+        			 (ds.get (0).toDoubleArray (), ds.get (1).toDoubleArray ());
         	 
         	// Create data from function.
         	result = createSeries (func, t);

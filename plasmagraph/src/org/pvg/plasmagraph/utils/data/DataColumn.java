@@ -99,7 +99,7 @@ public class DataColumn<E> implements Iterable<Object>, Iterator<Object> {
 	 * @return Boolean containing whether the Objects of this class are Doubles.
 	 */
 	public boolean containsDoubles () {
-		return (false);
+		return (type.equals (ColumnType.DOUBLE));
 	}
 	
 	/**
@@ -110,7 +110,7 @@ public class DataColumn<E> implements Iterable<Object>, Iterator<Object> {
 	 * @return Boolean containing whether the Objects of this class are Strings.
 	 */
 	public boolean containsStrings () {
-		return (true);
+		return (type.equals (ColumnType.STRING));
 	}
 	
 	@Override
@@ -143,11 +143,11 @@ public class DataColumn<E> implements Iterable<Object>, Iterator<Object> {
 		return (this);
 	}
 
-	public String [] toArray () {
-		String [] arr = new String [this.values.size ()];
+	public double [] toDoubleArray () {
+		double [] arr = new double [this.values.size ()];
 		
 		for (int i = 0; (i < this.values.size ()); ++i) {
-			arr[i] = this.values.get (i).toString ();
+			arr[i] = (Double) this.values.get (i);
 		}
 		
 		return (arr);
