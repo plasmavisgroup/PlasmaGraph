@@ -57,6 +57,10 @@ public class Template {
 	/** The orientation of the graph. (HORIZONTAL or VERTICAL) Provided by JFreeChart. */
 	private PlotOrientation orientation;
 	
+	// Data Set Features
+	/** The column name to categorize series of data by. Default is: "None".*/
+	private String group_by;
+	
 	// Tool Features
 	/** The type of interpolation that is default to this Template. (LINEAR, POLYNOMIAL or POWER) */
 	private InterpolationType default_interpolation_type;
@@ -84,6 +88,7 @@ public class Template {
 		this.using_tooltips 				= true;
 		this.generate_urls 					= false;
 		this.orientation 					= PlotOrientation.HORIZONTAL;
+		this.group_by						= "None";
 		this.default_interpolation_type 	= InterpolationType.LINEAR;
 		this.default_outlier_reaction 		= OutlierResponse.WARN;
 		this.interpolation_lower_range 		= 0.0;
@@ -105,7 +110,7 @@ public class Template {
 	 */
 	public Template (String name, ChartType type, String x, String y, 
 			boolean legend, boolean tooltips, boolean urls, PlotOrientation o,
-			InterpolationType interpolation, OutlierResponse outlier,
+			String group, InterpolationType interpolation, OutlierResponse outlier,
 			double lower, double upper, int interval) {
 		this.chart_name 					= name;
 		this.chart_type 					= type;
@@ -115,6 +120,7 @@ public class Template {
 		this.using_tooltips 				= tooltips;
 		this.generate_urls 					= urls;
 		this.orientation					= o;
+		this.group_by						= group;
 		this.default_interpolation_type 	= interpolation;
 		this.default_outlier_reaction 		= outlier;
 		this.interpolation_lower_range 		= lower;
@@ -164,6 +170,10 @@ public class Template {
             } else {
                 this.orientation = PlotOrientation.VERTICAL;
             }
+            
+            // Data Set Features
+            output = reader.readLine ();
+            this.group_by = output;
             
             // Tool Features
             // Interpolation Type
@@ -245,6 +255,9 @@ public class Template {
             // Layout Features
             sb.append (this.orientation.toString () + ls);
             
+            // Data Set Features
+            sb.append (this.group_by + ls);
+            
             // Tool Features
             sb.append (this.default_interpolation_type.toString () + ls);
             sb.append (this.default_outlier_reaction.toString () + ls);
@@ -296,6 +309,7 @@ public class Template {
 	    sb.append ("Tooltips?: " + Boolean.toString (using_tooltips) + ls);
 	    sb.append ("URL Generation?: " + Boolean.toString (generate_urls) + ls);
 	    sb.append ("Interpolation: " + default_interpolation_type.toString () + ls);
+	    sb.append ("Data Set Grouping by Column: " + group_by + ls);
 	    sb.append ("Outlier Reaction: " + default_outlier_reaction.toString () + ls);
 	    sb.append ("Lower Interpolation Range: " + interpolation_lower_range + ls);
         sb.append ("Upper Interpolation Range: " + interpolation_upper_range + ls);
@@ -433,6 +447,22 @@ public class Template {
 	 */
 	public final void setOrientation (PlotOrientation orientation) {
 		this.orientation = orientation;
+	}
+	
+	/**
+	 * Getter Method. Provides the "group_by" variable.
+	 * @return A String variable, "group_by", contained by this object.
+	 */
+	public final String getGroupBy () {
+		return group_by;
+	}
+
+	/**
+	 * Setter Method. Changes the "group_by" variable.
+	 * @param graph The new String variable to replace this object's "group_by" variable's contents.
+	 */
+	public final void setGroupBy (String group) {
+		this.group_by = group;
 	}
 
 	/**

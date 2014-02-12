@@ -203,8 +203,8 @@ public class DataSet implements Iterable<DataColumn>, Iterator<DataColumn> {
 
 		if (this.isDouble ()) {
 			for (int row = 0; row < this.getColumnLength (); ++row) {
-				series.add (((DoubleColumn) this.values.get (0)).get (row),
-						((DoubleColumn) this.values.get (1)).get (row));
+				series.add ((double) this.values.get (0).get (row),
+						((double) this.values.get (1).get (row)));
 			}
 		}
 		
@@ -213,11 +213,25 @@ public class DataSet implements Iterable<DataColumn>, Iterator<DataColumn> {
 	
 	public DefaultCategoryDataset toBarGraphDataset () {
 		DefaultCategoryDataset dataset = new DefaultCategoryDataset ();
+		String series = "Series 1";
 		
-		// TODO: COMPLICATED. AUGH.
-		return (null);
+		// Assume the X column (Column 0) has the category data.
+		// Assume the Y column (Column 1) has the quantity data. (Cannot be a string)
 		
-		//return (dataset);
+		// We need to know what are the column types for each of them.
+		if (this.isDouble (0)) {
+			for (int row = 0; (row < this.getColumnLength ()); ++row) {
+				dataset.addValue ((Number) (double) this.values.get (1).get (row),
+						series, (double) this.values.get (0).get (row));
+			}
+		} else {
+			for (int row = 0; (row < this.getColumnLength ()); ++row) {
+				dataset.addValue ((Number) (double) this.values.get (1).get (row),
+						series, (String) this.values.get (0).get (row));
+			}
+		}
+		
+		return (dataset);
 	}
 
 	private Comparable<String> getDataSetName () {
@@ -229,7 +243,7 @@ public class DataSet implements Iterable<DataColumn>, Iterator<DataColumn> {
 		}
 	}
 
-	private int getColumnLength () {
+	public int getColumnLength () {
 		if (this.values.size () > 0) {
 			return (this.values.get (0).size ());
 		} else {

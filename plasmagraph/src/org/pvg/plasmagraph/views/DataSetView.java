@@ -3,6 +3,10 @@ package org.pvg.plasmagraph.views;
 import java.awt.event.ActionListener;
 import java.util.ArrayList;
 
+import javax.swing.ComboBoxModel;
+import javax.swing.DefaultComboBoxModel;
+import javax.swing.DefaultListModel;
+
 import org.pvg.plasmagraph.models.DataSetModel;
 import org.pvg.plasmagraph.utils.types.ChartType;
 
@@ -40,6 +44,7 @@ public class DataSetView extends javax.swing.JPanel {
         this.chart_type_combo_box.setSelectedItem (this.data_model
                 .getTemplate ().getChartType ().toString ());
         this.data_model.resetListModels ();
+        this.updateGroupByComboBox ();
     }
     
     /**
@@ -57,6 +62,14 @@ public class DataSetView extends javax.swing.JPanel {
         } else {
         	throw (new Exception ("No such graph type"));
         }
+    }
+    
+    /**
+     * Getter Method. Provides this object's "group_by_combo_box"'s value.
+     * @return A String object selected by the user from the list of available data columns.
+     */
+    public String getGroupByColumn () {
+    	return ((String) this.group_by_combo_box.getSelectedItem ());
     }
     
     /**
@@ -83,133 +96,125 @@ public class DataSetView extends javax.swing.JPanel {
                 .getSelectedValuesList ());
     }
     
+    /**
+     * Updating method. Keeps the "group_by" JComboBox updated with the 
+     * "available_datasets" JList.
+     */
+    public void updateGroupByComboBox () {
+    	// Create main container.
+    	ArrayList <String> group_by = new ArrayList <String> ();
+    	
+    	// Add default.
+    	group_by.add ("None");
+    	
+    	// Create iteration container.
+    	String [] current_available_columns = 
+    			(String[]) ((DefaultListModel<String>) this.available_datasets_list.getModel ()).toArray ();
+    	
+    	// Add all strings into main container.
+    	for (String s : current_available_columns) {
+    		group_by.add (s);
+    	}
+    	
+    	// Set the new model into the combo box.
+    	String [] arr = (String[]) group_by.toArray ();
+    	this.group_by_combo_box.setModel
+    			(new DefaultComboBoxModel <String> (arr));
+    	
+    	// Clean up? Shrug.
+    	current_available_columns = null;
+    	group_by = null;
+    }
+    
     // Created by NetBeans IDE.
     /**
      * Initializes the visual components of this view form.
      */
     private void initComponents () {
         this.setName ("Data Set View");
-        
-        available_datasets_pane = new javax.swing.JScrollPane ();
-        available_datasets_list = new javax.swing.JList <String> (
-                this.data_model.getAvailableListModel ());
-        selected_datasets_pane = new javax.swing.JScrollPane ();
+
+        selected_datasets_pane = new javax.swing.JScrollPane();
         selected_datasets_list = new javax.swing.JList <String> (
                 this.data_model.getSelectedListModel ());
+        add_button = new javax.swing.JButton();
+        remove_button = new javax.swing.JButton();
+        chart_type_label = new javax.swing.JLabel();
         chart_type_combo_box = new javax.swing.JComboBox <String>
-        		(ChartType.getOptions ());
-        chart_type_label = new javax.swing.JLabel ();
-        add_button = new javax.swing.JButton ();
-        remove_button = new javax.swing.JButton ();
-        
-        available_datasets_list.setCursor (new java.awt.Cursor (
-                java.awt.Cursor.DEFAULT_CURSOR));
-        available_datasets_pane.setViewportView (available_datasets_list);
-        
-        selected_datasets_pane.setViewportView (selected_datasets_list);
+				(ChartType.getOptions ());
+        group_by_label = new javax.swing.JLabel();
+        group_by_combo_box = new javax.swing.JComboBox<String>();
+        available_datasets_pane = new javax.swing.JScrollPane();
+        available_datasets_list = new javax.swing.JList <String> (
+                this.data_model.getAvailableListModel ());
 
-        chart_type_label.setText ("Chart Type");
-        
-        add_button.setText ("Add");
-        
-        remove_button.setText ("Remove");
-        
-        javax.swing.GroupLayout layout = new javax.swing.GroupLayout (this);
-        this.setLayout (layout);
-        layout.setHorizontalGroup (layout
-                .createParallelGroup (javax.swing.GroupLayout.Alignment.LEADING)
-                .addGroup (
-                        layout.createSequentialGroup ()
-                                .addGroup (
-                                        layout.createParallelGroup (
-                                                javax.swing.GroupLayout.Alignment.TRAILING)
-                                                .addGroup (
-                                                        layout.createSequentialGroup ()
-                                                                .addContainerGap (
-                                                                        javax.swing.GroupLayout.DEFAULT_SIZE,
-                                                                        Short.MAX_VALUE)
-                                                                .addComponent (
-                                                                        chart_type_label)
-                                                                .addPreferredGap (
-                                                                        javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                                                                .addComponent (
-                                                                        chart_type_combo_box,
-                                                                        javax.swing.GroupLayout.PREFERRED_SIZE,
-                                                                        javax.swing.GroupLayout.DEFAULT_SIZE,
-                                                                        javax.swing.GroupLayout.PREFERRED_SIZE)
-                                                                .addGap (63,
-                                                                        63, 63))
-                                                .addGroup (
-                                                        layout.createSequentialGroup ()
-                                                                .addContainerGap ()
-                                                                .addGroup (
-                                                                        layout.createParallelGroup (
-                                                                                javax.swing.GroupLayout.Alignment.TRAILING)
-                                                                                .addGroup (
-                                                                                        layout.createSequentialGroup ()
-                                                                                                .addComponent (
-                                                                                                        add_button,
-                                                                                                        javax.swing.GroupLayout.DEFAULT_SIZE,
-                                                                                                        javax.swing.GroupLayout.DEFAULT_SIZE,
-                                                                                                        Short.MAX_VALUE)
-                                                                                                .addPreferredGap (
-                                                                                                        javax.swing.LayoutStyle.ComponentPlacement.UNRELATED))
-                                                                                .addComponent (
-                                                                                        available_datasets_pane,
-                                                                                        javax.swing.GroupLayout.PREFERRED_SIZE,
-                                                                                        226,
-                                                                                        javax.swing.GroupLayout.PREFERRED_SIZE))))
-                                .addGap (18, 18, 18)
-                                .addGroup (
-                                        layout.createParallelGroup (
-                                                javax.swing.GroupLayout.Alignment.LEADING,
-                                                false)
-                                                .addComponent (
-                                                        remove_button,
-                                                        javax.swing.GroupLayout.DEFAULT_SIZE,
-                                                        javax.swing.GroupLayout.DEFAULT_SIZE,
-                                                        Short.MAX_VALUE)
-                                                .addComponent (
-                                                        selected_datasets_pane))
-                                .addContainerGap ()));
-        layout.setVerticalGroup (layout
-                .createParallelGroup (javax.swing.GroupLayout.Alignment.LEADING)
-                .addGroup (
-                        javax.swing.GroupLayout.Alignment.TRAILING,
-                        layout.createSequentialGroup ()
-                                .addContainerGap ()
-                                .addGroup (
-                                        layout.createParallelGroup (
-                                                javax.swing.GroupLayout.Alignment.BASELINE)
-                                                .addComponent (
-                                                        chart_type_combo_box,
-                                                        javax.swing.GroupLayout.PREFERRED_SIZE,
-                                                        javax.swing.GroupLayout.DEFAULT_SIZE,
-                                                        javax.swing.GroupLayout.PREFERRED_SIZE)
-                                                .addComponent (chart_type_label))
-                                .addPreferredGap (
-                                        javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                .addGroup (
-                                        layout.createParallelGroup (
-                                                javax.swing.GroupLayout.Alignment.LEADING,
-                                                false)
-                                                .addComponent (
-                                                        selected_datasets_pane,
-                                                        javax.swing.GroupLayout.DEFAULT_SIZE,
-                                                        194, Short.MAX_VALUE)
-                                                .addComponent (
-                                                        available_datasets_pane))
-                                .addPreferredGap (
-                                        javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                .addGroup (
-                                        layout.createParallelGroup (
-                                                javax.swing.GroupLayout.Alignment.BASELINE)
-                                                .addComponent (add_button)
-                                                .addComponent (remove_button))
-                                .addContainerGap (32, Short.MAX_VALUE)));
-    }
+        setMaximumSize(new java.awt.Dimension(460, 300));
+        setMinimumSize(new java.awt.Dimension(460, 300));
+        setPreferredSize(new java.awt.Dimension(460, 300));
 
-    // Variables declaration - do not modify
+        
+        
+        available_datasets_pane.setViewportView(available_datasets_list);
+        selected_datasets_pane.setViewportView(selected_datasets_list);
+
+        add_button.setText("Add Available Pair");
+        remove_button.setText("Remove Selected Pair");
+
+        chart_type_label.setText("Chart Type:");
+        group_by_label.setText("Group By:");
+
+
+        javax.swing.GroupLayout layout = new javax.swing.GroupLayout(this);
+        this.setLayout(layout);
+        layout.setHorizontalGroup(
+            layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(layout.createSequentialGroup()
+                .addContainerGap()
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(layout.createSequentialGroup()
+                        .addComponent(chart_type_label)
+                        .addGap(18, 18, 18)
+                        .addComponent(chart_type_combo_box, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                    .addComponent(available_datasets_pane, javax.swing.GroupLayout.PREFERRED_SIZE, 0, Short.MAX_VALUE)
+                    .addComponent(add_button, javax.swing.GroupLayout.DEFAULT_SIZE, 206, Short.MAX_VALUE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(layout.createSequentialGroup()
+                        .addComponent(group_by_label, javax.swing.GroupLayout.PREFERRED_SIZE, 56, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                        .addComponent(group_by_combo_box, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                    .addComponent(remove_button, javax.swing.GroupLayout.DEFAULT_SIZE, 224, Short.MAX_VALUE)
+                    .addComponent(selected_datasets_pane, javax.swing.GroupLayout.PREFERRED_SIZE, 0, Short.MAX_VALUE))
+                .addContainerGap())
+        );
+        layout.setVerticalGroup(
+            layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(layout.createSequentialGroup()
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addGroup(layout.createSequentialGroup()
+                        .addContainerGap()
+                        .addComponent(group_by_combo_box, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addGroup(layout.createSequentialGroup()
+                        .addContainerGap()
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                            .addComponent(chart_type_label)
+                            .addComponent(chart_type_combo_box, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(group_by_label))))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(available_datasets_pane, javax.swing.GroupLayout.DEFAULT_SIZE, 218, Short.MAX_VALUE)
+                    .addComponent(selected_datasets_pane))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(remove_button)
+                    .addComponent(add_button))
+                .addContainerGap())
+        );
+    }// </editor-fold>                        
+
+
+    // Variables declaration - do not modify                     
+    private javax.swing.JComboBox <String> group_by_combo_box;
+    private javax.swing.JLabel group_by_label;
     private javax.swing.JButton add_button;
     private javax.swing.JList <String> available_datasets_list;
     private javax.swing.JScrollPane available_datasets_pane;
@@ -218,7 +223,7 @@ public class DataSetView extends javax.swing.JPanel {
     private javax.swing.JButton remove_button;
     private javax.swing.JList <String> selected_datasets_list;
     private javax.swing.JScrollPane selected_datasets_pane;
-    // End of variables declaration
+    // End of variables declaration     
     
     // Created by Gerardo A. Navas Morales.
     /**
@@ -230,6 +235,17 @@ public class DataSetView extends javax.swing.JPanel {
      */
     public void addChartTypeListener (ActionListener changeChartTypeListener) {
         this.chart_type_combo_box.addActionListener (changeChartTypeListener);
+    }
+    
+    /**
+     * Registers the "group_by" JComboBox as an object that should be
+     * listened upon a new selection being made.
+     * 
+     * @param changeChartTypeListener
+     *            ActionListener object provided by its Controller.
+     */
+    public void addGroupByListener (ActionListener changeGroupByListener) {
+        this.group_by_combo_box.addActionListener (changeGroupByListener);
     }
     
     /**

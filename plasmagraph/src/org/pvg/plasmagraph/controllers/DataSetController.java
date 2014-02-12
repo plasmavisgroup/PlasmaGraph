@@ -2,6 +2,7 @@ package org.pvg.plasmagraph.controllers;
 
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.util.ArrayList;
 
 import javax.swing.SwingWorker;
 import javax.swing.event.ChangeEvent;
@@ -32,6 +33,7 @@ public class DataSetController {
         // Automatically add listeners to Data Set Tab via view.
         // Update Template or DataReference Listeners
         data_view.addChartTypeListener (new ChartTypeListener ());
+        data_view.addGroupByListener (new GroupByListener ());
         data_view.addAddButtonListener (new AddButtonListener ());
         data_view.addRemoveButtonListener (new RemoveButtonListener ());
         // Update View Listener
@@ -61,6 +63,28 @@ public class DataSetController {
     }
     
     /**
+     * Listener for the "group_by" JComboBox part of the DataSetView.
+     * Relies on ActionListener to manage messages.
+     * 
+     * @author Gerardo A. Navas Morales
+     */
+    class GroupByListener implements ActionListener {
+        
+        /**
+         * Calls a DataSetModel method to change the chart type on the Template.
+         */
+        @Override
+        public void actionPerformed (ActionEvent arg0) {
+            try {
+				data_model.getTemplate ().setGroupBy (data_view.getGroupByColumn ());
+			} catch (Exception e) {
+				// TODO Throw a Dialog Exception
+			}
+        }
+        
+    }
+    
+    /**
      * Listener for the "add_button" JButton part of the DataSetView.
      * Relies on ActionListener to manage messages.
      * 
@@ -74,8 +98,13 @@ public class DataSetController {
          */
         @Override
         public void actionPerformed (ActionEvent arg0) {
-            data_model.addToSelectedDataset (data_view
-                    .getSelectedDatasetsToAdd ());
+           ArrayList <String> selected_columns =  data_view.getSelectedDatasetsToAdd ();
+            
+           if (selected_columns.size () == 2) {
+        	   data_model.addToSelectedDataset (selected_columns);
+           } else {
+        	   throw (new ArrayListSizeException ("Only two columns are allowed to be selected."));
+           }
         }
         
     }

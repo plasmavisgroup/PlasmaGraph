@@ -65,8 +65,8 @@ public class Interpolator {
     						t.getLowerInterval (), t.getUpperInterval (),
     						t.getInterpolationInterval (), getSeriesKey(t));
     		
-    		// TODO: Change to Apache CommonsMath's PearsonCorrelation.
-    		r_squared = regression[2];
+    		r_squared = p_correlation.correlation (createArrayFromSeries (result, true),
+        			createArrayFromSeries (result, false));
         	
         } else if (t.getInterpolationType ().equals (InterpolationType.QUADRATIC)) {
         	
@@ -79,8 +79,8 @@ public class Interpolator {
         			t.getLowerInterval (), t.getUpperInterval (),
 					t.getInterpolationInterval (), getSeriesKey(t));
         	
-        	// TODO: Change to Apache CommonsMath's PearsonCorrelation.
-        	r_squared = regression[3];
+        	r_squared = p_correlation.correlation (createArrayFromSeries (result, true),
+        			createArrayFromSeries (result, false));
         	
         }  else if (t.getInterpolationType ().equals (InterpolationType.CUBIC)) {
         	
@@ -93,8 +93,8 @@ public class Interpolator {
         			t.getLowerInterval (), t.getUpperInterval (),
 					t.getInterpolationInterval (), getSeriesKey(t));
         	
-        	// TODO: Change to Apache CommonsMath's PearsonCorrelation.
-        	r_squared = regression[4];
+        	r_squared = p_correlation.correlation (createArrayFromSeries (result, true),
+        			createArrayFromSeries (result, false));
         	
         }  else if (t.getInterpolationType ().equals (InterpolationType.QUARTIC)) {
         	
@@ -107,8 +107,8 @@ public class Interpolator {
         			t.getLowerInterval (), t.getUpperInterval (),
 					t.getInterpolationInterval (), getSeriesKey(t));
         	
-        	// TODO: Change to Apache CommonsMath's PearsonCorrelation.
-        	r_squared = regression[5];
+        	r_squared = p_correlation.correlation (createArrayFromSeries (result, true),
+        			createArrayFromSeries (result, false));
         	
         } else { // if (t.getInterpolationType ().equals (InterpolationType.SPLINE))
         	// Get Function to create data.
@@ -123,8 +123,7 @@ public class Interpolator {
         	// Obtain r_squared value from data.
         	r_squared = p_correlation.correlation (createArrayFromSeries (result, true), 
         			createArrayFromSeries (result, false));
-        	 
-        	 
+        	
         }
     	
     	showRegressionValidity (r_squared);
