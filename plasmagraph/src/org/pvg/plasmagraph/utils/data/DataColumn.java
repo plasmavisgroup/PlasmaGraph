@@ -49,11 +49,19 @@ public class DataColumn<E> implements Iterable<Object>, Iterator<Object> {
 	}
 	
 	public boolean add (E o) {
-		return (this.values.add (o));
+		if (o == "" || o == null) {
+			return (false);
+		} else {
+			return (this.values.add (o));
+		}
 	}
 
 	public boolean remove (E o) {
-		return (this.values.remove (o));
+		if (o == "" || o == null) {
+			return (false);
+		} else {
+			return (this.values.remove (o));
+		}
 	}
 
 	public E remove (int i) {
