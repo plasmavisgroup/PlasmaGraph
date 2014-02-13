@@ -3,7 +3,6 @@
 <fullyQualifiedTypeName name="T"/>
 <fullyQualifiedTypeName name="javax.swing.JMenu"/>
 <fullyQualifiedTypeName name="org.jfree.data.xy.XYDataset"/>
-<fullyQualifiedTypeName name="org.pvg.plasmagraph.utils.template.Template"/>
 <fullyQualifiedTypeName name="org.pvg.plasmagraph.utils.template.InterpolationType"/>
 <fullyQualifiedTypeName name="org.jfree.data.statistics.Regression"/>
 <fullyQualifiedTypeName name="org.jfree.data.function.LineFunction2D"/>
@@ -21,8 +20,11 @@
 <fullyQualifiedTypeName name="javax.swing.DefaultListModel"/>
 <fullyQualifiedTypeName name="org.pvg.plasmagraph.utils.data.StringColumn"/>
 <fullyQualifiedTypeName name="org.pvg.plasmagraph.utils.data.DoubleColumn"/>
-<fullyQualifiedTypeName name="org.pvg.plasmagraph.utils.data.DataSet"/>
-<fullyQualifiedTypeName name="org.pvg.plasmagraph.utils.data.DataColumn"/>
 <fullyQualifiedTypeName name="java.lang.reflect.ParameterizedType"/>
 <fullyQualifiedTypeName name="org.pvg.plasmagraph.utils.types.ColumnType"/>
+<fullyQualifiedTypeName name="org.pvg.plasmagraph.utils.template.Template"/>
+<fullyQualifiedTypeName name="org.pvg.plasmagraph.utils.graphs.BarGraph"/>
+<fullyQualifiedTypeName name="org.jfree.chart.plot.PlotOrientation"/>
+<fullyQualifiedTypeName name="org.pvg.plasmagraph.utils.data.DataSet"/>
+<fullyQualifiedTypeName name="org.pvg.plasmagraph.utils.data.DataColumn"/>
 </qualifiedTypeNameHistroy>

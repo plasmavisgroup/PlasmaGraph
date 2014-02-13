@@ -1,6 +1,5 @@
 package org.pvg.plasmagraph.utils.data;
 
-import java.lang.reflect.ParameterizedType;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.NoSuchElementException;

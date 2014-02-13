@@ -182,32 +182,32 @@ public class DataSet implements Iterable<DataColumn>, Iterator<DataColumn> {
 	public String toString () {
 		return (this.values.toString ());
 	}
-
-	// Iterator / Iterable methods.
-	@Override
-	public Iterator<DataColumn> iterator () {
-		this.position = 0;
-		return (this);
-	}
-
-	@Override
-	public boolean hasNext () {
-		return (position < values.size ());
-	}
-
-	@Override
-	public DataColumn next () {
-		if (position == values.size ()) {
-			throw new NoSuchElementException ();
+	
+	/**
+	 * 
+	 * @return
+	 */
+	public int getColumnLength () {
+		if (this.values.size () > 0) {
+			return (this.values.get (0).size ());
+		} else {
+			return (0);
 		}
-		return (values.get (++position));
+	}
+	
+	/**
+	 * 
+	 * @param index
+	 * @return
+	 */
+	public int getColumnLength (int index) {
+		return (this.values.get (index).size ());
 	}
 
-	@Override
-	public void remove () {
-		this.values.remove (position--);
-	}
-
+	/**
+	 * 
+	 * @return
+	 */
 	public XYSeries toXYGraphDataset () {
 		XYSeries series = new XYSeries (this.getDataSetName ());
 
@@ -221,6 +221,10 @@ public class DataSet implements Iterable<DataColumn>, Iterator<DataColumn> {
 		return (series);
 	}
 	
+	/**
+	 * 
+	 * @return
+	 */
 	public DefaultCategoryDataset toBarGraphDataset () {
 		DefaultCategoryDataset dataset = new DefaultCategoryDataset ();
 		String series = "Series 1";
@@ -244,6 +248,10 @@ public class DataSet implements Iterable<DataColumn>, Iterator<DataColumn> {
 		return (dataset);
 	}
 
+	/**
+	 * 
+	 * @return
+	 */
 	private Comparable<String> getDataSetName () {
 		if (this.values.size () == 2) {
 			return ("" + this.values.get(0).getColumnName () + " vs. " +
@@ -252,16 +260,29 @@ public class DataSet implements Iterable<DataColumn>, Iterator<DataColumn> {
 			return ("Default");
 		}
 	}
-
-	public int getColumnLength () {
-		if (this.values.size () > 0) {
-			return (this.values.get (0).size ());
-		} else {
-			return (0);
-		}
-	}
 	
-	public int getColumnLength (int index) {
-		return (this.values.get (index).size ());
+	// Iterator / Iterable methods.
+	@Override
+	public Iterator<DataColumn> iterator () {
+		this.position = 0;
+		return (this);
+	}
+
+	@Override
+	public boolean hasNext () {
+		return (position < values.size ());
+	}
+
+	@Override
+	public DataColumn next () {
+		if (position == values.size ()) {
+			throw new NoSuchElementException ();
+		}
+		return (values.get (++position));
+	}
+
+	@Override
+	public void remove () {
+		this.values.remove (position--);
 	}
 }
