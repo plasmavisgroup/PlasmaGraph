@@ -14,7 +14,6 @@
 <fullyQualifiedTypeName name="java.awt.event.FocusListener"/>
 <fullyQualifiedTypeName name="org.jfree.data.xy.XYSeries"/>
 <fullyQualifiedTypeName name="org.apache.commons.math3.stat.correlation.PearsonsCorrelation"/>
-<fullyQualifiedTypeName name="java.util.ArrayList"/>
 <fullyQualifiedTypeName name="javax.swing.ComboBoxModel"/>
 <fullyQualifiedTypeName name="javax.swing.DefaultComboBoxModel"/>
 <fullyQualifiedTypeName name="javax.swing.DefaultListModel"/>
@@ -25,6 +24,9 @@
 <fullyQualifiedTypeName name="org.pvg.plasmagraph.utils.template.Template"/>
 <fullyQualifiedTypeName name="org.pvg.plasmagraph.utils.graphs.BarGraph"/>
 <fullyQualifiedTypeName name="org.jfree.chart.plot.PlotOrientation"/>
-<fullyQualifiedTypeName name="org.pvg.plasmagraph.utils.data.DataSet"/>
+<fullyQualifiedTypeName name="java.util.ArrayList"/>
 <fullyQualifiedTypeName name="org.pvg.plasmagraph.utils.data.DataColumn"/>
+<fullyQualifiedTypeName name="java.io.File"/>
+<fullyQualifiedTypeName name="org.pvg.plasmagraph.utils.data.readers.CSVProcessor"/>
+<fullyQualifiedTypeName name="org.pvg.plasmagraph.utils.data.DataSet"/>
 </qualifiedTypeNameHistroy>
