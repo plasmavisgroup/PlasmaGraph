@@ -1,0 +1,23 @@
+Pasos
+	1) Cargar data cruda.
+	2) Verificar integridad de data cruda.
+		Si no sirve
+			A) Arreglar data cruda (cuanto sea posible).
+			B) Ensen~ar errores para data que no se pueda arreglar.
+		Si sirve, 
+			A) Verificar si se carga un "Template"
+				Si no se carga
+					a) Crear Template nuevo.
+					b) Hacer cambios.
+					c) Graficar data.
+					d) Salvar Template. (Si se pide.)
+				Si se carga
+					a) Cargar template.
+					b) Dar posibilidad de modificar
+						Si no se modifica
+							A. Graficar data.
+							B. Salvar Template (Si se pide.)
+						Si se modifica
+							A. Hacer cambios.
+							B. Graficar data.
+							C. Salvar Template (Si se pide.)
