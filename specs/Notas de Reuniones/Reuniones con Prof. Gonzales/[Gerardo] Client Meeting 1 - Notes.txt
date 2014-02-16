@@ -1,6 +1,0 @@
-Situation: It takes manual work in order to create a graph for some given data. He wants to do it almost automatically, having a GUI to select columns to graph and having them graphed automatically.
-
-Needs: Graphs of data provided. Portable and easy to use/install. Sort all rows in ascending order of whatever column desired. Arbitrary amounts of data can be processed at a reasonable speed.
-
-Systems to Connect To: MATLAB, maybe? Otherwise, no.
-

@@ -1,2 +1,0 @@
-1) What version of MATLAB are you using?
-2) How does the lab output its data? Directly to MATLAB, or to a CSV which is then moved to MATLAB?
