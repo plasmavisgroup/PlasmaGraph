@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 Organizational Structure
 
 Content: 
@@ -7,3 +8,10 @@ This project will be completed by two members: Gerardo A. Navas and Daniel Quint
 As the following diagram shows, despite the names, they are both equivalent positions with regards to project management hierarchy.
 
 <Insert "2-2-OrgStructure-Hierarchy-diagram.png">
+=======
+Organizational Structure
+
+Content: 
+
+This project will be completed by two members: Gerardo A. Navas and Daniel Quintini. Each of these group members will have certain duties to fulfill that will overlap, as well as some that will be unique to each of them. Daniel Quintini will take the role of Design Lead, whereas Gerardo A. Navas will act as Project Lead. These two roles will be explained in depth in the following sections. Despite the names, they are both equivalent positions with regards to project management hierarchy.
+>>>>>>> master

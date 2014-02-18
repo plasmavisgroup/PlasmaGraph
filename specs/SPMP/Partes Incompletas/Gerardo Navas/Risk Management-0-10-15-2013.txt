@@ -1,0 +1,20 @@
+Risk Management
+
+> Content:
+
+Problematic situations may occur throughout the duration of this project. This list will detail what are the measures that will be taken to minimize risk:
+
+1. Constant communication is mandatory, whether through phone, e-mail, or meetings on university grounds. 
+
+2. Whenever a meeting is scheduled, all project members must participate in that meeting. Persons that do not participate in at least half the group meetings without valid reasons will be removed from the project group.
+
+3. Work will be divided evenly. In such a case that a member believes the task given to them are uneven or unsuited to them, they can bring up the complaint to the Project Leader via any communication medium.
+
+4. If a project member does not participate in a meeting, they must be contacted via any communication medium to update them of the meeting's main topics, and the member must send confirmation of having received the information. This avoids leaving members without vital information.
+
+5. All project members must perform roughly equal work to be credited properly. Any members that do not will be eliminated from the group. (For the purposes of this point, "roughly equal work" refers to a 50/50% split, with a variance of 15%.)
+
+6. If the document-hosting service or the code-hosting service is terminated by either the Project Manager or a third party, the Project Manager's version of these documents or code will be used as the basis (Read: Master stream) of all future development. These files will then be uploaded onto another service with similar privacy protection as agreed upon by the Project Manager. Once this is done, this change must be communicated to all project members via any medium, and must explain the change and how to access the new versions.
+
+[Talk about Client.]
+[Talk about project aide.]

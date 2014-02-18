@@ -1,0 +1,35 @@
+4.1 Methods, Tools, and Techniques
+
+> Content:
+
+The data-graping program PlasmaGraph must follow these requirements:
+
+A. During Creation:
+	1. Operating System
+		The Operating System (OS) used to create this program must be any that can run the Eclipse IDE program.
+
+	2. Integrated Development Environment
+		The Integrated Development Environment (IDE) used to program and test this program will be the Eclipse IDE.
+
+	3. Programming Language
+		The Programming Language used to create this product will be the Java programming language; specifically, Jave Version 7 will be used to create this program.
+
+	4. Code Repository
+		The code repository used for the creation of the final product, both documentation and program, will be the online version control system (VCS) GitHub. The service used from this website does not need to be any in particular; that is, either the public or private repository options may be used without worries.
+
+	5. Intermediary Document Format:
+		Each type of document will need to be in a specific format. The required formats are as follows:
+
+		a. Diagramming Document Format: .dia
+		b. Text Document Format: .txt, .doc, .docx, .md
+		c. Code Document Format: .java
+		d. Image Format: .png, .jpg
+
+	6. Document Repository
+		The document repository used for the creation of the final product, as mentioned above, will be GitHub. Note that the documentation repository will be located in the sub-directory named "specs".
+B. During Usage: 
+	1. Operating System
+		The Operating System (OS) used to run this program is any OS that contains a valid version of the Java Runtime Engine (JRE) or a similar Java Engine. For the purposes of this project, a valid version of Java refers to an updated version of Java 7 or above.
+
+	2. Java Version
+		The Java Version of any computer that wishes to run this program must be at least version 7. (JRE Version 7.) It is highly suggested to maintain an up-to-date version of the JRE on the computer running this program, however, so as to reduce potential Java-related problems.

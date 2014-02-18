@@ -1,0 +1,31 @@
+4.2. Software Documentation
+
+Content:
+
+Documentation for this project will be split in three parts: the Software Documentation, the Test Documentation, and the Document Documentation. Each of these parts will be dedicated to describing or explaining certain features of either the product's capabilities, the product's design, or the project group's functioning with regards to creating the product. All these documents will be maintained via the GitHub version control system, as will every other document maintained.
+
+	a. Software Documentation
+
+		Software documentation is designed to explain what product code does in an efficient manner. Java provides the JavaDocs tool in order to ease the creation of such documentation, but it requires a specific format in order to generate said documentation. For the purposes of this project, all code must be documented as follows so as to standardize the generated documentation.
+
+		1. Where to Document: Each method must be documented via JavaDocs comment format. Otherwise, comments should be placed within methods to explain complex sections of code longer than 3 lines.
+
+		2. Basic Structure: JavaDocs comments start with the “/**” tag and end with the “*/” tag. Within the comment, there must be an explanation of the primary outputs, any exceptions that the method may throw, and any important notes regarding its implementation that may affect external entities. Afterwards, a number of tags must be used to properly document the inputs and outputs of the method.
+
+		Regular comments start with the “//” tag or are surrounded by the “/*” and “*/” tags. Their contents are not bound by any rules, so long as they explain what the following section of code does.
+
+		3. Tags to Use: The tag “@return” must always be used.  Void functions will have a @return content of “Nothing.” The tag “@param” must be used if there is at least one input parameter for the method, and should specify exactly what format the input should be if there are any hidden nuances. The tag “@see” must be used if the method uses an important method of a different class, even if it is not a PlasmaGraph class. (For example, using a JfreeChart-related method.)
+		
+		No specific tags are necessary for the interior of regular comments.
+
+	b. Test Documentation
+
+		Test documentation is designed to describe how and why certain tests are performed. Refer to the project's STD document for said documentation.
+
+	c. Project Documentation
+
+		Documents related to the product design and project group functioning count as Project Documentation.
+
+		The Version Control System used for this project, GitHub, will act as the changelog documentation for the purposes of documents, presentations, and product code. Said system provides the means to segregate changes made by individual project group members and revert changes on a per-document basis if needed. 
+
+		Project Documentation must follow the IEEE guidelines as specified by the IEEE document manuals.

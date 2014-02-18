@@ -1,0 +1,28 @@
+Project Deliverables
+===================
+
+Content:
+
+The client, Professor Angel Gonzales-Lizardo of the Polytechnic University of Puerto Rico's Plasma Laboratory, must receive the following items at his office in the PUPR Plasma Lab by <Enter Date Here> at <Enter Time Here> AST:
+
+A. One (1) digital copy of the PlasmaGraph product, program documentation, and user manual in a <Insert Physical Medium Here>.
+
+B. One (1) physical (paper, softcover) copy of the PlasmaGraph User Manual.
+
+Additionally, the following will be provided to the Senior Project Professor, Professor Luis A. Ortiz:
+
+A. One (1) physical copy of the following specification documents:
+	1. The Software Project Management Plan (SPMP)
+	2. The Software Requirements Specification (SRS)
+	3. The Software Design Description (SDD)
+	4. The Software Test Document (STD)
+
+B. One (1) physical copy of all meeting notes that were held between the Senior Project Professor and the group.
+
+C. One (1) digital copy of the PlasmaGraph product, program documentation, and user manual in a <Insert Physical Medium Here>.
+
+D. One (1) physical (paper, softcover) copy of the PlasmaGraph User Manual.
+
+Said copy will be used to evaluate the quality of the work performed in the project for the purpose of giving a final grade and confirming successful completion of the Computer Science course "Computer Science Senior Project".
+
+As per the nature of how this project is being hosted, all documents will be also available on GitHub (https://github.com/CherimaeNemeta/PlasmaGraph), including the specification documents.

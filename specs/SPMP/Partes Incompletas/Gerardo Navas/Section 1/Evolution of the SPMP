@@ -1,0 +1,13 @@
+Evolution of the SPMP
+
+Description:
+
+> This subsection of the SPMP shall specify the plans for producing both scheduled and unscheduled updates to the SPMP. Methods of disseminating the updates shall be specified. This subsection shall also specify the mechanisms used to place the initial version of the SPMP under change control and to control subsequent changes to the SPMP.
+
+Content:
+
+The SPMP will only be changed by the Project Lead. 
+
+The first version of this document, as every subsequent version, will be made in parts. Every party that composes the SPMP will be created and modified on its own, as an individual sub-document. When changes are finalized, all the parts will be compiled into one document and given a version number based on the previous version document's number; said number will start at "1" and progress incrementally. (The first version number will be "1"; this number will increase to "2" and so on.) Said version number will be prefaced in the name of the file by the letter "r". (As per the word "revision".) Therefore, the first version of the SPMP will be named "Software Program Management Plan r1.pdf", and the following versions will only have it's version number increase.
+
+All components of this project related to the creation of the SPMP will be located in the project's GitHub version control system. (https://github.com/CherimaeNemeta/PlasmaGraph) A section of the repository will be dedicated only to the SPMP's fragments (specs/SPMP/Partes Incompletas/), and another will be for completed documents. (specs/Documentos Completos/SPMP/) Document fragments will be divided by the section they are located in (Folders labelled Sections 1 through 5 in said subdirectory.), and completed documents will be divided by version. (Folders labelled either "Current Version" or "Previous Versions" in said subdirectory.) Said system will manage the myriad files that the project will require and allow the project to recover from catastrophic losses of data, if and when they occur.
