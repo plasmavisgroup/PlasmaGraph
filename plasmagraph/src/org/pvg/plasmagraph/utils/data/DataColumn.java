@@ -152,4 +152,13 @@ public class DataColumn<E> implements Iterable<Object>, Iterator<Object> {
 		return (arr);
 	}
 
+	/**
+	 * Getter method. Provides if there are any items in the ArrayList.
+	 * 
+	 * @return Boolean stating if the ArrayList in this object is populated by at least one object.
+	 */
+	public boolean isEmpty () {
+		return (this.values.isEmpty ());
+	}
+
 }
