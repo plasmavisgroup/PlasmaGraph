@@ -1,3 +1,30 @@
+<<<<<<< HEAD
+Definitions and Acronyms
+
+Description:
+
+> This subsection of the SPMP shall define any terms that are not commonly used by the audience. It will also expand and define any acronyms used in these documents.
+
+Content:
+
+Definitions
+
+Plasma Lab: 
+JFree:
+
+
+Acronyms
+
+PUPR: Polytechnic University of Puerto Rico; university where the Plasma Laboratory is located, as well as where the group's members study.
+SPMP: 
+SRD: 
+SDD: 
+STD: 
+CSV:
+GUI:
+PNG:
+JPG / JPEG:
+=======
 Definitions and Acronyms
 
 Description:
@@ -25,3 +52,4 @@ Acronyms
 	GUI: Graphical User Interface.
 	PNG: Portable Network Graphics; a type of computer file that holds an image. 
 	JPG / JPEG: Joint Photographic Expert Group; another type of computer file that holds an image.
+>>>>>>> master
