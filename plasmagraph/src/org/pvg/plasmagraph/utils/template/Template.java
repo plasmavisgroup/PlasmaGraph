@@ -71,7 +71,7 @@ public class Template {
 	/** The upper range of X-Axis values. */
 	private double interpolation_upper_range;
 	/** Number of interpolation points in regression. */
-	private int interpolation_point_intervals;
+	private int interpolation_point_amount;
 	
 	// Constructors
 	/**
@@ -87,13 +87,13 @@ public class Template {
 		this.using_legend 					= true;
 		this.using_tooltips 				= true;
 		this.generate_urls 					= false;
-		this.orientation 					= PlotOrientation.HORIZONTAL;
+		this.orientation 					= PlotOrientation.VERTICAL;
 		this.group_by						= "None";
 		this.default_interpolation_type 	= InterpolationType.LINEAR;
 		this.default_outlier_reaction 		= OutlierResponse.WARN;
 		this.interpolation_lower_range 		= 0.0;
 		this.interpolation_upper_range		= 10.0;
-		this.interpolation_point_intervals	= 100;
+		this.interpolation_point_amount	= 100;
 		
 	}
 	
@@ -111,7 +111,7 @@ public class Template {
 	public Template (String name, ChartType type, String x, String y, 
 			boolean legend, boolean tooltips, boolean urls, PlotOrientation o,
 			String group, InterpolationType interpolation, OutlierResponse outlier,
-			double lower, double upper, int interval) {
+			double lower, double upper, int n) {
 		this.chart_name 					= name;
 		this.chart_type 					= type;
 		this.x_axis_label 					= x;
@@ -125,7 +125,7 @@ public class Template {
 		this.default_outlier_reaction 		= outlier;
 		this.interpolation_lower_range 		= lower;
 		this.interpolation_upper_range		= upper;
-		this.interpolation_point_intervals	= interval;
+		this.interpolation_point_amount		= n;
 	}
 	
 	/**
@@ -208,7 +208,7 @@ public class Template {
             output = reader.readLine();
     		this.interpolation_upper_range		= Double.parseDouble (output);
     		output = reader.readLine();
-    		this.interpolation_point_intervals	= Integer.parseInt (output);
+    		this.interpolation_point_amount		= Integer.parseInt (output);
 
         } catch (FileNotFoundException e) {
             // Catch for File "f" not found.
@@ -271,7 +271,7 @@ public class Template {
             // Interpolation ranges and interval
             sb.append (this.interpolation_lower_range + ls);
             sb.append (this.interpolation_upper_range + ls);
-            sb.append (this.interpolation_point_intervals + ls);
+            sb.append (this.interpolation_point_amount + ls);
             
 
             // Write it to the BufferedWriter
@@ -319,7 +319,7 @@ public class Template {
 	    sb.append ("Outlier Reaction: " + default_outlier_reaction.toString () + ls);
 	    sb.append ("Lower Interpolation Range: " + interpolation_lower_range + ls);
         sb.append ("Upper Interpolation Range: " + interpolation_upper_range + ls);
-        sb.append ("Interpolation Interval: " + interpolation_point_intervals);
+        sb.append ("Interpolation Interval: " + interpolation_point_amount);
 	    
 	    // Create the String to be returned.
 	    return (sb.toString ());
@@ -536,19 +536,19 @@ public class Template {
 	}
 	
 	/**
-	 * Getter Method. Provides the "interpolation_point_intervals" variable.
-     * @return A String variable, "interpolation_point_intervals", contained by this object.
+	 * Getter Method. Provides the "interpolation_point_amount" variable.
+     * @return A String variable, "interpolation_point_amount", contained by this object.
 	 */
 	public final int getInterpolationInterval () {
-		return (interpolation_point_intervals);
+		return (interpolation_point_amount);
 	}
 
 	/**
-	 * Setter Method. Changes the "interpolation_point_intervals" variable.
-     * @param label The new String variable to replace this object's "interpolation_point_intervals" variable's contents.
+	 * Setter Method. Changes the "interpolation_point_amount" variable.
+     * @param label The new String variable to replace this object's "interpolation_point_amount" variable's contents.
 	 */
 	public final void setInterpolationInterval (int interval) {
-		this.interpolation_point_intervals = interval;
+		this.interpolation_point_amount = interval;
 	}
 	
 	// Event Methods

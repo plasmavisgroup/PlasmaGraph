@@ -103,7 +103,8 @@ public class DataSetController {
            if (selected_columns.size () == 2) {
         	   data_model.addToSelectedDataset (selected_columns);
            } else {
-        	   throw (new ArrayListSizeException ("Only two columns are allowed to be selected."));
+        	   // TODO: Create an ArrayListSizeException!
+        	   //throw (new ArrayListSizeException ("Only two columns are allowed to be selected."));
            }
         }
         

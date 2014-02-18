@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.NoSuchElementException;
 
+import org.apache.commons.math3.linear.Array2DRowRealMatrix;
 import org.jfree.data.category.DefaultCategoryDataset;
 import org.jfree.data.general.PieDataset;
 import org.jfree.data.xy.DefaultXYDataset;
@@ -122,12 +123,12 @@ public class DataSet implements Iterable<DataColumn>, Iterator<DataColumn> {
 	 * @return Boolean stating if all the columns are of type Double.
 	 */
 	public boolean isDouble () {
-		boolean b = true;
-		
-		for (DataColumn c : values) {
-			b = c.containsDoubles () && b;
+		for (DataColumn c : this.values) {
+			if (!c.containsDoubles ()) {
+				return (false);
+			}
 		}
-		return (b);
+		return (true);
 	}
 	
 	/**
@@ -146,12 +147,12 @@ public class DataSet implements Iterable<DataColumn>, Iterator<DataColumn> {
 	 * @return Boolean stating if all the columns are of type String.
 	 */
 	public boolean isString () {
-		boolean b = true;
-		
-		for (DataColumn c : values) {
-			b = c.containsStrings () && b;
+		for (DataColumn c : this.values) {
+			if (!c.containsStrings ()) {
+				return (false);
+			}
 		}
-		return (b);
+		return (true);
 	}
 	
 	/**
@@ -252,7 +253,7 @@ public class DataSet implements Iterable<DataColumn>, Iterator<DataColumn> {
 	 * 
 	 * @return
 	 */
-	private Comparable<String> getDataSetName () {
+	public Comparable<String> getDataSetName () {
 		if (this.values.size () == 2) {
 			return ("" + this.values.get(0).getColumnName () + " vs. " +
 					this.values.get (1).getColumnName ());
@@ -284,5 +285,27 @@ public class DataSet implements Iterable<DataColumn>, Iterator<DataColumn> {
 	@Override
 	public void remove () {
 		this.values.remove (position--);
+	}
+
+	/**
+	 * Creates a double [][] containing all the values in this DataSet.
+	 * TODO: Currently can only be used for 2-column data sets.
+	 * TODO: Currently assumes all values are doubles. Check first..
+	 * 
+	 * @return A 2-columned DataSet converted to a double [][].
+	 */
+	public double[][] toArray () {
+		// Prepare vehicle for double 2DArray creation.
+		Array2DRowRealMatrix matrix = new Array2DRowRealMatrix (this.getColumnLength (), 2);
+		
+		// Get both row and col indexes and start transferring data to the matrix.
+		for (int i = 0; (i < matrix.getRowDimension ()); ++i) {
+			for (int j = 0; (j < matrix.getColumnDimension ()); ++j) {
+				matrix.setEntry (i, j, (double) this.values.get (j).get (i));
+			}
+		}
+		
+		// Return a double 2DArray.
+		return (matrix.getData ());
 	}
 }

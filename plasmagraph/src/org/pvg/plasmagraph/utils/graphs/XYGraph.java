@@ -119,7 +119,7 @@ public class XYGraph extends JFrame implements Graph{
 				t.getYAxisLabel (), t.getXAxisLabel (), 
 				(XYDataset) set, t.getOrientation (), t.generatesLegend (),
 				t.generatesTooltips (), t.generatesURLs ());
-		
+		//System.out.println ("reached chart creation!");
 		//org.jfree.chart.plot.XYPlot plot = c.getXYPlot();
 		
 		return (c);
