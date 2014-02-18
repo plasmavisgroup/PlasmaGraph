@@ -1,0 +1,4 @@
+TODO
+====
+
+1. Make image landscape? Either that or move vertically in order to make text bigger.

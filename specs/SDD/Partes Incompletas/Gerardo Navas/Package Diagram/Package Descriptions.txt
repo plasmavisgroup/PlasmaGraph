@@ -1,0 +1,14 @@
+Packages
+	1. org.plasmagraph.data: Contains the data types that will store the CSV or MATLAB input data.
+
+	2. org.plasmagraph.graphs: Contains the various types of graphs that will be used. Each graph class will leverage templates' (from org.plasmagraph.templates) setting data and interface said options into their respective Plots and JFrames.
+
+	3. org.plasmagraph.sanitizer: Contains the DataReader and ChartConverter classes, which will extract data from archives and, along with the DataSet container from org.plasmagraph.data, convert the generic structure into something which is easily understood by JFreeChart for the purposes of graphing.
+
+	4. org.plasmagraph.templates: Contains the Template class and all other classes which help in customizing the plots.
+
+	5. org.plasmagraph.tools: Contains the DataAnalyzer and InterpolationGenerator classes. These additions are options that can provide useful functionality to the graphs above and beyond that which JFreeChart typically provides.
+
+	6. org.plasmagraph.ui: Contains the ProgramController and ProgramView classes, fulfilling the Document/View model to be implemented.
+
+	7. org.plasmagraph.prog: Contains the one class with a main method, the MainProgram class. This class prepares the program by initiating all the proper parts of it.

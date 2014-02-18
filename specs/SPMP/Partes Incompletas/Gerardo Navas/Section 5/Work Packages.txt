@@ -27,7 +27,7 @@ C. Software Specification Documents: The supporting documentation for the produc
 
 	2. Software Design Description (SDD): Details the product's internal structure and processes.
 
-	3. Software Test Document (STD): Details all testing the product undergoes, and the degree of success or failure on each.
+	3. Software Test Document (STD): Details all testing the product undergoes, and the degree of success or failure on each. This includes product testing.
 
 	4. Software Project Management Plan (SPMP): Details the project group's structure, composition, and behavior. Explains risks inherent to the project's completion, and steps taken to reduce said risk.
 
