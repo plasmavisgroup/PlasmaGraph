@@ -44,10 +44,14 @@ public class DataSetView extends javax.swing.JPanel {
         this.chart_type_combo_box.setSelectedItem (this.data_model
                 .getTemplate ().getChartType ().toString ());
         this.data_model.resetListModels ();
-        this.updateGroupByComboBox ();
+        this.updateGroupBy ();
     }
     
-    /**
+    private void updateGroupBy () {
+		this.group_by_check_box.setSelected (this.data_model.getTemplate ().isGroupedByExperiment ());
+	}
+
+	/**
      * Getter Method. Provides this object's "chart_type_combo_box"'s value as one of the options provided by the ChartType class.
      * @return A ChartType object based on the representation in the "chart_type_combo_box" JComboBox object.
      * @throws Exception 
@@ -68,8 +72,8 @@ public class DataSetView extends javax.swing.JPanel {
      * Getter Method. Provides this object's "group_by_combo_box"'s value.
      * @return A String object selected by the user from the list of available data columns.
      */
-    public String getGroupByColumn () {
-    	return ((String) this.group_by_combo_box.getSelectedItem ());
+    public boolean getGroupingByElement () {
+    	return (this.group_by_check_box.isSelected ());
     }
     
     /**
@@ -96,36 +100,6 @@ public class DataSetView extends javax.swing.JPanel {
                 .getSelectedValuesList ());
     }
     
-    /**
-     * Updating method. Keeps the "group_by" JComboBox updated with the 
-     * "available_datasets" JList.
-     */
-    public void updateGroupByComboBox () {
-    	// Create main container.
-    	ArrayList <String> group_by = new ArrayList <String> ();
-    	
-    	// Add default.
-    	group_by.add ("None");
-    	
-    	// Create iteration container.
-    	String [] current_available_columns = 
-    			(String[]) ((DefaultListModel<String>) this.available_datasets_list.getModel ()).toArray ();
-    	
-    	// Add all strings into main container.
-    	for (String s : current_available_columns) {
-    		group_by.add (s);
-    	}
-    	
-    	// Set the new model into the combo box.
-    	String [] arr = (String[]) group_by.toArray ();
-    	this.group_by_combo_box.setModel
-    			(new DefaultComboBoxModel <String> (arr));
-    	
-    	// Clean up? Shrug.
-    	current_available_columns = null;
-    	group_by = null;
-    }
-    
     // Created by NetBeans IDE.
     /**
      * Initializes the visual components of this view form.
@@ -142,7 +116,7 @@ public class DataSetView extends javax.swing.JPanel {
         chart_type_combo_box = new javax.swing.JComboBox <String>
 				(ChartType.getOptions ());
         group_by_label = new javax.swing.JLabel();
-        group_by_combo_box = new javax.swing.JComboBox<String>();
+        group_by_check_box = new javax.swing.JCheckBox();
         available_datasets_pane = new javax.swing.JScrollPane();
         available_datasets_list = new javax.swing.JList <String> (
                 this.data_model.getAvailableListModel ());
@@ -181,7 +155,7 @@ public class DataSetView extends javax.swing.JPanel {
                     .addGroup(layout.createSequentialGroup()
                         .addComponent(group_by_label, javax.swing.GroupLayout.PREFERRED_SIZE, 56, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                        .addComponent(group_by_combo_box, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                        .addComponent(group_by_check_box, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                     .addComponent(remove_button, javax.swing.GroupLayout.DEFAULT_SIZE, 224, Short.MAX_VALUE)
                     .addComponent(selected_datasets_pane, javax.swing.GroupLayout.PREFERRED_SIZE, 0, Short.MAX_VALUE))
                 .addContainerGap())
@@ -192,7 +166,7 @@ public class DataSetView extends javax.swing.JPanel {
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addGroup(layout.createSequentialGroup()
                         .addContainerGap()
-                        .addComponent(group_by_combo_box, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addComponent(group_by_check_box, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                     .addGroup(layout.createSequentialGroup()
                         .addContainerGap()
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
@@ -213,7 +187,7 @@ public class DataSetView extends javax.swing.JPanel {
 
 
     // Variables declaration - do not modify                     
-    private javax.swing.JComboBox <String> group_by_combo_box;
+    private javax.swing.JCheckBox group_by_check_box;
     private javax.swing.JLabel group_by_label;
     private javax.swing.JButton add_button;
     private javax.swing.JList <String> available_datasets_list;
@@ -245,7 +219,7 @@ public class DataSetView extends javax.swing.JPanel {
      *            ActionListener object provided by its Controller.
      */
     public void addGroupByListener (ActionListener changeGroupByListener) {
-        this.group_by_combo_box.addActionListener (changeGroupByListener);
+        this.group_by_check_box.addActionListener (changeGroupByListener);
     }
     
     /**

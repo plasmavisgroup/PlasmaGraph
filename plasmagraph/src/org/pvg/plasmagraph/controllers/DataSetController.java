@@ -76,7 +76,7 @@ public class DataSetController {
         @Override
         public void actionPerformed (ActionEvent arg0) {
             try {
-				data_model.getTemplate ().setGroupBy (data_view.getGroupByColumn ());
+				data_model.getTemplate ().setGroupedByExperiment (data_view.getGroupingByElement ());
 			} catch (Exception e) {
 				// TODO Throw a Dialog Exception
 			}

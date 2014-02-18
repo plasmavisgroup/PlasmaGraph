@@ -173,8 +173,6 @@ public class Interpolator {
 		for (int i = 0; (i < t.getInterpolationInterval ()); ++i) {
 			x_value = (t.getUpperInterval () * (i * (1.0 / t.getInterpolationInterval ()))) + t.getLowerInterval ();
 			
-			System.out.println (x_value);
-			
 			s.add (x_value, func.value (x_value));
 		}
 		
