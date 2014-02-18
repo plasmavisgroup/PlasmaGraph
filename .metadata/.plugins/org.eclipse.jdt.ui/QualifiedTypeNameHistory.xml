@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<qualifiedTypeNameHistroy>
+<fullyQualifiedTypeName name="T"/>
+<fullyQualifiedTypeName name="javax.swing.JMenu"/>
+<fullyQualifiedTypeName name="org.jfree.data.xy.XYDataset"/>
+<fullyQualifiedTypeName name="org.pvg.plasmagraph.utils.template.InterpolationType"/>
+<fullyQualifiedTypeName name="org.jfree.data.statistics.Regression"/>
+<fullyQualifiedTypeName name="org.jfree.data.function.LineFunction2D"/>
+<fullyQualifiedTypeName name="org.jfree.data.general.DatasetUtilities"/>
+<fullyQualifiedTypeName name="org.jfree.data.function.PolynomialFunction2D"/>
+<fullyQualifiedTypeName name="org.jfree.data.xy.XYSeriesCollection"/>
+<fullyQualifiedTypeName name="org.pvg.plasmagraph.utils.graphs.XYGraph"/>
+<fullyQualifiedTypeName name="org.jfree.data.xy.DefaultXYDataset"/>
+<fullyQualifiedTypeName name="java.awt.event.FocusListener"/>
+<fullyQualifiedTypeName name="org.jfree.data.xy.XYSeries"/>
+<fullyQualifiedTypeName name="org.apache.commons.math3.stat.correlation.PearsonsCorrelation"/>
+<fullyQualifiedTypeName name="javax.swing.ComboBoxModel"/>
+<fullyQualifiedTypeName name="javax.swing.DefaultComboBoxModel"/>
+<fullyQualifiedTypeName name="javax.swing.DefaultListModel"/>
+<fullyQualifiedTypeName name="org.pvg.plasmagraph.utils.data.StringColumn"/>
+<fullyQualifiedTypeName name="org.pvg.plasmagraph.utils.data.DoubleColumn"/>
+<fullyQualifiedTypeName name="java.lang.reflect.ParameterizedType"/>
+<fullyQualifiedTypeName name="org.pvg.plasmagraph.utils.types.ColumnType"/>
+<fullyQualifiedTypeName name="org.pvg.plasmagraph.utils.template.Template"/>
+<fullyQualifiedTypeName name="org.pvg.plasmagraph.utils.graphs.BarGraph"/>
+<fullyQualifiedTypeName name="java.util.ArrayList"/>
+<fullyQualifiedTypeName name="org.pvg.plasmagraph.utils.data.DataColumn"/>
+<fullyQualifiedTypeName name="java.io.File"/>
+<fullyQualifiedTypeName name="org.pvg.plasmagraph.utils.data.readers.CSVProcessor"/>
+<fullyQualifiedTypeName name="org.pvg.plasmagraph.utils.data.DataSet"/>
+<fullyQualifiedTypeName name="org.apache.commons.math3.stat.regression.SimpleRegression"/>
+<fullyQualifiedTypeName name="org.apache.commons.math3.linear.Array2DRowRealMatrix"/>
+<fullyQualifiedTypeName name="org.apache.commons.math3.stat.regression.RegressionResults"/>
+<fullyQualifiedTypeName name="org.apache.commons.math3.fitting.PolynomialFitter"/>
+<fullyQualifiedTypeName name="org.apache.commons.math3.optim.nonlinear.vector.MultivariateVectorOptimizer"/>
+<fullyQualifiedTypeName name="org.jfree.chart.plot.PlotOrientation"/>
+</qualifiedTypeNameHistroy>

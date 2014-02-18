@@ -1,0 +1,5 @@
+TODO
+=====
+
+1. Enclose diagrams with frame boundary and label as needed.
+2. Ensure unified color scheme for all diagrams

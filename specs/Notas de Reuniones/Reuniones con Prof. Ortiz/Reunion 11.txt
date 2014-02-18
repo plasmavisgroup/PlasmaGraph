@@ -1,0 +1,53 @@
+Meeting 11
+======
+Course / Class #: CECS 4800
+Date: 20 November 2013
+
+Project Name: PlasmaGraph
+
+Has been done:
+	1) SPMP: Revision 1 complete!
+		a) Lacks attached list of resources used (5.4), although it exists in the PlasmaGraph repository, and Gantt Chart (5.5).
+		b) Using Microsoft Project to create said Gantt Chart.
+	2) SRS: Revision 1 complete!
+		a) Basically complete, but lacks lots of polish and a few details.
+	3) Prototype 1 Completed.
+		a) Displays test data for each of the four main graph types: Bar Chart (Horizontal and Vertical), Pie Chart (No distinction between Horizontal and Vertical), XY Plot (Horizontal and Vertical), and Line Chart (Horizontal and Vertical).
+		b) Has a set of options available.
+		c) Allows saving of images, and editing of settings. (Settings changed via the ChartEditor [Right click -> Properties] do not change the Template; this means this feature will most likely be removed for the actual product.)
+		d) Does not allow reading of data yet due to various Dataset conversion problems. (Solutions are already being developed; the likeliest of them involves usage of the CSVReader and CSVParser classes provided by OpenCSV in a CSVDataReader class that will read said CSV data files and correctly transfer the data into the appropriate JFreeChart Dataset.)
+		e) Other graphs are being debated on. (Bar-and-Whisker, etc.) Largest problem is CSV data file parsing. Alternative input methods could be interesting, but probably outside the scope of the core of what the product will primarily do.
+
+	4) SDD: Initial work started.
+		a) Started work on SDD via hand-drawn diagrams of the Package and Class Diagrams.
+
+What will be done:
+	1) SPMP: Revision 2.
+		a) Edits to older sections to update them with new data or with better explanations.
+		b) More work on the Gantt Chart.
+	2) SRS: Revisions to it as feedback is provided.
+	3) SDD: Additional sketches of class methods and program flow.
+	4) Prototype: CSV data file reading + Second version of GUI. (Implement a Presentation - Model pattern, not MVC or Blob, which is what we currently have.)
+	5) Meeting with Client next week or the week after, depending on his availability.
+
+
+Materials Used: Computers, Internet connections, Microsoft Project, Microsoft Word, Eclipse, Netbeans IDE, LibreOffice Calc, LibreOffice Writer, Sublime Text 2, GitHub
+
+
+Group Members:
+
+
+		________________________________
+				Gerardo A. Navas
+
+
+
+		________________________________
+				Daniel Quintini
+
+
+Professor:
+
+
+		________________________________
+				Prof. Luis A. Ortiz
