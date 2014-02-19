@@ -96,9 +96,12 @@ public class DataSetModel {
     }
     
     /**
-	 * 
+     * Adds all the elements in the list provided to the SelectedDataSets List.
+     * 
+     * @param list List of elements to add to the SelectedDataSets List.
+     * @throws Exception Has no elements in the parameter provided.
 	 */
-    public void addToSelectedDataset (ArrayList <String> list) {
+    public void addToSelectedDataset (ArrayList <String> list) throws Exception {
         // TODO: Verify that the DataSet doesn't exist already.
         
         // We're attempting dangerous things that should throw errors.
@@ -120,14 +123,18 @@ public class DataSetModel {
         } else {
             // Otherwise, complain about having an empty list.
             // TODO: Make Exception specifically for Adding values.
-            ExceptionHandler.createEmptyArrayException ();
+            throw (new Exception ("The array is empty and thus cannot be used "
+            		+ "to add to other containers."));
         }
     }
     
     /**
-	 * 
+     * Removes all the elements in the list provided from the SelectedDataSets List.
+     * 
+     * @param list List of elements to remove from the SelectedDataSets List.
+     * @throws Exception Has no elements in the parameter provided.
 	 */
-    public void removeFromSelectedDataset (ArrayList <String> list) {
+    public void removeFromSelectedDataset (ArrayList <String> list) throws Exception {
         // We're attempting dangerous things that should throw errors.
         // First, check if there's something in the list.
         if (list.size () >= 1) {
@@ -147,7 +154,8 @@ public class DataSetModel {
         } else {
             // Otherwise, complain about having an empty list.
             // TODO: Make Exception specifically for Removing values.
-            ExceptionHandler.createEmptyArrayException ();
+        	throw (new Exception ("The array is empty and thus cannot "
+            		+ "have any objects removed from it."));
         }
     }
     
