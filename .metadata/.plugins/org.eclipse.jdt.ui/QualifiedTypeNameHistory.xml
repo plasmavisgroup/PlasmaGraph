@@ -24,14 +24,16 @@
 <fullyQualifiedTypeName name="org.pvg.plasmagraph.utils.template.Template"/>
 <fullyQualifiedTypeName name="org.pvg.plasmagraph.utils.graphs.BarGraph"/>
 <fullyQualifiedTypeName name="java.util.ArrayList"/>
-<fullyQualifiedTypeName name="org.pvg.plasmagraph.utils.data.DataColumn"/>
-<fullyQualifiedTypeName name="java.io.File"/>
 <fullyQualifiedTypeName name="org.pvg.plasmagraph.utils.data.readers.CSVProcessor"/>
-<fullyQualifiedTypeName name="org.pvg.plasmagraph.utils.data.DataSet"/>
 <fullyQualifiedTypeName name="org.apache.commons.math3.stat.regression.SimpleRegression"/>
 <fullyQualifiedTypeName name="org.apache.commons.math3.linear.Array2DRowRealMatrix"/>
 <fullyQualifiedTypeName name="org.apache.commons.math3.stat.regression.RegressionResults"/>
 <fullyQualifiedTypeName name="org.apache.commons.math3.fitting.PolynomialFitter"/>
 <fullyQualifiedTypeName name="org.apache.commons.math3.optim.nonlinear.vector.MultivariateVectorOptimizer"/>
 <fullyQualifiedTypeName name="org.jfree.chart.plot.PlotOrientation"/>
+<fullyQualifiedTypeName name="org.pvg.plasmagraph.utils.data.DataColumn"/>
+<fullyQualifiedTypeName name="org.pvg.plasmagraph.utils.data.DataSet"/>
+<fullyQualifiedTypeName name="org.pvg.plasmagraph.utils.data.readers.MatlabReader"/>
+<fullyQualifiedTypeName name="java.io.File"/>
+<fullyQualifiedTypeName name="javax.swing.JOptionPane"/>
 </qualifiedTypeNameHistroy>
