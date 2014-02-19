@@ -1,20 +1,16 @@
 package org.pvg.plasmagraph.utils.tools;
 
+import javax.swing.JOptionPane;
+
 import org.apache.commons.math3.analysis.interpolation.SplineInterpolator;
 import org.apache.commons.math3.analysis.polynomials.PolynomialSplineFunction;
-import org.apache.commons.math3.fitting.PolynomialFitter;
-import org.apache.commons.math3.linear.Array2DRowRealMatrix;
-import org.apache.commons.math3.optim.nonlinear.vector.MultivariateVectorOptimizer;
 import org.apache.commons.math3.stat.correlation.PearsonsCorrelation;
 import org.apache.commons.math3.stat.regression.RegressionResults;
 import org.apache.commons.math3.stat.regression.SimpleRegression;
 import org.jfree.data.function.*;
 import org.jfree.data.general.DatasetUtilities;
-import org.jfree.data.xy.DefaultXYDataset;
-import org.jfree.data.xy.XYDataset;
 import org.jfree.data.xy.XYSeries;
 import org.jfree.data.xy.XYSeriesCollection;
-import org.pvg.plasmagraph.utils.data.DataColumn;
 import org.pvg.plasmagraph.utils.data.DataSet;
 import org.pvg.plasmagraph.utils.graphs.XYGraph;
 import org.pvg.plasmagraph.utils.template.Template;
@@ -55,9 +51,9 @@ public class Interpolator {
 		// Return container.
 		XYSeries regression_dataset;
 		// Temporary regression container.
-		double [] regression;
-		// R-Squared Container.
-		double r_squared;
+		double [] regression_params;
+		// Pearson's r Container.
+		double pearsons_r;
 		// Pearsons Correlation calculator for most functions.
     	PearsonsCorrelation p_correlation = new PearsonsCorrelation ();
     	// XYDataset container for some JFree operations.
@@ -71,70 +67,70 @@ public class Interpolator {
     	if (t.getInterpolationType ().equals (InterpolationType.LINEAR)) {
     		
     		// Create the double [][] container and regress it.
-    		SimpleRegression r = new SimpleRegression (true);
-    		
-    		r.addData (ds.toArray ());
-    		RegressionResults lin_regression = r.regress ();
+    		SimpleRegression linear_regression = new SimpleRegression (true);
+    		linear_regression.addData (ds.toArray ());
+    		RegressionResults lin_regression = linear_regression.regress ();
     		
     		// Obtain the parameters.
-    		regression = lin_regression.getParameterEstimates ();
+    		regression_params = lin_regression.getParameterEstimates ();
     		
     		// Create an XYSeries based on those parameters.
     		// Note that, sometimes, there is no intercept! Check for it!
     		if (lin_regression.hasIntercept ()) {
-    			regression_dataset = DatasetUtilities.sampleFunction2DToSeries (new LineFunction2D (regression[0], regression[1]),
+    			regression_dataset = DatasetUtilities.sampleFunction2DToSeries (new LineFunction2D (regression_params[0], regression_params[1]),
     					t.getLowerInterval (), t.getUpperInterval (), t.getInterpolationInterval (), getSeriesKey(t));
     		} else {
-    			regression_dataset = DatasetUtilities.sampleFunction2DToSeries (new LineFunction2D (0.0, regression[1]),
+    			regression_dataset = DatasetUtilities.sampleFunction2DToSeries (new LineFunction2D (0.0, regression_params[1]),
     					t.getLowerInterval (), t.getUpperInterval (), t.getInterpolationInterval (), getSeriesKey(t));
     		}
     		
     		// Obtain the R-Squared value.
-    		r_squared = lin_regression.getRSquared ();
+    		pearsons_r = p_correlation.correlation (createArrayFromSeries (regression_dataset, true),
+    				createArrayFromSeries (regression_dataset, false));
         	
         } //======================================================================================//
     	else if (t.getInterpolationType ().equals (InterpolationType.QUADRATIC)) {
         	
-        	regression = org.jfree.data.statistics.Regression.
+    		regression_params = org.jfree.data.statistics.Regression.
         			getPolynomialRegression (regression_set, 0, 2);
         	
         	regression_dataset = DatasetUtilities.sampleFunction2DToSeries
         			(new PolynomialFunction2D
-        				(new double [] {regression[0], regression[1], regression[2]}),
+        				(new double [] {regression_params[0], regression_params[1], regression_params[2]}),
         			t.getLowerInterval (), t.getUpperInterval (),
 					t.getInterpolationInterval (), getSeriesKey(t));
         	
-        	r_squared = p_correlation.correlation (createArrayFromSeries (regression_dataset, true),
+        	pearsons_r = p_correlation.correlation (createArrayFromSeries (regression_dataset, true),
         			createArrayFromSeries (regression_dataset, false));
         	
         }  //======================================================================================//
         else if (t.getInterpolationType ().equals (InterpolationType.CUBIC)) {
         	
-        	regression = org.jfree.data.statistics.Regression.
+        	regression_params = org.jfree.data.statistics.Regression.
         			getPolynomialRegression (regression_set, 0, 3);
         	
         	regression_dataset = DatasetUtilities.sampleFunction2DToSeries
         			(new PolynomialFunction2D
-        					(new double [] {regression[0], regression[1], regression[2], regression[3]}),
+        					(new double [] {regression_params[0], regression_params[1], regression_params[2], regression_params[3]}),
         			t.getLowerInterval (), t.getUpperInterval (),
 					t.getInterpolationInterval (), getSeriesKey(t));
         	
-        	r_squared = p_correlation.correlation (createArrayFromSeries (regression_dataset, true),
+        	pearsons_r = p_correlation.correlation (createArrayFromSeries (regression_dataset, true),
         			createArrayFromSeries (regression_dataset, false));
         	
         }  //======================================================================================// 
         else if (t.getInterpolationType ().equals (InterpolationType.QUARTIC)) {
         	
-        	regression = org.jfree.data.statistics.Regression.
+        	regression_params = org.jfree.data.statistics.Regression.
         			getPolynomialRegression (regression_set, 0, 4);
         	
         	regression_dataset = DatasetUtilities.sampleFunction2DToSeries
         			(new PolynomialFunction2D
-        					(new double [] {regression[0], regression[1], regression[2], regression[3], regression[4]}),
+        					(new double [] {regression_params[0], regression_params[1], regression_params[2], regression_params[3], regression_params[4]}),
         			t.getLowerInterval (), t.getUpperInterval (),
 					t.getInterpolationInterval (), getSeriesKey(t));
         	
-        	r_squared = p_correlation.correlation (createArrayFromSeries (regression_dataset, true),
+        	pearsons_r = p_correlation.correlation (createArrayFromSeries (regression_dataset, true),
         			createArrayFromSeries (regression_dataset, false));
         	
         } //======================================================================================//
@@ -149,12 +145,12 @@ public class Interpolator {
         	regression_dataset = createSeries (func, t);
         	
         	// Obtain r_squared value from data.
-        	r_squared = p_correlation.correlation (createArrayFromSeries (regression_dataset, true), 
+        	pearsons_r = p_correlation.correlation (createArrayFromSeries (regression_dataset, true), 
         			createArrayFromSeries (regression_dataset, false));
         	
         }  //======================================================================================//
     	
-    	showRegressionValidity (r_squared);
+    	showRegressionValidity (pearsons_r, ds.getColumnLength ());
     	
 		return (regression_dataset);
     }
@@ -180,7 +176,7 @@ public class Interpolator {
 	}
 	
 	/**
-	 * 
+	 * Helper method for the creation of double arrays for 
 	 * @param s
 	 * @param x
 	 * @return
@@ -245,8 +241,14 @@ public class Interpolator {
      * @param r_squared The Correlation Coefficient, obtained by squaring the
      * Pearson Coefficient.
      */
-    private static void showRegressionValidity (double r_squared) {
-    	// TODO: This method!
+    private static void showRegressionValidity (double r, int number_of_points) {
+    	StringBuilder sb = new StringBuilder ();
+    	
+    	sb.append ("Graph's R Value: ").append (r).append ("\n");
+    	sb.append (DataConfidence.provideCIValidity (r, number_of_points));
+    	
+    	JOptionPane.showConfirmDialog (null, sb.toString (), 
+    			"Interpolation Validity Check", JOptionPane.OK_OPTION);
     }
 
 	/**
