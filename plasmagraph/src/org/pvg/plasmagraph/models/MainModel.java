@@ -121,7 +121,7 @@ public class MainModel {
                         .createFunctionNotImplementedException ("Other File Readers");
             }
         } else if (return_value == JFileChooser.ERROR_OPTION) {
-            ExceptionHandler.createFileSelectionException ("Import Data");
+            ExceptionHandler.createFileSelectionException ("Importing Data");
             
         }
         // "return_value == JFileChooser.CANCEL_OPTION" has no response.
@@ -170,7 +170,7 @@ public class MainModel {
                         JOptionPane.PLAIN_MESSAGE);
             }
         } else if (return_value == JFileChooser.ERROR_OPTION) {
-            ExceptionHandler.createFileSelectionException ("Template");
+            ExceptionHandler.createFileSelectionException ("Importing Template");
         }
         // "return_value == JFileChooser.CANCEL_OPTION" has no response.
     }
@@ -205,7 +205,7 @@ public class MainModel {
             t.saveTemplate (save_file);
 
         } else if (return_value == JFileChooser.ERROR_OPTION) {
-            ExceptionHandler.createFileSelectionException ("Template");
+            ExceptionHandler.createFileSelectionException ("Saving Template");
         }
         // "return_value == JFileChooser.CANCEL_OPTION" has no response.
     }
@@ -253,7 +253,7 @@ public class MainModel {
             }
         } else if (return_value == JFileChooser.ERROR_OPTION) {
             ExceptionHandler
-                    .createFileSelectionException ("Import Data Filter");
+                    .createFileSelectionException ("Importing Data Filter");
         }
         // "return_value == JFileChooser.CANCEL_OPTION" has no response.
     }
@@ -302,7 +302,7 @@ public class MainModel {
             df.save (save_file);
                 
         } else if (return_value == JFileChooser.ERROR_OPTION) {
-            ExceptionHandler.createFileSelectionException ("Save Data Filter");
+            ExceptionHandler.createFileSelectionException ("Saving Data Filter");
         }
         // "return_value == JFileChooser.CANCEL_OPTION" has no response.
     }

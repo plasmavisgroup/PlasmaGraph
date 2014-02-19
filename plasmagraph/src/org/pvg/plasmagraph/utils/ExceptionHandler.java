@@ -27,9 +27,23 @@ public class ExceptionHandler {
 		dialog.setVisible(true);
 	}
 
-	public static void createFileSelectionException(String string) {
-		// TODO Auto-generated method stub
+	public static void createFileSelectionException (String string) {
+		String message = "Error: There was an error in selecting files in the option:"
+				+ string;
+		JOptionPane error_window = new JOptionPane (message, JOptionPane.ERROR_MESSAGE);
 		
+		JDialog dialog = error_window.createDialog("Error");
+		
+		dialog.setVisible(true);
+	}
+
+	public static void createEmptyArrayException (String string) {
+		String message = "Error:" + string;
+		JOptionPane error_window = new JOptionPane (message, JOptionPane.ERROR_MESSAGE);
+		
+		JDialog dialog = error_window.createDialog("Error");
+		
+		dialog.setVisible(true);
 	}
 
 }

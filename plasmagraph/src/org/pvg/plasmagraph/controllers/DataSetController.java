@@ -9,6 +9,7 @@ import javax.swing.event.ChangeEvent;
 import javax.swing.event.ChangeListener;
 
 import org.pvg.plasmagraph.models.DataSetModel;
+import org.pvg.plasmagraph.utils.ExceptionHandler;
 import org.pvg.plasmagraph.views.DataSetView;
 
 /**
@@ -98,14 +99,20 @@ public class DataSetController {
          */
         @Override
         public void actionPerformed (ActionEvent arg0) {
-           ArrayList <String> selected_columns =  data_view.getSelectedDatasetsToAdd ();
-            
-           if (selected_columns.size () == 2) {
-        	   data_model.addToSelectedDataset (selected_columns);
-           } else {
-        	   // TODO: Create an ArrayListSizeException!
-        	   //throw (new ArrayListSizeException ("Only two columns are allowed to be selected."));
-           }
+			try {
+				ArrayList <String> selected_columns = data_view.getSelectedDatasetsToAdd ();
+				    
+				if (selected_columns.size () == 2) {
+					
+					data_model.addToSelectedDataset (selected_columns);
+				
+				} else {
+					// TODO: Create an ArrayListSizeException!
+					//throw (new ArrayListSizeException ("Only two columns are allowed to be selected."));
+				}
+			} catch (Exception e) {
+				ExceptionHandler.createEmptyArrayException (e.toString ());
+			}
         }
         
     }
@@ -124,8 +131,12 @@ public class DataSetController {
          */
         @Override
         public void actionPerformed (ActionEvent arg0) {
+        	try {
             data_model.removeFromSelectedDataset (data_view
                     .getSelectedDatasetsToRemove ());
+        	} catch (Exception e) {
+        		ExceptionHandler.createEmptyArrayException (e.toString ());
+        	}
         }
         
     }
