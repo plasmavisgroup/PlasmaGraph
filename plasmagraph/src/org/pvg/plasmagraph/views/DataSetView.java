@@ -3,10 +3,6 @@ package org.pvg.plasmagraph.views;
 import java.awt.event.ActionListener;
 import java.util.ArrayList;
 
-import javax.swing.ComboBoxModel;
-import javax.swing.DefaultComboBoxModel;
-import javax.swing.DefaultListModel;
-
 import org.pvg.plasmagraph.models.DataSetModel;
 import org.pvg.plasmagraph.utils.types.ChartType;
 
@@ -46,6 +42,13 @@ public class DataSetView extends javax.swing.JPanel {
         this.data_model.resetListModels ();
         this.updateGroupBy ();
     }
+    
+    /**
+     * Updates DataSetView's JLists based on the current state of the DataSet.
+     */
+	public void updateLists () {
+		this.data_model.resetListModels ();
+	}
     
     private void updateGroupBy () {
 		this.group_by_check_box.setSelected (this.data_model.getTemplate ().isGroupedByExperiment ());

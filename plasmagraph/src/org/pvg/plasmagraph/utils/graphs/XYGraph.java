@@ -12,6 +12,7 @@ import org.jfree.data.xy.XYDataset;
 import org.jfree.data.xy.XYSeries;
 import org.jfree.data.xy.XYSeriesCollection;
 import org.pvg.plasmagraph.utils.data.DataSet;
+import org.pvg.plasmagraph.utils.data.Pair;
 import org.pvg.plasmagraph.utils.template.Template;
 
 // TODO: Documentation!
@@ -37,9 +38,9 @@ public class XYGraph extends JFrame implements Graph{
 	 * various parts of the graph.
 	 * @param ds_reference DataSet reference used in the creation of the graph.
 	 */
-	public XYGraph (Template t_reference, DataSet ds_reference) {
+	public XYGraph (Template t_reference, DataSet ds_reference, Pair p) {
 		super(t_reference.getChartName ());
-		setContentPane (createJPanel (t_reference, ds_reference));
+		setContentPane (createJPanel (t_reference, ds_reference, p));
 	}
 	
 	/**
@@ -66,8 +67,8 @@ public class XYGraph extends JFrame implements Graph{
 	 * @param ds DataSet reference used in the creation of the graph.
 	 * @return JPanel containing the graph.
 	 */
-	public JPanel createJPanel (Template t, DataSet ds) {
-		chart = createChart (createDataset(t, ds), t);
+	public JPanel createJPanel (Template t, DataSet ds, Pair p) {
+		chart = createChart (createDataset(t, ds, p), t);
 		ChartPanel c = new ChartPanel (chart, false, true, false, true, true);
 		return (c);
 	}
@@ -96,9 +97,9 @@ public class XYGraph extends JFrame implements Graph{
 	 * @param ds DataSet reference used in the creation of the graph.
 	 * @return An XYDataset containing the DataSet's data values
 	 */
-	public XYDataset createDataset (Template t, DataSet ds) {
+	public XYDataset createDataset (Template t, DataSet ds, Pair p) {
 		DefaultXYDataset set = new DefaultXYDataset ();
-		XYSeries s = ds.toXYGraphDataset ();
+		XYSeries s = ds.toXYGraphDataset (p);
 		set.addSeries (s.getKey (), s.toArray ());
 
 		return (set);

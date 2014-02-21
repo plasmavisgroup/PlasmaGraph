@@ -12,6 +12,12 @@ import javax.swing.event.ChangeListener;
 import org.pvg.plasmagraph.models.ToolModel;
 import org.pvg.plasmagraph.views.ToolView;
 
+/**
+ * Controller for the Tool MVC.
+ * Manages messages being sent around the program from the ToolView.
+ * 
+ * @author Gerardo A. Navas Morales
+ */
 public class ToolController {
     // Externally-contained variables.
     /** Reference to model related to this controller. */

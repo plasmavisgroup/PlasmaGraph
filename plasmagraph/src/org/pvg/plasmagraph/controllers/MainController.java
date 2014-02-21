@@ -14,7 +14,12 @@ import org.pvg.plasmagraph.views.DataSetView;
 import org.pvg.plasmagraph.views.MainView;
 import org.pvg.plasmagraph.views.ToolView;
 
-// TODO: Add more JavaDoc comments!
+/**
+ * Controller for the Main MVC.
+ * Manages messages being sent around the program from the MainView.
+ * 
+ * @author Gerardo A. Navas Morales
+ */
 public class MainController {
     /** Reference to model related to this controller. */
     private MainModel main_model;

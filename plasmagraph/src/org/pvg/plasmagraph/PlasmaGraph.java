@@ -22,7 +22,8 @@ public class PlasmaGraph {
 
 	public static void main (String [] args) {
 	    SwingUtilities.invokeLater (new Runnable () {
-            @Override
+            @SuppressWarnings ("unused")
+			@Override
             public void run () {
                 // Create all necessary objects.
                 Template t = new Template ();

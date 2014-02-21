@@ -9,6 +9,7 @@ import org.jfree.chart.JFreeChart;
 import org.jfree.data.category.DefaultCategoryDataset;
 import org.jfree.data.general.Dataset;
 import org.pvg.plasmagraph.utils.data.DataSet;
+import org.pvg.plasmagraph.utils.data.Pair;
 import org.pvg.plasmagraph.utils.template.Template;
 
 /**
@@ -33,9 +34,9 @@ public class BarGraph extends JFrame implements Graph {
 	 * of the graph.
 	 * @param ds DataSet reference used in the creation of the graph.
 	 */
-	public BarGraph (Template t, DataSet ds) {
+	public BarGraph (Template t, DataSet ds, Pair p) {
 		super(t.getChartName ());
-		setContentPane (createJPanel (t, ds));
+		setContentPane (createJPanel (t, ds, p));
 	}
 	
 	/**
@@ -46,8 +47,8 @@ public class BarGraph extends JFrame implements Graph {
 	 * @param ds DataSet reference used in the creation of the graph.
 	 * @return A JPanel containing the graph.
 	 */
-	public JPanel createJPanel (Template t, DataSet ds) {
-		chart = createChart (createDataset(t, ds), t);
+	public JPanel createJPanel (Template t, DataSet ds, Pair p) {
+		chart = createChart (createDataset(t, ds, p), t);
 		ChartPanel c = new ChartPanel (chart, false, true, false, true, true);
 		return (c);
 	}
@@ -61,12 +62,12 @@ public class BarGraph extends JFrame implements Graph {
 	 * @param ds DataSet reference used in the creation of the graph.
 	 * @return A Dataset containing the DataSet's data values
 	 */
-	public DefaultCategoryDataset createDataset (Template t, DataSet ds) {
+	public DefaultCategoryDataset createDataset (Template t, DataSet ds, Pair p) {
 		//DefaultCategoryDataset set = new DefaultCategoryDataset ();
 		//generateTestDataset (set, t);
 		
 		//return (set);
-		return (ds.toBarGraphDataset ());
+		return (ds.toBarGraphDataset (p));
 	}
 
 	/**

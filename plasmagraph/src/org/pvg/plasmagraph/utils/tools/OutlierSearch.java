@@ -18,7 +18,7 @@ public class OutlierSearch {
      */
     public static void scanForOutliers (DataSet ds, Template t) {
     	// Prepare tools for Outlier Scan use.
-        DataSet rds = new DataSet ();
+        //DataSet rds = new DataSet (); // TODO: This should not be needed!
         
         // Determine if User Validation will be performed.
         // I.E. This is the second step in validation.

@@ -12,6 +12,8 @@ import org.pvg.plasmagraph.utils.FileUtilities;
 import org.pvg.plasmagraph.utils.data.DataSet;
 import org.pvg.plasmagraph.utils.data.filter.DataFilter;
 import org.pvg.plasmagraph.utils.data.filter.DataFilterWindow;
+import org.pvg.plasmagraph.utils.data.readers.CSVProcessor;
+import org.pvg.plasmagraph.utils.data.readers.MatlabReader;
 import org.pvg.plasmagraph.utils.template.Template;
 
 /**
@@ -33,6 +35,7 @@ public class MainModel {
     DataFilter df;
     
     // Constants
+    // TODO: Change to NIO 2.0 Path class!
     String TEMPLATE_EXTENSION = ".tem";
     String DATA_FILTER_EXTENSION = ".df";
     String default_data_path = "../test/data/";
@@ -107,14 +110,31 @@ public class MainModel {
                 // TODO: Implement Data Reading for MATLAB Files.
                 ExceptionHandler
                         .createFunctionNotImplementedException ("MATLAB File Reader");
+                /*
+                 * MatlabReader mat = new MatlabReader (f);
+                 * try {
+                 * if (mat.getHeaders (ds)) {
+                 * // TODO: Change message to "Data Columns extracted successfully." ?
+                 * JOptionPane.showConfirmDialog (null, "Data Column names extracted successfully.");
+                 * }
+                 * } catch (Exception ex) {
+                 * ExceptionHandler.createMalformedDataFileException ("Matlab File Reader");
+                 * }
+                 */
                 
             } else if (FileUtilities.getExtension (f).equals (
                     csv_filter.getExtensions ()[0])) {
                 
-                // TODO: Decide if you want to keep "supporting" CSV files.
-                // TODO: Implement Data Reading for CSV Files.
-                ExceptionHandler
-                        .createFunctionNotImplementedException ("CSV File Reader");
+                CSVProcessor csv = new CSVProcessor (f);
+                try {
+	                if (csv.getHeaders (ds)) {
+	                	// TODO: Change message to "Data Columns extracted successfully." ?
+	                	JOptionPane.showConfirmDialog (null,
+	                			"Data Column names extracted successfully.");
+	                }
+                } catch (Exception ex) {
+                	ExceptionHandler.createMalformedDataFileException ("CSV File Reader");
+                }
                 
             } else {
                 ExceptionHandler
@@ -311,8 +331,7 @@ public class MainModel {
      * Helper method that automatically performs some edits to an Open-centric
      * JFileChooser.
      * TODO: Remove this method and incorporate its process to the
-     * initialization, or
-     * do something else with it!
+     * initialization, or do something else with it!
      * 
      * @param open_file
      *            JFileChooser object to edit.
@@ -331,8 +350,7 @@ public class MainModel {
      * Helper method that automatically performs some edits to an Save-centric
      * JFileChooser.
      * TODO: Remove this method and incorporate its process to the
-     * initialization, or
-     * do something else with it!
+     * initialization, or do something else with it!
      * 
      * @param save_file
      *            JFileChooser object to edit.
@@ -385,6 +403,11 @@ public class MainModel {
         
     }
 
+    /**
+     * Getter method. Provides the template associated with this model.
+     * 
+     * @return Reference to the template file linked to this object.
+     */
     public Template getTemplate () {
         return (t);
     }

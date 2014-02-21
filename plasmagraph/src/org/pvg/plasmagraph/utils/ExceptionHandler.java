@@ -7,15 +7,6 @@ public class ExceptionHandler {
 	
 	// TODO: Everything. Forever.
 	// Organize this class; make it more modular, etc.
-	/*public static void createEmptyArrayException () {
-		String message = "Error: No Data Items were selected.\n"
-				+ "Please select at least one data item to add /remove.";
-		JOptionPane error_window = new JOptionPane (message, JOptionPane.ERROR_MESSAGE);
-		
-		JDialog dialog = error_window.createDialog("Error");
-		
-		dialog.setVisible(true);
-	}*/
 
 	public static void createFunctionNotImplementedException (String function_name) {
 		String message = "Error: The functionality requested from the program does not exist.\n"
@@ -32,13 +23,24 @@ public class ExceptionHandler {
 				+ string;
 		JOptionPane error_window = new JOptionPane (message, JOptionPane.ERROR_MESSAGE);
 		
-		JDialog dialog = error_window.createDialog("Error");
+		JDialog dialog = error_window.createDialog ("Error");
 		
-		dialog.setVisible(true);
+		dialog.setVisible (true);
 	}
 
 	public static void createEmptyArrayException (String string) {
 		String message = "Error:" + string;
+		JOptionPane error_window = new JOptionPane (message, JOptionPane.ERROR_MESSAGE);
+		
+		JDialog dialog = error_window.createDialog("Error");
+		
+		dialog.setVisible(true);
+	}
+	
+	public static void createMalformedDataFileException (String string) {
+		String message = "File Error: " + string + " has found that this file "
+				+ "contains columns with varying sizes. Please check the data file "
+				+ "provided and correct appropriately.";
 		JOptionPane error_window = new JOptionPane (message, JOptionPane.ERROR_MESSAGE);
 		
 		JDialog dialog = error_window.createDialog("Error");

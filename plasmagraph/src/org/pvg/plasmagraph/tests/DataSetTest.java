@@ -8,6 +8,7 @@ import org.jfree.chart.plot.PlotOrientation;
 import org.junit.Test;
 import org.pvg.plasmagraph.utils.data.DataColumn;
 import org.pvg.plasmagraph.utils.data.DataSet;
+import org.pvg.plasmagraph.utils.data.Pair;
 import org.pvg.plasmagraph.utils.graphs.BarGraph;
 import org.pvg.plasmagraph.utils.graphs.XYGraph;
 import org.pvg.plasmagraph.utils.template.Template;
@@ -45,6 +46,7 @@ public class DataSetTest {
 		System.out.println (ds.toString () );
 	}
 	
+	@SuppressWarnings ("unchecked")
 	@Test
 	public void testRemove () {
 		// Set up test.
@@ -181,6 +183,7 @@ public class DataSetTest {
 		DataSet ds = new DataSet ();
 		DataColumn <Double> dc1 = new DataColumn <Double> ("Time", "double");
 		DataColumn <Double> dc2 = new DataColumn <Double> ("Distance", "double");
+		Pair p = new Pair (0, 1, "To XY Graph Dataset Test");
 		
 		dc1.add (0.0); dc2.add (0.0);
 		dc1.add (1.0); dc2.add (5.0);
@@ -196,7 +199,7 @@ public class DataSetTest {
 		//t.openTemplate (new java.io.File ("./template/graph_test.tem"));
 		
 		// Graph data via the XYGraph class!
-		XYGraph chart = new XYGraph (t, ds);
+		XYGraph chart = new XYGraph (t, ds, p);
 		chart.pack ();
 		chart.setVisible (true);
 		assertTrue ("Correctly Displayed?: ", JOptionPane.showConfirmDialog
@@ -208,6 +211,7 @@ public class DataSetTest {
 	@Test
 	public void testToBarGraphDataset () {
 		DataSet ds = prepareDataset ();
+		Pair p = new Pair (0, 1, "To Bar Graph Dataset Test");
 		
 		// Generate Template.
 		Template t = new Template ();
@@ -215,7 +219,7 @@ public class DataSetTest {
 		//t.openTemplate (new java.io.File ("./template/graph_test.tem"));
 		
 		// Graph data via the XYGraph class!
-		BarGraph chart = new BarGraph (t, ds);
+		BarGraph chart = new BarGraph (t, ds, p);
 		chart.pack ();
 		chart.setVisible (true);
 		assertTrue ("Correctly Displayed?: ", JOptionPane.showConfirmDialog

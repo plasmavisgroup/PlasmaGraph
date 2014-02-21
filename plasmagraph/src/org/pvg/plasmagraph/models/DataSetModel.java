@@ -6,15 +6,12 @@ import java.util.ArrayList;
 import javax.swing.DefaultListModel;
 import javax.swing.ListModel;
 
-import org.pvg.plasmagraph.utils.ExceptionHandler;
 import org.pvg.plasmagraph.utils.data.DataColumn;
 import org.pvg.plasmagraph.utils.data.DataReference;
 import org.pvg.plasmagraph.utils.data.DataSet;
 import org.pvg.plasmagraph.utils.data.Pair;
 import org.pvg.plasmagraph.utils.template.Template;
-import org.pvg.plasmagraph.utils.types.ChartType;
 
-//TODO: Add more JavaDoc comments!
 /**
  * Model for the modification of PlasmaGraph's data sets.
  * Manipulates both the data sets that will be used in the
@@ -22,6 +19,7 @@ import org.pvg.plasmagraph.utils.types.ChartType;
  * 
  * @author Gerardo A. Navas Morales
  */
+@SuppressWarnings ("rawtypes")
 public class DataSetModel {
     // Externally-contained variables.
     /** Reference to MainModel's Template, passed via constructor reference. */
@@ -175,7 +173,16 @@ public class DataSetModel {
      * 
      * @param c Listener to add to Template Notifier.
      */
-    public void addChangeListener (javax.swing.event.ChangeListener c) {
+    public void addTemplateChangeListener (javax.swing.event.ChangeListener c) {
         t.addChangeListener (c);
+    }
+    
+    /**
+     * Support method to add listeners to the DataSet.
+     * 
+     * @param c Listener to add to DataSet Notifier.
+     */
+    public void addDataChangeListener (javax.swing.event.ChangeListener c) {
+        ds.addChangeListener (c);
     }
 }

@@ -5,6 +5,7 @@ import javax.swing.JPanel;
 import org.jfree.chart.JFreeChart;
 import org.jfree.data.general.Dataset;
 import org.pvg.plasmagraph.utils.data.DataSet;
+import org.pvg.plasmagraph.utils.data.Pair;
 import org.pvg.plasmagraph.utils.template.Template;
 
 public interface Graph {
@@ -17,7 +18,7 @@ public interface Graph {
 	 * @param ds DataSet reference used in the creation of the graph.
 	 * @return A JPanel containing the graph.
 	 */
-	JPanel createJPanel (Template t, DataSet ds);
+	JPanel createJPanel (Template t, DataSet ds, Pair p);
 	
 	/**
 	 * Creates a Dataset specifically for the purposes of graphing the data 
@@ -28,7 +29,7 @@ public interface Graph {
 	 * @param ds DataSet reference used in the creation of the graph.
 	 * @return A Dataset containing the DataSet's data values
 	 */
-	Dataset createDataset (Template t, DataSet ds);
+	Dataset createDataset (Template t, DataSet ds, Pair p);
 	
 	/**
 	 * Creates a JFreeChart, an object containing the visual representation

@@ -10,6 +10,7 @@ import org.jfree.chart.plot.PlotOrientation;
 import org.junit.Test;
 import org.pvg.plasmagraph.utils.data.DataColumn;
 import org.pvg.plasmagraph.utils.data.DataSet;
+import org.pvg.plasmagraph.utils.data.Pair;
 import org.pvg.plasmagraph.utils.graphs.BarGraph;
 import org.pvg.plasmagraph.utils.graphs.XYGraph;
 import org.pvg.plasmagraph.utils.template.Template;
@@ -21,13 +22,14 @@ public class GraphTests {
 	public void testXYGraphs () {
 		// Generate data.
 		DataSet ds = xyDataTest ();
+		Pair p = new Pair (0, 1, "XY Graph Test");
 		
 		// Generate Template.
 		Template t = new Template ();
 		//t.openTemplate (new java.io.File ("./template/graph_test.tem"));
 		
 		// Graph data via the XYGraph class!
-		XYGraph chart = new XYGraph (t, ds);
+		XYGraph chart = new XYGraph (t, ds, p);
 		chart.pack ();
 		chart.setVisible (true);
 		
@@ -42,6 +44,7 @@ public class GraphTests {
 	public void testBarGraph () {
 		// Generate data.
 		DataSet ds = BarGraphDataSet ();
+		Pair p = new Pair (0, 1, "Bar Graph Test");
 		
 		// Generate Template.
 		Template t = new Template ();
@@ -49,7 +52,7 @@ public class GraphTests {
 		//t.openTemplate (new java.io.File ("./template/graph_test.tem"));
 		
 		// Graph data via the XYGraph class!
-		BarGraph chart = new BarGraph (t, ds);
+		BarGraph chart = new BarGraph (t, ds, p);
 		chart.pack ();
 		chart.setVisible (true);
 		

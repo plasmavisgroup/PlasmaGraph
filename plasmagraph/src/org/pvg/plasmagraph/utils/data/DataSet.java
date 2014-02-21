@@ -1,22 +1,28 @@
 package org.pvg.plasmagraph.utils.data;
 
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.Iterator;
 import java.util.NoSuchElementException;
+import java.util.Set;
+
+import javax.swing.event.ChangeEvent;
+import javax.swing.event.ChangeListener;
 
 import org.apache.commons.math3.linear.Array2DRowRealMatrix;
 import org.jfree.data.category.DefaultCategoryDataset;
-import org.jfree.data.general.PieDataset;
-import org.jfree.data.xy.DefaultXYDataset;
-import org.jfree.data.xy.XYDataset;
 import org.jfree.data.xy.XYSeries;
-import org.jfree.data.xy.XYSeriesCollection;
 
 /**
+ * Container of DataColumns. Provides methods to create JFree Datasets.
  * 
  * @author Gerardo A. Navas Morales
  */
+@SuppressWarnings ("rawtypes")
 public class DataSet implements Iterable<DataColumn>, Iterator<DataColumn> {
+	// Event Firing
+    /** Collection of listeners for any change that occurs in this Template. */
+    private Set <ChangeListener> listeners;
 	/** Container for DataColumns. */
 	private ArrayList<DataColumn> values;
 	/**
@@ -26,10 +32,12 @@ public class DataSet implements Iterable<DataColumn>, Iterator<DataColumn> {
 	private int position = 0;
 
 	/**
-	 * 
+	 * Constructor. Creates a new ArrayList of DataColumns for this object.
+	 * There should only exist one DataSet for any given time.
 	 */
 	public DataSet () {
-		values = new ArrayList<DataColumn> ();
+		this.values = new ArrayList<DataColumn> ();
+		this.listeners = new HashSet <ChangeListener> ();
 	}
 
 	/**
@@ -62,9 +70,10 @@ public class DataSet implements Iterable<DataColumn>, Iterator<DataColumn> {
 	}
 
 	/**
+	 * Removes a DataColumn from the DataSet and returns it.
 	 * 
-	 * @param i
-	 * @return
+	 * @param i The index of the DataColumn to remove.
+	 * @return DataColumn removed.
 	 */
 	public DataColumn remove (int i) {
 		return (this.values.remove (i));
@@ -109,9 +118,10 @@ public class DataSet implements Iterable<DataColumn>, Iterator<DataColumn> {
 	}
 
 	/**
+	 * Getter method. Provides access to a DataColumn at an index's location.
 	 * 
-	 * @param i
-	 * @return
+	 * @param i The index where the desired DataColumn is located.
+	 * @return The DataColumn at the index location.
 	 */
 	public DataColumn get (int i) {
 		return (this.values.get (i));
@@ -185,8 +195,9 @@ public class DataSet implements Iterable<DataColumn>, Iterator<DataColumn> {
 	}
 	
 	/**
+	 * Getter method. Provides the column length for the first column, the representative for all other columns.
 	 * 
-	 * @return
+	 * @return An integer length of the columns.
 	 */
 	public int getColumnLength () {
 		if (this.values.size () > 0) {
@@ -197,25 +208,30 @@ public class DataSet implements Iterable<DataColumn>, Iterator<DataColumn> {
 	}
 	
 	/**
+	 * Getter method. Provides the column length for a given column.
 	 * 
-	 * @param index
-	 * @return
+	 * @param index The column whose length will be checked.
+	 * @return An integer length of the selected column.
 	 */
 	public int getColumnLength (int index) {
 		return (this.values.get (index).size ());
 	}
 
 	/**
+	 * Given a group of index values and a name, provides a JFree XYSeries Dataset
+	 * for the purpose of graphing XY Graphs.
 	 * 
-	 * @return
+	 * @param p Pair of index values with a pre-defined name.
+	 * @return An XYSeries containing the desired data.
 	 */
-	public XYSeries toXYGraphDataset () {
-		XYSeries series = new XYSeries (this.getDataSetName ());
-
-		if (this.isDouble ()) {
+	public XYSeries toXYGraphDataset (Pair p) {
+		XYSeries series = new XYSeries (p.getName ());
+		
+		if (this.values.get (p.getIndex1 ()).containsDoubles () &&
+				this.values.get (p.getIndex2 ()).containsDoubles ()) {
 			for (int row = 0; row < this.getColumnLength (); ++row) {
-				series.add ((double) this.values.get (0).get (row),
-						((double) this.values.get (1).get (row)));
+				series.add ((double) this.values.get (p.getIndex1 ()).get (row),
+						((double) this.values.get (p.getIndex2 ()).get (row)));
 			}
 		}
 		
@@ -223,26 +239,29 @@ public class DataSet implements Iterable<DataColumn>, Iterator<DataColumn> {
 	}
 	
 	/**
+	 * Given a group of index values and a name, provides a JFree CategoryDataset
+	 * for the purpose of graphing Bar Graphs.
+	 * TODO: Make the method more robust. Add flexibility for varying combinations of double and string!
 	 * 
-	 * @return
+	 * @param p Pair of index values with a pre-defined name.
+	 * @return A DefaultCategoryDataset containing the desired data.
 	 */
-	public DefaultCategoryDataset toBarGraphDataset () {
+	public DefaultCategoryDataset toBarGraphDataset (Pair p) {
 		DefaultCategoryDataset dataset = new DefaultCategoryDataset ();
-		String series = "Series 1";
 		
 		// Assume the X column (Column 0) has the category data.
 		// Assume the Y column (Column 1) has the quantity data. (Cannot be a string)
 		
 		// We need to know what are the column types for each of them.
-		if (this.isDouble (0)) {
+		if (this.isDouble (p.getIndex1 ())) {
 			for (int row = 0; (row < this.getColumnLength ()); ++row) {
-				dataset.addValue ((Number) (double) this.values.get (1).get (row),
-						series, (double) this.values.get (0).get (row));
+				dataset.addValue ((Number) (double) this.values.get (p.getIndex2 ()).get (row),
+						p.getName (), (double) this.values.get (p.getIndex1 ()).get (row));
 			}
 		} else {
 			for (int row = 0; (row < this.getColumnLength ()); ++row) {
-				dataset.addValue ((Number) (double) this.values.get (1).get (row),
-						series, (String) this.values.get (0).get (row));
+				dataset.addValue ((Number) (double) this.values.get (p.getIndex2 ()).get (row),
+						p.getName (), (String) this.values.get (p.getIndex1 ()).get (row));
 			}
 		}
 		
@@ -307,5 +326,34 @@ public class DataSet implements Iterable<DataColumn>, Iterator<DataColumn> {
 		
 		// Return a double 2DArray.
 		return (matrix.getData ());
+	}
+	
+	// Event Methods
+	/**
+	 * Adds the listener provided to the notification list.
+	 * 
+	 * @param listener Listener to add to the notification list.
+	 */
+	public void addChangeListener (ChangeListener listener) {
+	    this.listeners.add (listener);
+	}
+	
+	/**
+	 * Removes the listener provided from the notification list.
+	 * 
+	 * @param listener Listener to remove from notification list.
+	 */
+	public void removeChangeListener (ChangeListener listener) {
+	    this.listeners.remove (listener);
+	}
+	
+	/**
+	 * Sends a ChangeEvent to all listeners of this object,
+	 * declaring that this Template object has been changed in some way.
+	 */
+	public void notifyListeners () {
+	    for (ChangeListener c : listeners) {
+	        c.stateChanged (new ChangeEvent (this));
+	    }
 	}
 }

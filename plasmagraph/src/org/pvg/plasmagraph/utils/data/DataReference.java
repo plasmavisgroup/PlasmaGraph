@@ -4,6 +4,10 @@ import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.NoSuchElementException;
 
+import org.jfree.data.category.DefaultCategoryDataset;
+import org.jfree.data.xy.XYSeries;
+import org.jfree.data.xy.XYSeriesCollection;
+
 /**
  * A reference-holding object, to be used parallel to DataSet, that maintains 
  * DataColumn indexes and their name on the DataSetView's JLists' ListModels.
@@ -167,20 +171,33 @@ public class DataReference implements Iterator<Pair>, Iterable<Pair>{
     }
     
     /**
-     * Provides a DataSet around a Pair whose index is provided.
+     * Provides a Dataset around a Pair whose index is provided.
      * Based on the primary dataset passed by reference.
      * 
      * @param pair_position Index location of the Pair to extract.
      * @param main_dataset Reference to the primary DataSet.
-     * @return A new DataSet, containing the desired Pair of data.
+     * @return A new Dataset, containing the desired Pair of data.
      */
-    public DataSet createPair (int pair_position, DataSet main_dataset) {
-        DataSet d = new DataSet ();
-        
+    public XYSeries createXYGraphPair (int pair_position, DataSet ds) {   
         Pair p = get (pair_position);
         	
-    	d.add (main_dataset.get(p.getIndex1 () - 1));
-        d.add (main_dataset.get(p.getIndex2 () - 1));
+        XYSeries d = ds.toXYGraphDataset (p);
+        
+        return (d);
+    }
+    
+    /**
+     * Provides a Dataset around a Pair whose index is provided.
+     * Based on the primary dataset passed by reference.
+     * 
+     * @param pair_position Index location of the Pair to extract.
+     * @param main_dataset Reference to the primary DataSet.
+     * @return A new Dataset, containing the desired Pair of data.
+     */
+    public DefaultCategoryDataset createBarGraphPair (int pair_position, DataSet ds) {  
+        Pair p = this.get (pair_position);
+        
+        DefaultCategoryDataset d = ds.toBarGraphDataset (p);
         
         return (d);
     }

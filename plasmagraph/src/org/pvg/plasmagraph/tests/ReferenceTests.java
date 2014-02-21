@@ -182,13 +182,14 @@ public class ReferenceTests {
     }
     
     @Test
-    public void testCreatePair () {
+    @SuppressWarnings ("unused")
+    public void testCreateXYPair () {
     	// Set up data.
     	DataReference r1 = new DataReference ();
         Pair p1 = new Pair (1, 2, "Position vs. Time");
         Pair p2 = new Pair (1, 3, "Position vs. Velocity");
         Pair p3 = new Pair (1, 4, "Position vs. Acceleration");
-        Pair p4 = new Pair (2, 1, "Time vs. Position");
+		Pair p4 = new Pair (2, 1, "Time vs. Position");
         r1.add (p1);
         r1.add (p2);
         r1.add (p3);
@@ -211,10 +212,10 @@ public class ReferenceTests {
         
         // Test
         assertTrue ("Cherry pick Position v. Time and compare to Time.", 
-        		r1.createPair (0, main).get (0).getColumnName ().equals 
+        		r1.createXYGraphPair (0, main).getKey ().equals 
         		(t1.get (0).getColumnName ()));
         assertFalse ("Cherry pick Position v. Time and compare to Acceleration.", 
-        		r1.createPair (0, main).get (0).getColumnName ().equals 
+        		r1.createXYGraphPair (0, main).getKey ().equals 
         		("Acceleration"));
     }
 }

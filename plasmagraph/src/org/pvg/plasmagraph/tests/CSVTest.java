@@ -88,11 +88,12 @@ public class CSVTest {
 	}
 
 	@Test
-	public void testToDataSet () {
+	public void testToDataSet () throws Exception {
 		CSVProcessor csv = new CSVProcessor (new File (this.default_csv_path));
 		csv.readCSV ();
 		// Open tested method file.
-		DataSet ds1 = csv.toDataSet ();
+		DataSet ds1 = new DataSet ();
+		csv.toDataSet (ds1);
 		
 		// Create simulated comparison file.
 		DataSet ds2 = new DataSet ();

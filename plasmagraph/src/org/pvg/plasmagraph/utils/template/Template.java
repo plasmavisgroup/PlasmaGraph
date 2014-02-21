@@ -93,7 +93,7 @@ public class Template {
 		this.default_outlier_reaction 		= OutlierResponse.WARN;
 		this.interpolation_lower_range 		= 0.0;
 		this.interpolation_upper_range		= 10.0;
-		this.interpolation_point_amount	= 100;
+		this.interpolation_point_amount		= 100;
 		
 	}
 	
@@ -558,8 +558,6 @@ public class Template {
 	 * @param listener Listener to add to the notification list.
 	 */
 	public void addChangeListener (ChangeListener listener) {
-		// TODO: Remove this test line.
-	    //System.out.println ("Added someone!");
 	    this.listeners.add (listener);
 	}
 	
@@ -569,8 +567,6 @@ public class Template {
 	 * @param listener Listener to remove from notification list.
 	 */
 	public void removeChangeListener (ChangeListener listener) {
-		// TODO: Remove this test line.
-	    //System.out.println ("Removed someone!");
 	    this.listeners.remove (listener);
 	}
 	
@@ -580,8 +576,6 @@ public class Template {
 	 */
 	public void notifyListeners () {
 	    for (ChangeListener c : listeners) {
-	    	// TODO: Remove this test line.
-	        //System.out.println ("Notifying: " + c.toString ());
 	        c.stateChanged (new ChangeEvent (this));
 	    }
 	}

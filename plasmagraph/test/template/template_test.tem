@@ -5,8 +5,8 @@ Y Axis
 true
 true
 false
-PlotOrientation.HORIZONTAL
-None
+PlotOrientation.VERTICAL
+false
 Spline
 Remove
 0.0

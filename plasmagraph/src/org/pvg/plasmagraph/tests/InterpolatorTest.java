@@ -6,7 +6,6 @@ import java.io.File;
 
 import javax.swing.JOptionPane;
 
-import org.jfree.chart.plot.PlotOrientation;
 import org.junit.Test;
 import org.pvg.plasmagraph.utils.data.DataSet;
 import org.pvg.plasmagraph.utils.data.readers.CSVProcessor;
@@ -28,11 +27,12 @@ public class InterpolatorTest {
 	
 
 	@Test
-	public void testInterpolateLinear () {
+	public void testInterpolateLinear () throws Exception {
 		// Pull the data out.
 		CSVProcessor csv = new CSVProcessor (new File (linear_data));
 		csv.readCSV ();
-		DataSet ds = csv.toDataSet ();
+		DataSet ds = new DataSet ();
+		csv.toDataSet (ds);
 		
 		// Prepare the Template
 		Template t = new Template ();
@@ -49,11 +49,12 @@ public class InterpolatorTest {
 	}
 	
 	@Test
-	public void testInterpolateQuadratic () {
+	public void testInterpolateQuadratic () throws Exception {
 		// Pull the data out.
 				CSVProcessor csv = new CSVProcessor (new File (quadratic_data));
 				csv.readCSV ();
-				DataSet ds = csv.toDataSet ();
+				DataSet ds = new DataSet ();
+				csv.toDataSet (ds);
 				
 				// Prepare the Template
 				Template t = new Template ();
@@ -69,11 +70,12 @@ public class InterpolatorTest {
 	}
 	
 	@Test
-	public void testInterpolateCubic () {
+	public void testInterpolateCubic () throws Exception {
 		// Pull the data out.
 		CSVProcessor csv = new CSVProcessor (new File (cubic_data));
 		csv.readCSV ();
-		DataSet ds = csv.toDataSet ();
+		DataSet ds = new DataSet ();
+		csv.toDataSet (ds);
 		
 		// Prepare the Template
 		Template t = new Template ();
@@ -90,32 +92,34 @@ public class InterpolatorTest {
 	}
 	
 	@Test
-	public void testInterpolateQuartic () {
+	public void testInterpolateQuartic () throws Exception {
 		// Pull the data out.
-				CSVProcessor csv = new CSVProcessor (new File (quartic_data));
-				csv.readCSV ();
-				DataSet ds = csv.toDataSet ();
-				
-				// Prepare the Template
-				Template t = new Template ();
-				t.setInterpolationType (InterpolationType.QUARTIC);
-				
-				// Throw into interpolator.
-				Interpolator.interpolate (ds, t);
-				
-				// Check if it worked.
-				assertTrue ("Correctly Displayed?: ", JOptionPane.showConfirmDialog
-						(null, "Does the graph look like a Quartic Graph?",
-								"Proper Graph?",
-								JOptionPane.YES_NO_OPTION) == JOptionPane.YES_OPTION);
+		CSVProcessor csv = new CSVProcessor (new File (quartic_data));
+		csv.readCSV ();
+		DataSet ds = new DataSet ();
+		csv.toDataSet (ds);
+		
+		// Prepare the Template
+		Template t = new Template ();
+		t.setInterpolationType (InterpolationType.QUARTIC);
+		
+		// Throw into interpolator.
+		Interpolator.interpolate (ds, t);
+		
+		// Check if it worked.
+		assertTrue ("Correctly Displayed?: ", JOptionPane.showConfirmDialog
+				(null, "Does the graph look like a Quartic Graph?",
+						"Proper Graph?",
+						JOptionPane.YES_NO_OPTION) == JOptionPane.YES_OPTION);
 	}
 	
 	@Test
-	public void testInterpolateSpline () {
+	public void testInterpolateSpline () throws Exception {
 		// Pull the data out.
 				CSVProcessor csv = new CSVProcessor (new File (spline_data));
 				csv.readCSV ();
-				DataSet ds = csv.toDataSet ();
+				DataSet ds = new DataSet ();
+				csv.toDataSet (ds);
 				
 				// Prepare the Template
 				Template t = new Template ();

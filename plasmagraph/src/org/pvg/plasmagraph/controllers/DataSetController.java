@@ -38,7 +38,8 @@ public class DataSetController {
         data_view.addAddButtonListener (new AddButtonListener ());
         data_view.addRemoveButtonListener (new RemoveButtonListener ());
         // Update View Listener
-        data_model.addChangeListener (new DataViewTemplateListener ());
+        data_model.addTemplateChangeListener (new DataViewTemplateListener ());
+        data_model.addDataChangeListener (new DataViewTemplateListener ());
     }
     
     /**
@@ -55,7 +56,8 @@ public class DataSetController {
         @Override
         public void actionPerformed (ActionEvent arg0) {
             try {
-				data_model.getTemplate ().setChartType (data_view.getSelectedChartType ());
+				data_model.getTemplate ().setChartType 
+						(data_view.getSelectedChartType ());
 			} catch (Exception e) {
 				// TODO Throw a Dialog Exception
 			}
@@ -77,7 +79,8 @@ public class DataSetController {
         @Override
         public void actionPerformed (ActionEvent arg0) {
             try {
-				data_model.getTemplate ().setGroupedByExperiment (data_view.getGroupingByElement ());
+				data_model.getTemplate ().setGroupedByExperiment 
+						(data_view.getGroupingByElement ());
 			} catch (Exception e) {
 				// TODO Throw a Dialog Exception
 			}
@@ -160,6 +163,35 @@ public class DataSetController {
                 @Override
                 protected Void doInBackground () throws Exception {
                     data_view.updateView ();
+                    return null;
+                }
+                
+            };
+            
+            view_worker.run ();
+        }
+        
+    }
+    
+    /**
+     * Listener for the Template that contains all settings for the program.
+     * Relies on ChangeListener in order to know that a change has occurred
+     * in the Template. 
+     * 
+     * @author Gerardo A. Navas Morales
+     */
+    class DataChangeDataSetListener implements ChangeListener {
+
+        /**
+         * Updates the AestheticView's current Template-based state.
+         */
+        @Override
+        public void stateChanged (ChangeEvent e) {
+            SwingWorker <Void, Void> view_worker = new SwingWorker <Void, Void> () {
+
+                @Override
+                protected Void doInBackground () throws Exception {
+                    data_view.updateLists ();
                     return null;
                 }
                 

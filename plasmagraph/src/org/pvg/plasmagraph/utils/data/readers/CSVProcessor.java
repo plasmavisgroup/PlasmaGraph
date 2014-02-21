@@ -101,82 +101,50 @@ public class CSVProcessor {
 	}
 	
 	/**
-	 * TODO: First row has column names. Need to pull those out first.
 	 * Transforms the List<String[]> data object that CSVReader dumps out
 	 * into a proper DataSet for the purposes of PlasmaGraph.
 	 * 
 	 * @return A DataSet object with its DataGroups being of the DataRow type.
+	 * @throws Exception Malformed data set; columns are of different sizes.
 	 */
 	@SuppressWarnings ("unchecked")
-	public DataSet toDataSet () {
-		DataSet ds = new DataSet ();
-		int [] row_length = new int [csv_data.size ()];
+	public DataSet toDataSet (DataSet ds) throws Exception {
+		// TODO: Check to see if ds is already populated.
+		// TODO: If it's populated, check if the CSV's header match with it.
+		// TODO: If so, then pull the data as normal.
 		
-		// Row length equality test.
-		// Obtain the sizes of each row.
-		for (int i = 0; (i < csv_data.size ()); ++i) {
-			row_length[i] = csv_data.get (i).length;
-		}
-		
-		// Verify that the size of each row is correct!
-		int typical_size = row_length[0];
-		for (int i = 1; (i < csv_data.size ()); ++i) {
-			if (row_length[i] != typical_size) {
-				throw (new ArrayStoreException ("Two arrays have different sizes!"));
-			}
-		}
-		// Proof: All rows are of the same length. 
-		
-		// DataColumn creation.
-		// Set up the DataColumns first.
-		// For each column in this row...
-		for (int i = 0; (i < csv_data.get (0).length); ++i) {
-			
-			// What is the type of the data in that column.
-			if (NumberUtils.isNumber (csv_data.get (1)[i].trim ())) {
+		// Get the Headers and the columns all set up!
+		if (this.getHeaders (ds)) {
+			// Now, fill in all the columns!
+			for (int row = 1; (row < csv_data.size ()); ++row) {
+				// Obtain the second, third, ..., last row in the List<String[]> "csv_data".
+				// Ignore the first; it's only got column names.
+				String [] s = csv_data.get (row);
 				
-				// Number? Then it's a double; add a DataColumn <Double>.
-				// Name's at csv_data.get(0)[i].
-				DataColumn <Double> dc = 
-						new DataColumn <Double> (csv_data.get(0)[i].trim (), "double");
-				ds.add (dc);
-				
-			} else {
-				
-				// Not a number? Then it's a string. Add a DataColumn <String>.
-				// Name's at csv_data.get(0)[i].
-				DataColumn <String> dc = 
-						new DataColumn <String> (csv_data.get(0)[i].trim (), "string");
-				
-				ds.add (dc);
-				
-			}
-		}
-		
-		// Now, fill in all the columns!
-		for (int row = 1; (row < csv_data.size ()); ++row) {
-			// Obtain the second, third, ..., last row in the List<String[]> "csv_data".
-			// Ignore the first; it's only got column names.
-			String [] s = csv_data.get (row);
-			
-			for (int col = 0; (col < ds.size ()); ++col) {
-				
-				// Number or String?
-				if (ds.get (col).containsDoubles () == (NumberUtils.isNumber (s[col].trim ()))) {
+				for (int col = 0; (col < ds.size ()); ++col) {
 					
-					// It's a number.
-					ds.get (col).add (NumberUtils.toDouble (s[col].trim ()));
-					
-				} else if (ds.get (col).containsStrings () != (NumberUtils.isNumber (s[col].trim ()))) {
-					
-					// It's a string.
-					ds.get (col).add (s[col].trim ());
-					 
+					// Number or String?
+					if (ds.get (col).containsDoubles () == (NumberUtils.isNumber (s[col].trim ()))) {
+						
+						// It's a number.
+						ds.get (col).add (NumberUtils.toDouble (s[col].trim ()));
+						
+					} else if (ds.get (col).containsStrings () != (NumberUtils.isNumber (s[col].trim ()))) {
+						
+						// It's a string.
+						ds.get (col).add (s[col].trim ());
+						 
+					}
 				}
 			}
+			
+			// Return the fully-formed DataSet!
+			return (ds);
+		} else {
+			// Error: Headers are not of the correct size!
+			throw (new Exception ("Incorrect Header sizes! "
+					+ "This is a malformed data file!"));
 		}
-		// Return the fully-formed DataSet!
-		return (ds);
 	}
 
 	/**
@@ -225,6 +193,87 @@ public class CSVProcessor {
 	 */
 	public void setFile (File new_file) {
 		csv_file = new_file;
+	}
+
+	/**
+	 * Getter Method; creates a set of columns with the correct names based on the 
+	 * data in the CSV file. Does not fill them in, however.
+	 * 
+	 * @param ds DataSet to fill out with Columns, but not with data.
+	 * @return A boolean describing the success or failure of this operation.
+	 */
+	public boolean getHeaders (DataSet ds) throws Exception {
+		
+		if (this.checkColumnSizes ()) {
+			// DataColumn creation.
+			// Set up the DataColumns first.
+			// For each column in this row...
+			for (int i = 0; (i < csv_data.get (0).length); ++i) {
+				
+				// What is the type of the data in that column.
+				if (NumberUtils.isNumber (csv_data.get (1)[i].trim ())) {
+					
+					// Number? Then it's a double; add a DataColumn <Double>.
+					// Name's at csv_data.get(0)[i].
+					DataColumn <Double> dc = 
+							new DataColumn <Double> (csv_data.get(0)[i].trim (), "double");
+					ds.add (dc);
+					
+				} else {
+					
+					// Not a number? Then it's a string. Add a DataColumn <String>.
+					// Name's at csv_data.get(0)[i].
+					DataColumn <String> dc = 
+							new DataColumn <String> (csv_data.get(0)[i].trim (), "string");
+					
+					ds.add (dc);
+					
+				}
+			}
+			
+			return (true);
+		} else {
+			throw (new Exception ("Incorrect Header sizes! " + "This is a malformed data file!"));
+			//return (false);
+		}
+	}
+
+	/**
+	 * Checks the column sizes of the csv_data to see if they are all of equal size.
+	 * 
+	 * @return A boolean describing the success or failure of this operation.
+	 */
+	private boolean checkColumnSizes () {
+		boolean equal = true;
+		int [] row_length = new int [csv_data.size ()];
+		
+		// Row length equality test.
+		// Obtain the sizes of each row.
+		for (int i = 0; (i < csv_data.size ()); ++i) {
+			row_length[i] = csv_data.get (i).length;
+		}
+		
+		// Verify that the size of each row is correct!
+		int typical_size = row_length[0];
+		for (int i = 1; ((i < csv_data.size ()) && (equal)); ++i) {
+			if (row_length[i] != typical_size) {
+				equal = false;
+				//throw (new ArrayStoreException ("Two arrays have different sizes!"));
+			}
+		}
+		// Proof: All rows are of the same length.
+		// Or they're not. Depends on the check!
+		return (equal);
+	}
+	
+	/**
+	 * Verifies and cleans out all null values from the provided DataSet.
+	 * TODO: Make sure to call in the right places!
+	 * TODO: Check all the data for null values!
+	 * @return A boolean describing the success or failure of this operation.
+	 */
+	private boolean checkData (DataSet ds) {
+		return (false);
 	}
 	
 }
