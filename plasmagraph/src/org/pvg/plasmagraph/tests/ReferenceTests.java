@@ -186,7 +186,7 @@ public class ReferenceTests {
     public void testCreateXYPair () {
     	// Set up data.
     	DataReference r1 = new DataReference ();
-        Pair p1 = new Pair (1, 2, "Position vs. Time");
+        Pair p1 = new Pair (1, 2, "Time vs. Position");
         Pair p2 = new Pair (1, 3, "Position vs. Velocity");
         Pair p3 = new Pair (1, 4, "Position vs. Acceleration");
 		Pair p4 = new Pair (2, 1, "Time vs. Position");
@@ -211,11 +211,12 @@ public class ReferenceTests {
         t1.add (c1); t1.add (c2);
         
         // Test
-        assertTrue ("Cherry pick Position v. Time and compare to Time.", 
-        		r1.createXYGraphPair (0, main).getKey ().equals 
-        		(t1.get (0).getColumnName ()));
-        assertFalse ("Cherry pick Position v. Time and compare to Acceleration.", 
-        		r1.createXYGraphPair (0, main).getKey ().equals 
-        		("Acceleration"));
+        String key = (String) r1.createXYGraphPair (0, main).getKey ();
+        String compared = (String) t1.getDataSetName ();
+        assertTrue ("Cherry pick Position v. Time and compare to Time.", key.equals (compared));
+        
+        key = (String) r1.createXYGraphPair (0, main).getKey ();
+        compared = "Acceleration";
+        assertFalse ("Cherry pick Position v. Time and compare to Acceleration.", key.equals (compared));
     }
 }

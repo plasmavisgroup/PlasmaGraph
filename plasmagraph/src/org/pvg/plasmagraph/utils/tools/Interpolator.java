@@ -12,6 +12,7 @@ import org.jfree.data.general.DatasetUtilities;
 import org.jfree.data.xy.XYSeries;
 import org.jfree.data.xy.XYSeriesCollection;
 import org.pvg.plasmagraph.utils.data.DataSet;
+import org.pvg.plasmagraph.utils.data.Pair;
 import org.pvg.plasmagraph.utils.graphs.XYGraph;
 import org.pvg.plasmagraph.utils.template.Template;
 import org.pvg.plasmagraph.utils.types.InterpolationType;
@@ -25,15 +26,15 @@ public class Interpolator {
 	 * @param ds The DataSet to interpolate.
 	 * @param t The settings the DataSet is based upon.
 	 */
-    public static void interpolate (DataSet ds, Template t) {
+    public static void interpolate (DataSet ds, Template t, Pair p) {
 
         // Check which of the different regressions you'll be doing.
-        XYSeries interpolated_dataset = getInterpolation (ds, t);
+        XYSeries interpolated_dataset = getInterpolation (ds, t, p);
         
         //System.out.println (printXYSeries (interpolated_dataset));
         
         // Graph it!
-        graphInterpolation (ds.toXYGraphDataset (), interpolated_dataset, t);
+        graphInterpolation (ds.toXYGraphDataset (p), interpolated_dataset, t);
         
     }
 
@@ -46,7 +47,7 @@ public class Interpolator {
      * the interval for each point.
      * @return An XYSeries containing the interpolated Dataset.
      */
-	private static XYSeries getInterpolation (DataSet ds, Template t) {
+	private static XYSeries getInterpolation (DataSet ds, Template t, Pair p) {
 		// Set up Variables.
 		// Return container.
 		XYSeries regression_dataset;
@@ -57,7 +58,7 @@ public class Interpolator {
 		// Pearsons Correlation calculator for most functions.
     	PearsonsCorrelation p_correlation = new PearsonsCorrelation ();
     	// XYDataset container for some JFree operations.
-    	XYSeriesCollection regression_set = new XYSeriesCollection (ds.toXYGraphDataset ());
+    	XYSeriesCollection regression_set = new XYSeriesCollection (ds.toXYGraphDataset (p));
     	// Test Calls.
     	//System.out.println ("Series: \n" + printXYSeries (ds.toXYGraphDataset ()));
     	
@@ -139,7 +140,8 @@ public class Interpolator {
         	
         	SplineInterpolator spline = new SplineInterpolator ();
         	PolynomialSplineFunction func = spline.interpolate
-        			 (ds.get (0).toDoubleArray (), ds.get (1).toDoubleArray ());
+        			 (ds.get (p.getIndex1 ()).toDoubleArray (), 
+        			  ds.get (p.getIndex2 ()).toDoubleArray ());
         	 
         	// Create data from function.
         	regression_dataset = createSeries (func, t);
