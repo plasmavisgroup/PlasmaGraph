@@ -91,6 +91,14 @@ public class DataColumn<E> implements Iterable<Object>, Iterator<Object> {
 		return (type.toString ());
 	}
 	
+	public String getName(){
+		return this.name;
+	}
+	
+	public void setName(String name){
+		this.name = name;
+	}
+	
 	/**
 	 * Comparing method. Type variable is compared to the MLArray types in JMatIO.
 	 * Provides verification for Doubles.
@@ -159,6 +167,12 @@ public class DataColumn<E> implements Iterable<Object>, Iterator<Object> {
 	 */
 	public boolean isEmpty () {
 		return (this.values.isEmpty ());
+	}
+
+	public void addAll(DataColumn column) {
+		for(int index = 0; index < column.size(); index++){
+			this.values.add((E) column.get(index));
+		}		
 	}
 
 }
