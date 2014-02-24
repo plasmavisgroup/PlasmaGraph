@@ -9,12 +9,17 @@ import javax.swing.filechooser.FileNameExtensionFilter;
 
 import org.pvg.plasmagraph.utils.ExceptionHandler;
 import org.pvg.plasmagraph.utils.FileUtilities;
+import org.pvg.plasmagraph.utils.data.DataReference;
 import org.pvg.plasmagraph.utils.data.DataSet;
+import org.pvg.plasmagraph.utils.data.Pair;
 import org.pvg.plasmagraph.utils.data.filter.DataFilter;
 import org.pvg.plasmagraph.utils.data.filter.DataFilterWindow;
 import org.pvg.plasmagraph.utils.data.readers.CSVProcessor;
 import org.pvg.plasmagraph.utils.data.readers.MatlabReader;
 import org.pvg.plasmagraph.utils.template.Template;
+import org.pvg.plasmagraph.utils.tools.Interpolator;
+import org.pvg.plasmagraph.utils.tools.OutlierSearch;
+import org.pvg.plasmagraph.utils.types.ChartType;
 
 /**
  * Primary Model for the PlasmaGraph product.
@@ -27,28 +32,22 @@ import org.pvg.plasmagraph.utils.template.Template;
  */
 public class MainModel {
     // Externally-controlled variables
-    /** Reference to MainModel's Template, passed via constructor reference. */
+    /** Reference to PlasmaGraph's Template, passed via constructor reference. */
     Template t;
-    /** Reference to MainModel's DataSet, passed via constructor reference. */
+    /** Reference to PlasmaGraph's DataSet, passed via constructor reference. */
     DataSet ds;
-    /** Reference to MainModel's Template, passed via constructor reference. */
+    /** Reference to PlasmaGraph's DataFilter, passed via constructor reference. */
     DataFilter df;
+    /** Reference to PlasmaGraph's DataReference, passed via constructor reference. */
+    DataReference dr;
     
     // Constants
     // TODO: Change to NIO 2.0 Path class!
     String TEMPLATE_EXTENSION = ".tem";
     String DATA_FILTER_EXTENSION = ".df";
-    String default_data_path = "../test/data/";
-    String default_template_path = "../test/template/";
-    String default_filter_path = "../test/data_filter/";
-    
-    // Internally-controlled variables
-    // /** Open File selection dialog. Disabled in favor of on-demand
-    // JFileChooser creation. */
-    // JFileChooser open_file_dialog;
-    // /** Save File selection dialog. Disabled in favor of on-demand
-    // JFileChooser creation. */
-    // JFileChooser save_file_dialog;
+    String default_data_path = "./test/csv/";
+    String default_template_path = "./test/template/";
+    String default_filter_path = "./test/data_filter/";
     
     /**
      * Creates a new MainModel with references to the data, settings and filter,
@@ -62,11 +61,12 @@ public class MainModel {
      *            Filter - DataFilter reference provided by PlasmaGraph.
      */
     public MainModel (Template t_reference, DataSet ds_reference,
-            DataFilter df_reference) {
+            DataFilter df_reference, DataReference dr_reference) {
         // Update currently-used Template, Data, and Data Filter Sources.
         t = t_reference;
         ds = ds_reference;
         df = df_reference;
+        dr = dr_reference;
         
         // Prepare FileChooser.
         
@@ -89,11 +89,10 @@ public class MainModel {
                 "Comma-Separated Value Files", "csv");
         
         // Insert the FileFilter into the JFileChooser
-        open_file.addChoosableFileFilter (mat_filter);
-        // TODO: Decide if you want to keep "supporting" CSV files.
         open_file.addChoosableFileFilter (csv_filter);
+        open_file.addChoosableFileFilter (mat_filter);
         // Set the default file filter.
-        open_file.setFileFilter (mat_filter);
+        open_file.setFileFilter (csv_filter);
         // Set the current directory
         open_file.setCurrentDirectory (new File (default_data_path));
         
@@ -113,6 +112,7 @@ public class MainModel {
                 /*
                  * MatlabReader mat = new MatlabReader (f);
                  * try {
+                 * mat.read ();
                  * if (mat.getHeaders (ds)) {
                  * // TODO: Change message to "Data Columns extracted successfully." ?
                  * JOptionPane.showConfirmDialog (null, "Data Column names extracted successfully.");
@@ -127,10 +127,14 @@ public class MainModel {
                 
                 CSVProcessor csv = new CSVProcessor (f);
                 try {
+                	csv.read ();
 	                if (csv.getHeaders (ds)) {
-	                	// TODO: Change message to "Data Columns extracted successfully." ?
-	                	JOptionPane.showConfirmDialog (null,
+	                	JOptionPane.showMessageDialog (null,
 	                			"Data Column names extracted successfully.");
+	                	ds.notifyListeners ();
+	                	// TODO: Allow for multiple data files to be used.
+	                	// TODO: Only reset if a data file with a different set of headers is imported.
+	                	dr.reset ();
 	                }
                 } catch (Exception ex) {
                 	ExceptionHandler.createMalformedDataFileException ("CSV File Reader");
@@ -394,13 +398,41 @@ public class MainModel {
      * Graphs the columns specified in DataReference dr with 
      * data in DataSet ds according to the settings in Template t.
      * Uses JFreeChart to create the appropriate graph!
+     * 
+     * @param outlier_switch 
+     * @param interpolation_switch 
      */
-    public void graph () {
-        // TODO Auto-generated method stub
-        JOptionPane.showMessageDialog (null, 
-                "Bang! (Sorry, we don't have anything here yet!)", 
-                "Unimplemented Function Error!", JOptionPane.PLAIN_MESSAGE);
-        
+    public void graph (boolean outlier_switch, 
+    		boolean interpolation_switch, String interpolation_target) {
+    	
+    	if (outlier_switch) {
+    		OutlierSearch.scanForOutliers (ds, t);
+    	}
+    	
+    	if (interpolation_switch) {
+    		if (dr.size () == 1) {
+    			Interpolator.interpolate (ds, t, dr.findPair (interpolation_target));
+    		} else {
+    			ExceptionHandler.createFunctionNotImplementedException 
+					("Interpolation - Can't interpolate multiple graphs at the moment.");
+    		}
+    		
+    	} else {
+    		if (t.getChartType ().equals (ChartType.XY_GRAPH)) {
+    			for (Pair p : dr) {
+    				org.pvg.plasmagraph.utils.graphs.XYGraph graph = 
+        					new org.pvg.plasmagraph.utils.graphs.XYGraph (t, ds, p);
+    			}
+    		} else if (t.getChartType ().equals (ChartType.BAR_GRAPH)) {
+    			for (Pair p : dr) {
+    				org.pvg.plasmagraph.utils.graphs.BarGraph graph = 
+        					new org.pvg.plasmagraph.utils.graphs.BarGraph (t, ds, p);
+    			}
+    		} else {
+    			ExceptionHandler.createFunctionNotImplementedException 
+    					("Graph - Not XY or Bar Graph");
+    		}
+    	}
     }
 
     /**

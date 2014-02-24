@@ -14,7 +14,7 @@ import org.pvg.plasmagraph.utils.data.Pair;
 import org.pvg.plasmagraph.utils.graphs.BarGraph;
 import org.pvg.plasmagraph.utils.graphs.XYGraph;
 import org.pvg.plasmagraph.utils.template.Template;
-public class GraphTests {
+public class GraphTest {
 	
 	Random rand = new Random ();
 	

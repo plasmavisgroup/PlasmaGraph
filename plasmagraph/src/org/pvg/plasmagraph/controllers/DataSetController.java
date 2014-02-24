@@ -39,7 +39,8 @@ public class DataSetController {
         data_view.addRemoveButtonListener (new RemoveButtonListener ());
         // Update View Listener
         data_model.addTemplateChangeListener (new DataViewTemplateListener ());
-        data_model.addDataChangeListener (new DataViewTemplateListener ());
+        data_model.addDataSetChangeListener (new DataViewDataSetListener ());
+        data_model.addDataReferenceChangeListener (new DataViewReferenceListener ());
     }
     
     /**
@@ -103,6 +104,7 @@ public class DataSetController {
         @Override
         public void actionPerformed (ActionEvent arg0) {
 			try {
+				//System.out.println ("Add button was pressed.");
 				ArrayList <String> selected_columns = data_view.getSelectedDatasetsToAdd ();
 				    
 				if (selected_columns.size () == 2) {
@@ -114,7 +116,7 @@ public class DataSetController {
 					//throw (new ArrayListSizeException ("Only two columns are allowed to be selected."));
 				}
 			} catch (Exception e) {
-				ExceptionHandler.createEmptyArrayException (e.toString ());
+				ExceptionHandler.createEmptyArrayException (e.getMessage ());
 			}
         }
         
@@ -135,10 +137,15 @@ public class DataSetController {
         @Override
         public void actionPerformed (ActionEvent arg0) {
         	try {
-            data_model.removeFromSelectedDataset (data_view
-                    .getSelectedDatasetsToRemove ());
+        		
+        		//System.out.println ("Remove button was pressed.");
+	            data_model.removeFromSelectedDataset (data_view
+	                    .getSelectedDatasetsToRemove ());
+	            
         	} catch (Exception e) {
-        		ExceptionHandler.createEmptyArrayException (e.toString ());
+        		
+        		ExceptionHandler.createEmptyArrayException (e.getMessage ());
+        		
         	}
         }
         
@@ -158,46 +165,75 @@ public class DataSetController {
          */
         @Override
         public void stateChanged (ChangeEvent e) {
-            SwingWorker <Void, Void> view_worker = new SwingWorker <Void, Void> () {
+            SwingWorker <Void, Void> template_worker = new SwingWorker <Void, Void> () {
 
                 @Override
                 protected Void doInBackground () throws Exception {
-                    data_view.updateView ();
+                    data_view.updateTemplateView ();
                     return null;
                 }
                 
             };
             
-            view_worker.run ();
+            template_worker.run ();
         }
         
     }
     
     /**
-     * Listener for the Template that contains all settings for the program.
+     * Listener for the DataSet that contains all settings for the program.
      * Relies on ChangeListener in order to know that a change has occurred
-     * in the Template. 
+     * in the DataSet. 
      * 
      * @author Gerardo A. Navas Morales
      */
-    class DataChangeDataSetListener implements ChangeListener {
+    class DataViewDataSetListener implements ChangeListener {
 
         /**
          * Updates the AestheticView's current Template-based state.
          */
         @Override
         public void stateChanged (ChangeEvent e) {
-            SwingWorker <Void, Void> view_worker = new SwingWorker <Void, Void> () {
+            SwingWorker <Void, Void> data_worker = new SwingWorker <Void, Void> () {
 
                 @Override
                 protected Void doInBackground () throws Exception {
-                    data_view.updateLists ();
+                    data_view.updateAvailableList ();
                     return null;
                 }
                 
             };
             
-            view_worker.run ();
+            data_worker.run ();
+        }
+        
+    }
+    
+    /**
+     * Listener for the DataReference that contains all settings for the program.
+     * Relies on ChangeListener in order to know that a change has occurred
+     * in the DataReference. 
+     * 
+     * @author Gerardo A. Navas Morales
+     */
+    class DataViewReferenceListener implements ChangeListener {
+
+        /**
+         * Updates the AestheticView's current Template-based state.
+         */
+        @Override
+        public void stateChanged (ChangeEvent e) {
+            SwingWorker <Void, Void> reference_worker = new SwingWorker <Void, Void> () {
+
+                @Override
+                protected Void doInBackground () throws Exception {
+                    data_view.updateSelectedList ();
+                    return null;
+                }
+                
+            };
+            
+            reference_worker.run ();
         }
         
     }

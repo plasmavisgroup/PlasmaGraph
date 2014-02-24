@@ -67,13 +67,13 @@ public class DataSetTest {
 		System.out.println (ds.toString ());
 	}
 
-	@Test
-	public void testRemoveDataColumn () {
-		DataSet ds = prepareDataset ();
-		System.out.println (ds.toString ());
-		
-		assertTrue ("Removing first datacolumn: ", ds.remove (0) != null);
-	}
+	//@Test
+	//public void testRemoveDataColumn () {
+	//	DataSet ds = prepareDataset ();
+	//	System.out.println (ds.toString ());
+	//	
+	//	assertTrue ("Removing first datacolumn: ", ds.remove (0) != null);
+	//}
 
 
 	@Test

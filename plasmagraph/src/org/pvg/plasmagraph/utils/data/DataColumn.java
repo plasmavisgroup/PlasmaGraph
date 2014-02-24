@@ -2,11 +2,10 @@ package org.pvg.plasmagraph.utils.data;
 
 import java.util.ArrayList;
 import java.util.Iterator;
-import java.util.NoSuchElementException;
 
 import org.pvg.plasmagraph.utils.types.ColumnType;
 
-public class DataColumn<E> implements Iterable<Object>, Iterator<Object> {
+public class DataColumn<E> implements Iterable<E> {
 
 	/** Container for DataColumns. */
 	private ArrayList<E> values;
@@ -16,10 +15,6 @@ public class DataColumn<E> implements Iterable<Object>, Iterator<Object> {
 	
 	/** Type of the item contained, as per JMatIO's MLArray class.*/
 	private ColumnType type;
-	
-	/** Position of Iterator object; 
-	 * used for the implementation of Iterator and Iterable. */
-	private int position = 0;
 	
 	public DataColumn (String n, String c_type) {// throws Exception {
 		values = new ArrayList<E> ();
@@ -117,29 +112,12 @@ public class DataColumn<E> implements Iterable<Object>, Iterator<Object> {
 		return (this.values.toString ());
 	}
 
-	// Iterator / Iterable methods.
+	// Iterable methods.
 	@Override
-	public boolean hasNext () {
-		return (position < values.size ());
-	}
-
-	@Override
-	public Object next () {
-		if (position == values.size ()) {
-			throw new NoSuchElementException ();
-		}
-		return (values.get (++position));
-	}
-
-	@Override
-	public void remove () {
-		this.values.remove (position--);
-	}
-
-	@Override
-	public Iterator<Object> iterator () {
-		this.position = 0;
-		return (this);
+	public Iterator<E> iterator () {
+		//this.position = 0;
+		//return (this);
+		return (this.values.iterator ());
 	}
 
 	public double [] toDoubleArray () {

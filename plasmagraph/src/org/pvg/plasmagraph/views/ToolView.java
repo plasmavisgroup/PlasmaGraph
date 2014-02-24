@@ -35,10 +35,29 @@ public class ToolView extends javax.swing.JPanel {
 	* Updates ToolView's Components based on the current state of the Template.
 	*/
     public void updateView () {
-        this.interpolation_type_combo_box.setSelectedItem (this.tool_model.getTemplate ().getInterpolationType ().toString ());
-        this.outlier_action_combo_box.setSelectedItem (this.tool_model.getTemplate ().getOutlierResponse ().toString ());
-        updateTargetDataSetComboBox ();
+        this.updateTemplateView ();
+        this.updateReferenceView ();
     }
+    
+    /**
+	* Updates ToolView's Template-based Components based on the current 
+	* state of the Template.
+	*/
+	public void updateTemplateView () {
+		this.interpolation_type_combo_box.setSelectedItem (this.tool_model.getTemplate ().getInterpolationType ().toString ());
+        this.outlier_action_combo_box.setSelectedItem (this.tool_model.getTemplate ().getOutlierResponse ().toString ());
+        this.lower_bound_text_field.setText (String.valueOf (this.tool_model.getTemplate ().getLowerInterval ()));
+        this.upper_bound_text_field.setText (String.valueOf (this.tool_model.getTemplate ().getUpperInterval ()));
+        this.interval_text_field.setText (String.valueOf (this.tool_model.getTemplate ().getInterpolationInterval ()));
+	}
+    
+    /**
+	* Updates ToolView's DataReference-based Components based on the current 
+	* state of the DataReference.
+	*/
+    public void updateReferenceView () {
+    	target_data_set_combo_box.setModel (tool_model.getDataReferenceNames ());
+	}
     
     /**
 	* Getter Method. Provides this object's selected interpolation type in the form of an InterpolationType object.
@@ -116,16 +135,6 @@ public class ToolView extends javax.swing.JPanel {
 	}
     
     /**
-	* Setter Method. Updates the selected data pair's combo box options based on the
-	* values contained in "tool_model"'s DataReference object.
-	*/
-    private void updateTargetDataSetComboBox () {
-        target_data_set_combo_box.setModel
-            (new javax.swing.DefaultComboBoxModel <String>
-            (tool_model.getDataReferenceNames ()));
-    }
-    
-    /**
 	* Initializes the visual components of this view form.
 	*/
     private void initComponents () {
@@ -145,7 +154,7 @@ public class ToolView extends javax.swing.JPanel {
         interpolation_model = new javax.swing.DefaultComboBoxModel <String>
         		(InterpolationType.getOptions ());
         target_data_model = new javax.swing.DefaultComboBoxModel <String> (
-        		new String [] {"Derp", "Nope"});
+        		new String [] {"None"});
         interpolation_type_combo_box = new javax.swing.JComboBox <String>
         		(interpolation_model);
         target_data_set_combo_box = new javax.swing.JComboBox <String>
@@ -160,9 +169,13 @@ public class ToolView extends javax.swing.JPanel {
         lower_bound_label.setText ("Lower Bound");
         upper_bound_label.setText ("Upper Bound");
         interval_label.setText ("# of Points");
+        lower_bound_text_field.setText ("0");
+        upper_bound_text_field.setText ("10");
+        interval_text_field.setText ("100");
         lower_bound_text_field.setHorizontalAlignment (javax.swing.JTextField.TRAILING);
         upper_bound_text_field.setHorizontalAlignment (javax.swing.JTextField.TRAILING);
         interval_text_field.setHorizontalAlignment (javax.swing.JTextField.TRAILING);
+
         
         // Outlier Filtering
         outlier_filtering_label.setText ("Outlier Filtering");
@@ -305,5 +318,13 @@ public class ToolView extends javax.swing.JPanel {
 	public void addIntervalListener 
 			(java.awt.event.FocusListener upperBoundListener) {
 		this.interval_text_field.addFocusListener (upperBoundListener);
+	}
+
+	/**
+	 * 
+	 * @return
+	 */
+	public String getTargetInterpolationName () {
+		return ((String) this.target_data_set_combo_box.getSelectedItem ());
 	}
 }

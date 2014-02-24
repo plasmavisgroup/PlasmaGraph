@@ -209,6 +209,9 @@ public class Template {
     		this.interpolation_upper_range		= Double.parseDouble (output);
     		output = reader.readLine();
     		this.interpolation_point_amount		= Integer.parseInt (output);
+    		
+    		// Fire messages to all listeners!
+    		this.notifyListeners ();
 
         } catch (FileNotFoundException e) {
             // Catch for File "f" not found.

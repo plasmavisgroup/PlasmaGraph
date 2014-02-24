@@ -1,12 +1,15 @@
 package org.pvg.plasmagraph.utils.data;
 
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.Iterator;
-import java.util.NoSuchElementException;
+import java.util.Set;
+
+import javax.swing.event.ChangeEvent;
+import javax.swing.event.ChangeListener;
 
 import org.jfree.data.category.DefaultCategoryDataset;
 import org.jfree.data.xy.XYSeries;
-import org.jfree.data.xy.XYSeriesCollection;
 
 /**
  * A reference-holding object, to be used parallel to DataSet, that maintains 
@@ -16,16 +19,17 @@ import org.jfree.data.xy.XYSeriesCollection;
  * 
  * @author Gerardo A. Navas Morales
  */
-public class DataReference implements Iterator<Pair>, Iterable<Pair>{
+public class DataReference implements Iterable<Pair> {
+	/** Collection of listeners for any change that occurs in this DataReference. */
+    private Set <ChangeListener> listeners;
 	/** Container for Reference Pairs. */
 	private ArrayList<Pair> table;
-	/** Position of Iterator object; used for the implementation of Iterator and Iterable. */
-	private int position = 0;
 	
 	/**
 	 * Constructor; initializes the ArrayList container.
 	 */
 	public DataReference () {
+		this.listeners = new HashSet <ChangeListener> ();
 		table = new ArrayList <Pair> ();
 	}
 	
@@ -39,9 +43,11 @@ public class DataReference implements Iterator<Pair>, Iterable<Pair>{
 	public boolean add (Pair p) {
 	    // Check to see if the indices are even possible.
 	    // Also check to see if the name of the Pair is even useful.
-	    if ((p.getIndex1 () > 0) && (p.getIndex2 () > 0) &&
+	    if ((p.getIndex1 () >= 0) && (p.getIndex2 () >= 0) &&
 	            (p.getName ().contains ("vs."))) {
-	        return (table.add(p));
+	    	boolean b = table.add(p);
+	    	this.notifyListeners ();
+	        return (b);
 	    } else {
 	        return (false);
 	    }
@@ -57,13 +63,7 @@ public class DataReference implements Iterator<Pair>, Iterable<Pair>{
 	 * @return A boolean specifying method success (true) or failure (false).
 	 */
 	public boolean add (int p1, int p2, String name) {
-	    // Check to see if the indices are even possible.
-	    // Also check to see if the name of the Pair is even useful.
-	    if ((p1 > 0) && (p2 > 0) && (name.contains ("vs."))) {
-	        return (table.add (new Pair (p1, p2, name)));
-	    } else {
-	        return (false);
-	    }
+	    return (this.add (new Pair (p1, p2, name)));
 	}
 
 	/**
@@ -74,7 +74,9 @@ public class DataReference implements Iterator<Pair>, Iterable<Pair>{
 	 * @return A Pair that was removed from the ArrayList.
 	 */
 	public Pair remove (int index) {
-	    return (table.remove(index));
+		Pair p = table.remove (index);
+		this.notifyListeners ();
+	    return (p);
     }
 	
 	/**
@@ -85,7 +87,18 @@ public class DataReference implements Iterator<Pair>, Iterable<Pair>{
 	 * @return A boolean specifying method success (true) or failure (false).
 	 */
 	public boolean remove (Pair p) {
-		return (table.remove(p));
+		boolean b = table.remove (p);
+		this.notifyListeners ();
+		return (b);
+	}
+	
+	/**
+	 * Removes all pairs from the DataReference object.
+	 * Only used to reset the Pairs when an incompatible Data file is imported.
+	 */
+	public void reset () {
+		this.table.clear ();
+		this.notifyListeners ();
 	}
 
 	/**
@@ -230,23 +243,40 @@ public class DataReference implements Iterator<Pair>, Iterable<Pair>{
 
 	@Override
 	public Iterator<Pair> iterator () {
-		return (this);
+		return (this.table.iterator ());
 	}
 
-	@Override
-	public boolean hasNext () {
-		return (position < table.size());
+	public int size () {
+		return (this.table.size ());
 	}
-
-	@Override
-	public Pair next () {
-		if (position == table.size()) { throw new NoSuchElementException (); }
-	    return (table.get(++position));
+	
+	// Event Methods
+	/**
+	 * Adds the listener provided to the notification list.
+	 * 
+	 * @param listener Listener to add to the notification list.
+	 */
+	public void addChangeListener (ChangeListener listener) {
+	    this.listeners.add (listener);
 	}
-
-	@Override
-	public void remove () {
-		throw new UnsupportedOperationException();
+	
+	/**
+	 * Removes the listener provided from the notification list.
+	 * 
+	 * @param listener Listener to remove from notification list.
+	 */
+	public void removeChangeListener (ChangeListener listener) {
+	    this.listeners.remove (listener);
+	}
+	
+	/**
+	 * Sends a ChangeEvent to all listeners of this object,
+	 * declaring that this Template object has been changed in some way.
+	 */
+	public void notifyListeners () {
+	    for (ChangeListener c : listeners) {
+	        c.stateChanged (new ChangeEvent (this));
+	    }
 	}
 	
 }

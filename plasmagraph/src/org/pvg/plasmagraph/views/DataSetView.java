@@ -33,25 +33,37 @@ public class DataSetView extends javax.swing.JPanel {
     
     // Created by Gerardo A. Navas Morales.
     /**
+     * Updates DataSetView's everything, ComboBoxes, jLists, CheckBoxes, and all.
+     */
+    public void updateView () {
+    	this.updateTemplateView ();
+    	this.updateAvailableList ();
+    	this.updateSelectedList ();
+    }
+    
+    /**
      * Updates DataSetView's ComboBox and JLists based on the current state of the
      * Template.
      */
-    public void updateView () {
+    public void updateTemplateView () {
         this.chart_type_combo_box.setSelectedItem (this.data_model
                 .getTemplate ().getChartType ().toString ());
-        this.data_model.resetListModels ();
-        this.updateGroupBy ();
+        this.group_by_check_box.setSelected (this.data_model
+        		.getTemplate ().isGroupedByExperiment ());
     }
     
     /**
      * Updates DataSetView's JLists based on the current state of the DataSet.
      */
-	public void updateLists () {
-		this.data_model.resetListModels ();
+	public void updateAvailableList () {
+		this.available_datasets_list.setModel (this.data_model.resetAvailableList ());
 	}
-    
-    private void updateGroupBy () {
-		this.group_by_check_box.setSelected (this.data_model.getTemplate ().isGroupedByExperiment ());
+	
+	/**
+     * Updates DataSetView's JLists based on the current state of the Datareference.
+     */
+	public void updateSelectedList () {
+		this.selected_datasets_list.setModel (this.data_model.resetSelectedList ());
 	}
 
 	/**
@@ -110,9 +122,6 @@ public class DataSetView extends javax.swing.JPanel {
     private void initComponents () {
         this.setName ("Data Set View");
 
-        selected_datasets_pane = new javax.swing.JScrollPane();
-        selected_datasets_list = new javax.swing.JList <String> (
-                this.data_model.getSelectedListModel ());
         add_button = new javax.swing.JButton();
         remove_button = new javax.swing.JButton();
         chart_type_label = new javax.swing.JLabel();
@@ -120,9 +129,14 @@ public class DataSetView extends javax.swing.JPanel {
 				(ChartType.getOptions ());
         group_by_label = new javax.swing.JLabel();
         group_by_check_box = new javax.swing.JCheckBox();
+        
         available_datasets_pane = new javax.swing.JScrollPane();
         available_datasets_list = new javax.swing.JList <String> (
-                this.data_model.getAvailableListModel ());
+                this.data_model.resetAvailableList ());
+        
+        selected_datasets_pane = new javax.swing.JScrollPane();
+        selected_datasets_list = new javax.swing.JList <String> (
+                this.data_model.resetSelectedList ());
 
         setMaximumSize(new java.awt.Dimension(460, 300));
         setMinimumSize(new java.awt.Dimension(460, 300));
@@ -130,14 +144,14 @@ public class DataSetView extends javax.swing.JPanel {
 
         
         
-        available_datasets_pane.setViewportView(available_datasets_list);
-        selected_datasets_pane.setViewportView(selected_datasets_list);
+        available_datasets_pane.setViewportView (available_datasets_list);
+        selected_datasets_pane.setViewportView (selected_datasets_list);
 
-        add_button.setText("Add Available Pair");
-        remove_button.setText("Remove Selected Pair");
+        add_button.setText ("Add Available Pair");
+        remove_button.setText ("Remove Selected Pair");
 
-        chart_type_label.setText("Chart Type:");
-        group_by_label.setText("Group By:");
+        chart_type_label.setText ("Chart Type:");
+        group_by_label.setText ("Group By:");
 
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(this);

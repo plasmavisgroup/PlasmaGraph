@@ -32,6 +32,14 @@ public class MainController {
     /** Reference to ToolView included in this Frame's JTabbedFrame. */
     private ToolView tool_view;
     
+    /**
+     * 
+     * @param main_model
+     * @param main_view
+     * @param aesthetic_view_reference
+     * @param data_view_reference
+     * @param tool_view_reference
+     */
     public MainController (MainModel main_model, MainView main_view, 
                     AestheticView aesthetic_view_reference, DataSetView data_view_reference,
                     ToolView tool_view_reference) {
@@ -209,7 +217,9 @@ public class MainController {
 
                 @Override
                 protected Void doInBackground () throws Exception {
-                    main_model.graph ();
+                    main_model.graph (main_view.getOutlierSwitch (),
+                    		main_view.getInterpolationSwitch (),
+                    		tool_view.getTargetInterpolationName ());
                     return null;
                 }
                 

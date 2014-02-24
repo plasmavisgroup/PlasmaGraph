@@ -6,6 +6,7 @@ import java.io.File;
 import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.List;
 
 import org.apache.commons.lang3.math.NumberUtils;
@@ -17,7 +18,7 @@ import au.com.bytecode.opencsv.CSVWriter;
 
 public class CSVProcessor {
 	/**	Data container for values to and from the CSVReader / Writer classes. */
-	private List<String[]> csv_data;
+	private ArrayList<String[]> csv_data;
 	/** CSV file location. */
 	private File csv_file;
 	
@@ -34,13 +35,13 @@ public class CSVProcessor {
 	/**
 	 * Default, full-batch way to read a CSV. Reads from the original file location.
 	 */
-	public void readCSV () {
+	public void read () {
 		// Open CSV file "f".
 		try (CSVReader csv = new CSVReader (new BufferedReader
 				(new FileReader (csv_file)))) {
 			
 			// Read data into "csv_data".
-			csv_data = csv.readAll ();
+			csv_data = (ArrayList<String[]>) csv.readAll ();
 			
 			// Close CSV file.
 			csv.close ();
@@ -173,7 +174,7 @@ public class CSVProcessor {
 	 * 
 	 * @param new_file A new List of String array object, containing the data for this object.
 	 */
-	public void setCSVData (List<String[]> csv_data) {
+	public void setCSVData (ArrayList<String[]> csv_data) {
 		this.csv_data = csv_data;
 	}
 	
@@ -205,8 +206,6 @@ public class CSVProcessor {
 	public boolean getHeaders (DataSet ds) throws Exception {
 		
 		if (this.checkColumnSizes ()) {
-			// DataColumn creation.
-			// Set up the DataColumns first.
 			// For each column in this row...
 			for (int i = 0; (i < csv_data.get (0).length); ++i) {
 				
@@ -233,8 +232,7 @@ public class CSVProcessor {
 			
 			return (true);
 		} else {
-			throw (new Exception ("Incorrect Header sizes! " + "This is a malformed data file!"));
-			//return (false);
+			throw (new Exception ("Incorrect Header sizes! This is a malformed data file!"));
 		}
 	}
 
@@ -252,7 +250,7 @@ public class CSVProcessor {
 		for (int i = 0; (i < csv_data.size ()); ++i) {
 			row_length[i] = csv_data.get (i).length;
 		}
-		
+
 		// Verify that the size of each row is correct!
 		int typical_size = row_length[0];
 		for (int i = 1; ((i < csv_data.size ()) && (equal)); ++i) {
@@ -274,6 +272,20 @@ public class CSVProcessor {
 	 */
 	private boolean checkData (DataSet ds) {
 		return (false);
+	}
+	
+	@Override
+	public String toString () {
+		StringBuilder sb = new StringBuilder ();
+		
+		for (String [] s_array : this.csv_data) {
+			for (String s : s_array) {
+				sb.append (s).append (", ");
+			}
+			sb.append ("\n");
+		}
+		
+		return (sb.toString ());
 	}
 	
 }

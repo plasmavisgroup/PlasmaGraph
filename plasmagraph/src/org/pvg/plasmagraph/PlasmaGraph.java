@@ -48,7 +48,7 @@ public class PlasmaGraph {
                 ToolController tool_controller = new ToolController (tool_model, tool_view);
                 
                 // Main MVC
-                MainModel main_model = new MainModel (t, ds, df);
+                MainModel main_model = new MainModel (t, ds, df, dr);
                 MainView main_view = new MainView (main_model);
                 MainController main_controller = new MainController (main_model, main_view, aesthetic_view, data_view, tool_view);
             

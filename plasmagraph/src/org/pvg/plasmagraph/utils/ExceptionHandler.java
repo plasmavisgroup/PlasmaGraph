@@ -29,7 +29,7 @@ public class ExceptionHandler {
 	}
 
 	public static void createEmptyArrayException (String string) {
-		String message = "Error:" + string;
+		String message = "Error: " + string;
 		JOptionPane error_window = new JOptionPane (message, JOptionPane.ERROR_MESSAGE);
 		
 		JDialog dialog = error_window.createDialog("Error");

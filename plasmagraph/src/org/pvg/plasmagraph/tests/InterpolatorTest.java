@@ -31,7 +31,7 @@ public class InterpolatorTest {
 	public void testInterpolateLinear () throws Exception {
 		// Pull the data out.
 		CSVProcessor csv = new CSVProcessor (new File (linear_data));
-		csv.readCSV ();
+		csv.read ();
 		DataSet ds = new DataSet ();
 		csv.toDataSet (ds);
 		Pair p = new Pair (0, 1, "Linear Interpolation Test");
@@ -54,7 +54,7 @@ public class InterpolatorTest {
 	public void testInterpolateQuadratic () throws Exception {
 		// Pull the data out.
 		CSVProcessor csv = new CSVProcessor (new File (quadratic_data));
-		csv.readCSV ();
+		csv.read ();
 		DataSet ds = new DataSet ();
 		csv.toDataSet (ds);
 		Pair p = new Pair (0, 1, "Quadratic Interpolation Test");
@@ -76,7 +76,7 @@ public class InterpolatorTest {
 	public void testInterpolateCubic () throws Exception {
 		// Pull the data out.
 		CSVProcessor csv = new CSVProcessor (new File (cubic_data));
-		csv.readCSV ();
+		csv.read ();
 		DataSet ds = new DataSet ();
 		csv.toDataSet (ds);
 		Pair p = new Pair (0, 1, "Cubic Interpolation Test");
@@ -99,7 +99,7 @@ public class InterpolatorTest {
 	public void testInterpolateQuartic () throws Exception {
 		// Pull the data out.
 		CSVProcessor csv = new CSVProcessor (new File (quartic_data));
-		csv.readCSV ();
+		csv.read ();
 		DataSet ds = new DataSet ();
 		csv.toDataSet (ds);
 		Pair p = new Pair (0, 1, "Quartic Interpolation Test");
@@ -122,7 +122,7 @@ public class InterpolatorTest {
 	public void testInterpolateSpline () throws Exception {
 		// Pull the data out.
 				CSVProcessor csv = new CSVProcessor (new File (spline_data));
-				csv.readCSV ();
+				csv.read ();
 				DataSet ds = new DataSet ();
 				csv.toDataSet (ds);
 				Pair p = new Pair (0, 1, "Spline Interpolation Test");
@@ -131,6 +131,7 @@ public class InterpolatorTest {
 				Template t = new Template ();
 				t.setInterpolationType (InterpolationType.SPLINE);
 				t.setUpperInterval (10.0);
+				t.setInterpolationInterval (500);
 				
 				// Throw into interpolator.
 				Interpolator.interpolate (ds, t, p);

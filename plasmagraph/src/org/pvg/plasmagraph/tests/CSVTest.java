@@ -15,10 +15,10 @@ public class CSVTest {
 			"C:/Users/tako/Documents/GitHub/PlasmaGraph/plasmagraph/test/csv/csv_test.csv";
     
 	@Test
-	public void testReadCSV () {
+	public void testread () {
 		CSVProcessor csv = new CSVProcessor (new File (default_csv_path));
 		
-		csv.readCSV ();
+		csv.read ();
 		String ls = "\n";
 		StringBuilder sb = new StringBuilder ();
 		
@@ -90,7 +90,7 @@ public class CSVTest {
 	@Test
 	public void testToDataSet () throws Exception {
 		CSVProcessor csv = new CSVProcessor (new File (this.default_csv_path));
-		csv.readCSV ();
+		csv.read ();
 		// Open tested method file.
 		DataSet ds1 = new DataSet ();
 		csv.toDataSet (ds1);
@@ -119,8 +119,27 @@ public class CSVTest {
 	}
 
 	@Test
-	public void testFromDataSet () {
-		fail ("Not yet implemented"); // TODO
+	public void testGetHeaders () throws Exception {
+		CSVProcessor csv = new CSVProcessor (new File (this.default_csv_path));
+		csv.read ();
+		// Open tested method file.
+		DataSet ds1 = new DataSet ();
+		boolean headers_success = csv.getHeaders (ds1);
+		
+		assertTrue ("getHeaders (...) method success?", headers_success);
+		
+		// Create simulated comparison file.
+		DataSet ds2 = new DataSet ();
+		DataColumn <Double> dc1 = new DataColumn <Double> ("Time (s)", "double");
+		DataColumn <Double> dc2 = new DataColumn <Double> ("Distance (m)", "double");
+		ds2.add (dc1); ds2.add (dc2);
+		
+		
+		// Tests
+		assertEquals ("Column 1 Names?", ds2.get (0).getColumnName (),
+										 ds1.get (0).getColumnName ());
+		assertEquals ("Column 2 Names?", ds2.get (1).getColumnName (),
+				 						 ds1.get (1).getColumnName ());
 	}
 
 }

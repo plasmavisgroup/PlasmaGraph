@@ -32,6 +32,22 @@ public class MainView extends javax.swing.JFrame {
         // Initialize visual components.
         initComponents ();
     }
+    
+    /**
+     * Getter method. Provides the state of the Outlier Search Check Box.
+     * @return A boolean describing if the Outlier Search Check Box is selected or not.
+     */
+	public boolean getOutlierSwitch () {
+		return (this.outlier_check_box.isSelected ());
+	}
+
+	/**
+     * Getter method. Provides the state of the Interpolation Check Box.
+     * @return A boolean describing if the Interpolation Check Box is selected or not.
+     */
+	public boolean getInterpolationSwitch () {
+		return (this.interpolation_check_box.isSelected ());
+	}
      
     /**
      * Initializes the visual components of this view form.

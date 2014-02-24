@@ -3,7 +3,6 @@ package org.pvg.plasmagraph.utils.data;
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.Iterator;
-import java.util.NoSuchElementException;
 import java.util.Set;
 
 import javax.swing.event.ChangeEvent;
@@ -19,17 +18,12 @@ import org.jfree.data.xy.XYSeries;
  * @author Gerardo A. Navas Morales
  */
 @SuppressWarnings ("rawtypes")
-public class DataSet implements Iterable<DataColumn>, Iterator<DataColumn> {
+public class DataSet implements Iterable<DataColumn> {
 	// Event Firing
-    /** Collection of listeners for any change that occurs in this Template. */
+    /** Collection of listeners for any change that occurs in this DataSet. */
     private Set <ChangeListener> listeners;
 	/** Container for DataColumns. */
 	private ArrayList<DataColumn> values;
-	/**
-	 * Position of Iterator object; used for the implementation of Iterator and
-	 * Iterable.
-	 */
-	private int position = 0;
 
 	/**
 	 * Constructor. Creates a new ArrayList of DataColumns for this object.
@@ -52,7 +46,9 @@ public class DataSet implements Iterable<DataColumn>, Iterator<DataColumn> {
 			return (this.values.add (o));
 		} else {
 			if (this.values.get (0).size () == o.size ()) {
-				return (this.values.add (o));
+				boolean b = this.values.add (o);
+				this.notifyListeners ();
+				return (b);
 			} else {
 				return (false);
 			}
@@ -66,17 +62,9 @@ public class DataSet implements Iterable<DataColumn>, Iterator<DataColumn> {
 	 * @return Boolean describing the success or failure of the action.
 	 */
 	public boolean remove (DataColumn o) {
-		return (this.values.remove (o));
-	}
-
-	/**
-	 * Removes a DataColumn from the DataSet and returns it.
-	 * 
-	 * @param i The index of the DataColumn to remove.
-	 * @return DataColumn removed.
-	 */
-	public DataColumn remove (int i) {
-		return (this.values.remove (i));
+		boolean b = this.values.remove (o);
+		this.notifyListeners ();
+		return (b);
 	}
 	
 	/**
@@ -284,27 +272,11 @@ public class DataSet implements Iterable<DataColumn>, Iterator<DataColumn> {
 	// Iterator / Iterable methods.
 	@Override
 	public Iterator<DataColumn> iterator () {
-		this.position = 0;
-		return (this);
+		//this.position = 0;
+		return (this.values.iterator ());
+		//return (this);
 	}
-
-	@Override
-	public boolean hasNext () {
-		return (position < values.size ());
-	}
-
-	@Override
-	public DataColumn next () {
-		if (position == values.size ()) {
-			throw new NoSuchElementException ();
-		}
-		return (values.get (++position));
-	}
-
-	@Override
-	public void remove () {
-		this.values.remove (position--);
-	}
+	
 
 	/**
 	 * Creates a double [][] containing all the values in this DataSet.
@@ -349,11 +321,21 @@ public class DataSet implements Iterable<DataColumn>, Iterator<DataColumn> {
 	
 	/**
 	 * Sends a ChangeEvent to all listeners of this object,
-	 * declaring that this Template object has been changed in some way.
+	 * declaring that this object has been changed in some way.
 	 */
 	public void notifyListeners () {
 	    for (ChangeListener c : listeners) {
 	        c.stateChanged (new ChangeEvent (this));
 	    }
+	}
+
+	/**
+	 * Testing method. Prints out a list of the listeners interested in
+	 * this object into the out Stream.
+	 */
+	public void printListeners () {
+		for (ChangeListener c : listeners) {
+			System.out.println (c.toString ());
+		}
 	}
 }

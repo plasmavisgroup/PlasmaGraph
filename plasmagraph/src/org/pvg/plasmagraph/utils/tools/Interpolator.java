@@ -249,8 +249,8 @@ public class Interpolator {
     	sb.append ("Graph's R Value: ").append (r).append ("\n");
     	sb.append (DataConfidence.provideCIValidity (r, number_of_points));
     	
-    	JOptionPane.showConfirmDialog (null, sb.toString (), 
-    			"Interpolation Validity Check", JOptionPane.OK_OPTION);
+    	JOptionPane.showMessageDialog (null, sb.toString (), "Interpolation Validity Check", JOptionPane.WARNING_MESSAGE);
+    	//JOptionPane.showConfirmDialog (null, sb.toString (), "Interpolation Validity Check", JOptionPane.OK_OPTION);
     }
 
 	/**

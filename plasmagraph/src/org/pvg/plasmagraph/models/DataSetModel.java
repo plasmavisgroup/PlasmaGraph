@@ -26,19 +26,8 @@ public class DataSetModel {
     private Template t;
     /** Reference to MainModel's DataSet, passed via constructor reference. */
     private DataSet ds;
-    /**
-     * Reference to MainModel's DataReference, passed via constructor reference.
-     */
+    /** Reference to MainModel's DataReference, passed via constructor reference. */
     private DataReference dr;
-    
-    // Internally-contained variables.
-    /**
-     * Container for all DataColumns found in the "available_dataset_list"
-     * JList.
-     */
-    private DefaultListModel <String> list_available;
-    /** Container for all DataSets found in the "selected_dataset_list" JList. */
-    private DefaultListModel <String> list_selected;
     
     /**
      * Creates a new DataSetModel with references to the data and settings,
@@ -55,41 +44,41 @@ public class DataSetModel {
         t = t_reference;
         ds = ds_reference;
         dr = dr_reference;
-        
-        // Initialize ListModels
-        resetListModels ();
     }
     
     /**
-	 * 
-	 */
-    public void resetListModels () {
-        // Reset the old lists.
-        list_available = new DefaultListModel <String> ();
-        list_selected = new DefaultListModel <String> ();
-        
-        // Populate AvailableDatasetsList's ListModel
-        for (DataColumn dc : ds) {
-            list_available.addElement (dc.toString ());
+     * Takes the current DataSet and inserts the column names into a new
+     * ListModel<String>.
+     * 
+     * @return A ListModel of Strings containing the column names of DataSet.
+     */
+    public ListModel<String> resetAvailableList () {
+    	// Reset the old lists.
+    	DefaultListModel <String> list_available = new DefaultListModel <String> ();
+    	
+    	// Populate AvailableDatasetsList's ListModel
+    	for (DataColumn dc : ds) {
+            list_available.addElement (dc.getColumnName ());
+        }
+    	
+    	return (list_available);
+    }
+    
+    /**
+     * Takes the current DataReference and inserts the pair names into a new
+     * ListModel<String>.
+     * 
+     * @return A ListModel of Strings containing the pair names of DataReference.
+     */
+    public ListModel<String> resetSelectedList () {
+    	// Reset the old lists.
+    	DefaultListModel <String> list_selected = new DefaultListModel <String> ();
+    	
+    	// Populate SelectedDatasetsList's ListModel
+        for (Pair p : dr) {
+        	list_selected.addElement (p.getName ());
         }
         
-        // Populate SelectedDatasetsList's ListModel
-        // Do not need to populate SelectedDatasetsList's ListModel
-    }
-    
-    /**
-     * 
-     * @return
-     */
-    public ListModel <String> getAvailableListModel () {
-        return (list_available);
-    }
-    
-    /**
-     * 
-     * @return
-     */
-    public ListModel <String> getSelectedListModel () {
         return (list_selected);
     }
     
@@ -100,29 +89,26 @@ public class DataSetModel {
      * @throws Exception Has no elements in the parameter provided.
 	 */
     public void addToSelectedDataset (ArrayList <String> list) throws Exception {
-        // TODO: Verify that the DataSet doesn't exist already.
         
         // We're attempting dangerous things that should throw errors.
         // First, check if there's the correct number of things in that list.
-        if (list.size () != 2) {
-            // Bundle them into a pair and include that pair in DataReference
-            // "dr".
-            // TODO: Wait for partner to provide DataSet code to remove "ds"
-            // method errors.
+        if (list.size () == 2) {
+        	
+            // Bundle them into a pair and include that pair in DataReference "dr".
             Pair added_element = new Pair (ds.find (list.get (0)),
                     ds.find (list.get (1)), "" + list.get (0) + " vs. "
                             + list.get (1));
-            dr.add (added_element);
             
-            // Add the textual representation of that new DataSet to the
-            // ListModel.
-            this.list_selected.addElement (added_element.getName ());
+            if (!dr.add (added_element)) {
+            	
+            	throw (new Exception ("Adding into DataReference failed."));
+            	
+            }
             
         } else {
             // Otherwise, complain about having an empty list.
             // TODO: Make Exception specifically for Adding values.
-            throw (new Exception ("The array is empty and thus cannot be used "
-            		+ "to add to other containers."));
+            throw (new Exception ("There must be exactly two columns selected."));
         }
     }
     
@@ -139,21 +125,24 @@ public class DataSetModel {
             
             // For all the objects to remove...
             for (String s : list) {
-                // ... Remove them., if they exist.
-                // If they don't, do nothing.
+            	
+                // ... Remove them., if they exist. If they don't, do nothing.
                 if (dr.contains (s)) {
-                    // TODO: Do we need to do error checking with these
-                    // operations?
-                    this.list_selected.removeElement (s);
+                	
                     dr.remove (dr.findIndex (s));
+                    
+                } else {
+                	
+                	throw (new Exception ("Pair not found in reference list."));
+                	
                 }
+                
             }
             
         } else {
             // Otherwise, complain about having an empty list.
             // TODO: Make Exception specifically for Removing values.
-        	throw (new Exception ("The array is empty and thus cannot "
-            		+ "have any objects removed from it."));
+        	throw (new Exception ("In order to remove, there must be at least one Pair selected."));
         }
     }
     
@@ -164,7 +153,6 @@ public class DataSetModel {
      * @return t, a reference to the Template object.
      */
     public Template getTemplate () {
-        // TODO Auto-generated method stub
         return (t);
     }
     
@@ -182,7 +170,16 @@ public class DataSetModel {
      * 
      * @param c Listener to add to DataSet Notifier.
      */
-    public void addDataChangeListener (javax.swing.event.ChangeListener c) {
+    public void addDataSetChangeListener (javax.swing.event.ChangeListener c) {
         ds.addChangeListener (c);
     }
+
+    /**
+     * Support method to add listeners to the DataReference.
+     * 
+     * @param c Listener to add to DataReference Notifier.
+     */
+	public void addDataReferenceChangeListener (javax.swing.event.ChangeListener c) {
+		dr.addChangeListener (c);
+	}
 }
