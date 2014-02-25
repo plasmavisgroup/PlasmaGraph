@@ -7,8 +7,8 @@ package org.pvg.plasmagraph.utils.data.readers;
 import java.io.*;
 
 import com.jmatio.io.MatFileReader;
-import com.jmatio.types.MLArray;
-import com.jmatio.types.MLCell;
+import com.jmatio.types.*;
+
 
 
 //import java.io.IOException;
@@ -26,9 +26,29 @@ import org.pvg.plasmagraph.utils.data.DataSet;
  * @author DangoMango-Win
  */
 public class MatlabReader {
+   
+	/** Matlab Array Types (Classes) **/
+    public static final int mxUNKNOWN_CLASS = 0;
+    public static final int mxCELL_CLASS    = 1;
+    public static final int mxSTRUCT_CLASS  = 2;
+    public static final int mxOBJECT_CLASS  = 3;
+    public static final int mxCHAR_CLASS    = 4;
+    public static final int mxSPARSE_CLASS  = 5;
+    public static final int mxDOUBLE_CLASS  = 6;
+    public static final int mxSINGLE_CLASS  = 7;
+    public static final int mxINT8_CLASS    = 8;
+    public static final int mxUINT8_CLASS   = 9;
+    public static final int mxINT16_CLASS   = 10;
+    public static final int mxUINT16_CLASS  = 11;
+    public static final int mxINT32_CLASS   = 12;
+    public static final int mxUINT32_CLASS  = 13;
+    public static final int mxINT64_CLASS   = 14;
+    public static final int mxUINT64_CLASS  = 15;
+    public static final int mxFUNCTION_CLASS = 16;
+    public static final int mxOPAQUE_CLASS  = 17;
     
    /**
-    *	Reads a collection of cell groups from a level 5 MAT-File and encodes that collection of cell groups as a DataSet object
+    *	Reads a collection of MLArray from a level 5 MAT-File and encodes that collection of MLArray as a DataSet object
     *	
     *	@param String
     *	@return DataSet 
@@ -36,78 +56,31 @@ public class MatlabReader {
     public DataSet toDataSet(File f){
         
         /** variables definition **/
-        MatFileReader mfr = new MatFileReader(); 
-        DataSet result = new DataSet();
+    	DataSet result = new DataSet();
+        MatFileReader mfr = new MatFileReader();               
         
         /** read the level 5 MAT-File and encode its contents as DataSet **/        
         try {
             
-            /** variables definition **/
-            Map <String, MLArray> dataMap = mfr.read(f);  
-            ArrayList <String> column_names = new <String> ArrayList();
-            boolean first_pass = true;
+            /** get file's data into a Map **/
+        	 Map <String, MLArray> dataMap = mfr.read(f);   
             
-            /** iterate over every cell group in the level 5 MAT-File **/
+            /** iterate over every group of data in the level 5 MAT-File **/
             for (Iterator iterator = dataMap.values().iterator(); iterator.hasNext();){
-                
-                /** get cell group from iterator **/
-            	MLCell cell_group = (MLCell) iterator.next();
-                               
-                /** get every column from the group and place them in the result DataSet **/
-                if(first_pass){
-                	
-                	/** get header names from first cell group **/
-                	for(int col_index = 0, row = 0; col_index < cell_group.getN(); col_index++){
-                		column_names.add(cell_group.get(0,col_index).contentToString());
-                	}
-                	
-                	/** retrieve next cell group **/
-                	cell_group = (MLCell) iterator.next();
-                    
-                    /** constructs a column with the name of the cell_group as many times as rows in the group **/
-                	DataColumn column = new DataColumn("string", "name");
-                    for(int counter = 0; counter < cell_group.getM(); counter++) {
-                    	column.add(cell_group.name);
-                    }
-                    
-                    /** add cell_group's name column to the result data set **/
-                    result.add(column);
-                    
-                    /** get each column from this cell group and add them to the result data set **/
-                    for(int col_index = 0; col_index < cell_group.getN(); col_index++){
-                        column = getColumn(cell_group, col_index);
-                        column.setName(column_names.get(col_index));
-                        result.add(column);
-                    }
-                    
-                }else{
-                	
-                	/** constructs a column with the name of the cell_group as many times as rows in the group **/
-                	DataColumn column = new DataColumn("string", "name");
-                    for(int counter = 0; counter < cell_group.getM(); counter++) {
-                    	column.add(cell_group.name);
-                    }
-                    
-                    /** add cell_group's name column to the result data set **/
-                    result.get(0).addAll(column);
-                    
-                    /** get each column from this cell group and add them to the result data set **/
-                    for(int col_index = 0; col_index < cell_group.getN(); col_index++){
-                        column = getColumn(cell_group, col_index);
-                        column.setName(column_names.get(col_index));
-                        result.get(col_index+1).addAll(column);
-                    }
-                }
-                
-                /** end of first pass **/
-                first_pass = false;
-                                               
+            	
+                /** get matlab array from iterator **/
+            	MLArray data_group = (MLArray) iterator.next();
+            	
+            	/** create and add the data column to the result set **/
+            	DataColumn column = getColumn(data_group);
+            	result.add(column);                                               
             }           
             
         } catch (IOException ex) {
             Logger.getLogger(MatlabReader.class.getName()).log(Level.SEVERE, null, ex);
         }  
         
+        /** return resulting data set **/
         return result;
     }
 
@@ -122,6 +95,88 @@ public class MatlabReader {
             String item = cell.get(m,index).contentToString();
            column.add(item);
         }
+        
+        return column;
+    }
+    
+    /**
+    *
+    * 
+    */
+    private DataColumn getColumn(MLArray matlabArray){
+        DataColumn column = new DataColumn(matlabArray.name, matlabArray.typeToString(matlabArray.getType()));
+        boolean type_is_valid = true;
+        switch (matlabArray.getType())
+        {
+            case mxUNKNOWN_CLASS:
+            	type_is_valid = false;
+                break;
+            case mxCELL_CLASS:
+                MLCell mxCELL_values = (MLCell) matlabArray;
+                for(int i = 0; i< mxCELL_values.getM(); i++){
+                	column.add(mxCELL_values.get(i,0));
+                }
+                break;
+            case mxSTRUCT_CLASS:
+            	type_is_valid = false;
+                break;
+            case mxCHAR_CLASS:
+            	 MLChar mxCHAR_values = (MLChar) matlabArray;
+            	 for(int i = 0; i< mxCHAR_values.getM(); i++){
+                 	column.add(mxCHAR_values.getString(i));
+                 }
+                break;
+            case mxSPARSE_CLASS:
+            	type_is_valid = false;
+                break;
+            case mxDOUBLE_CLASS:
+            	MLDouble mxDOUBLE_values = (MLDouble) matlabArray;
+            	for(int i = 0; i< mxDOUBLE_values.getM(); i++){
+                	column.add(mxDOUBLE_values.get(i,0));
+                }
+                break;
+            case mxSINGLE_CLASS:
+            	type_is_valid = false;
+                break;
+            case mxINT8_CLASS:
+            	type_is_valid = false;
+                break;
+            case mxUINT8_CLASS:
+            	type_is_valid = false;
+                break;
+            case mxINT16_CLASS:
+            	type_is_valid = false;
+                break;
+            case mxUINT16_CLASS:
+            	type_is_valid = false;
+                break;
+            case mxINT32_CLASS:
+            	type_is_valid = false;
+                break;
+            case mxUINT32_CLASS:
+            	type_is_valid = false;
+                break;
+            case mxINT64_CLASS:
+            	type_is_valid = false;
+                break;
+            case mxUINT64_CLASS:
+            	type_is_valid = false;
+                break;
+            case mxFUNCTION_CLASS:
+            	type_is_valid = false;
+                break;
+            case mxOPAQUE_CLASS:
+            	type_is_valid = false;
+                break;
+            case mxOBJECT_CLASS:
+            	type_is_valid = false;
+                break;
+            default:
+            	type_is_valid = false;
+                break;
+        }
+        
+        
         
         return column;
     }

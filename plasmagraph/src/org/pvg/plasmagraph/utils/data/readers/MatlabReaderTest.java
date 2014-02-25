@@ -10,7 +10,7 @@ import org.pvg.plasmagraph.utils.data.DataSet;
 public class MatlabReaderTest {
 	
 	public static void main (String [] args) {
-		File dummy = new File("./test/matlab/ExperimentData_04_09_2013_dummy.mat");
+		File dummy = new File("./test/matlab/Parameter2013-06-11.mat");
         //System.out.println(dummy.getAbsolutePath());
         
         System.out.println("- PlasmaGraph -");
@@ -18,7 +18,7 @@ public class MatlabReaderTest {
         MatlabReader mlr = new MatlabReader();
         DataSet data = mlr.toDataSet(dummy);
         
-        System.out.println(mlr.toString(dummy));
+        System.out.println(data.toString());
 	}
 
 	@Test
