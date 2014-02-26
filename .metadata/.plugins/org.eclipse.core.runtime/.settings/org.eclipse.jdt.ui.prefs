@@ -52,7 +52,7 @@ cleanup.use_this_for_non_static_method_access_only_if_necessary=true
 cleanup_profile=_Default
 cleanup_settings_version=2
 content_assist_lru_history=<?xml version\="1.0" encoding\="UTF-8" standalone\="no"?><history maxLHS\="100" maxRHS\="10"/>
-content_assist_number_of_computers=13
+content_assist_number_of_computers=17
 content_assist_proposals_background=255,255,255
 content_assist_proposals_foreground=0,0,0
 eclipse.preferences.version=1

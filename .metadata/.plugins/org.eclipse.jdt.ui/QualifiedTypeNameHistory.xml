@@ -24,7 +24,6 @@
 <fullyQualifiedTypeName name="org.pvg.plasmagraph.utils.template.Template"/>
 <fullyQualifiedTypeName name="org.pvg.plasmagraph.utils.graphs.BarGraph"/>
 <fullyQualifiedTypeName name="org.apache.commons.math3.stat.regression.SimpleRegression"/>
-<fullyQualifiedTypeName name="org.apache.commons.math3.linear.Array2DRowRealMatrix"/>
 <fullyQualifiedTypeName name="org.apache.commons.math3.stat.regression.RegressionResults"/>
 <fullyQualifiedTypeName name="org.apache.commons.math3.fitting.PolynomialFitter"/>
 <fullyQualifiedTypeName name="org.apache.commons.math3.optim.nonlinear.vector.MultivariateVectorOptimizer"/>
@@ -40,8 +39,15 @@
 <fullyQualifiedTypeName name="org.pvg.plasmagraph.utils.tools.OutlierSearch"/>
 <fullyQualifiedTypeName name="org.pvg.plasmagraph.utils.tools.Interpolator"/>
 <fullyQualifiedTypeName name="org.pvg.plasmagraph.utils.types.ChartType"/>
-<fullyQualifiedTypeName name="org.pvg.plasmagraph.utils.data.Pair"/>
 <fullyQualifiedTypeName name="org.pvg.plasmagraph.utils.data.DataReference"/>
 <fullyQualifiedTypeName name="java.util.ArrayList"/>
 <fullyQualifiedTypeName name="javax.swing.ListModel"/>
+<fullyQualifiedTypeName name="org.apache.commons.math3.util.FastMath"/>
+<fullyQualifiedTypeName name="org.pvg.plasmagraph.utils.data.Pair"/>
+<fullyQualifiedTypeName name="org.apache.commons.math3.linear.RealVector"/>
+<fullyQualifiedTypeName name="org.apache.commons.math3.linear.ArrayRealVector"/>
+<fullyQualifiedTypeName name="org.apache.commons.math3.linear.RealMatrix"/>
+<fullyQualifiedTypeName name="org.apache.commons.math3.stat.descriptive.moment.VectorialCovariance"/>
+<fullyQualifiedTypeName name="org.apache.commons.math3.exception.DimensionMismatchException"/>
+<fullyQualifiedTypeName name="org.apache.commons.math3.linear.Array2DRowRealMatrix"/>
 </qualifiedTypeNameHistroy>

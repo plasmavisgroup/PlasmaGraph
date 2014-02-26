@@ -1,4 +1,4 @@
-package org.pvg.plasmagraph.utils.tools;
+package org.pvg.plasmagraph.utils.tools.interpolation;
 
 import javax.swing.JOptionPane;
 
@@ -15,6 +15,7 @@ import org.pvg.plasmagraph.utils.data.DataSet;
 import org.pvg.plasmagraph.utils.data.Pair;
 import org.pvg.plasmagraph.utils.graphs.XYGraph;
 import org.pvg.plasmagraph.utils.template.Template;
+import org.pvg.plasmagraph.utils.tools.DataConfidence;
 import org.pvg.plasmagraph.utils.types.InterpolationType;
 
 public class Interpolator {

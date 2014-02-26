@@ -17,8 +17,8 @@ import org.pvg.plasmagraph.utils.data.filter.DataFilterWindow;
 import org.pvg.plasmagraph.utils.data.readers.CSVProcessor;
 import org.pvg.plasmagraph.utils.data.readers.MatlabReader;
 import org.pvg.plasmagraph.utils.template.Template;
-import org.pvg.plasmagraph.utils.tools.Interpolator;
-import org.pvg.plasmagraph.utils.tools.OutlierSearch;
+import org.pvg.plasmagraph.utils.tools.interpolation.Interpolator;
+import org.pvg.plasmagraph.utils.tools.outlierscan.OutlierSearch;
 import org.pvg.plasmagraph.utils.types.ChartType;
 
 /**

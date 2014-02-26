@@ -11,7 +11,7 @@ import org.pvg.plasmagraph.utils.data.DataSet;
 import org.pvg.plasmagraph.utils.data.Pair;
 import org.pvg.plasmagraph.utils.data.readers.CSVProcessor;
 import org.pvg.plasmagraph.utils.template.Template;
-import org.pvg.plasmagraph.utils.tools.Interpolator;
+import org.pvg.plasmagraph.utils.tools.interpolation.Interpolator;
 import org.pvg.plasmagraph.utils.types.InterpolationType;
 
 public class InterpolatorTest {
@@ -121,7 +121,7 @@ public class InterpolatorTest {
 	@Test
 	public void testInterpolateSpline () throws Exception {
 		// Pull the data out.
-				CSVProcessor csv = new CSVProcessor (new File (spline_data));
+				CSVProcessor csv = new CSVProcessor (new File (linear_data));//spline_data));
 				csv.read ();
 				DataSet ds = new DataSet ();
 				csv.toDataSet (ds);
