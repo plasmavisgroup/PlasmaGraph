@@ -22,15 +22,15 @@ import org.pvg.plasmagraph.views.ToolView;
  */
 public class MainController {
     /** Reference to model related to this controller. */
-    private MainModel main_model;
+    MainModel main_model;
     /** Reference to view related to this controller. */
-    private MainView main_view;
+    MainView main_view;
     /** Reference to AestheticView included in this Frame's JTabbedFrame. */
-    private AestheticView aesthetic_view;
+    AestheticView aesthetic_view;
     /** Reference to DataSetView included in this Frame's JTabbedFrame. */
-    private DataSetView data_view;
+    DataSetView data_view;
     /** Reference to ToolView included in this Frame's JTabbedFrame. */
-    private ToolView tool_view;
+    ToolView tool_view;
     
     /**
      * 
@@ -218,8 +218,7 @@ public class MainController {
                 @Override
                 protected Void doInBackground () throws Exception {
                     main_model.graph (main_view.getOutlierSwitch (),
-                    		main_view.getInterpolationSwitch (),
-                    		tool_view.getTargetInterpolationName ());
+                    		main_view.getInterpolationSwitch ());
                     return null;
                 }
                 
@@ -258,13 +257,13 @@ public class MainController {
         public void stateChanged (ChangeEvent arg0) {
             if (arg0.getSource () instanceof JTabbedPane) {
                 switch (((JTabbedPane) arg0.getSource ()).getSelectedComponent ().getName ()) {
-                    case "Aesthetic View":
+                    case "Aesthetic View": //$NON-NLS-1$
                         aesthetic_view.updateView ();
                         break;
-                    case "Data Set View":
+                    case "Data Set View": //$NON-NLS-1$
                         data_view.updateView ();
                         break;
-                    case "Tool View":
+                    case "Tool View": //$NON-NLS-1$
                         tool_view.updateView ();
                         break;
                     default:

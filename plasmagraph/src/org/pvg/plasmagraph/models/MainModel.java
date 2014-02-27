@@ -402,31 +402,33 @@ public class MainModel {
      * @param outlier_switch 
      * @param interpolation_switch 
      */
-    public void graph (boolean outlier_switch, 
-    		boolean interpolation_switch, String interpolation_target) {
+    public void graph (boolean outlier_switch, boolean interpolation_switch) {
     	
     	if (outlier_switch) {
-    		OutlierSearch.scanForOutliers (ds, t);
+    		log ("Outlier Scanning...");
+    		OutlierSearch.scanForOutliers (ds, t, dr);
     	}
     	
     	if (interpolation_switch) {
-    		if (dr.size () == 1) {
-    			Interpolator.interpolate (ds, t, dr.findPair (interpolation_target));
-    		} else {
-    			ExceptionHandler.createFunctionNotImplementedException 
-					("Interpolation - Can't interpolate multiple graphs at the moment.");
-    		}
+    		log ("Interpolating.");
+			Interpolator.interpolate (ds, t, dr);
     		
     	} else {
     		if (t.getChartType ().equals (ChartType.XY_GRAPH)) {
     			for (Pair p : dr) {
     				org.pvg.plasmagraph.utils.graphs.XYGraph graph = 
         					new org.pvg.plasmagraph.utils.graphs.XYGraph (t, ds, p);
+    				
+    				graph.pack ();
+    				graph.setVisible (true);
     			}
     		} else if (t.getChartType ().equals (ChartType.BAR_GRAPH)) {
     			for (Pair p : dr) {
     				org.pvg.plasmagraph.utils.graphs.BarGraph graph = 
         					new org.pvg.plasmagraph.utils.graphs.BarGraph (t, ds, p);
+    				
+    				graph.pack ();
+    				graph.setVisible (true);
     			}
     		} else {
     			ExceptionHandler.createFunctionNotImplementedException 
@@ -443,5 +445,13 @@ public class MainModel {
     public Template getTemplate () {
         return (t);
     }
-    
+	
+	/**
+	 * Helper method. Provides easy access to System.out.println ();
+	 * 
+	 * @param txt Text to print in console.
+	 */
+	private void log (String txt){
+        System.out.println (txt);
+    }
 }

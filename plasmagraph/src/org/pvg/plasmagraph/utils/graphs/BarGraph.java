@@ -1,5 +1,7 @@
 package org.pvg.plasmagraph.utils.graphs;
 
+import java.util.ArrayList;
+
 import javax.swing.JFrame;
 import javax.swing.JPanel;
 
@@ -54,6 +56,22 @@ public class BarGraph extends JFrame implements Graph {
 	}
 	
 	/**
+	 * Creates a JPanel containing the chart. Sets the availability of graph-saving.
+	 * 
+	 * @param t Template reference used in the formation of various parts 
+	 * of the graph.
+	 * @param ds DataSet reference used in the creation of the graph.
+	 * @return A JPanel containing the graph.
+	 */
+	@SuppressWarnings ("rawtypes")
+	@Override
+	public JPanel createJPanel (Template t, ArrayList set, Pair p) {
+		chart = createChart (createDataset(t, set, p), t);
+		ChartPanel c = new ChartPanel (chart, false, true, false, true, true);
+		return (c);
+	}
+	
+	/**
 	 * Creates a DefaultCategoryDataset specifically for the purposes of
 	 * graphing the data using the DataSet's provided values.
 	 * 
@@ -68,6 +86,31 @@ public class BarGraph extends JFrame implements Graph {
 		
 		//return (set);
 		return (ds.toBarGraphDataset (p));
+	}
+	
+	/**
+	 * Creates a Dataset specifically for the purposes of graphing the data 
+	 * using the DataSet's provided values.
+	 * 
+	 * @param t Template reference used in the formation of various parts 
+	 * of the graph.
+	 * @param ds DataSet reference used in the creation of the graph.
+	 * @return A Dataset containing the DataSet's data values
+	 */
+	@SuppressWarnings ({ "rawtypes", "unchecked" })
+	@Override
+	public DefaultCategoryDataset createDataset (Template t, ArrayList ds, Pair p) {
+		DefaultCategoryDataset set = new DefaultCategoryDataset ();
+		
+		// Objects in this ArrayList are Pair <J, K> values.
+		for (Object d : ds) {
+			org.apache.commons.math3.util.Pair<Comparable, Double> pair = 
+					(org.apache.commons.math3.util.Pair<Comparable, Double>) d;
+			
+			set.addValue (pair.getValue (), pair.getKey (), p.getName ());
+		}
+		
+		return (set);
 	}
 
 	/**

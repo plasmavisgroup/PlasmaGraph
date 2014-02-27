@@ -3,6 +3,7 @@ package org.pvg.plasmagraph.utils.tools.outlierscan;
 import java.util.ArrayList;
 
 import org.apache.commons.math3.linear.Array2DRowRealMatrix;
+import org.apache.commons.math3.linear.DefaultRealMatrixPreservingVisitor;
 import org.apache.commons.math3.linear.LUDecomposition;
 import org.apache.commons.math3.linear.RealMatrix;
 import org.apache.commons.math3.ml.clustering.DoublePoint;
@@ -28,28 +29,51 @@ public class MahalanobisDistance implements OutlierDistance {
     public double distance (ArrayList<DoublePoint> outlier_array) {
     	
     	// Convert the outlier array provided into usable data.
-    	RealMatrix xy_matrix = new Array2DRowRealMatrix (outlier_array.size (), 2);
+    	RealMatrix xy_matrix = new Array2DRowRealMatrix (outlier_array.size (), outlier_array.get (0).getPoint ().length);
     	
     	for (int i = 0; (i < outlier_array.size ()); ++i) {
     		xy_matrix.setRow (i, outlier_array.get (i).getPoint ());
     	}
 
-        RealMatrix x_vector	= new Array2DRowRealMatrix (xy_matrix.getColumn (0));
-        RealMatrix y_vector = new Array2DRowRealMatrix (xy_matrix.getColumn (1));
+    	// Generate the u matrix. (Mean)
+    	RealMatrix u_matrix = new Array2DRowRealMatrix (outlier_array.size (), outlier_array.get (0).getPoint ().length);
+    	
+    	// Calculate the totals of each of the vectors.
+    	for (DoublePoint p : outlier_array) {
+    		u_matrix.addToEntry (0, 0, p.getPoint ()[0]);
+    		u_matrix.addToEntry (0, 1, p.getPoint ()[1]);
+    	}
+    	
+    	// Divide by the number of entries!
+    	u_matrix.setEntry (0, 0, (u_matrix.getEntry (0, 0) / xy_matrix.getRowDimension ()));
+    	u_matrix.setEntry (1, 0, (u_matrix.getEntry (0, 1) / xy_matrix.getRowDimension ()));
+    	
+    	// Propagate that value down to the other entries.
+    	for (int i = 0; (i < u_matrix.getRowDimension ()); ++i) {
+    		
+    		for (int j = 0; (j < u_matrix.getColumnDimension ()); ++j) {
+    			
+    			u_matrix.setEntry (i, j, u_matrix.getEntry (0, j));
+    			
+    		}
+    		
+    	}
         
-        // Generate the composite vector of x and y.
-        RealMatrix xy_vector  = x_vector.subtract (y_vector);
+        // Generate the composite matrix of xy and u.x
+        RealMatrix xu_matrix  = xy_matrix.subtract (u_matrix);
         
         // Create the Inverse Covariance Matrix
         RealMatrix inverse_covariance = 
         		new LUDecomposition (new Covariance (xy_matrix).getCovarianceMatrix ())
         		.getSolver ().getInverse ();
         
-        RealMatrix distSquared = xy_vector.transpose ().multiply (inverse_covariance)
-                .multiply( xy_vector );
+        // Important note: Although the typical formula for the Mahalanobis Distance requires the transposition of the first appearance of the first matrix, due to the format
+        // of the data structures in this program, we require the transposition of the second appearance of the first matrix, instead.
+        // This change does not affect the results of this calculation in any important way.
+        RealMatrix distSquared = xu_matrix.multiply (inverse_covariance.multiply (xu_matrix.transpose ()));
 
         return Math.sqrt(distSquared.getEntry(0, 0));
-    }
+    }  
 
 	@Override
 	public String getDistanceType () {

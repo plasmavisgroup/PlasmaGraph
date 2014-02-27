@@ -1,15 +1,11 @@
 package org.pvg.plasmagraph.models;
 
 // Class Import Block
-import javax.swing.DefaultListModel;
-import javax.swing.ListModel;
 
 import org.pvg.plasmagraph.utils.data.DataReference;
 import org.pvg.plasmagraph.utils.data.DataSet;
 import org.pvg.plasmagraph.utils.template.Template;
 
-// import utils.data.DataSet;
-import org.pvg.plasmagraph.utils.tools.*;
 
 /**
  * Model for the usage of additional tools to aid in data modelling.
@@ -60,7 +56,7 @@ public class ToolModel {
     public javax.swing.ComboBoxModel <String> getDataReferenceNames () {
     	// Reset the old lists.
     	javax.swing.DefaultComboBoxModel <String> target_list = 
-    			new javax.swing.DefaultComboBoxModel <String> ();
+    			new javax.swing.DefaultComboBoxModel <> ();
     	
     	// Populate the ListModel
     	for (org.pvg.plasmagraph.utils.data.Pair p : dr) {

@@ -1,8 +1,11 @@
 package org.pvg.plasmagraph.utils.data;
 
+import java.io.File;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Iterator;
+import java.util.Map;
 import java.util.Set;
 
 import javax.swing.event.ChangeEvent;
@@ -11,6 +14,7 @@ import javax.swing.event.ChangeListener;
 import org.apache.commons.math3.linear.Array2DRowRealMatrix;
 import org.jfree.data.category.DefaultCategoryDataset;
 import org.jfree.data.xy.XYSeries;
+import org.pvg.plasmagraph.utils.types.FileType;
 
 /**
  * Container of DataColumns. Provides methods to create JFree Datasets.
@@ -23,22 +27,25 @@ public class DataSet implements Iterable<DataColumn> {
     /** Collection of listeners for any change that occurs in this DataSet. */
     private Set <ChangeListener> listeners;
 	/** Container for DataColumns. */
-	private ArrayList<DataColumn> values;
+	private ArrayList <DataColumn> values;
+	/** Container for Files containing data for this object. */
+	private Map <File, FileType> file_list;
 
 	/**
 	 * Constructor. Creates a new ArrayList of DataColumns for this object.
 	 * There should only exist one DataSet for any given time.
 	 */
 	public DataSet () {
-		this.values = new ArrayList<DataColumn> ();
-		this.listeners = new HashSet <ChangeListener> ();
+		this.values = new ArrayList <> ();
+		this.listeners = new HashSet <> ();
+		this.file_list = new HashMap <> ();
 	}
 
 	/**
 	 * Allows a new DataColumn into the DataSet if and only if its length
 	 * is the same as every other column. (Read: The first one is checked.)
 	 * 
-	 * @param o
+	 * @param o DataColumn to add to the DataSet.
 	 * @return Boolean describing the success or failure of the action.
 	 */
 	public boolean add (DataColumn o) {
@@ -256,25 +263,10 @@ public class DataSet implements Iterable<DataColumn> {
 		return (dataset);
 	}
 
-	/**
-	 * 
-	 * @return
-	 */
-	public Comparable<String> getDataSetName () {
-		if (this.values.size () == 2) {
-			return ("" + this.values.get(0).getColumnName () + " vs. " +
-					this.values.get (1).getColumnName ());
-		} else {
-			return ("Default");
-		}
-	}
-	
 	// Iterator / Iterable methods.
 	@Override
 	public Iterator<DataColumn> iterator () {
-		//this.position = 0;
 		return (this.values.iterator ());
-		//return (this);
 	}
 	
 
@@ -298,6 +290,10 @@ public class DataSet implements Iterable<DataColumn> {
 		
 		// Return a double 2DArray.
 		return (matrix.getData ());
+	}
+	
+	public void populateDataSet () {
+		
 	}
 	
 	// Event Methods
@@ -337,5 +333,28 @@ public class DataSet implements Iterable<DataColumn> {
 		for (ChangeListener c : listeners) {
 			System.out.println (c.toString ());
 		}
+	}
+
+	// File Map methods.
+	/**
+	 * Helper method. Provides interface to file_list.
+	 * 
+	 * @param file File object to add to Map.
+	 * @param type File extension of object.
+	 * @return Boolean describinb the success or failure of the operation.
+	 */
+	public boolean addFile (File file, FileType type) {
+		return (this.file_list.put (file, type) != null);
+	}
+	
+	/**
+	 * Helper method. Provides interface to file_list.
+	 * 
+	 * @param file File object to add to Map.
+	 * @param type File extension of object.
+	 * @return Boolean describinb the success or failure of the operation.
+	 */
+	public boolean removeFile (File file) {
+		return (this.file_list.remove (file) != null);
 	}
 }

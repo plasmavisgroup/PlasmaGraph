@@ -45,7 +45,6 @@ public class ToolController {
         tool_view.addIntervalListener (new IntervalListener ());
         // Update View Listeners
         tool_model.addTemplateChangeListener (new ToolViewTemplateListener ());
-        tool_model.addDataReferenceChangeListener (new ToolViewReferenceListener ());
     }
     
     /**
@@ -186,35 +185,6 @@ public class ToolController {
                 @Override
                 protected Void doInBackground () throws Exception {
                     tool_view.updateTemplateView ();
-                    return null;
-                }
-                
-            };
-            
-            view_worker.run ();
-        }
-        
-    }
-    
-    /**
-     * Listener for the Template that contains all settings for the program.
-     * Relies on ChangeListener in order to know that a change has occurred
-     * in the Template. 
-     * 
-     * @author Gerardo A. Navas Morales
-     */
-    class ToolViewReferenceListener implements ChangeListener {
-
-        /**
-         * Updates the ToolView's current Template-based state.
-         */
-        @Override
-        public void stateChanged (ChangeEvent e) {
-            SwingWorker <Void, Void> view_worker = new SwingWorker <Void, Void> () {
-
-                @Override
-                protected Void doInBackground () throws Exception {
-                    tool_view.updateReferenceView ();
                     return null;
                 }
                 

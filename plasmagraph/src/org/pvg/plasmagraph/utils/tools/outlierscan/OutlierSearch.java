@@ -8,10 +8,15 @@ import javax.swing.JOptionPane;
 import org.apache.commons.math3.ml.clustering.Cluster;
 import org.apache.commons.math3.ml.clustering.DBSCANClusterer;
 import org.apache.commons.math3.ml.clustering.DoublePoint;
+import org.pvg.plasmagraph.utils.ExceptionHandler;
 import org.pvg.plasmagraph.utils.data.DataReference;
 import org.pvg.plasmagraph.utils.data.DataSet;
 import org.pvg.plasmagraph.utils.data.Pair;
+import org.pvg.plasmagraph.utils.graphs.BarGraph;
+import org.pvg.plasmagraph.utils.graphs.Graph;
+import org.pvg.plasmagraph.utils.graphs.XYGraph;
 import org.pvg.plasmagraph.utils.template.Template;
+import org.pvg.plasmagraph.utils.types.ChartType;
 import org.pvg.plasmagraph.utils.types.OutlierResponse;
 
 public class OutlierSearch {
@@ -23,23 +28,59 @@ public class OutlierSearch {
      * @param ds The focused DataSet of values.
      */
     public static void scanForOutliers (DataSet ds, Template t, DataReference dr) {
+    	//ScanMethod sm;
     	
-    	// Prepare tools for Outlier Scan use.
-    	ArrayList <DoublePoint> outlier_array = new ArrayList<DoublePoint> ();
-    	List <Cluster<DoublePoint>> dbl_cluster = new ArrayList <Cluster<DoublePoint>> ();
-    	
-    	// For each pair that we'll be graphing, do the following.
-    	for (org.pvg.plasmagraph.utils.data.Pair p : dr) {
-    		// Populate the outlier_array with the correct values.
-    		populate (outlier_array, ds, p);
+    	// XY Graphs require a clustering method.
+    	if (t.getChartType () == ChartType.XY_GRAPH) {
     		
-    		// Separate the main values from the outliers, and ask if they'll be graphed.
-    		if (search (dbl_cluster, outlier_array, t)) {
-    			
-    			// Graph as desired.
-        		graph (outlier_array, t);
-    		}
+    		//sm = new ClusterScanning ();
+    		
+    		// Prepare tools for Outlier Scan use.
+        	ArrayList <DoublePoint> outlier_array = new ArrayList<DoublePoint> ();
+        	List <Cluster<DoublePoint>> dbl_cluster = new ArrayList <Cluster<DoublePoint>> ();
+        	
+        	// For each pair that we'll be graphing, do the following.
+        	for (org.pvg.plasmagraph.utils.data.Pair p : dr) {
+        		
+        		// Populate the outlier_array with the correct values.
+        		populate (outlier_array, ds, p);
+        		
+        		// Separate the main values from the outliers, and ask if they'll be graphed.
+        		if (search (dbl_cluster, outlier_array, t)) {
+        			
+        			// Graph as desired.
+            		graph (outlier_array, t, p);
+        		}
+        	}
+    		
+    	} // Bar Charts require a simple y-value method, like the Modified Thompson Tau!
+    	else if (t.getChartType () == ChartType.BAR_GRAPH) {
+    		
+    		// TODO: Properly implement the ScanMethod interface.
+    		ExceptionHandler.createFunctionNotImplementedException ("Bar Graph Outlier Scan");
+    		// Modified Thompson Tau!
+    		// Prepare tools for Outlier Scan use.
+        	//ArrayList <Double> outlier_array = new ArrayList<Double> ();
+        	
+        	// For each pair that we'll be graphing, do the following.
+        	//for (org.pvg.plasmagraph.utils.data.Pair p : dr) {
+        		
+        		// Populate the outlier_array with the correct values.
+        		//populate (outlier_array, ds, p);
+        		
+        		// Separate the main values from the outliers, and ask if they'll be graphed.
+        		//if (search (dbl_cluster, outlier_array, t)) {
+        			
+        			// Graph as desired.
+            		//graph (outlier_array, t);
+        		//}
+        	//}
+    		
     	}
+    	else {
+    		JOptionPane.showMessageDialog (null, "This is not a supported graph type for this function!");
+    	}
+    	
     }
 
     // Outlier Scan sub-functions
@@ -52,13 +93,21 @@ public class OutlierSearch {
      */
 	private static void populate (ArrayList<DoublePoint> outlier_array,
 			DataSet ds, Pair p) {
+		System.out.println (ds.get (p.getIndex1 ()).toString ());
 		
 		// For each line in the DataSet, add the Pair's values to the outlier_array.
-		for (int i = 0; (i < ds.getColumnLength ()); ++i) {
+		for (int i = 0; (i < ds.getColumnLength () - 1); ++i) {
+			
+			System.out.println ("Column length: " + ds.getColumnLength ());
+			System.out.println ("Current position: " + i);
+			System.out.println (ds.get (p.getIndex1 ()).toString ());
+			System.out.println ("Current object: " + ds.get (p.getIndex1 ()).get (i).toString () + "\n");
+			
 			outlier_array.add (new DoublePoint (new double [] {
 					(double) ds.get (p.getIndex1 ()).get (i),
 					(double) ds.get (p.getIndex2 ()).get (i)
 				}));
+			
 		}
 	}
 	
@@ -93,10 +142,27 @@ public class OutlierSearch {
 	 * @param outlier_array Data container for the DataSet to scan through.
 	 * @param t Template object of the PlasmaGraph program that defines graph qualities.
 	 */
-	private static void graph (ArrayList<DoublePoint> outlier_array,
-			Template t) {
-		// TODO Auto-generated method stub
+	private static void graph (ArrayList<DoublePoint> outlier_array, Template t, Pair p) {
 		
+		if (t.getChartType () == ChartType.XY_GRAPH) {
+			
+			XYGraph graph = new XYGraph (t, outlier_array, p);
+			graph.pack ();
+			graph.setVisible (true);
+			
+		} else if (t.getChartType () == ChartType.BAR_GRAPH) {
+			
+			ExceptionHandler.createFunctionNotImplementedException ("Bar Graph Outlier Scan");
+			
+			//BarGraph graph = new BarGraph (t, outlier_array, p);
+			//graph.pack ();
+			//graph.setVisible (true);
+			
+		} else {
+			
+			ExceptionHandler.createFunctionNotImplementedException ("Other Graph Outlier Scan");
+		
+		}
 	}
 	
 	// "scan" support functions

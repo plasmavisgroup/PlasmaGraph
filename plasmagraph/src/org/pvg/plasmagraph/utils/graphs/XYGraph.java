@@ -1,8 +1,11 @@
 package org.pvg.plasmagraph.utils.graphs;
 
+import java.util.ArrayList;
+
 import javax.swing.JFrame;
 import javax.swing.JPanel;
 
+import org.apache.commons.math3.ml.clustering.DoublePoint;
 import org.jfree.chart.ChartFactory;
 import org.jfree.chart.ChartPanel;
 import org.jfree.chart.JFreeChart;
@@ -27,7 +30,7 @@ import org.pvg.plasmagraph.utils.template.Template;
  * @author Gerardo A. Navas Morales
  */
 @SuppressWarnings ("serial")
-public class XYGraph extends JFrame implements Graph{
+public class XYGraph extends JFrame implements Graph {
 	JFreeChart chart;
 
 	// Constructors
@@ -57,6 +60,18 @@ public class XYGraph extends JFrame implements Graph{
 	public XYGraph (Template t_reference, XYSeriesCollection graph_data) {
 		super(t_reference.getChartName ());
 		setContentPane (createJPanel (t_reference, graph_data));
+	}
+
+	/**
+	 * Basic constructor. Creates a XYGraph from a Template and DataSet reference.
+	 * 
+	 * @param t_reference Template reference used in the formation of 
+	 * various parts of the graph.
+	 * @param ds_reference DataSet reference used in the creation of the graph.
+	 */
+	public XYGraph (Template t_reference, ArrayList <DoublePoint> set, Pair p) {
+		super (t_reference.getChartName ());
+		setContentPane (createJPanel (t_reference, set, p));
 	}
 
 	/**
@@ -124,5 +139,44 @@ public class XYGraph extends JFrame implements Graph{
 		//org.jfree.chart.plot.XYPlot plot = c.getXYPlot();
 		
 		return (c);
+	}
+	
+	/**
+	 * Creates a JPanel containing the chart. Sets the availability of graph-saving.
+	 * 
+	 * @param t Template reference used in the formation of various parts 
+	 * of the graph.
+	 * @param ds DataSet reference used in the creation of the graph.
+	 * @return A JPanel containing the graph.
+	 */
+	@SuppressWarnings ("rawtypes")
+	@Override
+	public JPanel createJPanel (Template t, ArrayList ds, Pair p) {
+		chart = createChart (createDataset(t, ds, p), t);
+		ChartPanel c = new ChartPanel (chart, false, true, false, true, true);
+		return (c);
+	}
+
+	/**
+	 * Creates a Dataset specifically for the purposes of graphing the data 
+	 * using the DataSet's provided values.
+	 * 
+	 * @param t Template reference used in the formation of various parts 
+	 * of the graph.
+	 * @param ds DataSet reference used in the creation of the graph.
+	 * @return A Dataset containing the DataSet's data values
+	 */
+	@SuppressWarnings ("rawtypes")
+	@Override
+	public XYDataset createDataset (Template t, ArrayList ds, Pair p) {
+
+		XYSeries this_series = new XYSeries (p.getName ());
+		
+		for (Object o : ds) {
+			DoublePoint d = (DoublePoint) o;
+			this_series.add (d.getPoint ()[0], d.getPoint ()[1]);
+		}
+		
+		return (new XYSeriesCollection (this_series));
 	}
 }

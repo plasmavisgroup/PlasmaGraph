@@ -10,11 +10,12 @@ import org.junit.Rule;
 import org.junit.Test;
 import org.junit.rules.ExpectedException;
 
+@SuppressWarnings ("nls")
 public class ReferenceTest {
     @Rule
     public ExpectedException thrown = ExpectedException.none ();
     
-    @Test
+	@Test
     public void testAdd () {
         // Set up
         DataReference r1 = new DataReference ();
@@ -212,11 +213,26 @@ public class ReferenceTest {
         
         // Test
         String key = (String) r1.createXYGraphPair (0, main).getKey ();
-        String compared = (String) t1.getDataSetName ();
+        String compared = (String) getDataSetName (t1);
         assertTrue ("Cherry pick Position v. Time and compare to Time.", key.equals (compared));
         
         key = (String) r1.createXYGraphPair (0, main).getKey ();
         compared = "Acceleration";
         assertFalse ("Cherry pick Position v. Time and compare to Acceleration.", key.equals (compared));
     }
+    
+
+	/**
+	 * Getter method. Provides the name of
+	 * @return
+	 */
+	public Comparable<String> getDataSetName (DataSet ds) {
+		if (ds.size () == 2) {
+			return (ds.get(0).getColumnName () + " vs. " +
+					ds.get (1).getColumnName ());
+		} else {
+			return ("Default");
+		}
+	}
+	
 }

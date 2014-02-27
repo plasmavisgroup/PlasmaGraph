@@ -12,6 +12,7 @@ import java.util.List;
 import org.apache.commons.lang3.math.NumberUtils;
 import org.pvg.plasmagraph.utils.data.DataColumn;
 import org.pvg.plasmagraph.utils.data.DataSet;
+import org.pvg.plasmagraph.utils.types.FileType;
 
 import au.com.bytecode.opencsv.CSVReader;
 import au.com.bytecode.opencsv.CSVWriter;
@@ -108,13 +109,13 @@ public class CSVProcessor {
 	 * @return A DataSet object with its DataGroups being of the DataRow type.
 	 * @throws Exception Malformed data set; columns are of different sizes.
 	 */
-	@SuppressWarnings ("unchecked")
 	public DataSet toDataSet (DataSet ds) throws Exception {
-		// TODO: Check to see if ds is already populated.
-		// TODO: If it's populated, check if the CSV's header match with it.
-		// TODO: If so, then pull the data as normal.
+		// First, check to see if the file's been even read.
+		if (this.csv_data.size () == 0) {
+			this.read ();
+		}
 		
-		// Get the Headers and the columns all set up!
+		// Get the Headers and the columns all set up, or check to see if it's already been done!
 		if (this.getHeaders (ds)) {
 			// Now, fill in all the columns!
 			for (int row = 1; (row < csv_data.size ()); ++row) {
@@ -204,36 +205,58 @@ public class CSVProcessor {
 	 * @return A boolean describing the success or failure of this operation.
 	 */
 	public boolean getHeaders (DataSet ds) throws Exception {
+		// First, check to see if the file's been even read.
+		if (this.csv_data.size () == 0) {
+			this.read ();
+		}
 		
-		if (this.checkColumnSizes ()) {
-			// For each column in this row...
-			for (int i = 0; (i < csv_data.get (0).length); ++i) {
-				
-				// What is the type of the data in that column.
-				if (NumberUtils.isNumber (csv_data.get (1)[i].trim ())) {
+		// Now we can continue.
+		if (ds.size () == 0) {
+			if (this.checkColumnSizes ()) {
+				// For each column in this row...
+				for (int i = 0; (i < csv_data.get (0).length); ++i) {
 					
-					// Number? Then it's a double; add a DataColumn <Double>.
-					// Name's at csv_data.get(0)[i].
-					DataColumn <Double> dc = 
-							new DataColumn <Double> (csv_data.get(0)[i].trim (), "double");
-					ds.add (dc);
-					
-				} else {
-					
-					// Not a number? Then it's a string. Add a DataColumn <String>.
-					// Name's at csv_data.get(0)[i].
-					DataColumn <String> dc = 
-							new DataColumn <String> (csv_data.get(0)[i].trim (), "string");
-					
-					ds.add (dc);
-					
+					// What is the type of the data in that column.
+					if (NumberUtils.isNumber (csv_data.get (1)[i].trim ())) {
+						
+						// Number? Then it's a double; add a DataColumn <Double>.
+						// Name's at csv_data.get(0)[i].
+						DataColumn <Double> dc = 
+								new DataColumn <> (csv_data.get(0)[i].trim (), "double");
+						ds.add (dc);
+						
+					} else {
+						
+						// Not a number? Then it's a string. Add a DataColumn <String>.
+						// Name's at csv_data.get(0)[i].
+						DataColumn <String> dc = 
+								new DataColumn <> (csv_data.get(0)[i].trim (), "string");
+						
+						ds.add (dc);
+						
+					}
 				}
+				
+				// Then add that new file to the DataSet's list of files to import.
+				ds.addFile (this.csv_file, FileType.CSV);
+				
+				return (true);
+			} else {
+				throw (new Exception ("Incorrect Header sizes! This is a malformed data file!"));
+			}
+		} else {
+			// Check if the headers in the new file are the same as those already in the DataSet.
+			boolean b = true;
+			for (int i = 0; ((i < csv_data.get (0).length) && b); ++i) {
+				b = (csv_data.get (0)[i].equals (ds.get (i).getColumnName ()));
 			}
 			
-			return (true);
-		} else {
-			throw (new Exception ("Incorrect Header sizes! This is a malformed data file!"));
+			// If they are, then add that new file to the DataSet's list of files to import.
+			ds.addFile (this.csv_file, FileType.CSV);
+			
+			return (b);
 		}
+		
 	}
 
 	/**

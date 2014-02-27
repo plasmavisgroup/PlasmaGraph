@@ -11,6 +11,7 @@ import org.jfree.data.function.*;
 import org.jfree.data.general.DatasetUtilities;
 import org.jfree.data.xy.XYSeries;
 import org.jfree.data.xy.XYSeriesCollection;
+import org.pvg.plasmagraph.utils.data.DataReference;
 import org.pvg.plasmagraph.utils.data.DataSet;
 import org.pvg.plasmagraph.utils.data.Pair;
 import org.pvg.plasmagraph.utils.graphs.XYGraph;
@@ -20,12 +21,26 @@ import org.pvg.plasmagraph.utils.types.InterpolationType;
 
 public class Interpolator {
   
+	/**
+	 * External path to interpolate data and graph said data.
+	 * 
+	 * @param ds The DataSet to interpolate.
+	 * @param t The settings the DataSet is based upon.
+	 * @param dr The DataReference object containing all the pairs to interpolate.
+	 */
+	public static void interpolate (DataSet ds, Template t, DataReference dr) {
+		// For all of the DataReference pairs in dr...
+		for (Pair p : dr) {
+			interpolate (ds, t, p);
+		}
+	}
 	
 	/**
 	 * External path to interpolate data and graph said data.
 	 * 
 	 * @param ds The DataSet to interpolate.
 	 * @param t The settings the DataSet is based upon.
+	 * @param p The DataReference pair to interpolate from the DataSet provided.
 	 */
     public static void interpolate (DataSet ds, Template t, Pair p) {
 
