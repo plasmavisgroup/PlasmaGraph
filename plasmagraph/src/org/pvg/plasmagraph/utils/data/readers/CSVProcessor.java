@@ -10,16 +10,24 @@ import java.util.ArrayList;
 import java.util.List;
 
 import org.apache.commons.lang3.math.NumberUtils;
+import org.apache.commons.math3.util.Pair;
 import org.pvg.plasmagraph.utils.data.DataColumn;
 import org.pvg.plasmagraph.utils.data.DataSet;
+import org.pvg.plasmagraph.utils.data.GraphPair;
+import org.pvg.plasmagraph.utils.data.HeaderData;
+import org.pvg.plasmagraph.utils.types.ColumnType;
 import org.pvg.plasmagraph.utils.types.FileType;
 
 import au.com.bytecode.opencsv.CSVReader;
 import au.com.bytecode.opencsv.CSVWriter;
 
-public class CSVProcessor {
+/**
+ * 
+ * @author Gerardo A. Navas Morales
+ */
+public class CSVProcessor implements FileProcessor {
 	/**	Data container for values to and from the CSVReader / Writer classes. */
-	private ArrayList<String[]> csv_data;
+	private List<String[]> csv_data;
 	/** CSV file location. */
 	private File csv_file;
 	
@@ -31,11 +39,13 @@ public class CSVProcessor {
 	 */
 	public CSVProcessor (File f) {
 		csv_file = f;
+		this.read ();
 	}
 	
 	/**
 	 * Default, full-batch way to read a CSV. Reads from the original file location.
 	 */
+	@Override
 	public void read () {
 		// Open CSV file "f".
 		try (CSVReader csv = new CSVReader (new BufferedReader
@@ -56,25 +66,12 @@ public class CSVProcessor {
 	}
 	
 	/**
-	 * Default, full-batch way to write a CSV. Writes to the original file location.
+	 * Default, full-batch way to write a CSV. 
+	 * Writes to the original file location.
 	 */
-	public void writeCSV () {
-		// Open CSV file "f".
-		try (CSVWriter csv = new CSVWriter (new BufferedWriter
-				(new FileWriter (csv_file)))) {
-			
-			// Read data into "csv_data".
-			csv.writeAll (csv_data);
-			
-			// Close CSV file.
-			csv.close ();
-			
-		} catch (IOException e) {
-			
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-			
-		}
+	@Override
+	public void write () {
+		this.write (csv_file);
 	}
 	
 	/**
@@ -83,7 +80,8 @@ public class CSVProcessor {
 	 * 
 	 * @param f The file object whose location will be used instead of the default.
 	 */
-	public void writeCSV (File f) {
+	@Override
+	public void write (File f) {
 		// Open CSV file "f".
 		try (CSVWriter csv = new CSVWriter (new BufferedWriter
 				(new FileWriter (f)))) {
@@ -109,58 +107,94 @@ public class CSVProcessor {
 	 * @return A DataSet object with its DataGroups being of the DataRow type.
 	 * @throws Exception Malformed data set; columns are of different sizes.
 	 */
-	public DataSet toDataSet (DataSet ds) throws Exception {
+	@Override
+	public void toDataSet (DataSet ds, GraphPair p, HeaderData hd) throws Exception {
 		// First, check to see if the file's been even read.
 		if (this.csv_data.size () == 0) {
+			
 			this.read ();
 		}
+
+		// Now, prepare the columns of the DataSet.
+		this.prepareColumns (ds, p, hd);
 		
-		// Get the Headers and the columns all set up, or check to see if it's already been done!
-		if (this.getHeaders (ds)) {
-			// Now, fill in all the columns!
-			for (int row = 1; (row < csv_data.size ()); ++row) {
-				// Obtain the second, third, ..., last row in the List<String[]> "csv_data".
-				// Ignore the first; it's only got column names.
-				String [] s = csv_data.get (row);
-				
-				for (int col = 0; (col < ds.size ()); ++col) {
-					
-					// Number or String?
-					if (ds.get (col).containsDoubles () == (NumberUtils.isNumber (s[col].trim ()))) {
-						
-						// It's a number.
-						ds.get (col).add (NumberUtils.toDouble (s[col].trim ()));
-						
-					} else if (ds.get (col).containsStrings () != (NumberUtils.isNumber (s[col].trim ()))) {
-						
-						// It's a string.
-						ds.get (col).add (s[col].trim ());
-						 
-					}
-				}
-			}
+		// Once the columns are ready, populate the columns with the correct data!
+		this.populateColumns (ds, p);
+	}
+
+	/**
+	 * Helper method. Prepares the DataColumn variables that are contained in
+	 * the DataSet, with help from the HeaderData and a GraphPair.
+	 * 
+	 * @param ds DataSet container already provided.
+	 * @param p GraphPair object containing the index values of the DataSet's columns.
+	 * @param hd HeaderData object containing the Column names and types.
+	 */
+	private void prepareColumns (DataSet ds, GraphPair p, HeaderData hd) {
+		// Take the first index of the GraphPair, find it in the List we have here,
+		/// and create the column it needs in the DataSet.
+		
+		if (hd.get (p.getIndex1 ()).getValue () == ColumnType.DOUBLE) {
 			
-			// Return the fully-formed DataSet!
-			return (ds);
+			ds.add (new DataColumn <Double> (hd.get (p.getIndex1 ()).getKey (), 
+					hd.get (p.getIndex1 ()).getValue ()));
+			
+		} else if (hd.get (p.getIndex1 ()).getValue () == ColumnType.DATETIME) {
+			
+			ds.add (new DataColumn <java.util.Date> (hd.get (p.getIndex1 ()).getKey (), 
+					hd.get (p.getIndex1 ()).getValue ()));
+			
 		} else {
-			// Error: Headers are not of the correct size!
-			throw (new Exception ("Incorrect Header sizes! "
-					+ "This is a malformed data file!"));
+			
+			ds.add (new DataColumn <String> (hd.get (p.getIndex1 ()).getKey (), 
+					hd.get (p.getIndex1 ()).getValue ()));
+			
+		}
+		
+		// Now do that for the other GraphPair index.
+		if (hd.get (p.getIndex2 ()).getValue () == ColumnType.DOUBLE) {
+			
+			ds.add (new DataColumn <Double> (hd.get (p.getIndex2 ()).getKey (), 
+					hd.get (p.getIndex2 ()).getValue ()));
+			
+		} else if (hd.get (p.getIndex2 ()).getValue () == ColumnType.DATETIME) {
+			
+			ds.add (new DataColumn <Double> (hd.get (p.getIndex2 ()).getKey (), 
+					hd.get (p.getIndex2 ()).getValue ()));
+			
+		} else {
+			
+			ds.add (new DataColumn <Double> (hd.get (p.getIndex2 ()).getKey (), 
+					hd.get (p.getIndex2 ()).getValue ()));
+			
 		}
 	}
 
 	/**
-	 * TODO: Create method.
-	 * Transforms a DataSet provided by the method call into a List<String[]>,
-	 * the default format for the CSVReader / CSVWriter classes provided by 
-	 * OpenCSV.
+	 * Helper method. Populates the provided DataSet with data from this object's
+	 * List of String arrays, csv_data, based on the index values of the GraphPair p.
 	 * 
-	 * @param ds A DataSet object populated by DataRows.
+	 * @param ds DataSet container already provided.
+	 * @param p GraphPair object containing the index values of the DataSet's columns.
 	 */
-	public void fromDataSet (DataSet ds) {
-		// TODO: Everything.
+	private void populateColumns (DataSet ds, GraphPair p) {
+		
+		// For each row in the List of String Arrays that we have, save the first.
+		for (int i = 1; (i < this.csv_data.size ()); ++i) {
+			
+			// If the data is valid...
+			if (this.isValidRow (this.csv_data.get (i), p)) {
+				// Take only the values of the two index values of the GraphPair p and put them
+				// into the DataSet ds.
+				
+				// Populating the first column in ds.
+				ds.get (0).add (this.csv_data.get (i) [p.getIndex1 ()]);
+				// Populating the second column in ds.
+				ds.get (1).add (this.csv_data.get (i) [p.getIndex2 ()]);
+			}
+		}
 	}
-
+	
 	/**
 	 * Getter method. Provides the entire contents of the CSV file object.
 	 * 
@@ -184,6 +218,7 @@ public class CSVProcessor {
 	 * 
 	 * @return A File object, containing the default file location for this object.
 	 */
+	@Override
 	public File getFile () {
 		return (csv_file);
 	}
@@ -193,6 +228,7 @@ public class CSVProcessor {
 	 * 
 	 * @param new_file A new File object, containing the new default file location for this object.
 	 */
+	@Override
 	public void setFile (File new_file) {
 		csv_file = new_file;
 	}
@@ -204,41 +240,42 @@ public class CSVProcessor {
 	 * @param ds DataSet to fill out with Columns, but not with data.
 	 * @return A boolean describing the success or failure of this operation.
 	 */
-	public boolean getHeaders (DataSet ds) throws Exception {
+	@Override
+	public boolean getHeaders (HeaderData hd) throws Exception {
 		// First, check to see if the file's been even read.
 		if (this.csv_data.size () == 0) {
 			this.read ();
 		}
 		
 		// Now we can continue.
-		if (ds.size () == 0) {
+		if (hd.size () == 0) {
 			if (this.checkColumnSizes ()) {
 				// For each column in this row...
+				
 				for (int i = 0; (i < csv_data.get (0).length); ++i) {
 					
 					// What is the type of the data in that column.
-					if (NumberUtils.isNumber (csv_data.get (1)[i].trim ())) {
+					ColumnType col_type = this.getType (i);
+					if (col_type.equals (ColumnType.DOUBLE)) {
 						
-						// Number? Then it's a double; add a DataColumn <Double>.
-						// Name's at csv_data.get(0)[i].
-						DataColumn <Double> dc = 
-								new DataColumn <> (csv_data.get(0)[i].trim (), "double");
-						ds.add (dc);
+						// Number? Then it's a double
+						hd.add (new Pair <> (csv_data.get(0)[i].trim (), col_type));
 						
+					} else if (col_type.equals (ColumnType.DATETIME)) {
+						
+						// Date is properly validated? Then it's a datetime.
+						hd.add (new Pair <> (csv_data.get(0)[i].trim (), col_type));
+					
 					} else {
 						
-						// Not a number? Then it's a string. Add a DataColumn <String>.
-						// Name's at csv_data.get(0)[i].
-						DataColumn <String> dc = 
-								new DataColumn <> (csv_data.get(0)[i].trim (), "string");
-						
-						ds.add (dc);
+						// Not a number or a date? Then it's a string.
+						hd.add (new Pair <> (csv_data.get(0)[i].trim (), col_type));
 						
 					}
 				}
 				
 				// Then add that new file to the DataSet's list of files to import.
-				ds.addFile (this.csv_file, FileType.CSV);
+				hd.addFile (this.csv_file, FileType.CSV);
 				
 				return (true);
 			} else {
@@ -248,15 +285,48 @@ public class CSVProcessor {
 			// Check if the headers in the new file are the same as those already in the DataSet.
 			boolean b = true;
 			for (int i = 0; ((i < csv_data.get (0).length) && b); ++i) {
-				b = (csv_data.get (0)[i].equals (ds.get (i).getColumnName ()));
+				b = (csv_data.get (0)[i].equals (hd.get (i).getKey ()));
 			}
 			
 			// If they are, then add that new file to the DataSet's list of files to import.
-			ds.addFile (this.csv_file, FileType.CSV);
+			hd.addFile (this.csv_file, FileType.CSV);
 			
 			return (b);
 		}
 		
+	}
+
+	private ColumnType getType (int column_index) {
+		String s = "";
+		
+		// Check each row whilst a proper value has not been found.
+		for (int row = 1; (row < this.csv_data.size ()) && (s.equals ("")); ++row) {
+			
+			// if this is a proper value, then put it in s.
+			if (this.isValidItem (this.csv_data.get (row)[column_index])) {
+				s = this.csv_data.get (row)[column_index];
+			}
+			
+		}
+		
+		// Prepare the DateValidator
+		org.apache.commons.validator.routines.DateValidator d = 
+				new org.apache.commons.validator.routines.DateValidator ();
+		
+		// Now, verify the contents of "s" for the type of value it contains.
+		if (NumberUtils.isNumber (s.trim ())) {
+			
+			return (ColumnType.DOUBLE);
+			
+		} else if (d.validate (s) != null) {
+			
+			return (ColumnType.DATETIME);
+			
+		} else {
+			
+			return (ColumnType.STRING);
+			
+		}
 	}
 
 	/**
@@ -288,17 +358,29 @@ public class CSVProcessor {
 	}
 	
 	/**
-	 * Verifies and cleans out all null values from the provided DataSet.
-	 * TODO: Make sure to call in the right places!
-	 * TODO: Check all the data for null values!
-	 * @return A boolean describing the success or failure of this operation.
+	 * Checks to see if the string provided is a null value, contains the word 
+	 * NaN, or is empty.
+	 * 
+	 * @param string String value containing a potential term for a data set.
+	 * @return A boolean describing if the value is valid or not.
 	 */
-	private boolean checkData (DataSet ds) {
-		return (false);
+	private boolean isValidRow (String [] s, GraphPair p) {
+		return (this.isValidItem (s[p.getIndex1 ()]) &&
+				this.isValidItem (s[p.getIndex2 ()]));
 	}
 	
+	private boolean isValidItem (String s) {
+		return ((!s.equals (null)) && (!s.equals ("")) && 
+				(!s.equals ("NaN")));
+	}
+
 	@Override
 	public String toString () {
+		
+		if (this.csv_data.size () == 0) {
+			this.read ();
+		} 
+		
 		StringBuilder sb = new StringBuilder ();
 		
 		for (String [] s_array : this.csv_data) {

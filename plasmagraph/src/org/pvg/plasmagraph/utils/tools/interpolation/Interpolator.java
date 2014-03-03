@@ -13,7 +13,8 @@ import org.jfree.data.xy.XYSeries;
 import org.jfree.data.xy.XYSeriesCollection;
 import org.pvg.plasmagraph.utils.data.DataReference;
 import org.pvg.plasmagraph.utils.data.DataSet;
-import org.pvg.plasmagraph.utils.data.Pair;
+import org.pvg.plasmagraph.utils.data.GraphPair;
+import org.pvg.plasmagraph.utils.data.HeaderData;
 import org.pvg.plasmagraph.utils.graphs.XYGraph;
 import org.pvg.plasmagraph.utils.template.Template;
 import org.pvg.plasmagraph.utils.tools.DataConfidence;
@@ -28,10 +29,10 @@ public class Interpolator {
 	 * @param t The settings the DataSet is based upon.
 	 * @param dr The DataReference object containing all the pairs to interpolate.
 	 */
-	public static void interpolate (DataSet ds, Template t, DataReference dr) {
+	public static void interpolate (HeaderData hd, Template t, DataReference dr) {
 		// For all of the DataReference pairs in dr...
-		for (Pair p : dr) {
-			interpolate (ds, t, p);
+		for (GraphPair p : dr) {
+			interpolate (hd, t, p);
 		}
 	}
 	
@@ -42,7 +43,10 @@ public class Interpolator {
 	 * @param t The settings the DataSet is based upon.
 	 * @param p The DataReference pair to interpolate from the DataSet provided.
 	 */
-    public static void interpolate (DataSet ds, Template t, Pair p) {
+    public static void interpolate (HeaderData hd, Template t, GraphPair p) {
+    	
+    	// Create a DataSet for this interpolation.
+    	DataSet ds = hd.populateData (p);
 
         // Check which of the different regressions you'll be doing.
         XYSeries interpolated_dataset = getInterpolation (ds, t, p);
@@ -63,7 +67,7 @@ public class Interpolator {
      * the interval for each point.
      * @return An XYSeries containing the interpolated Dataset.
      */
-	private static XYSeries getInterpolation (DataSet ds, Template t, Pair p) {
+	private static XYSeries getInterpolation (DataSet ds, Template t, GraphPair p) {
 		// Set up Variables.
 		// Return container.
 		XYSeries regression_dataset;

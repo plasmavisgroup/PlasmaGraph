@@ -125,18 +125,15 @@ public class DataSetView extends javax.swing.JPanel {
         add_button = new javax.swing.JButton();
         remove_button = new javax.swing.JButton();
         chart_type_label = new javax.swing.JLabel();
-        chart_type_combo_box = new javax.swing.JComboBox <String>
-				(ChartType.getOptions ());
+        chart_type_combo_box = new javax.swing.JComboBox <> (ChartType.getOptions ());
         group_by_label = new javax.swing.JLabel();
         group_by_check_box = new javax.swing.JCheckBox();
         
         available_datasets_pane = new javax.swing.JScrollPane();
-        available_datasets_list = new javax.swing.JList <String> (
-                this.data_model.resetAvailableList ());
+        available_datasets_list = new javax.swing.JList <> (this.data_model.resetAvailableList ());
         
         selected_datasets_pane = new javax.swing.JScrollPane();
-        selected_datasets_list = new javax.swing.JList <String> (
-                this.data_model.resetSelectedList ());
+        selected_datasets_list = new javax.swing.JList <> (this.data_model.resetSelectedList ());
 
         setMaximumSize(new java.awt.Dimension(460, 300));
         setMinimumSize(new java.awt.Dimension(460, 300));

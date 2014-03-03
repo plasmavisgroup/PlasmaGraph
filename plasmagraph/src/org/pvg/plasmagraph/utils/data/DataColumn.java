@@ -17,13 +17,26 @@ public class DataColumn<E> implements Iterable<E> {
 	private ColumnType type;
 	
 	public DataColumn (String n, String c_type) {// throws Exception {
-		values = new ArrayList<E> ();
+		values = new ArrayList<> ();
 		if (c_type.equals ("string") || c_type.equals ("String")) {
 			type = ColumnType.STRING;
 		} else if (c_type.equals ("double") || c_type.equals ("Double")) {
 			type = ColumnType.DOUBLE;
 		} else {
+			type = ColumnType.DATETIME;
+			//throw (new Exception ("Incorrect Column type."));
+		}
+		name = n;
+	}
+	
+	public DataColumn (String n, ColumnType c_type) {// throws Exception {
+		values = new ArrayList<> ();
+		if (c_type.equals (ColumnType.STRING)) {
+			type = ColumnType.STRING;
+		} else if (c_type.equals (ColumnType.DOUBLE)) {
 			type = ColumnType.DOUBLE;
+		} else {
+			type = ColumnType.DATETIME;
 			//throw (new Exception ("Incorrect Column type."));
 		}
 		name = n;
@@ -36,7 +49,20 @@ public class DataColumn<E> implements Iterable<E> {
 		} else if (c_type.equals ("double") || c_type.equals ("Double")) {
 			type = ColumnType.DOUBLE;
 		} else {
+			type = ColumnType.DATETIME;
+			//throw (new Exception ("Incorrect Column type."));
+		}
+		name = n;
+	}
+	
+	public DataColumn (String n, ColumnType c_type, ArrayList <E> s) {// throws Exception {
+		values = s;
+		if (c_type.equals (ColumnType.STRING)) {
+			type = ColumnType.STRING;
+		} else if (c_type.equals (ColumnType.DOUBLE)) {
 			type = ColumnType.DOUBLE;
+		} else {
+			type = ColumnType.DATETIME;
 			//throw (new Exception ("Incorrect Column type."));
 		}
 		name = n;
@@ -87,8 +113,7 @@ public class DataColumn<E> implements Iterable<E> {
 	}
 	
 	/**
-	 * Comparing method. Type variable is compared to the MLArray types in JMatIO.
-	 * Provides verification for Doubles.
+	 * Comparing method. Provides verification for Doubles.
 	 * 
 	 * @return Boolean containing whether the Objects of this class are Doubles.
 	 */
@@ -97,14 +122,22 @@ public class DataColumn<E> implements Iterable<E> {
 	}
 	
 	/**
-	 * Comparing method. Type variable is compared to the MLArray types in JMatIO.
-	 * Provides verification for Strings. (PlasmaGraph assumes Chars are turned into
-	 * strings when read from a MATLAB file.)
+	 * Comparing method. Provides verification for Strings. 
+	 * (PlasmaGraph assumes Chars are turned into strings when read from a MATLAB file.)
 	 * 
 	 * @return Boolean containing whether the Objects of this class are Strings.
 	 */
 	public boolean containsStrings () {
 		return (type.equals (ColumnType.STRING));
+	}
+	
+	/**
+	 * Comparing method. Provides verification for Dates.
+	 * 
+	 * @return Boolean containing whether the Objects of this class are Dates.
+	 */
+	public boolean containsDates () {
+		return (type.equals (ColumnType.DATETIME));
 	}
 	
 	@Override

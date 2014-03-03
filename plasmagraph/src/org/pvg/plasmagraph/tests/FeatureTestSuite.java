@@ -11,7 +11,8 @@ import org.junit.runners.Suite;
 	ReferenceTest.class,
 	GraphTest.class,
 	InterpolatorTest.class,
-	OutlierSearchTest.class
+	OutlierSearchTest.class,
+	HeaderDataTest.class
 })
 
 public class FeatureTestSuite {

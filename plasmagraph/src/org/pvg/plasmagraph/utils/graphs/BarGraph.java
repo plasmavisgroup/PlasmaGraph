@@ -11,7 +11,8 @@ import org.jfree.chart.JFreeChart;
 import org.jfree.data.category.DefaultCategoryDataset;
 import org.jfree.data.general.Dataset;
 import org.pvg.plasmagraph.utils.data.DataSet;
-import org.pvg.plasmagraph.utils.data.Pair;
+import org.pvg.plasmagraph.utils.data.GraphPair;
+import org.pvg.plasmagraph.utils.data.HeaderData;
 import org.pvg.plasmagraph.utils.template.Template;
 
 /**
@@ -30,13 +31,25 @@ public class BarGraph extends JFrame implements Graph {
 
 	// Constructors
 	/**
+	 * Basic constructor. Creates a BarGraph from a Template and HeaderData reference.
+	 * 
+	 * @param t Template reference used in the formation of various parts 
+	 * of the graph.
+	 * @param ds DataSet reference used in the creation of the graph.
+	 */
+	public BarGraph (Template t, HeaderData hd, GraphPair p) {
+		super(t.getChartName ());
+		setContentPane (createJPanel (t, hd.populateData (p), p));
+	}
+	
+	/**
 	 * Basic constructor. Creates a BarGraph from a Template and DataSet reference.
 	 * 
 	 * @param t Template reference used in the formation of various parts 
 	 * of the graph.
 	 * @param ds DataSet reference used in the creation of the graph.
 	 */
-	public BarGraph (Template t, DataSet ds, Pair p) {
+	public BarGraph (Template t, DataSet ds, GraphPair p) {
 		super(t.getChartName ());
 		setContentPane (createJPanel (t, ds, p));
 	}
@@ -49,7 +62,8 @@ public class BarGraph extends JFrame implements Graph {
 	 * @param ds DataSet reference used in the creation of the graph.
 	 * @return A JPanel containing the graph.
 	 */
-	public JPanel createJPanel (Template t, DataSet ds, Pair p) {
+	@Override
+	public JPanel createJPanel (Template t, DataSet ds, GraphPair p) {
 		chart = createChart (createDataset(t, ds, p), t);
 		ChartPanel c = new ChartPanel (chart, false, true, false, true, true);
 		return (c);
@@ -63,9 +77,8 @@ public class BarGraph extends JFrame implements Graph {
 	 * @param ds DataSet reference used in the creation of the graph.
 	 * @return A JPanel containing the graph.
 	 */
-	@SuppressWarnings ("rawtypes")
 	@Override
-	public JPanel createJPanel (Template t, ArrayList set, Pair p) {
+	public JPanel createJPanel (Template t, ArrayList set, GraphPair p) {
 		chart = createChart (createDataset(t, set, p), t);
 		ChartPanel c = new ChartPanel (chart, false, true, false, true, true);
 		return (c);
@@ -80,7 +93,8 @@ public class BarGraph extends JFrame implements Graph {
 	 * @param ds DataSet reference used in the creation of the graph.
 	 * @return A Dataset containing the DataSet's data values
 	 */
-	public DefaultCategoryDataset createDataset (Template t, DataSet ds, Pair p) {
+	@Override
+	public DefaultCategoryDataset createDataset (Template t, DataSet ds, GraphPair p) {
 		//DefaultCategoryDataset set = new DefaultCategoryDataset ();
 		//generateTestDataset (set, t);
 		
@@ -99,7 +113,7 @@ public class BarGraph extends JFrame implements Graph {
 	 */
 	@SuppressWarnings ({ "rawtypes", "unchecked" })
 	@Override
-	public DefaultCategoryDataset createDataset (Template t, ArrayList ds, Pair p) {
+	public DefaultCategoryDataset createDataset (Template t, ArrayList ds, GraphPair p) {
 		DefaultCategoryDataset set = new DefaultCategoryDataset ();
 		
 		// Objects in this ArrayList are Pair <J, K> values.
@@ -123,6 +137,7 @@ public class BarGraph extends JFrame implements Graph {
 	 * of the graph.
 	 * @return A JFreeChart containing the visual representation of the graph.
 	 */
+	@Override
 	public JFreeChart createChart (Dataset set, Template t) {
 		JFreeChart c = ChartFactory.createBarChart (t.getChartName (),
 				t.getYAxisLabel (), t.getXAxisLabel (), (DefaultCategoryDataset) set,

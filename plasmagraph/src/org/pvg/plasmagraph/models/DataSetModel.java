@@ -6,59 +6,59 @@ import java.util.ArrayList;
 import javax.swing.DefaultListModel;
 import javax.swing.ListModel;
 
-import org.pvg.plasmagraph.utils.data.DataColumn;
+import org.apache.commons.math3.util.Pair;
 import org.pvg.plasmagraph.utils.data.DataReference;
-import org.pvg.plasmagraph.utils.data.DataSet;
-import org.pvg.plasmagraph.utils.data.Pair;
+import org.pvg.plasmagraph.utils.data.HeaderData;
+import org.pvg.plasmagraph.utils.data.GraphPair;
 import org.pvg.plasmagraph.utils.template.Template;
+import org.pvg.plasmagraph.utils.types.ColumnType;
 
 /**
  * Model for the modification of PlasmaGraph's data sets.
  * Manipulates both the data sets that will be used in the
- * graphs as well as the DataSetView itself.
+ * graphs as well as the HeaderDataView itself.
  * 
  * @author Gerardo A. Navas Morales
  */
-@SuppressWarnings ("rawtypes")
 public class DataSetModel {
     // Externally-contained variables.
     /** Reference to MainModel's Template, passed via constructor reference. */
     private Template t;
-    /** Reference to MainModel's DataSet, passed via constructor reference. */
-    private DataSet ds;
+    /** Reference to MainModel's HeaderData, passed via constructor reference. */
+    private HeaderData hd;
     /** Reference to MainModel's DataReference, passed via constructor reference. */
     private DataReference dr;
     
     /**
-     * Creates a new DataSetModel with references to the data and settings,
+     * Creates a new HeaderDataModel with references to the data and settings,
      * as well as creates and updates its respective view.
      * 
      * @param t_reference
      *            Settings - Template reference provided by PlasmaGraph.
      * @param ds_reference
-     *            Data - DataSet reference provided by PlasmaGraph.
+     *            Data - HeaderData reference provided by PlasmaGraph.
      */
-    public DataSetModel (Template t_reference, DataSet ds_reference,
+    public DataSetModel (Template t_reference, HeaderData hd_reference,
             DataReference dr_reference) {
         // Update currently-used Template and Data Sources.
         t = t_reference;
-        ds = ds_reference;
+        hd = hd_reference;
         dr = dr_reference;
     }
     
     /**
-     * Takes the current DataSet and inserts the column names into a new
+     * Takes the current HeaderData and inserts the column names into a new
      * ListModel<String>.
      * 
-     * @return A ListModel of Strings containing the column names of DataSet.
+     * @return A ListModel of Strings containing the column names of HeaderData.
      */
     public ListModel<String> resetAvailableList () {
     	// Reset the old lists.
-    	DefaultListModel <String> list_available = new DefaultListModel <String> ();
+    	DefaultListModel <String> list_available = new DefaultListModel <> ();
     	
-    	// Populate AvailableDatasetsList's ListModel
-    	for (DataColumn dc : ds) {
-            list_available.addElement (dc.getColumnName ());
+    	// Populate AvailableHeaderDatasList's ListModel
+    	for (Pair<String, ColumnType> p : hd) {
+            list_available.addElement (p.getKey ());
         }
     	
     	return (list_available);
@@ -72,10 +72,10 @@ public class DataSetModel {
      */
     public ListModel<String> resetSelectedList () {
     	// Reset the old lists.
-    	DefaultListModel <String> list_selected = new DefaultListModel <String> ();
+    	DefaultListModel <String> list_selected = new DefaultListModel <> ();
     	
-    	// Populate SelectedDatasetsList's ListModel
-        for (Pair p : dr) {
+    	// Populate SelectedHeaderDatasList's ListModel
+        for (GraphPair p : dr) {
         	list_selected.addElement (p.getName ());
         }
         
@@ -83,20 +83,20 @@ public class DataSetModel {
     }
     
     /**
-     * Adds all the elements in the list provided to the SelectedDataSets List.
+     * Adds all the elements in the list provided to the SelectedHeaderDatas List.
      * 
-     * @param list List of elements to add to the SelectedDataSets List.
+     * @param list List of elements to add to the SelectedHeaderDatas List.
      * @throws Exception Has no elements in the parameter provided.
 	 */
-    public void addToSelectedDataset (ArrayList <String> list) throws Exception {
+    public void addToSelectedHeaderData (ArrayList <String> list) throws Exception {
         
         // We're attempting dangerous things that should throw errors.
         // First, check if there's the correct number of things in that list.
         if (list.size () == 2) {
         	
             // Bundle them into a pair and include that pair in DataReference "dr".
-            Pair added_element = new Pair (ds.find (list.get (0)),
-                    ds.find (list.get (1)), "" + list.get (0) + " vs. "
+            GraphPair added_element = new GraphPair (hd.find (list.get (0)),
+            		hd.find (list.get (1)), "" + list.get (0) + " vs. "
                             + list.get (1));
             
             if (!dr.add (added_element)) {
@@ -113,12 +113,12 @@ public class DataSetModel {
     }
     
     /**
-     * Removes all the elements in the list provided from the SelectedDataSets List.
+     * Removes all the elements in the list provided from the SelectedHeaderDatas List.
      * 
-     * @param list List of elements to remove from the SelectedDataSets List.
+     * @param list List of elements to remove from the SelectedHeaderDatas List.
      * @throws Exception Has no elements in the parameter provided.
 	 */
-    public void removeFromSelectedDataset (ArrayList <String> list) throws Exception {
+    public void removeFromSelectedHeaderData (ArrayList <String> list) throws Exception {
         // We're attempting dangerous things that should throw errors.
         // First, check if there's something in the list.
         if (list.size () >= 1) {
@@ -148,7 +148,7 @@ public class DataSetModel {
     
     /**
      * Getter method. Returns template.
-     * Used for DataSetView's "updateView ()" method.
+     * Used for HeaderDataView's "updateView ()" method.
      * 
      * @return t, a reference to the Template object.
      */
@@ -166,12 +166,12 @@ public class DataSetModel {
     }
     
     /**
-     * Support method to add listeners to the DataSet.
+     * Support method to add listeners to the HeaderData.
      * 
-     * @param c Listener to add to DataSet Notifier.
+     * @param c Listener to add to HeaderData Notifier.
      */
-    public void addDataSetChangeListener (javax.swing.event.ChangeListener c) {
-        ds.addChangeListener (c);
+    public void addHeaderDataChangeListener (javax.swing.event.ChangeListener c) {
+    	hd.addChangeListener (c);
     }
 
     /**

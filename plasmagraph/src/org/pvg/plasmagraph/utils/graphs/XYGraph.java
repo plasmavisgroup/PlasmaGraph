@@ -15,7 +15,8 @@ import org.jfree.data.xy.XYDataset;
 import org.jfree.data.xy.XYSeries;
 import org.jfree.data.xy.XYSeriesCollection;
 import org.pvg.plasmagraph.utils.data.DataSet;
-import org.pvg.plasmagraph.utils.data.Pair;
+import org.pvg.plasmagraph.utils.data.GraphPair;
+import org.pvg.plasmagraph.utils.data.HeaderData;
 import org.pvg.plasmagraph.utils.template.Template;
 
 // TODO: Documentation!
@@ -35,15 +36,27 @@ public class XYGraph extends JFrame implements Graph {
 
 	// Constructors
 	/**
+	 * Basic constructor. Creates a XYGraph from a Template and HeaderData reference.
+	 * 
+	 * @param t_reference Template reference used in the formation of 
+	 * various parts of the graph.
+	 * @param ds_reference DataSet reference used in the creation of the graph.
+	 */
+	public XYGraph (Template t_reference, HeaderData hd, GraphPair p) {
+		super(t_reference.getChartName ());
+		setContentPane (createJPanel (t_reference, hd.populateData (p), p));
+	}
+	
+	/**
 	 * Basic constructor. Creates a XYGraph from a Template and DataSet reference.
 	 * 
 	 * @param t_reference Template reference used in the formation of 
 	 * various parts of the graph.
 	 * @param ds_reference DataSet reference used in the creation of the graph.
 	 */
-	public XYGraph (Template t_reference, DataSet ds_reference, Pair p) {
+	public XYGraph (Template t_reference, DataSet ds, GraphPair p) {
 		super(t_reference.getChartName ());
-		setContentPane (createJPanel (t_reference, ds_reference, p));
+		setContentPane (createJPanel (t_reference, ds, p));
 	}
 	
 	/**
@@ -69,7 +82,7 @@ public class XYGraph extends JFrame implements Graph {
 	 * various parts of the graph.
 	 * @param ds_reference DataSet reference used in the creation of the graph.
 	 */
-	public XYGraph (Template t_reference, ArrayList <DoublePoint> set, Pair p) {
+	public XYGraph (Template t_reference, ArrayList <DoublePoint> set, GraphPair p) {
 		super (t_reference.getChartName ());
 		setContentPane (createJPanel (t_reference, set, p));
 	}
@@ -82,7 +95,8 @@ public class XYGraph extends JFrame implements Graph {
 	 * @param ds DataSet reference used in the creation of the graph.
 	 * @return JPanel containing the graph.
 	 */
-	public JPanel createJPanel (Template t, DataSet ds, Pair p) {
+	@Override
+	public JPanel createJPanel (Template t, DataSet ds, GraphPair p) {
 		chart = createChart (createDataset(t, ds, p), t);
 		ChartPanel c = new ChartPanel (chart, false, true, false, true, true);
 		return (c);
@@ -112,7 +126,8 @@ public class XYGraph extends JFrame implements Graph {
 	 * @param ds DataSet reference used in the creation of the graph.
 	 * @return An XYDataset containing the DataSet's data values
 	 */
-	public XYDataset createDataset (Template t, DataSet ds, Pair p) {
+	@Override
+	public XYDataset createDataset (Template t, DataSet ds, GraphPair p) {
 		DefaultXYDataset set = new DefaultXYDataset ();
 		XYSeries s = ds.toXYGraphDataset (p);
 		set.addSeries (s.getKey (), s.toArray ());
@@ -130,6 +145,7 @@ public class XYGraph extends JFrame implements Graph {
 	 * of the graph.
 	 * @return A JFreeChart containing the visual representation of the graph.
 	 */
+	@Override
 	public JFreeChart createChart (Dataset set, Template t) {
 		JFreeChart c = ChartFactory.createScatterPlot(t.getChartName (), 
 				t.getYAxisLabel (), t.getXAxisLabel (), 
@@ -149,9 +165,8 @@ public class XYGraph extends JFrame implements Graph {
 	 * @param ds DataSet reference used in the creation of the graph.
 	 * @return A JPanel containing the graph.
 	 */
-	@SuppressWarnings ("rawtypes")
 	@Override
-	public JPanel createJPanel (Template t, ArrayList ds, Pair p) {
+	public JPanel createJPanel (Template t, ArrayList ds, GraphPair p) {
 		chart = createChart (createDataset(t, ds, p), t);
 		ChartPanel c = new ChartPanel (chart, false, true, false, true, true);
 		return (c);
@@ -166,9 +181,8 @@ public class XYGraph extends JFrame implements Graph {
 	 * @param ds DataSet reference used in the creation of the graph.
 	 * @return A Dataset containing the DataSet's data values
 	 */
-	@SuppressWarnings ("rawtypes")
 	@Override
-	public XYDataset createDataset (Template t, ArrayList ds, Pair p) {
+	public XYDataset createDataset (Template t, ArrayList ds, GraphPair p) {
 
 		XYSeries this_series = new XYSeries (p.getName ());
 		

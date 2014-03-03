@@ -3,7 +3,6 @@ package org.pvg.plasmagraph.utils.tools.outlierscan;
 import java.util.ArrayList;
 
 import org.apache.commons.math3.linear.Array2DRowRealMatrix;
-import org.apache.commons.math3.linear.DefaultRealMatrixPreservingVisitor;
 import org.apache.commons.math3.linear.LUDecomposition;
 import org.apache.commons.math3.linear.RealMatrix;
 import org.apache.commons.math3.ml.clustering.DoublePoint;
@@ -26,7 +25,8 @@ public class MahalanobisDistance implements OutlierDistance {
      * A point within this distance of the primary cluster is considered a regular point;
      * elsewise, it is an outlier.
      */
-    public double distance (ArrayList<DoublePoint> outlier_array) {
+    @Override
+	public double distance (ArrayList<DoublePoint> outlier_array) {
     	
     	// Convert the outlier array provided into usable data.
     	RealMatrix xy_matrix = new Array2DRowRealMatrix (outlier_array.size (), outlier_array.get (0).getPoint ().length);

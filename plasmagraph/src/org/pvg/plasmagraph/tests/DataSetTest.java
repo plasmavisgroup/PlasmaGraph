@@ -8,7 +8,7 @@ import org.jfree.chart.plot.PlotOrientation;
 import org.junit.Test;
 import org.pvg.plasmagraph.utils.data.DataColumn;
 import org.pvg.plasmagraph.utils.data.DataSet;
-import org.pvg.plasmagraph.utils.data.Pair;
+import org.pvg.plasmagraph.utils.data.GraphPair;
 import org.pvg.plasmagraph.utils.graphs.BarGraph;
 import org.pvg.plasmagraph.utils.graphs.XYGraph;
 import org.pvg.plasmagraph.utils.template.Template;
@@ -17,7 +17,7 @@ public class DataSetTest {
 
 	@Test
 	public void testDataSet () {
-		DataColumn<String> dc = new DataColumn<String> ("Words per Minute", "string");
+		DataColumn<String> dc = new DataColumn<> ("Words per Minute", "string");
 		assertTrue ("Test the type parameter:", dc.getType ().equals ("String"));
 	}
 
@@ -25,8 +25,8 @@ public class DataSetTest {
 	public void testAdd () {
 		// Set up test.
 		DataSet ds = new DataSet ();
-		DataColumn<String> dc1 = new DataColumn<String> ("Pie Flavors", "string");
-		DataColumn<Double> dc2 = new DataColumn<Double> ("Pie Quantity", "double");
+		DataColumn<String> dc1 = new DataColumn<> ("Pie Flavors", "string");
+		DataColumn<Double> dc2 = new DataColumn<> ("Pie Quantity", "double");
 		
 		// add(string)
 		assertFalse ("Basic add (String) test with DataColumn: ", dc1.add (""));
@@ -46,7 +46,6 @@ public class DataSetTest {
 		System.out.println (ds.toString () );
 	}
 	
-	@SuppressWarnings ("unchecked")
 	@Test
 	public void testRemove () {
 		// Set up test.
@@ -80,8 +79,8 @@ public class DataSetTest {
 	public void testFind () {
 		// Generate DataSet
 		DataSet ds = new DataSet ();
-		DataColumn <Double> dc1 = new DataColumn <Double> ("Time", "double");
-		DataColumn <Double> dc2 = new DataColumn <Double> ("Distance", "double");
+		DataColumn <Double> dc1 = new DataColumn <> ("Time", "double");
+		DataColumn <Double> dc2 = new DataColumn <> ("Distance", "double");
 		
 		dc1.add (0.0); dc2.add (0.0);
 		dc1.add (1.0); dc2.add (5.0);
@@ -107,7 +106,7 @@ public class DataSetTest {
 	public void testContains () {
 		DataSet ds = prepareDataset ();
 		
-		DataColumn<String> dc1 = new DataColumn<String> ("Pie Flavors", "string");
+		DataColumn<String> dc1 = new DataColumn<> ("Pie Flavors", "string");
 		dc1.add ("Pecan");
 		dc1.add ("Apple");
 		dc1.add ("Cherry");
@@ -121,8 +120,8 @@ public class DataSetTest {
 	public void testGet () {
 		// Generate DataSet
 		DataSet ds = new DataSet ();
-		DataColumn <Double> dc1 = new DataColumn <Double> ("Time", "double");
-		DataColumn <Double> dc2 = new DataColumn <Double> ("Distance", "double");
+		DataColumn <Double> dc1 = new DataColumn <> ("Time", "double");
+		DataColumn <Double> dc2 = new DataColumn <> ("Distance", "double");
 		
 		dc1.add (0.0); dc2.add (0.0);
 		dc1.add (1.0); dc2.add (5.0);
@@ -181,9 +180,9 @@ public class DataSetTest {
 	public void testToXYGraphDataset () {
 		// Generate DataSet
 		DataSet ds = new DataSet ();
-		DataColumn <Double> dc1 = new DataColumn <Double> ("Time", "double");
-		DataColumn <Double> dc2 = new DataColumn <Double> ("Distance", "double");
-		Pair p = new Pair (0, 1, "To XY Graph Dataset Test");
+		DataColumn <Double> dc1 = new DataColumn <> ("Time", "double");
+		DataColumn <Double> dc2 = new DataColumn <> ("Distance", "double");
+		GraphPair p = new GraphPair (0, 1, "To XY Graph Dataset Test");
 		
 		dc1.add (0.0); dc2.add (0.0);
 		dc1.add (1.0); dc2.add (5.0);
@@ -211,7 +210,7 @@ public class DataSetTest {
 	@Test
 	public void testToBarGraphDataset () {
 		DataSet ds = prepareDataset ();
-		Pair p = new Pair (0, 1, "To Bar Graph Dataset Test");
+		GraphPair p = new GraphPair (0, 1, "To Bar Graph Dataset Test");
 		
 		// Generate Template.
 		Template t = new Template ();

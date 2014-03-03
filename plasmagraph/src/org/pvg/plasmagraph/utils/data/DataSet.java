@@ -3,13 +3,8 @@ package org.pvg.plasmagraph.utils.data;
 import java.io.File;
 import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.HashSet;
 import java.util.Iterator;
 import java.util.Map;
-import java.util.Set;
-
-import javax.swing.event.ChangeEvent;
-import javax.swing.event.ChangeListener;
 
 import org.apache.commons.math3.linear.Array2DRowRealMatrix;
 import org.jfree.data.category.DefaultCategoryDataset;
@@ -23,9 +18,6 @@ import org.pvg.plasmagraph.utils.types.FileType;
  */
 @SuppressWarnings ("rawtypes")
 public class DataSet implements Iterable<DataColumn> {
-	// Event Firing
-    /** Collection of listeners for any change that occurs in this DataSet. */
-    private Set <ChangeListener> listeners;
 	/** Container for DataColumns. */
 	private ArrayList <DataColumn> values;
 	/** Container for Files containing data for this object. */
@@ -37,7 +29,6 @@ public class DataSet implements Iterable<DataColumn> {
 	 */
 	public DataSet () {
 		this.values = new ArrayList <> ();
-		this.listeners = new HashSet <> ();
 		this.file_list = new HashMap <> ();
 	}
 
@@ -53,9 +44,7 @@ public class DataSet implements Iterable<DataColumn> {
 			return (this.values.add (o));
 		} else {
 			if (this.values.get (0).size () == o.size ()) {
-				boolean b = this.values.add (o);
-				this.notifyListeners ();
-				return (b);
+				return (this.values.add (o));
 			} else {
 				return (false);
 			}
@@ -69,9 +58,7 @@ public class DataSet implements Iterable<DataColumn> {
 	 * @return Boolean describing the success or failure of the action.
 	 */
 	public boolean remove (DataColumn o) {
-		boolean b = this.values.remove (o);
-		this.notifyListeners ();
-		return (b);
+		return (this.values.remove (o));
 	}
 	
 	/**
@@ -219,7 +206,7 @@ public class DataSet implements Iterable<DataColumn> {
 	 * @param p Pair of index values with a pre-defined name.
 	 * @return An XYSeries containing the desired data.
 	 */
-	public XYSeries toXYGraphDataset (Pair p) {
+	public XYSeries toXYGraphDataset (GraphPair p) {
 		XYSeries series = new XYSeries (p.getName ());
 		
 		if (this.values.get (p.getIndex1 ()).containsDoubles () &&
@@ -241,7 +228,7 @@ public class DataSet implements Iterable<DataColumn> {
 	 * @param p Pair of index values with a pre-defined name.
 	 * @return A DefaultCategoryDataset containing the desired data.
 	 */
-	public DefaultCategoryDataset toBarGraphDataset (Pair p) {
+	public DefaultCategoryDataset toBarGraphDataset (GraphPair p) {
 		DefaultCategoryDataset dataset = new DefaultCategoryDataset ();
 		
 		// Assume the X column (Column 0) has the category data.
@@ -294,45 +281,6 @@ public class DataSet implements Iterable<DataColumn> {
 	
 	public void populateDataSet () {
 		
-	}
-	
-	// Event Methods
-	/**
-	 * Adds the listener provided to the notification list.
-	 * 
-	 * @param listener Listener to add to the notification list.
-	 */
-	public void addChangeListener (ChangeListener listener) {
-	    this.listeners.add (listener);
-	}
-	
-	/**
-	 * Removes the listener provided from the notification list.
-	 * 
-	 * @param listener Listener to remove from notification list.
-	 */
-	public void removeChangeListener (ChangeListener listener) {
-	    this.listeners.remove (listener);
-	}
-	
-	/**
-	 * Sends a ChangeEvent to all listeners of this object,
-	 * declaring that this object has been changed in some way.
-	 */
-	public void notifyListeners () {
-	    for (ChangeListener c : listeners) {
-	        c.stateChanged (new ChangeEvent (this));
-	    }
-	}
-
-	/**
-	 * Testing method. Prints out a list of the listeners interested in
-	 * this object into the out Stream.
-	 */
-	public void printListeners () {
-		for (ChangeListener c : listeners) {
-			System.out.println (c.toString ());
-		}
 	}
 
 	// File Map methods.

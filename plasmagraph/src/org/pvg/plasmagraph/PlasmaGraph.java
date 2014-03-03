@@ -6,7 +6,7 @@ import javax.swing.SwingUtilities;
 import org.pvg.plasmagraph.controllers.*;
 import org.pvg.plasmagraph.models.*;
 import org.pvg.plasmagraph.utils.data.DataReference;
-import org.pvg.plasmagraph.utils.data.DataSet;
+import org.pvg.plasmagraph.utils.data.HeaderData;
 import org.pvg.plasmagraph.utils.data.filter.DataFilter;
 import org.pvg.plasmagraph.utils.template.*;
 import org.pvg.plasmagraph.views.*;
@@ -27,7 +27,7 @@ public class PlasmaGraph {
             public void run () {
                 // Create all necessary objects.
                 Template t = new Template ();
-                DataSet ds = new DataSet ();
+                HeaderData hd = new HeaderData ();
                 DataReference dr = new DataReference ();
                 DataFilter df = new DataFilter ();
                 
@@ -38,17 +38,17 @@ public class PlasmaGraph {
                 AestheticController aesthetic_controller = new AestheticController (aesthetic_model, aesthetic_view);
                 
                 // Data Set MVC
-                DataSetModel data_model = new DataSetModel (t, ds, dr);
+                DataSetModel data_model = new DataSetModel (t, hd, dr);
                 DataSetView data_view = new DataSetView (data_model);
                 DataSetController data_controller = new DataSetController (data_model, data_view);
                 
                 // Tool MVC
-                ToolModel tool_model = new ToolModel (t, ds, dr);
+                ToolModel tool_model = new ToolModel (t, hd, dr);
                 ToolView tool_view = new ToolView (tool_model);
                 ToolController tool_controller = new ToolController (tool_model, tool_view);
                 
                 // Main MVC
-                MainModel main_model = new MainModel (t, ds, df, dr);
+                MainModel main_model = new MainModel (t, hd, df, dr);
                 MainView main_view = new MainView (main_model);
                 MainController main_controller = new MainController (main_model, main_view, aesthetic_view, data_view, tool_view);
             

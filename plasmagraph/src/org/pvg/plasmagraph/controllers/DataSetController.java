@@ -22,9 +22,9 @@ import org.pvg.plasmagraph.views.DataSetView;
 public class DataSetController {
     // Externally-contained variables.
     /** Reference to model related to this controller. */
-    private DataSetModel data_model;
+    DataSetModel data_model;
     /** Reference to view related to this controller. */
-    private DataSetView data_view;
+    DataSetView data_view;
     
     public DataSetController (DataSetModel data_model, DataSetView data_view) {
         // Set related objects into proper positions in object.
@@ -39,7 +39,7 @@ public class DataSetController {
         data_view.addRemoveButtonListener (new RemoveButtonListener ());
         // Update View Listener
         data_model.addTemplateChangeListener (new DataViewTemplateListener ());
-        data_model.addDataSetChangeListener (new DataViewDataSetListener ());
+        data_model.addHeaderDataChangeListener (new DataViewHeaderDataListener ());
         data_model.addDataReferenceChangeListener (new DataViewReferenceListener ());
     }
     
@@ -109,7 +109,7 @@ public class DataSetController {
 				    
 				if (selected_columns.size () == 2) {
 					
-					data_model.addToSelectedDataset (selected_columns);
+					data_model.addToSelectedHeaderData (selected_columns);
 				
 				} else {
 					// TODO: Create an ArrayListSizeException!
@@ -139,7 +139,7 @@ public class DataSetController {
         	try {
         		
         		//System.out.println ("Remove button was pressed.");
-	            data_model.removeFromSelectedDataset (data_view
+	            data_model.removeFromSelectedHeaderData (data_view
 	                    .getSelectedDatasetsToRemove ());
 	            
         	} catch (Exception e) {
@@ -187,7 +187,7 @@ public class DataSetController {
      * 
      * @author Gerardo A. Navas Morales
      */
-    class DataViewDataSetListener implements ChangeListener {
+    class DataViewHeaderDataListener implements ChangeListener {
 
         /**
          * Updates the AestheticView's current Template-based state.

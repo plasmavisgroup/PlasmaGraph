@@ -19,18 +19,18 @@ import org.jfree.data.xy.XYSeries;
  * 
  * @author Gerardo A. Navas Morales
  */
-public class DataReference implements Iterable<Pair> {
+public class DataReference implements Iterable<GraphPair> {
 	/** Collection of listeners for any change that occurs in this DataReference. */
     private Set <ChangeListener> listeners;
 	/** Container for Reference Pairs. */
-	private ArrayList<Pair> table;
+	private ArrayList<GraphPair> table;
 	
 	/**
 	 * Constructor; initializes the ArrayList container.
 	 */
 	public DataReference () {
-		this.listeners = new HashSet <ChangeListener> ();
-		table = new ArrayList <Pair> ();
+		this.listeners = new HashSet <> ();
+		table = new ArrayList <> ();
 	}
 	
 	/**
@@ -40,7 +40,7 @@ public class DataReference implements Iterable<Pair> {
 	 * @param p Pair to add to the ArrayList.
 	 * @return A boolean specifying method success (true) or failure (false).
 	 */
-	public boolean add (Pair p) {
+	public boolean add (GraphPair p) {
 	    // Check to see if the indices are even possible.
 	    // Also check to see if the name of the Pair is even useful.
 	    if ((p.getIndex1 () >= 0) && (p.getIndex2 () >= 0) &&
@@ -63,7 +63,7 @@ public class DataReference implements Iterable<Pair> {
 	 * @return A boolean specifying method success (true) or failure (false).
 	 */
 	public boolean add (int p1, int p2, String name) {
-	    return (this.add (new Pair (p1, p2, name)));
+	    return (this.add (new GraphPair (p1, p2, name)));
 	}
 
 	/**
@@ -73,8 +73,8 @@ public class DataReference implements Iterable<Pair> {
 	 * @param index Location on the ArrayList where the object to be removed is located.
 	 * @return A Pair that was removed from the ArrayList.
 	 */
-	public Pair remove (int index) {
-		Pair p = table.remove (index);
+	public GraphPair remove (int index) {
+		GraphPair p = table.remove (index);
 		this.notifyListeners ();
 	    return (p);
     }
@@ -86,7 +86,7 @@ public class DataReference implements Iterable<Pair> {
 	 * @param p Pair to remove from the ArrayList.
 	 * @return A boolean specifying method success (true) or failure (false).
 	 */
-	public boolean remove (Pair p) {
+	public boolean remove (GraphPair p) {
 		boolean b = table.remove (p);
 		this.notifyListeners ();
 		return (b);
@@ -108,7 +108,7 @@ public class DataReference implements Iterable<Pair> {
 	 * @param p Pair to find in the ArrayList.
 	 * @return Index location of the object in the ArrayList.
 	 */
-	public int findIndex (Pair p) {
+	public int findIndex (GraphPair p) {
 		return (table.indexOf(p));
 	}
 	
@@ -137,7 +137,7 @@ public class DataReference implements Iterable<Pair> {
      * @param p Pair to find in the ArrayList.
      * @return Index location of the object in the ArrayList.
      */
-    public Pair findPair (int index) {
+    public GraphPair findPair (int index) {
         return (table.get (index));
     }
     
@@ -149,7 +149,7 @@ public class DataReference implements Iterable<Pair> {
      * @param s Sting name of the Pair in the ArrayList.
      * @return Index location of the object in the ArrayList.
      */
-    public Pair findPair (String s) {
+    public GraphPair findPair (String s) {
         int j = 0; boolean found = false;
         for (int i = 0; (i < table.size()) && !found; ++i) {
             if (table.get(i).getName().equals(s)) {
@@ -165,7 +165,7 @@ public class DataReference implements Iterable<Pair> {
 	 * @param index Location of Pair.
 	 * @return The desired Pair at the provided index.
 	 */
-	public Pair get (int index) {
+	public GraphPair get (int index) {
 	    return (table.get (index));
 	}
 	
@@ -175,44 +175,12 @@ public class DataReference implements Iterable<Pair> {
      */
     public String [] getNames () {
         String [] names = new String [table.size ()];
-        ArrayList <String> pair_names = new ArrayList <String> ();
-        for (Pair p : this.table) {
+        ArrayList <String> pair_names = new ArrayList <> ();
+        for (GraphPair p : this.table) {
             pair_names.add (p.getName ());
         }
         pair_names.toArray (names);
         return (names);
-    }
-    
-    /**
-     * Provides a Dataset around a Pair whose index is provided.
-     * Based on the primary dataset passed by reference.
-     * 
-     * @param pair_position Index location of the Pair to extract.
-     * @param main_dataset Reference to the primary DataSet.
-     * @return A new Dataset, containing the desired Pair of data.
-     */
-    public XYSeries createXYGraphPair (int pair_position, DataSet ds) {   
-        Pair p = get (pair_position);
-        	
-        XYSeries d = ds.toXYGraphDataset (p);
-        
-        return (d);
-    }
-    
-    /**
-     * Provides a Dataset around a Pair whose index is provided.
-     * Based on the primary dataset passed by reference.
-     * 
-     * @param pair_position Index location of the Pair to extract.
-     * @param main_dataset Reference to the primary DataSet.
-     * @return A new Dataset, containing the desired Pair of data.
-     */
-    public DefaultCategoryDataset createBarGraphPair (int pair_position, DataSet ds) {  
-        Pair p = this.get (pair_position);
-        
-        DefaultCategoryDataset d = ds.toBarGraphDataset (p);
-        
-        return (d);
     }
 	
 	/**
@@ -234,7 +202,7 @@ public class DataReference implements Iterable<Pair> {
 	public String toString () {
 	    String s = "";
 	    
-	    for (Pair p : this.table) {
+	    for (GraphPair p : this.table) {
 	        s += p.toString () + "\n";
 	    }
 	    
@@ -242,7 +210,7 @@ public class DataReference implements Iterable<Pair> {
 	}
 
 	@Override
-	public Iterator<Pair> iterator () {
+	public Iterator<GraphPair> iterator () {
 		return (this.table.iterator ());
 	}
 

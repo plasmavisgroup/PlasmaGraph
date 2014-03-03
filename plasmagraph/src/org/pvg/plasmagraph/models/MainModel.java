@@ -10,12 +10,14 @@ import javax.swing.filechooser.FileNameExtensionFilter;
 import org.pvg.plasmagraph.utils.ExceptionHandler;
 import org.pvg.plasmagraph.utils.FileUtilities;
 import org.pvg.plasmagraph.utils.data.DataReference;
-import org.pvg.plasmagraph.utils.data.DataSet;
-import org.pvg.plasmagraph.utils.data.Pair;
+import org.pvg.plasmagraph.utils.data.HeaderData;
+import org.pvg.plasmagraph.utils.data.GraphPair;
 import org.pvg.plasmagraph.utils.data.filter.DataFilter;
 import org.pvg.plasmagraph.utils.data.filter.DataFilterWindow;
 import org.pvg.plasmagraph.utils.data.readers.CSVProcessor;
 import org.pvg.plasmagraph.utils.data.readers.MatlabReader;
+import org.pvg.plasmagraph.utils.graphs.BarGraph;
+import org.pvg.plasmagraph.utils.graphs.XYGraph;
 import org.pvg.plasmagraph.utils.template.Template;
 import org.pvg.plasmagraph.utils.tools.interpolation.Interpolator;
 import org.pvg.plasmagraph.utils.tools.outlierscan.OutlierSearch;
@@ -35,7 +37,7 @@ public class MainModel {
     /** Reference to PlasmaGraph's Template, passed via constructor reference. */
     Template t;
     /** Reference to PlasmaGraph's DataSet, passed via constructor reference. */
-    DataSet ds;
+    HeaderData hd;
     /** Reference to PlasmaGraph's DataFilter, passed via constructor reference. */
     DataFilter df;
     /** Reference to PlasmaGraph's DataReference, passed via constructor reference. */
@@ -60,11 +62,11 @@ public class MainModel {
      * @param df_reference
      *            Filter - DataFilter reference provided by PlasmaGraph.
      */
-    public MainModel (Template t_reference, DataSet ds_reference,
+    public MainModel (Template t_reference, HeaderData hd_reference,
             DataFilter df_reference, DataReference dr_reference) {
         // Update currently-used Template, Data, and Data Filter Sources.
         t = t_reference;
-        ds = ds_reference;
+        hd = hd_reference;
         df = df_reference;
         dr = dr_reference;
         
@@ -113,7 +115,7 @@ public class MainModel {
                  * MatlabReader mat = new MatlabReader (f);
                  * try {
                  * mat.read ();
-                 * if (mat.getHeaders (ds)) {
+                 * if (mat.getHeaders (hd)) {
                  * // TODO: Change message to "Data Columns extracted successfully." ?
                  * JOptionPane.showConfirmDialog (null, "Data Column names extracted successfully.");
                  * }
@@ -128,10 +130,10 @@ public class MainModel {
                 CSVProcessor csv = new CSVProcessor (f);
                 try {
                 	csv.read ();
-	                if (csv.getHeaders (ds)) {
+	                if (csv.getHeaders (hd)) {
 	                	JOptionPane.showMessageDialog (null,
 	                			"Data Column names extracted successfully.");
-	                	ds.notifyListeners ();
+	                	hd.notifyListeners ();
 	                	// TODO: Allow for multiple data files to be used.
 	                	// TODO: Only reset if a data file with a different set of headers is imported.
 	                	dr.reset ();
@@ -406,26 +408,24 @@ public class MainModel {
     	
     	if (outlier_switch) {
     		log ("Outlier Scanning...");
-    		OutlierSearch.scanForOutliers (ds, t, dr);
+    		OutlierSearch.scanForOutliers (hd, t, dr);
     	}
     	
     	if (interpolation_switch) {
     		log ("Interpolating.");
-			Interpolator.interpolate (ds, t, dr);
+			Interpolator.interpolate (hd, t, dr);
     		
     	} else {
     		if (t.getChartType ().equals (ChartType.XY_GRAPH)) {
-    			for (Pair p : dr) {
-    				org.pvg.plasmagraph.utils.graphs.XYGraph graph = 
-        					new org.pvg.plasmagraph.utils.graphs.XYGraph (t, ds, p);
+    			for (GraphPair p : dr) {
+    				XYGraph graph = new XYGraph (t, hd, p);
     				
     				graph.pack ();
     				graph.setVisible (true);
     			}
     		} else if (t.getChartType ().equals (ChartType.BAR_GRAPH)) {
-    			for (Pair p : dr) {
-    				org.pvg.plasmagraph.utils.graphs.BarGraph graph = 
-        					new org.pvg.plasmagraph.utils.graphs.BarGraph (t, ds, p);
+    			for (GraphPair p : dr) {
+    				BarGraph graph = new BarGraph (t, hd, p);
     				
     				graph.pack ();
     				graph.setVisible (true);

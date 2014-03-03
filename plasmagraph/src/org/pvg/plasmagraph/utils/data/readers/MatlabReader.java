@@ -19,7 +19,7 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 
 import org.pvg.plasmagraph.utils.data.DataColumn;
-import org.pvg.plasmagraph.utils.data.DataSet;
+import org.pvg.plasmagraph.utils.data.HeaderData;
 
 /**
  *
@@ -31,11 +31,11 @@ public class MatlabReader {
     *
     * 
     */
-    public DataSet toDataSet(File f){
+    public HeaderData toDataSet(File f){
         
         /** variables definition **/
         MatFileReader mfr = new MatFileReader(); 
-        DataSet result = new DataSet();
+        HeaderData result = new HeaderData();
         ArrayList <DataColumn> column_list = new <DataColumn> ArrayList ();            
         DataColumn first_column = new DataColumn("string", "name");
         ArrayList <DataColumn> other_columns = new <DataColumn> ArrayList();
