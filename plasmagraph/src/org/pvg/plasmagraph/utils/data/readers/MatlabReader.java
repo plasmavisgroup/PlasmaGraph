@@ -17,6 +17,7 @@ import java.util.Iterator;
 import java.util.Map;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import java.util.Date;
 
 import org.pvg.plasmagraph.utils.data.DataColumn;
 import org.pvg.plasmagraph.utils.data.DataSet;
@@ -82,21 +83,6 @@ public class MatlabReader {
         
         /** return resulting data set **/
         return result;
-    }
-
-   /**
-    *
-    * 
-    */
-    private DataColumn getColumn(MLCell cell, int index){
-        DataColumn column = new DataColumn("string", "name");
-        for ( int m = 0; m < cell.getM(); m++ )
-        {
-            String item = cell.get(m,index).contentToString();
-           column.add(item);
-        }
-        
-        return column;
     }
     
     /**
@@ -174,9 +160,7 @@ public class MatlabReader {
             default:
             	type_is_valid = false;
                 break;
-        }
-        
-        
+        }       
         
         return column;
     }

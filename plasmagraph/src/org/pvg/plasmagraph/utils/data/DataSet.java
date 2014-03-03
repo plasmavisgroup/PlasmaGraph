@@ -308,4 +308,31 @@ public class DataSet implements Iterable<DataColumn>, Iterator<DataColumn> {
 		// Return a double 2DArray.
 		return (matrix.getData ());
 	}
+        
+        /**
+         * 
+         * @param o
+         * @return 
+         */
+        @Override
+        public boolean equals (Object o) {
+            boolean rval = false;
+            if (o instanceof DataSet) {
+                DataSet ds = (DataSet) o;
+                rval = true;
+                
+                if(this.size() != ds.size()){
+                	
+                    rval = false;
+                }
+                
+                for(int i = 0; i < this.values.size() && rval; i++){
+                    if(!this.values.get(i).equals(ds.get(i))){
+                        rval = false;
+                    }
+                }               
+            }
+            
+            return rval;
+        }
 }

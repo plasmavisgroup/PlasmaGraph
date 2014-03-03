@@ -31,7 +31,7 @@ public class DataColumn<E> implements Iterable<Object>, Iterator<Object> {
 			type = ColumnType.DOUBLE;
 			//throw (new Exception ("Incorrect Column type."));
 		}
-		name = n;
+		name = n.trim ();
 	}
 	
 	public DataColumn (String n, String c_type, ArrayList <E> s) {// throws Exception {
@@ -44,7 +44,7 @@ public class DataColumn<E> implements Iterable<Object>, Iterator<Object> {
 			type = ColumnType.DOUBLE;
 			//throw (new Exception ("Incorrect Column type."));
 		}
-		name = n;
+		name = n.trim ();
 	}
 	
 	public boolean add (E o) {
@@ -92,7 +92,7 @@ public class DataColumn<E> implements Iterable<Object>, Iterator<Object> {
 	}
 	
 	public String getName(){
-		return this.name;
+		return (this.name);
 	}
 	
 	public void setName(String name){
@@ -174,5 +174,39 @@ public class DataColumn<E> implements Iterable<Object>, Iterator<Object> {
 			this.values.add((E) column.get(index));
 		}		
 	}
+        
+        @Override
+        public boolean equals(Object o){
+            boolean rval = false;
+            
+            if(o instanceof DataColumn){
+                rval = true;
+                DataColumn dc = (DataColumn) o;
+                
+                if(this.size() != dc.size()){
+                	
+                    rval = false;
+                }
+                
+                if(!this.getName().equals (dc.getName())){
+                	
+                	System.out.println (this.getName () + " versus " + dc.getName ());
+                    rval = false;
+                }
+                
+                if(this.getType() != dc.getType()){
+                	
+                    rval = false;
+                }
+                
+                for(int i = 0; i < this.size() && rval; i++){
+                    if(!this.get(i).equals (dc.get(i))){
+                        rval = false;
+                    }
+                }
+            }
+            
+            return rval;
+        }
 
 }

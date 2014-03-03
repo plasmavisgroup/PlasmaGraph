@@ -1,4 +1,4 @@
-package org.pvg.plasmagraph.utils.data.readers;
+package org.pvg.plasmagraph.tests;
 
 import static org.junit.Assert.*;
 
@@ -46,7 +46,7 @@ public class MatlabReaderTest {
             MatlabReader mlr = new MatlabReader();
             DataSet data = mlr.toDataSet(dummy);
             DataSet data2 = mlr.toDataSet(dummy);
-            assertEquals("Not yet implemented",data, data2);
+            assertEquals("Checking for equality: ",data, data2);
 	}
 
 }
