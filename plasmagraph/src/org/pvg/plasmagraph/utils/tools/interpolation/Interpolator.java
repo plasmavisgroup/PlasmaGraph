@@ -25,7 +25,7 @@ public class Interpolator {
 	/**
 	 * External path to interpolate data and graph said data.
 	 * 
-	 * @param ds The DataSet to interpolate.
+	 * @param hd The Headers to use for the interpolation.
 	 * @param t The settings the DataSet is based upon.
 	 * @param dr The DataReference object containing all the pairs to interpolate.
 	 */
@@ -39,7 +39,7 @@ public class Interpolator {
 	/**
 	 * External path to interpolate data and graph said data.
 	 * 
-	 * @param ds The DataSet to interpolate.
+	 * @param hd The Headers to use for the interpolation.
 	 * @param t The settings the DataSet is based upon.
 	 * @param p The DataReference pair to interpolate from the DataSet provided.
 	 */
@@ -47,6 +47,7 @@ public class Interpolator {
     	
     	// Create a DataSet for this interpolation.
     	DataSet ds = hd.populateData (p);
+    	System.out.println (ds.toString ());
 
         // Check which of the different regressions you'll be doing.
         XYSeries interpolated_dataset = getInterpolation (ds, t, p);
@@ -54,7 +55,7 @@ public class Interpolator {
         //System.out.println (printXYSeries (interpolated_dataset));
         
         // Graph it!
-        graphInterpolation (ds.toXYGraphDataset (p), interpolated_dataset, t);
+        graphInterpolation (ds.toXYGraphDataset (p.getName ()), interpolated_dataset, t);
         
     }
 
@@ -78,7 +79,8 @@ public class Interpolator {
 		// Pearsons Correlation calculator for most functions.
     	PearsonsCorrelation p_correlation = new PearsonsCorrelation ();
     	// XYDataset container for some JFree operations.
-    	XYSeriesCollection regression_set = new XYSeriesCollection (ds.toXYGraphDataset (p));
+    	XYSeriesCollection regression_set = 
+    			new XYSeriesCollection (ds.toXYGraphDataset (p.getName ()));
     	// Test Calls.
     	//System.out.println ("Series: \n" + printXYSeries (ds.toXYGraphDataset ()));
     	

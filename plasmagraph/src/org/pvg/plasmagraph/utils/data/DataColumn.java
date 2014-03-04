@@ -142,7 +142,18 @@ public class DataColumn<E> implements Iterable<E> {
 	
 	@Override
 	public String toString () {
-		return (this.values.toString ());
+		StringBuilder sb = new StringBuilder ();
+		
+		sb.append (this.name).
+				append (" - ").
+				append (this.type.toString ()).
+				append (": ");
+		
+		for (E e : this.values) {
+			sb.append (e.toString ()).append (", ");
+		}
+		
+		return (sb.toString ());
 	}
 
 	// Iterable methods.
@@ -155,12 +166,15 @@ public class DataColumn<E> implements Iterable<E> {
 
 	public double [] toDoubleArray () {
 		double [] arr = new double [this.values.size ()];
-		
-		for (int i = 0; (i < this.values.size ()); ++i) {
-			arr[i] = (Double) this.values.get (i);
+		if (this.containsDoubles ()) {
+			for (int i = 0; (i < this.values.size ()); ++i) {
+				arr[i] = (Double) this.values.get (i);
+			}
+			
+			return (arr);
+		} else {
+			return (null);
 		}
-		
-		return (arr);
 	}
 
 	/**

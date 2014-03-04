@@ -11,6 +11,7 @@ import java.util.List;
 
 import org.apache.commons.lang3.math.NumberUtils;
 import org.apache.commons.math3.util.Pair;
+import org.apache.commons.validator.routines.DateValidator;
 import org.pvg.plasmagraph.utils.data.DataColumn;
 import org.pvg.plasmagraph.utils.data.DataSet;
 import org.pvg.plasmagraph.utils.data.GraphPair;
@@ -134,14 +135,14 @@ public class CSVProcessor implements FileProcessor {
 		// Take the first index of the GraphPair, find it in the List we have here,
 		/// and create the column it needs in the DataSet.
 		
-		if (hd.get (p.getIndex1 ()).getValue () == ColumnType.DOUBLE) {
-			
-			ds.add (new DataColumn <Double> (hd.get (p.getIndex1 ()).getKey (), 
-					hd.get (p.getIndex1 ()).getValue ()));
-			
-		} else if (hd.get (p.getIndex1 ()).getValue () == ColumnType.DATETIME) {
+		if (hd.get (p.getIndex1 ()).getValue () == ColumnType.DATETIME) {
 			
 			ds.add (new DataColumn <java.util.Date> (hd.get (p.getIndex1 ()).getKey (), 
+					hd.get (p.getIndex1 ()).getValue ()));
+			
+		} else if (hd.get (p.getIndex1 ()).getValue () == ColumnType.DOUBLE) {
+			
+			ds.add (new DataColumn <Double> (hd.get (p.getIndex1 ()).getKey (), 
 					hd.get (p.getIndex1 ()).getValue ()));
 			
 		} else {
@@ -152,12 +153,12 @@ public class CSVProcessor implements FileProcessor {
 		}
 		
 		// Now do that for the other GraphPair index.
-		if (hd.get (p.getIndex2 ()).getValue () == ColumnType.DOUBLE) {
+		if (hd.get (p.getIndex2 ()).getValue () == ColumnType.DATETIME) {
 			
 			ds.add (new DataColumn <Double> (hd.get (p.getIndex2 ()).getKey (), 
 					hd.get (p.getIndex2 ()).getValue ()));
 			
-		} else if (hd.get (p.getIndex2 ()).getValue () == ColumnType.DATETIME) {
+		} else if (hd.get (p.getIndex2 ()).getValue () == ColumnType.DOUBLE) {
 			
 			ds.add (new DataColumn <Double> (hd.get (p.getIndex2 ()).getKey (), 
 					hd.get (p.getIndex2 ()).getValue ()));
@@ -179,6 +180,8 @@ public class CSVProcessor implements FileProcessor {
 	 */
 	private void populateColumns (DataSet ds, GraphPair p) {
 		
+		DateValidator dv = new DateValidator ();
+		
 		// For each row in the List of String Arrays that we have, save the first.
 		for (int i = 1; (i < this.csv_data.size ()); ++i) {
 			
@@ -187,10 +190,33 @@ public class CSVProcessor implements FileProcessor {
 				// Take only the values of the two index values of the GraphPair p and put them
 				// into the DataSet ds.
 				
-				// Populating the first column in ds.
-				ds.get (0).add (this.csv_data.get (i) [p.getIndex1 ()]);
-				// Populating the second column in ds.
-				ds.get (1).add (this.csv_data.get (i) [p.getIndex2 ()]);
+				// Populate as the correct type.
+				if (ds.get (i).getType ().equals (ColumnType.DATETIME)) {
+					
+					// Populating the first column in ds.
+					ds.get (0).add (dv.validate (this.csv_data.get (i) [p.getIndex1 ()].trim ()));
+					// Populating the second column in ds.
+					ds.get (1).add (dv.validate (this.csv_data.get (i) [p.getIndex2 ()].trim ()));
+					
+				} else if (ds.get (i).getType ().equals (ColumnType.DOUBLE)) {
+					
+					// Populating the first column in ds.
+					ds.get (0).add (
+							Double.valueOf (
+									this.csv_data.get (i) [p.getIndex1 ()].trim ()));
+					// Populating the second column in ds.
+					ds.get (1).add (
+							Double.valueOf (
+									this.csv_data.get (i) [p.getIndex2 ()].trim ()));
+					
+				} else { // String!
+					
+					// Populating the first column in ds.
+					ds.get (0).add (this.csv_data.get (i) [p.getIndex1 ()].trim ());
+					// Populating the second column in ds.
+					ds.get (1).add (this.csv_data.get (i) [p.getIndex2 ()].trim ());
+				
+				}
 			}
 		}
 	}
@@ -256,16 +282,16 @@ public class CSVProcessor implements FileProcessor {
 					
 					// What is the type of the data in that column.
 					ColumnType col_type = this.getType (i);
-					if (col_type.equals (ColumnType.DOUBLE)) {
-						
-						// Number? Then it's a double
-						hd.add (new Pair <> (csv_data.get(0)[i].trim (), col_type));
-						
-					} else if (col_type.equals (ColumnType.DATETIME)) {
+					if (col_type.equals (ColumnType.DATETIME)) {
 						
 						// Date is properly validated? Then it's a datetime.
 						hd.add (new Pair <> (csv_data.get(0)[i].trim (), col_type));
 					
+					} else if (col_type.equals (ColumnType.DOUBLE)) {
+						
+						// Number? Then it's a double
+						hd.add (new Pair <> (csv_data.get(0)[i].trim (), col_type));
+						
 					} else {
 						
 						// Not a number or a date? Then it's a string.
@@ -289,7 +315,9 @@ public class CSVProcessor implements FileProcessor {
 			}
 			
 			// If they are, then add that new file to the DataSet's list of files to import.
-			hd.addFile (this.csv_file, FileType.CSV);
+			if (b) { 
+				hd.addFile (this.csv_file, FileType.CSV);
+			}
 			
 			return (b);
 		}

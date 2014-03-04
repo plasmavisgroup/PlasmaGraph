@@ -1,15 +1,11 @@
 package org.pvg.plasmagraph.utils.data;
 
-import java.io.File;
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.Iterator;
-import java.util.Map;
 
 import org.apache.commons.math3.linear.Array2DRowRealMatrix;
 import org.jfree.data.category.DefaultCategoryDataset;
 import org.jfree.data.xy.XYSeries;
-import org.pvg.plasmagraph.utils.types.FileType;
 
 /**
  * Container of DataColumns. Provides methods to create JFree Datasets.
@@ -20,8 +16,6 @@ import org.pvg.plasmagraph.utils.types.FileType;
 public class DataSet implements Iterable<DataColumn> {
 	/** Container for DataColumns. */
 	private ArrayList <DataColumn> values;
-	/** Container for Files containing data for this object. */
-	private Map <File, FileType> file_list;
 
 	/**
 	 * Constructor. Creates a new ArrayList of DataColumns for this object.
@@ -29,7 +23,6 @@ public class DataSet implements Iterable<DataColumn> {
 	 */
 	public DataSet () {
 		this.values = new ArrayList <> ();
-		this.file_list = new HashMap <> ();
 	}
 
 	/**
@@ -173,7 +166,13 @@ public class DataSet implements Iterable<DataColumn> {
 	 */
 	@Override
 	public String toString () {
-		return (this.values.toString ());
+		StringBuilder sb = new StringBuilder ();
+		
+		for (DataColumn dc : this.values) {
+			sb.append (dc.toString ()).append ("\n");
+		}
+		
+		return (sb.toString ());
 	}
 	
 	/**
@@ -206,14 +205,13 @@ public class DataSet implements Iterable<DataColumn> {
 	 * @param p Pair of index values with a pre-defined name.
 	 * @return An XYSeries containing the desired data.
 	 */
-	public XYSeries toXYGraphDataset (GraphPair p) {
-		XYSeries series = new XYSeries (p.getName ());
-		
-		if (this.values.get (p.getIndex1 ()).containsDoubles () &&
-				this.values.get (p.getIndex2 ()).containsDoubles ()) {
+	public XYSeries toXYGraphDataset (String series_name) {
+		XYSeries series = new XYSeries (series_name);
+
+		if (this.isDouble ()) {
 			for (int row = 0; row < this.getColumnLength (); ++row) {
-				series.add ((double) this.values.get (p.getIndex1 ()).get (row),
-						((double) this.values.get (p.getIndex2 ()).get (row)));
+				series.add (Double.valueOf (this.values.get (0).get (row)),
+						(Double.valueOf (this.values.get (1).get (row))));
 			}
 		}
 		
@@ -277,32 +275,5 @@ public class DataSet implements Iterable<DataColumn> {
 		
 		// Return a double 2DArray.
 		return (matrix.getData ());
-	}
-	
-	public void populateDataSet () {
-		
-	}
-
-	// File Map methods.
-	/**
-	 * Helper method. Provides interface to file_list.
-	 * 
-	 * @param file File object to add to Map.
-	 * @param type File extension of object.
-	 * @return Boolean describinb the success or failure of the operation.
-	 */
-	public boolean addFile (File file, FileType type) {
-		return (this.file_list.put (file, type) != null);
-	}
-	
-	/**
-	 * Helper method. Provides interface to file_list.
-	 * 
-	 * @param file File object to add to Map.
-	 * @param type File extension of object.
-	 * @return Boolean describinb the success or failure of the operation.
-	 */
-	public boolean removeFile (File file) {
-		return (this.file_list.remove (file) != null);
 	}
 }
