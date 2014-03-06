@@ -174,42 +174,19 @@ public class MatlabReader {
     	StringBuilder str = new StringBuilder();
     	DataSet columns = toDataSet(f); 
     	
-    	/** add column's names to string **/
+    	/** add column's names to string 
     	str.append('[');
     	for(int i = 0; i < columns.size(); i++){
     		str.append(columns.get(i).getName());
-    		str.append(", ");
+    		
+    		if(i != columns.size()-1)
+    			str.append(", ");
     	}
     	str.append(']');
+    	**/
     	
     	str.append(columns.toString());
         
         return str.toString();       
     }
-
-   /**
-    *
-    * 
-    */    
-    private static void writeToFile(String pFilename, StringBuffer pData) throws IOException {  
-        BufferedWriter out = new BufferedWriter(new FileWriter(pFilename));  
-        out.write(pData.toString());  
-        out.flush();  
-        out.close();  
-    } 
-    
-   /**
-    *
-    * 
-    */    
-    private static StringBuffer readFromFile(String pFilename) throws IOException {  
-        BufferedReader in = new BufferedReader(new FileReader(pFilename));  
-        StringBuffer data = new StringBuffer();  
-        int c = 0;  
-        while ((c = in.read()) != -1) {  
-            data.append((char)c);  
-        }  
-        in.close();  
-        return data;  
-    } 
 }

@@ -2,9 +2,12 @@ package org.pvg.plasmagraph.utils.data;
 
 import java.util.ArrayList;
 import java.util.Iterator;
+import java.util.ListIterator;
 import java.util.NoSuchElementException;
 
 import org.pvg.plasmagraph.utils.types.ColumnType;
+
+import com.jmatio.types.MLChar;
 
 public class DataColumn<E> implements Iterable<Object>, Iterator<Object> {
 
@@ -122,7 +125,44 @@ public class DataColumn<E> implements Iterable<Object>, Iterator<Object> {
 	
 	@Override
 	public String toString () {
-		return (this.values.toString ());
+		StringBuilder str = new StringBuilder();		
+		ListIterator<E> litr = this.values.listIterator();
+		
+		str.append("Name: ");
+		str.append(this.getName());
+		str.append(System.getProperty("line.separator"));
+		
+		str.append("Type: ");
+		str.append(this.getType());
+		str.append(System.getProperty("line.separator"));
+		
+		str.append("Size: ");
+		str.append(this.values.size());
+		str.append(System.getProperty("line.separator"));
+		
+		str.append("Values: [");
+		
+		while(litr.hasNext()) {
+			Object element = litr.next();
+			if(!(element instanceof MLChar))
+				str.append(element.toString());
+			
+			if(element instanceof MLChar){
+				MLChar mlcharElement = (MLChar) element;
+				for(int i = 0; i < mlcharElement.getSize(); i++)
+					str.append(mlcharElement.getChar(0, i).toString());
+			}
+			
+			if(!litr.hasNext()){
+				
+			}else{
+				str.append(", ");
+			}
+		}
+		
+		str.append("]");
+		
+		return str.toString();
 	}
 
 	// Iterator / Iterable methods.
