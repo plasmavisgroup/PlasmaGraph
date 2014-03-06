@@ -102,6 +102,21 @@ public class DataColumn<E> implements Iterable<Object>, Iterator<Object> {
 		this.name = name;
 	}
 	
+	/*
+	 * Determines whether the value in the column's index is Null, NaN or ''
+	 * 
+	 * @param int
+	 * @return boolean
+	 */
+	public boolean valueIsEmpty(int index){
+		
+		boolean isNull = this.values.get(index).equals(null);
+		boolean isNaN = this.values.get(index).toString().equals("NaN");
+		boolean isEmptyStr = this.values.get(index).toString().equals("");
+		
+		return (isNull || isNaN || isEmptyStr);
+	}
+	
 	/**
 	 * Comparing method. Type variable is compared to the MLArray types in JMatIO.
 	 * Provides verification for Doubles.

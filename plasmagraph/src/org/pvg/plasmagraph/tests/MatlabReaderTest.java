@@ -56,6 +56,9 @@ public class MatlabReaderTest {
 */
 	@Test
 	public void testToDataSet() {
+		
+		//DataSet dsExpected = new DataSet();
+		//dsExpected.add(o);
 	    
 	    fail("Not yet implemented");
 	}
@@ -107,10 +110,27 @@ public class MatlabReaderTest {
         assertEquals("Checking for equality: ",data, data2);
 	}
 	
+	public DataSet getExpectedDataSet(int dsNum){
+		/** create an empty data set **/
+		DataSet ds = new DataSet();
+		
+		/** create some columns for the data set **/	
+		DataColumn dcExperimentNumber = new DataColumn("ExperimentNumber", "Double");
+		
+		/** add contents to the columns **/
+		//dcExperimentNumber.add(o)
+		
+		/** add columns to data set **/
+		ds.add(dcExperimentNumber);
+		return ds;
+	}
+	
 	static String readFile(String path, Charset encoding) throws IOException 
 	{
 	  byte[] encoded = Files.readAllBytes(Paths.get(path));
 	  return encoding.decode(ByteBuffer.wrap(encoded)).toString();
 	}
+	
+	
 
 }
