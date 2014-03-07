@@ -139,27 +139,27 @@ public class MatlabReaderTest {
 				CurrentLevelA.add(datum1);
 			}
 			
-			/** add datum2 to the next 16 rows of the DataColumn **/
+			/** add datum2 to the next 7 rows of the DataColumn **/
 			if(i > 14 && i < 21){
 				CurrentLevelA.add(datum2);				
 			}
 			
-			/** add datum2 to the next 16 rows of the DataColumn **/
+			/** add datum3 to the next 4 rows of the DataColumn **/
 			if(i > 20 && i < 24){
 				CurrentLevelA.add(datum3);				
 			}
 			
-			/** add datum2 to the next 16 rows of the DataColumn **/
+			/** add datum4 to the next 4 rows of the DataColumn **/
 			if(i > 23 && i < 27){
 				CurrentLevelA.add(datum4);				
 			}
 			
-			/** add datum2 to the next 16 rows of the DataColumn **/
+			/** add datum5 to the next 4 rows of the DataColumn **/
 			if(i > 26 && i < 30){
 				CurrentLevelA.add(datum5);				
 			}
 			
-			/** add datum3 to the last row of the DataColumn **/			
+			/** add datum6 to the last row of the DataColumn **/			
 			if(i == 30){
 				CurrentLevelA.add(datum6);
 			}
@@ -178,37 +178,37 @@ public class MatlabReaderTest {
 		/** Populate DataSet VacuumPreasureTorr **/
 		for(int i = 0; i < 31; i++){
 			
-			/** add datum1 to the 1st 15 rows of the DataColumn **/
+			/** add datum1 to the 1st 3 rows of the DataColumn **/
 			if(i < 3){
 				VacuumPreasureTorr.add(datum1);
 			}
 			
-			/** add datum2 to the next 16 rows of the DataColumn **/
+			/** add datum2 to the next 4 rows of the DataColumn **/
 			if(i > 2 && i < 6){
 				VacuumPreasureTorr.add(datum2);				
 			}
 			
-			/** add datum2 to the next 16 rows of the DataColumn **/
+			/** add datum3 to the next 4 rows of the DataColumn **/
 			if(i > 5 && i < 9){
 				VacuumPreasureTorr.add(datum3);				
 			}
 			
-			/** add datum2 to the next 16 rows of the DataColumn **/
+			/** add datum4 to the next 4 rows of the DataColumn **/
 			if(i > 8 && i < 12){
 				VacuumPreasureTorr.add(datum4);				
 			}
 			
-			/** add datum2 to the next 16 rows of the DataColumn **/
+			/** add datum5 to the next 4 rows of the DataColumn **/
 			if(i > 11 && i < 15){
 				VacuumPreasureTorr.add(datum5);				
 			}
 			
-			/** add datum2 to the next 16 rows of the DataColumn **/
+			/** add datum6 to the next 4 rows of the DataColumn **/
 			if(i > 14 && i < 18){
 				VacuumPreasureTorr.add(datum6);				
 			}
 			
-			/** add datum2 to the next 16 rows of the DataColumn **/
+			/** add datum7 to the next 13 rows of the DataColumn **/
 			if(i > 17 && i < 30){
 				VacuumPreasureTorr.add(datum7);				
 			}
