@@ -18,49 +18,19 @@ import org.pvg.plasmagraph.utils.data.DataSet;
 import org.pvg.plasmagraph.utils.data.readers.MatlabReader;
 
 public class MatlabReaderTest {
-	/*		
-	public static void main (String [] args) {
-	     
-		  
-        
-		System.out.println(mlr.toString(dummy));
-		    for(int i = 0; i < data.size(); i++){
-		        DataColumn column = data.get(i);                
-		        if(column.get(0).getClass().getName() == "java.lang.Double"){
-		        double timestamp = (double) column.get(0);
-		        Date somedate = new Date((Math.round(timestamp) * 1000));
-		        System.out.println(column.getName());
-		        System.out.println(somedate);                    
-		    }
-		}
 	
-		
-		File dummy = new File("./test/matlab/Parameter2013-06-14-dif-dims.mat");
-		MatlabReader mlr = new MatlabReader();
-		String str1 = mlr.toString(dummy);
-		
-		PrintWriter out;
-		try {
-			out = new PrintWriter("./test/matlab/Parameter2013-06-14-dif-dims.txt");
-			out.println(str1);
-			out.close();
-		} catch (FileNotFoundException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-		
-		
-				
-        
-	}
-*/
 	@Test
 	public void testToDataSet() {
 		
-		//DataSet dsExpected = new DataSet();
-		//dsExpected.add(o);
-	    
-	    fail("Not yet implemented");
+		File dummyMat = new File("./test/matlab/Parameter2013-06-11.mat");
+		MatlabReader mlr = new MatlabReader();
+		
+		DataSet tstDataSet = mlr.toDataSet(dummyMat);		
+		DataSet dsExpected = getExpectedDataSet(1);
+		
+		assertEquals("Checking for expected object in DataSet column 0: ", tstDataSet.get(0), dsExpected.get(0));
+		assertEquals("Checking for expected object in DataSet column 1: ", tstDataSet.get(1), dsExpected.get(1));
+		assertEquals("Checking for expected object in DataSet column 2: ", tstDataSet.get(2), dsExpected.get(2));
 	}
 
 	@Test
@@ -116,12 +86,144 @@ public class MatlabReaderTest {
 		
 		/** create some columns for the data set **/	
 		DataColumn dcExperimentNumber = new DataColumn("ExperimentNumber", "Double");
+		DataColumn CurrentLevelA = new DataColumn("CurrentLevelA", "Double");
+		DataColumn VacuumPreasureTorr = new DataColumn("VacuumPreasureTorr", "Double");
 		
-		/** add contents to the columns **/
-		//dcExperimentNumber.add(o)
+		/** define the variables that will be added to the DataColumn **/
+		double datum1;
+		double datum2;
+		double datum3;
+		double datum4;
+		double datum5;
+		double datum6;
+		double datum7;
+		double datum8;
+		
+		/** these variables will be added to column: ExperimentNumber **/
+		datum1 = 1.0;
+		datum2 = 2.0;
+		datum3 = 0.0/0.0; /** this is how I make my NaN **/
+		
+		/** Populate DataSet ExperimentNumber **/
+		for(int i = 0; i < 31; i++){
+			
+			/** add datum1 to the 1st 15 rows of the DataColumn **/
+			if(i < 15){
+				dcExperimentNumber.add(datum1);
+			}
+			
+			/** add datum2 to the next 16 rows of the DataColumn **/
+			if(i > 14 && i < 30){
+				dcExperimentNumber.add(datum2);				
+			}
+			
+			/** add datum3 to the last row of the DataColumn **/			
+			if(i == 30){
+				dcExperimentNumber.add(datum3);
+			}
+		}
+		
+		/** these variables will be added to column: CurrentLevelA **/
+		datum1 = 400.0;
+		datum2 = 480.0;
+		datum3 = 470.0;
+		datum4 = 450.0;
+		datum5 = 460.0;
+		datum6 =  0.0/0.0; /** this is how I make my NaN **/
+		
+		/** Populate DataSet CurrentLevelA **/
+		for(int i = 0; i < 31; i++){
+			
+			/** add datum1 to the 1st 15 rows of the DataColumn **/
+			if(i < 15){
+				CurrentLevelA.add(datum1);
+			}
+			
+			/** add datum2 to the next 16 rows of the DataColumn **/
+			if(i > 14 && i < 21){
+				CurrentLevelA.add(datum2);				
+			}
+			
+			/** add datum2 to the next 16 rows of the DataColumn **/
+			if(i > 20 && i < 24){
+				CurrentLevelA.add(datum3);				
+			}
+			
+			/** add datum2 to the next 16 rows of the DataColumn **/
+			if(i > 23 && i < 27){
+				CurrentLevelA.add(datum4);				
+			}
+			
+			/** add datum2 to the next 16 rows of the DataColumn **/
+			if(i > 26 && i < 30){
+				CurrentLevelA.add(datum5);				
+			}
+			
+			/** add datum3 to the last row of the DataColumn **/			
+			if(i == 30){
+				CurrentLevelA.add(datum6);
+			}
+		}
+		
+		/** these variables will be added to column: VacuumPreasureTorr **/
+		datum1 = 8.0E-5;
+		datum2 = 9.5E-5;
+		datum3 = 9.8E-5;
+		datum4 = datum2;
+		datum5 = 9.0E-5;
+		datum6 = 0.0/0.0; /** this is how I make my NaN **/
+		datum7 =  1.0E-4;
+		datum8 = datum6;
+		
+		/** Populate DataSet VacuumPreasureTorr **/
+		for(int i = 0; i < 31; i++){
+			
+			/** add datum1 to the 1st 15 rows of the DataColumn **/
+			if(i < 3){
+				VacuumPreasureTorr.add(datum1);
+			}
+			
+			/** add datum2 to the next 16 rows of the DataColumn **/
+			if(i > 2 && i < 6){
+				VacuumPreasureTorr.add(datum2);				
+			}
+			
+			/** add datum2 to the next 16 rows of the DataColumn **/
+			if(i > 5 && i < 9){
+				VacuumPreasureTorr.add(datum3);				
+			}
+			
+			/** add datum2 to the next 16 rows of the DataColumn **/
+			if(i > 8 && i < 12){
+				VacuumPreasureTorr.add(datum4);				
+			}
+			
+			/** add datum2 to the next 16 rows of the DataColumn **/
+			if(i > 11 && i < 15){
+				VacuumPreasureTorr.add(datum5);				
+			}
+			
+			/** add datum2 to the next 16 rows of the DataColumn **/
+			if(i > 14 && i < 18){
+				VacuumPreasureTorr.add(datum6);				
+			}
+			
+			/** add datum2 to the next 16 rows of the DataColumn **/
+			if(i > 17 && i < 30){
+				VacuumPreasureTorr.add(datum7);				
+			}
+			
+			/** add datum3 to the last row of the DataColumn **/			
+			if(i == 30){
+				VacuumPreasureTorr.add(datum8);
+			}
+		}
 		
 		/** add columns to data set **/
 		ds.add(dcExperimentNumber);
+		ds.add(CurrentLevelA);
+		ds.add(VacuumPreasureTorr);
+			
 		return ds;
 	}
 	
