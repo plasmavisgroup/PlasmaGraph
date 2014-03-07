@@ -7,8 +7,8 @@ package org.pvg.plasmagraph.utils.data.readers;
 import java.io.*;
 
 import com.jmatio.io.MatFileReader;
-import com.jmatio.types.MLArray;
-import com.jmatio.types.MLCell;
+import com.jmatio.types.*;
+
 
 
 //import java.io.IOException;
@@ -17,6 +17,7 @@ import java.util.Iterator;
 import java.util.Map;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import java.util.Date;
 
 import org.pvg.plasmagraph.utils.data.DataColumn;
 import org.pvg.plasmagraph.utils.data.DataSet;
@@ -26,83 +27,140 @@ import org.pvg.plasmagraph.utils.data.DataSet;
  * @author DangoMango-Win
  */
 public class MatlabReader {
+   
+	/** Matlab Array Types (Classes) **/
+    public static final int mxUNKNOWN_CLASS = 0;
+    public static final int mxCELL_CLASS    = 1;
+    public static final int mxSTRUCT_CLASS  = 2;
+    public static final int mxOBJECT_CLASS  = 3;
+    public static final int mxCHAR_CLASS    = 4;
+    public static final int mxSPARSE_CLASS  = 5;
+    public static final int mxDOUBLE_CLASS  = 6;
+    public static final int mxSINGLE_CLASS  = 7;
+    public static final int mxINT8_CLASS    = 8;
+    public static final int mxUINT8_CLASS   = 9;
+    public static final int mxINT16_CLASS   = 10;
+    public static final int mxUINT16_CLASS  = 11;
+    public static final int mxINT32_CLASS   = 12;
+    public static final int mxUINT32_CLASS  = 13;
+    public static final int mxINT64_CLASS   = 14;
+    public static final int mxUINT64_CLASS  = 15;
+    public static final int mxFUNCTION_CLASS = 16;
+    public static final int mxOPAQUE_CLASS  = 17;
     
    /**
-    *
-    * 
+    *	Reads a collection of MLArray from a level 5 MAT-File and encodes that collection of MLArray as a DataSet object
+    *	
+    *	@param String
+    *	@return DataSet 
     */
     public DataSet toDataSet(File f){
         
         /** variables definition **/
-        MatFileReader mfr = new MatFileReader(); 
-        DataSet result = new DataSet();
-        ArrayList <DataColumn> column_list = new <DataColumn> ArrayList ();            
-        DataColumn first_column = new DataColumn("string", "name");
-        ArrayList <DataColumn> other_columns = new <DataColumn> ArrayList();
+    	DataSet result = new DataSet();
+        MatFileReader mfr = new MatFileReader();               
         
+        /** read the level 5 MAT-File and encode its contents as DataSet **/        
         try {
             
-            /** variables definition **/
-            Map <String, MLArray> dataMap = mfr.read(f);            
+            /** get file's data into a Map **/
+        	 Map <String, MLArray> dataMap = mfr.read(f);   
             
-            /** iterate every cell group in the .mat file **/
+            /** iterate over every group of data in the level 5 MAT-File **/
             for (Iterator iterator = dataMap.values().iterator(); iterator.hasNext();){
-                
-                MLCell cell_group = (MLCell) iterator.next();
-                
-                /** first cell group has the header names **/
-                if(first_column.isEmpty()){
-                    
-                }
-                
-                /** add group name to first column as many times as rows in the group **/
-                for(int i = 0; i < cell_group.getM(); i++) {
-                    first_column.add(cell_group.name);
-                }
-                
-                /** get every column from the group and place them in the result DataSet **/
-                // is this the first column?
-                if(first_column.isEmpty()){
-                    //  start column list
-                    for(int i = 0; i < cell_group.getN(); i++){
-                        DataColumn column = getColumn(cell_group, i);
-                        result.add(column);
-                    }
-                }else{
-                    //  add each column from this cell into the list
-                    for(int i = 0; i < cell_group.getN(); i++){
-                        DataColumn column = getColumn(cell_group, i);                        
-                        result.add(column, i);
-                    }
-                }
-                                               
+            	
+                /** get matlab array from iterator **/
+            	MLArray data_group = (MLArray) iterator.next();
+            	
+            	/** create and add the data column to the result set **/
+            	DataColumn column = getColumn(data_group);
+            	result.add(column);                                               
             }           
             
         } catch (IOException ex) {
             Logger.getLogger(MatlabReader.class.getName()).log(Level.SEVERE, null, ex);
         }  
         
-        /** add columns to result **/
-       // result.add(first_column);
-        System.out.println(result.columns.toString());
-        //for(int i = 0; i < other_columns.size(); i++){
-            //result.add(other_columns.get(i));
-        //}
-        
+        /** return resulting data set **/
         return result;
     }
-
-   /**
+    
+    /**
     *
     * 
     */
-    private DataColumn getColumn(MLCell cell, int index){
-        DataColumn column = new DataColumn("string", "name");
-        for ( int m = 0; m < cell.getM(); m++ )
+    private DataColumn getColumn(MLArray matlabArray){
+        DataColumn column = new DataColumn(matlabArray.name, matlabArray.typeToString(matlabArray.getType()));
+        boolean type_is_valid = true;
+        switch (matlabArray.getType())
         {
-            String item = cell.get(m,index).contentToString();
-           column.add(item);
-        }
+            case mxUNKNOWN_CLASS:
+            	type_is_valid = false;
+                break;
+            case mxCELL_CLASS:
+                MLCell mxCELL_values = (MLCell) matlabArray;
+                for(int i = 0; i< mxCELL_values.getM(); i++){
+                	column.add(mxCELL_values.get(i,0));
+                }
+                break;
+            case mxSTRUCT_CLASS:
+            	type_is_valid = false;
+                break;
+            case mxCHAR_CLASS:
+            	 MLChar mxCHAR_values = (MLChar) matlabArray;
+            	 for(int i = 0; i< mxCHAR_values.getM(); i++){
+                 	column.add(mxCHAR_values.getString(i));
+                 }
+                break;
+            case mxSPARSE_CLASS:
+            	type_is_valid = false;
+                break;
+            case mxDOUBLE_CLASS:
+            	MLDouble mxDOUBLE_values = (MLDouble) matlabArray;
+            	for(int i = 0; i< mxDOUBLE_values.getM(); i++){
+                	column.add(mxDOUBLE_values.get(i,0));
+                }
+                break;
+            case mxSINGLE_CLASS:
+            	type_is_valid = false;
+                break;
+            case mxINT8_CLASS:
+            	type_is_valid = false;
+                break;
+            case mxUINT8_CLASS:
+            	type_is_valid = false;
+                break;
+            case mxINT16_CLASS:
+            	type_is_valid = false;
+                break;
+            case mxUINT16_CLASS:
+            	type_is_valid = false;
+                break;
+            case mxINT32_CLASS:
+            	type_is_valid = false;
+                break;
+            case mxUINT32_CLASS:
+            	type_is_valid = false;
+                break;
+            case mxINT64_CLASS:
+            	type_is_valid = false;
+                break;
+            case mxUINT64_CLASS:
+            	type_is_valid = false;
+                break;
+            case mxFUNCTION_CLASS:
+            	type_is_valid = false;
+                break;
+            case mxOPAQUE_CLASS:
+            	type_is_valid = false;
+                break;
+            case mxOBJECT_CLASS:
+            	type_is_valid = false;
+                break;
+            default:
+            	type_is_valid = false;
+                break;
+        }       
         
         return column;
     }
@@ -113,73 +171,22 @@ public class MatlabReader {
     */
     public String toString(File f){
         
-        MatFileReader mfr = new MatFileReader();
-        String s = "";
+    	StringBuilder str = new StringBuilder();
+    	DataSet columns = toDataSet(f); 
+    	
+    	/** add column's names to string 
+    	str.append('[');
+    	for(int i = 0; i < columns.size(); i++){
+    		str.append(columns.get(i).getName());
+    		
+    		if(i != columns.size()-1)
+    			str.append(", ");
+    	}
+    	str.append(']');
+    	**/
+    	
+    	str.append(columns.toString());
         
-        try {
-            Map <String, MLArray> dataMap = mfr.read(f);
-            ArrayList <DataColumn> column_list = new ArrayList ();            
-            
-            boolean first = true;
-            StringBuffer sb = new StringBuffer();
-            for (Iterator iterator = dataMap.values().iterator(); iterator.hasNext();){
-                
-                MLCell cell_group = (MLCell) iterator.next();
-                
-                // first cell group has the header's names
-                if(first){
-                    first = false;
-                }
-                
-                sb.append(cell_group.name + " =");
-                sb.append(System.getProperty("line.separator"));
-                for ( int m = 0; m < cell_group.getM(); m++ )
-                {
-                   sb.append("\t");
-                   for ( int n = 0; n < cell_group.getN(); n++ )
-                   {
-                       sb.append( cell_group.get(m,n).contentToString() );
-                       sb.append("\t");
-                   }
-                   sb.append(System.getProperty("line.separator"));
-                }
-                
-                sb.append(System.getProperty("line.separator"));                
-            }
-            
-            // writeToFile("out.txt",sb);            
-            s = sb.toString();
-            
-        } catch (IOException ex) {
-            Logger.getLogger(MatlabReader.class.getName()).log(Level.SEVERE, null, ex);
-        }        
-        
-        return s;       
+        return str.toString();       
     }
-
-   /**
-    *
-    * 
-    */    
-    private static void writeToFile(String pFilename, StringBuffer pData) throws IOException {  
-        BufferedWriter out = new BufferedWriter(new FileWriter(pFilename));  
-        out.write(pData.toString());  
-        out.flush();  
-        out.close();  
-    } 
-    
-   /**
-    *
-    * 
-    */    
-    private static StringBuffer readFromFile(String pFilename) throws IOException {  
-        BufferedReader in = new BufferedReader(new FileReader(pFilename));  
-        StringBuffer data = new StringBuffer();  
-        int c = 0;  
-        while ((c = in.read()) != -1) {  
-            data.append((char)c);  
-        }  
-        in.close();  
-        return data;  
-    } 
 }

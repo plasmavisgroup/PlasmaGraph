@@ -2,9 +2,12 @@ package org.pvg.plasmagraph.utils.data;
 
 import java.util.ArrayList;
 import java.util.Iterator;
+import java.util.ListIterator;
 import java.util.NoSuchElementException;
 
 import org.pvg.plasmagraph.utils.types.ColumnType;
+
+import com.jmatio.types.MLChar;
 
 public class DataColumn<E> implements Iterable<Object>, Iterator<Object> {
 
@@ -31,7 +34,7 @@ public class DataColumn<E> implements Iterable<Object>, Iterator<Object> {
 			type = ColumnType.DOUBLE;
 			//throw (new Exception ("Incorrect Column type."));
 		}
-		name = n;
+		name = n.trim ();
 	}
 	
 	public DataColumn (String n, String c_type, ArrayList <E> s) {// throws Exception {
@@ -44,7 +47,7 @@ public class DataColumn<E> implements Iterable<Object>, Iterator<Object> {
 			type = ColumnType.DOUBLE;
 			//throw (new Exception ("Incorrect Column type."));
 		}
-		name = n;
+		name = n.trim ();
 	}
 	
 	public boolean add (E o) {
@@ -91,6 +94,29 @@ public class DataColumn<E> implements Iterable<Object>, Iterator<Object> {
 		return (type.toString ());
 	}
 	
+	public String getName(){
+		return (this.name);
+	}
+	
+	public void setName(String name){
+		this.name = name;
+	}
+	
+	/*
+	 * Determines whether the value in the column's index is Null, NaN or ''
+	 * 
+	 * @param int
+	 * @return boolean
+	 */
+	public boolean valueIsEmpty(int index){
+		
+		boolean isNull = this.values.get(index).equals(null);
+		boolean isNaN = this.values.get(index).toString().equals("NaN");
+		boolean isEmptyStr = this.values.get(index).toString().equals("");
+		
+		return (isNull || isNaN || isEmptyStr);
+	}
+	
 	/**
 	 * Comparing method. Type variable is compared to the MLArray types in JMatIO.
 	 * Provides verification for Doubles.
@@ -114,7 +140,44 @@ public class DataColumn<E> implements Iterable<Object>, Iterator<Object> {
 	
 	@Override
 	public String toString () {
-		return (this.values.toString ());
+		StringBuilder str = new StringBuilder();		
+		ListIterator<E> litr = this.values.listIterator();
+		
+		str.append("Name: ");
+		str.append(this.getName());
+		str.append(System.getProperty("line.separator"));
+		
+		str.append("Type: ");
+		str.append(this.getType());
+		str.append(System.getProperty("line.separator"));
+		
+		str.append("Size: ");
+		str.append(this.values.size());
+		str.append(System.getProperty("line.separator"));
+		
+		str.append("Values: [");
+		
+		while(litr.hasNext()) {
+			Object element = litr.next();
+			if(!(element instanceof MLChar))
+				str.append(element.toString());
+			
+			if(element instanceof MLChar){
+				MLChar mlcharElement = (MLChar) element;
+				for(int i = 0; i < mlcharElement.getSize(); i++)
+					str.append(mlcharElement.getChar(0, i).toString());
+			}
+			
+			if(!litr.hasNext()){
+				
+			}else{
+				str.append(", ");
+			}
+		}
+		
+		str.append("]");
+		
+		return str.toString();
 	}
 
 	// Iterator / Iterable methods.
@@ -160,5 +223,45 @@ public class DataColumn<E> implements Iterable<Object>, Iterator<Object> {
 	public boolean isEmpty () {
 		return (this.values.isEmpty ());
 	}
+
+	public void addAll(DataColumn column) {
+		for(int index = 0; index < column.size(); index++){
+			this.values.add((E) column.get(index));
+		}		
+	}
+        
+        @Override
+        public boolean equals(Object o){
+            boolean rval = false;
+            
+            if(o instanceof DataColumn){
+                rval = true;
+                DataColumn dc = (DataColumn) o;
+                
+                if(this.size() != dc.size()){
+                	
+                    rval = false;
+                }
+                
+                if(!this.getName().equals (dc.getName())){
+                	
+                	System.out.println (this.getName () + " versus " + dc.getName ());
+                    rval = false;
+                }
+                
+                if(this.getType() != dc.getType()){
+                	
+                    rval = false;
+                }
+                
+                for(int i = 0; i < this.size() && rval; i++){
+                    if(!this.get(i).equals (dc.get(i))){
+                        rval = false;
+                    }
+                }
+            }
+            
+            return rval;
+        }
 
 }

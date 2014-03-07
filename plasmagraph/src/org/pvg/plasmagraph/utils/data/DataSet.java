@@ -2,6 +2,7 @@ package org.pvg.plasmagraph.utils.data;
 
 import java.util.ArrayList;
 import java.util.Iterator;
+import java.util.ListIterator;
 import java.util.NoSuchElementException;
 
 import org.apache.commons.math3.linear.Array2DRowRealMatrix;
@@ -181,7 +182,19 @@ public class DataSet implements Iterable<DataColumn>, Iterator<DataColumn> {
 	 */
 	@Override
 	public String toString () {
-		return (this.values.toString ());
+		
+		StringBuilder str = new StringBuilder();		
+		ListIterator<DataColumn> litr = this.values.listIterator();
+		while(litr.hasNext()) {
+			Object column = litr.next();
+			str.append("-- Column --");
+			str.append(System.getProperty("line.separator"));
+			str.append(column.toString());
+			str.append(System.getProperty("line.separator"));			
+			str.append(System.getProperty("line.separator"));
+		}
+		
+		return str.toString();
 	}
 	
 	/**
@@ -308,4 +321,31 @@ public class DataSet implements Iterable<DataColumn>, Iterator<DataColumn> {
 		// Return a double 2DArray.
 		return (matrix.getData ());
 	}
+        
+        /**
+         * 
+         * @param o
+         * @return 
+         */
+        @Override
+        public boolean equals (Object o) {
+            boolean rval = false;
+            if (o instanceof DataSet) {
+                DataSet ds = (DataSet) o;
+                rval = true;
+                
+                if(this.size() != ds.size()){
+                	
+                    rval = false;
+                }
+                
+                for(int i = 0; i < this.values.size() && rval; i++){
+                    if(!this.values.get(i).equals(ds.get(i))){
+                        rval = false;
+                    }
+                }               
+            }
+            
+            return rval;
+        }
 }
