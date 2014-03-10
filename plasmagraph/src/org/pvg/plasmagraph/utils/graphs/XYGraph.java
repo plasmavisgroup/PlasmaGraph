@@ -1,8 +1,11 @@
 package org.pvg.plasmagraph.utils.graphs;
 
+import java.util.ArrayList;
+
 import javax.swing.JFrame;
 import javax.swing.JPanel;
 
+import org.apache.commons.math3.ml.clustering.DoublePoint;
 import org.jfree.chart.ChartFactory;
 import org.jfree.chart.ChartPanel;
 import org.jfree.chart.JFreeChart;
@@ -12,6 +15,9 @@ import org.jfree.data.xy.XYDataset;
 import org.jfree.data.xy.XYSeries;
 import org.jfree.data.xy.XYSeriesCollection;
 import org.pvg.plasmagraph.utils.data.DataSet;
+import org.pvg.plasmagraph.utils.data.GraphPair;
+import org.pvg.plasmagraph.utils.data.HeaderData;
+import org.pvg.plasmagraph.utils.exceptions.IncorrectParametersException;
 import org.pvg.plasmagraph.utils.template.Template;
 
 // TODO: Documentation!
@@ -26,10 +32,23 @@ import org.pvg.plasmagraph.utils.template.Template;
  * @author Gerardo A. Navas Morales
  */
 @SuppressWarnings ("serial")
-public class XYGraph extends JFrame implements Graph{
+public class XYGraph extends JFrame implements Graph {
 	JFreeChart chart;
 
 	// Constructors
+	/**
+	 * Basic constructor. Creates a XYGraph from a Template and HeaderData reference.
+	 * 
+	 * @param t_reference Template reference used in the formation of 
+	 * various parts of the graph.
+	 * @param ds_reference DataSet reference used in the creation of the graph.
+	 * @throws IncorrectParametersException 
+	 */
+	public XYGraph (Template t_reference, HeaderData hd, GraphPair p) throws IncorrectParametersException {
+		this (t_reference, hd.populateGroupedData (p, t_reference).
+				toGroupedXYGraphDataset (p.getName (), t_reference));
+	}
+	
 	/**
 	 * Basic constructor. Creates a XYGraph from a Template and DataSet reference.
 	 * 
@@ -37,9 +56,9 @@ public class XYGraph extends JFrame implements Graph{
 	 * various parts of the graph.
 	 * @param ds_reference DataSet reference used in the creation of the graph.
 	 */
-	public XYGraph (Template t_reference, DataSet ds_reference) {
-		super(t_reference.getChartName ());
-		setContentPane (createJPanel (t_reference, ds_reference));
+	public XYGraph (Template t_reference, DataSet ds, GraphPair p) {
+		super (t_reference.getChartName ());
+		setContentPane (createJPanel (t_reference, ds, p));
 	}
 	
 	/**
@@ -54,7 +73,7 @@ public class XYGraph extends JFrame implements Graph{
 	 * creation of the graph.
 	 */
 	public XYGraph (Template t_reference, XYSeriesCollection graph_data) {
-		super(t_reference.getChartName ());
+		super (t_reference.getChartName ());
 		setContentPane (createJPanel (t_reference, graph_data));
 	}
 
@@ -66,8 +85,9 @@ public class XYGraph extends JFrame implements Graph{
 	 * @param ds DataSet reference used in the creation of the graph.
 	 * @return JPanel containing the graph.
 	 */
-	public JPanel createJPanel (Template t, DataSet ds) {
-		chart = createChart (createDataset(t, ds), t);
+	@Override
+	public JPanel createJPanel (Template t, DataSet ds, GraphPair p) {
+		chart = createChart (createDataset(t, ds, p), t);
 		ChartPanel c = new ChartPanel (chart, false, true, false, true, true);
 		return (c);
 	}
@@ -96,9 +116,10 @@ public class XYGraph extends JFrame implements Graph{
 	 * @param ds DataSet reference used in the creation of the graph.
 	 * @return An XYDataset containing the DataSet's data values
 	 */
-	public XYDataset createDataset (Template t, DataSet ds) {
+	@Override
+	public XYDataset createDataset (Template t, DataSet ds, GraphPair p) {
 		DefaultXYDataset set = new DefaultXYDataset ();
-		XYSeries s = ds.toXYGraphDataset ();
+		XYSeries s = ds.toXYGraphDataset (p.getName ());
 		set.addSeries (s.getKey (), s.toArray ());
 
 		return (set);
@@ -114,14 +135,58 @@ public class XYGraph extends JFrame implements Graph{
 	 * of the graph.
 	 * @return A JFreeChart containing the visual representation of the graph.
 	 */
+	@Override
 	public JFreeChart createChart (Dataset set, Template t) {
 		JFreeChart c = ChartFactory.createScatterPlot(t.getChartName (), 
 				t.getYAxisLabel (), t.getXAxisLabel (), 
 				(XYDataset) set, t.getOrientation (), t.generatesLegend (),
 				t.generatesTooltips (), t.generatesURLs ());
-		//System.out.println ("reached chart creation!");
-		//org.jfree.chart.plot.XYPlot plot = c.getXYPlot();
+
+		org.jfree.chart.plot.XYPlot plot = c.getXYPlot();
+		
+		// Set axis names.
+		plot.getDomainAxis ().setLabel (t.getXAxisLabel ());
+		plot.getRangeAxis ().setLabel (t.getYAxisLabel ());
+		
+		// Set chart title.
 		
 		return (c);
+	}
+	
+	/**
+	 * Creates a JPanel containing the chart. Sets the availability of graph-saving.
+	 * 
+	 * @param t Template reference used in the formation of various parts 
+	 * of the graph.
+	 * @param ds DataSet reference used in the creation of the graph.
+	 * @return A JPanel containing the graph.
+	 */
+	@Override
+	public JPanel createJPanel (Template t, ArrayList ds, GraphPair p) {
+		chart = createChart (createDataset(t, ds, p), t);
+		ChartPanel c = new ChartPanel (chart, false, true, false, true, true);
+		return (c);
+	}
+
+	/**
+	 * Creates a Dataset specifically for the purposes of graphing the data 
+	 * using the DataSet's provided values.
+	 * 
+	 * @param t Template reference used in the formation of various parts 
+	 * of the graph.
+	 * @param ds DataSet reference used in the creation of the graph.
+	 * @return A Dataset containing the DataSet's data values
+	 */
+	@Override
+	public XYDataset createDataset (Template t, ArrayList ds, GraphPair p) {
+
+		XYSeries this_series = new XYSeries (p.getName ());
+		
+		for (Object o : ds) {
+			DoublePoint d = (DoublePoint) o;
+			this_series.add (d.getPoint ()[0], d.getPoint ()[1]);
+		}
+		
+		return (new XYSeriesCollection (this_series));
 	}
 }

@@ -7,7 +7,7 @@ package org.pvg.plasmagraph.utils.data;
  * 
  * @author Gerardo A. Navas Morales
  */
-public class Pair {
+public class GraphPair {
 	/** Index of the first DataColumn to graph. */
 	private final int index1;
 	/** Index of the second DataColumn to graph. */
@@ -18,14 +18,14 @@ public class Pair {
 	/**
 	 * Constructor; creates a new Pair.
 	 * 
-	 * @param i First index to graph.
+	 * @param column1 First index to graph.
 	 * @param j Second index to graph.
 	 * @param n Name of DataSet provided in ListModel.
 	 */
-	public Pair (int i, int j, String n) {
-		index1 = i;
-		index2 = j;
-		name = n;
+	public GraphPair (int column1, int column2, String name) {
+		index1 = column1;
+		index2 = column2;
+		this.name = name;
 	}
 	
 	/**
@@ -69,8 +69,8 @@ public class Pair {
 		if (this == obj) { return (true); }
 		
 		// Not the same class?
-		if (!(obj instanceof Pair )) { return (false); }
-		Pair c = (Pair) obj;
+		if (!(obj instanceof GraphPair )) { return (false); }
+		GraphPair c = (GraphPair) obj;
 		
 		// Same name?
 		if (!this.toString().equals(c.toString())) { return (false); }

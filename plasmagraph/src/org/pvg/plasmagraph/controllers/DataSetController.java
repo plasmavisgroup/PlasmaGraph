@@ -9,6 +9,7 @@ import javax.swing.event.ChangeEvent;
 import javax.swing.event.ChangeListener;
 
 import org.pvg.plasmagraph.models.DataSetModel;
+import org.pvg.plasmagraph.utils.ExceptionHandler;
 import org.pvg.plasmagraph.views.DataSetView;
 
 /**
@@ -21,9 +22,9 @@ import org.pvg.plasmagraph.views.DataSetView;
 public class DataSetController {
     // Externally-contained variables.
     /** Reference to model related to this controller. */
-    private DataSetModel data_model;
+    DataSetModel data_model;
     /** Reference to view related to this controller. */
-    private DataSetView data_view;
+    DataSetView data_view;
     
     public DataSetController (DataSetModel data_model, DataSetView data_view) {
         // Set related objects into proper positions in object.
@@ -33,11 +34,14 @@ public class DataSetController {
         // Automatically add listeners to Data Set Tab via view.
         // Update Template or DataReference Listeners
         data_view.addChartTypeListener (new ChartTypeListener ());
-        data_view.addGroupByListener (new GroupByListener ());
+        //data_view.addGroupByListener (new GroupByListener ());
+        data_view.addGroupByColumnListener (new GroupByColumnListener ());
         data_view.addAddButtonListener (new AddButtonListener ());
         data_view.addRemoveButtonListener (new RemoveButtonListener ());
         // Update View Listener
-        data_model.addChangeListener (new DataViewTemplateListener ());
+        data_model.addTemplateChangeListener (new DataViewTemplateListener ());
+        data_model.addHeaderDataChangeListener (new DataViewHeaderDataListener ());
+        data_model.addDataReferenceChangeListener (new DataViewReferenceListener ());
     }
     
     /**
@@ -54,7 +58,8 @@ public class DataSetController {
         @Override
         public void actionPerformed (ActionEvent arg0) {
             try {
-				data_model.getTemplate ().setChartType (data_view.getSelectedChartType ());
+				data_model.getTemplate ().setChartType 
+						(data_view.getSelectedChartType ());
 			} catch (Exception e) {
 				// TODO Throw a Dialog Exception
 			}
@@ -68,7 +73,7 @@ public class DataSetController {
      * 
      * @author Gerardo A. Navas Morales
      */
-    class GroupByListener implements ActionListener {
+    class GroupByColumnListener implements ActionListener {
         
         /**
          * Calls a DataSetModel method to change the chart type on the Template.
@@ -76,7 +81,8 @@ public class DataSetController {
         @Override
         public void actionPerformed (ActionEvent arg0) {
             try {
-				data_model.getTemplate ().setGroupedByExperiment (data_view.getGroupingByElement ());
+				data_model.getTemplate ().setGroupByColumnn (
+						data_view.getGroupingByElement ());
 			} catch (Exception e) {
 				// TODO Throw a Dialog Exception
 			}
@@ -98,14 +104,21 @@ public class DataSetController {
          */
         @Override
         public void actionPerformed (ActionEvent arg0) {
-           ArrayList <String> selected_columns =  data_view.getSelectedDatasetsToAdd ();
-            
-           if (selected_columns.size () == 2) {
-        	   data_model.addToSelectedDataset (selected_columns);
-           } else {
-        	   // TODO: Create an ArrayListSizeException!
-        	   //throw (new ArrayListSizeException ("Only two columns are allowed to be selected."));
-           }
+			try {
+				//System.out.println ("Add button was pressed.");
+				ArrayList <String> selected_columns = data_view.getSelectedDatasetsToAdd ();
+				    
+				if (selected_columns.size () == 2) {
+					
+					data_model.addToSelectedHeaderData (selected_columns);
+				
+				} else {
+					// TODO: Create an ArrayListSizeException!
+					//throw (new ArrayListSizeException ("Only two columns are allowed to be selected."));
+				}
+			} catch (Exception e) {
+				ExceptionHandler.createEmptyArrayException (e.getMessage ());
+			}
         }
         
     }
@@ -124,8 +137,17 @@ public class DataSetController {
          */
         @Override
         public void actionPerformed (ActionEvent arg0) {
-            data_model.removeFromSelectedDataset (data_view
-                    .getSelectedDatasetsToRemove ());
+        	try {
+        		
+        		//System.out.println ("Remove button was pressed.");
+	            data_model.removeFromSelectedHeaderData (data_view
+	                    .getSelectedDatasetsToRemove ());
+	            
+        	} catch (Exception e) {
+        		
+        		ExceptionHandler.createEmptyArrayException (e.getMessage ());
+        		
+        	}
         }
         
     }
@@ -144,17 +166,77 @@ public class DataSetController {
          */
         @Override
         public void stateChanged (ChangeEvent e) {
-            SwingWorker <Void, Void> view_worker = new SwingWorker <Void, Void> () {
+            SwingWorker <Void, Void> template_worker = new SwingWorker <Void, Void> () {
 
                 @Override
                 protected Void doInBackground () throws Exception {
-                    data_view.updateView ();
+                    data_view.updateTemplateView ();
+                    data_view.updateGroupByComboBoxSelection ();
                     return null;
                 }
                 
             };
             
-            view_worker.run ();
+            template_worker.run ();
+        }
+        
+    }
+    
+    /**
+     * Listener for the DataSet that contains all settings for the program.
+     * Relies on ChangeListener in order to know that a change has occurred
+     * in the DataSet. 
+     * 
+     * @author Gerardo A. Navas Morales
+     */
+    class DataViewHeaderDataListener implements ChangeListener {
+
+        /**
+         * Updates the AestheticView's current Template-based state.
+         */
+        @Override
+        public void stateChanged (ChangeEvent e) {
+            SwingWorker <Void, Void> data_worker = new SwingWorker <Void, Void> () {
+
+                @Override
+                protected Void doInBackground () throws Exception {
+                    data_view.updateAvailableList ();
+                    data_view.updateGroupByComboBox ();
+                    return null;
+                }
+                
+            };
+            
+            data_worker.run ();
+        }
+        
+    }
+    
+    /**
+     * Listener for the DataReference that contains all settings for the program.
+     * Relies on ChangeListener in order to know that a change has occurred
+     * in the DataReference. 
+     * 
+     * @author Gerardo A. Navas Morales
+     */
+    class DataViewReferenceListener implements ChangeListener {
+
+        /**
+         * Updates the AestheticView's current Template-based state.
+         */
+        @Override
+        public void stateChanged (ChangeEvent e) {
+            SwingWorker <Void, Void> reference_worker = new SwingWorker <Void, Void> () {
+
+                @Override
+                protected Void doInBackground () throws Exception {
+                    data_view.updateSelectedList ();
+                    return null;
+                }
+                
+            };
+            
+            reference_worker.run ();
         }
         
     }

@@ -20,7 +20,7 @@ import java.util.logging.Logger;
 import java.util.Date;
 
 import org.pvg.plasmagraph.utils.data.DataColumn;
-import org.pvg.plasmagraph.utils.data.DataSet;
+import org.pvg.plasmagraph.utils.data.HeaderData;
 
 /**
  *
@@ -54,11 +54,19 @@ public class MatlabReader {
     *	@param String
     *	@return DataSet 
     */
-    public DataSet toDataSet(File f){
+    public HeaderData toDataSet(File f){
         
         /** variables definition **/
+<<<<<<< HEAD
     	DataSet result = new DataSet();
         MatFileReader mfr = new MatFileReader();               
+=======
+        MatFileReader mfr = new MatFileReader(); 
+        HeaderData result = new HeaderData();
+        ArrayList <DataColumn> column_list = new <DataColumn> ArrayList ();            
+        DataColumn first_column = new DataColumn("string", "name");
+        ArrayList <DataColumn> other_columns = new <DataColumn> ArrayList();
+>>>>>>> master
         
         /** read the level 5 MAT-File and encode its contents as DataSet **/        
         try {

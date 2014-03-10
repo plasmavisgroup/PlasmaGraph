@@ -1,5 +1,7 @@
 package org.pvg.plasmagraph.utils.graphs;
 
+import java.util.ArrayList;
+
 import javax.swing.JFrame;
 import javax.swing.JPanel;
 
@@ -9,6 +11,8 @@ import org.jfree.chart.JFreeChart;
 import org.jfree.data.category.DefaultCategoryDataset;
 import org.jfree.data.general.Dataset;
 import org.pvg.plasmagraph.utils.data.DataSet;
+import org.pvg.plasmagraph.utils.data.GraphPair;
+import org.pvg.plasmagraph.utils.data.HeaderData;
 import org.pvg.plasmagraph.utils.template.Template;
 
 /**
@@ -27,15 +31,27 @@ public class BarGraph extends JFrame implements Graph {
 
 	// Constructors
 	/**
+	 * Basic constructor. Creates a BarGraph from a Template and HeaderData reference.
+	 * 
+	 * @param t Template reference used in the formation of various parts 
+	 * of the graph.
+	 * @param ds DataSet reference used in the creation of the graph.
+	 */
+	public BarGraph (Template t, HeaderData hd, GraphPair p) {
+		super(t.getChartName ());
+		setContentPane (createJPanel (t, hd.populateData (p), p));
+	}
+	
+	/**
 	 * Basic constructor. Creates a BarGraph from a Template and DataSet reference.
 	 * 
 	 * @param t Template reference used in the formation of various parts 
 	 * of the graph.
 	 * @param ds DataSet reference used in the creation of the graph.
 	 */
-	public BarGraph (Template t, DataSet ds) {
+	public BarGraph (Template t, DataSet ds, GraphPair p) {
 		super(t.getChartName ());
-		setContentPane (createJPanel (t, ds));
+		setContentPane (createJPanel (t, ds, p));
 	}
 	
 	/**
@@ -46,8 +62,24 @@ public class BarGraph extends JFrame implements Graph {
 	 * @param ds DataSet reference used in the creation of the graph.
 	 * @return A JPanel containing the graph.
 	 */
-	public JPanel createJPanel (Template t, DataSet ds) {
-		chart = createChart (createDataset(t, ds), t);
+	@Override
+	public JPanel createJPanel (Template t, DataSet ds, GraphPair p) {
+		chart = createChart (createDataset(t, ds, p), t);
+		ChartPanel c = new ChartPanel (chart, false, true, false, true, true);
+		return (c);
+	}
+	
+	/**
+	 * Creates a JPanel containing the chart. Sets the availability of graph-saving.
+	 * 
+	 * @param t Template reference used in the formation of various parts 
+	 * of the graph.
+	 * @param ds DataSet reference used in the creation of the graph.
+	 * @return A JPanel containing the graph.
+	 */
+	@Override
+	public JPanel createJPanel (Template t, ArrayList set, GraphPair p) {
+		chart = createChart (createDataset(t, set, p), t);
 		ChartPanel c = new ChartPanel (chart, false, true, false, true, true);
 		return (c);
 	}
@@ -61,12 +93,38 @@ public class BarGraph extends JFrame implements Graph {
 	 * @param ds DataSet reference used in the creation of the graph.
 	 * @return A Dataset containing the DataSet's data values
 	 */
-	public DefaultCategoryDataset createDataset (Template t, DataSet ds) {
+	@Override
+	public DefaultCategoryDataset createDataset (Template t, DataSet ds, GraphPair p) {
 		//DefaultCategoryDataset set = new DefaultCategoryDataset ();
 		//generateTestDataset (set, t);
 		
 		//return (set);
-		return (ds.toBarGraphDataset ());
+		return (ds.toBarGraphDataset (p));
+	}
+	
+	/**
+	 * Creates a Dataset specifically for the purposes of graphing the data 
+	 * using the DataSet's provided values.
+	 * 
+	 * @param t Template reference used in the formation of various parts 
+	 * of the graph.
+	 * @param ds DataSet reference used in the creation of the graph.
+	 * @return A Dataset containing the DataSet's data values
+	 */
+	@SuppressWarnings ({ "rawtypes", "unchecked" })
+	@Override
+	public DefaultCategoryDataset createDataset (Template t, ArrayList ds, GraphPair p) {
+		DefaultCategoryDataset set = new DefaultCategoryDataset ();
+		
+		// Objects in this ArrayList are Pair <J, K> values.
+		for (Object d : ds) {
+			org.apache.commons.math3.util.Pair<Comparable, Double> pair = 
+					(org.apache.commons.math3.util.Pair<Comparable, Double>) d;
+			
+			set.addValue (pair.getValue (), pair.getKey (), p.getName ());
+		}
+		
+		return (set);
 	}
 
 	/**
@@ -79,6 +137,7 @@ public class BarGraph extends JFrame implements Graph {
 	 * of the graph.
 	 * @return A JFreeChart containing the visual representation of the graph.
 	 */
+	@Override
 	public JFreeChart createChart (Dataset set, Template t) {
 		JFreeChart c = ChartFactory.createBarChart (t.getChartName (),
 				t.getYAxisLabel (), t.getXAxisLabel (), (DefaultCategoryDataset) set,

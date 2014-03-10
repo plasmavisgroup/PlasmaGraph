@@ -1,6 +1,31 @@
+<<<<<<< HEAD
 INDEX VERSION 1.126+C:\wamp\www\github\PlasmaGraph\.metadata\.plugins\org.eclipse.jdt.core
 867008928.index
 3750867948.index
+=======
+INDEX VERSION 1.126+C:\Users\tako\Documents\GitHub\PlasmaGraph\.metadata\.plugins\org.eclipse.jdt.core
+4108727661.index
+305854171.index
+867008928.index
+3974580528.index
+1697886153.index
+3133528496.index
+4164183904.index
+4162918738.index
+188072265.index
+278600039.index
+1299022128.index
+2481964548.index
+1995173708.index
+3065916431.index
+3750867948.index
+1498219845.index
+30765161.index
+2154509549.index
+4155206848.index
+3929266217.index
+163172794.index
+>>>>>>> master
 1115467115.index
 3197368818.index
 2154509549.index
@@ -8,6 +33,7 @@ INDEX VERSION 1.126+C:\wamp\www\github\PlasmaGraph\.metadata\.plugins\org.eclips
 3065916431.index
 2481964548.index
 4041092966.index
+<<<<<<< HEAD
 30765161.index
 163172794.index
 4108727661.index
@@ -21,3 +47,5 @@ INDEX VERSION 1.126+C:\wamp\www\github\PlasmaGraph\.metadata\.plugins\org.eclips
 1299022128.index
 1995173708.index
 3929266217.index
+=======
+>>>>>>> master

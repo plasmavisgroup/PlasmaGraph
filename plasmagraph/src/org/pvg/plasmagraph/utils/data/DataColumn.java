@@ -2,6 +2,7 @@ package org.pvg.plasmagraph.utils.data;
 
 import java.util.ArrayList;
 import java.util.Iterator;
+<<<<<<< HEAD
 import java.util.ListIterator;
 import java.util.NoSuchElementException;
 
@@ -10,6 +11,12 @@ import org.pvg.plasmagraph.utils.types.ColumnType;
 import com.jmatio.types.MLChar;
 
 public class DataColumn<E> implements Iterable<Object>, Iterator<Object> {
+=======
+
+import org.pvg.plasmagraph.utils.types.ColumnType;
+
+public class DataColumn<E> implements Iterable<E> {
+>>>>>>> master
 
 	/** Container for DataColumns. */
 	private ArrayList<E> values;
@@ -20,18 +27,27 @@ public class DataColumn<E> implements Iterable<Object>, Iterator<Object> {
 	/** Type of the item contained, as per JMatIO's MLArray class.*/
 	private ColumnType type;
 	
-	/** Position of Iterator object; 
-	 * used for the implementation of Iterator and Iterable. */
-	private int position = 0;
-	
 	public DataColumn (String n, String c_type) {// throws Exception {
-		values = new ArrayList<E> ();
+		values = new ArrayList<> ();
 		if (c_type.equals ("string") || c_type.equals ("String")) {
 			type = ColumnType.STRING;
 		} else if (c_type.equals ("double") || c_type.equals ("Double")) {
 			type = ColumnType.DOUBLE;
 		} else {
+			type = ColumnType.DATETIME;
+			//throw (new Exception ("Incorrect Column type."));
+		}
+		name = n;
+	}
+	
+	public DataColumn (String n, ColumnType c_type) {// throws Exception {
+		values = new ArrayList<> ();
+		if (c_type.equals (ColumnType.STRING)) {
+			type = ColumnType.STRING;
+		} else if (c_type.equals (ColumnType.DOUBLE)) {
 			type = ColumnType.DOUBLE;
+		} else {
+			type = ColumnType.DATETIME;
 			//throw (new Exception ("Incorrect Column type."));
 		}
 		name = n.trim ();
@@ -44,7 +60,20 @@ public class DataColumn<E> implements Iterable<Object>, Iterator<Object> {
 		} else if (c_type.equals ("double") || c_type.equals ("Double")) {
 			type = ColumnType.DOUBLE;
 		} else {
+			type = ColumnType.DATETIME;
+			//throw (new Exception ("Incorrect Column type."));
+		}
+		name = n;
+	}
+	
+	public DataColumn (String n, ColumnType c_type, ArrayList <E> s) {// throws Exception {
+		values = s;
+		if (c_type.equals (ColumnType.STRING)) {
+			type = ColumnType.STRING;
+		} else if (c_type.equals (ColumnType.DOUBLE)) {
 			type = ColumnType.DOUBLE;
+		} else {
+			type = ColumnType.DATETIME;
 			//throw (new Exception ("Incorrect Column type."));
 		}
 		name = n.trim ();
@@ -118,8 +147,7 @@ public class DataColumn<E> implements Iterable<Object>, Iterator<Object> {
 	}
 	
 	/**
-	 * Comparing method. Type variable is compared to the MLArray types in JMatIO.
-	 * Provides verification for Doubles.
+	 * Comparing method. Provides verification for Doubles.
 	 * 
 	 * @return Boolean containing whether the Objects of this class are Doubles.
 	 */
@@ -128,9 +156,8 @@ public class DataColumn<E> implements Iterable<Object>, Iterator<Object> {
 	}
 	
 	/**
-	 * Comparing method. Type variable is compared to the MLArray types in JMatIO.
-	 * Provides verification for Strings. (PlasmaGraph assumes Chars are turned into
-	 * strings when read from a MATLAB file.)
+	 * Comparing method. Provides verification for Strings. 
+	 * (PlasmaGraph assumes Chars are turned into strings when read from a MATLAB file.)
 	 * 
 	 * @return Boolean containing whether the Objects of this class are Strings.
 	 */
@@ -138,6 +165,7 @@ public class DataColumn<E> implements Iterable<Object>, Iterator<Object> {
 		return (type.equals (ColumnType.STRING));
 	}
 	
+<<<<<<< HEAD
 	@Override
 	public String toString () {
 		StringBuilder str = new StringBuilder();		
@@ -184,35 +212,52 @@ public class DataColumn<E> implements Iterable<Object>, Iterator<Object> {
 	@Override
 	public boolean hasNext () {
 		return (position < values.size ());
+=======
+	/**
+	 * Comparing method. Provides verification for Dates.
+	 * 
+	 * @return Boolean containing whether the Objects of this class are Dates.
+	 */
+	public boolean containsDates () {
+		return (type.equals (ColumnType.DATETIME));
+>>>>>>> master
 	}
-
+	
 	@Override
-	public Object next () {
-		if (position == values.size ()) {
-			throw new NoSuchElementException ();
+	public String toString () {
+		StringBuilder sb = new StringBuilder ();
+		
+		sb.append (this.name).
+				append (" - ").
+				append (this.type.toString ()).
+				append (": ");
+		
+		for (E e : this.values) {
+			sb.append (e.toString ()).append (", ");
 		}
-		return (values.get (++position));
+		
+		return (sb.toString ());
 	}
 
+	// Iterable methods.
 	@Override
-	public void remove () {
-		this.values.remove (position--);
-	}
-
-	@Override
-	public Iterator<Object> iterator () {
-		this.position = 0;
-		return (this);
+	public Iterator<E> iterator () {
+		//this.position = 0;
+		//return (this);
+		return (this.values.iterator ());
 	}
 
 	public double [] toDoubleArray () {
 		double [] arr = new double [this.values.size ()];
-		
-		for (int i = 0; (i < this.values.size ()); ++i) {
-			arr[i] = (Double) this.values.get (i);
+		if (this.containsDoubles ()) {
+			for (int i = 0; (i < this.values.size ()); ++i) {
+				arr[i] = (Double) this.values.get (i);
+			}
+			
+			return (arr);
+		} else {
+			return (null);
 		}
-		
-		return (arr);
 	}
 
 	/**
@@ -224,6 +269,7 @@ public class DataColumn<E> implements Iterable<Object>, Iterator<Object> {
 		return (this.values.isEmpty ());
 	}
 
+<<<<<<< HEAD
 	public void addAll(DataColumn column) {
 		for(int index = 0; index < column.size(); index++){
 			this.values.add((E) column.get(index));
@@ -263,5 +309,16 @@ public class DataColumn<E> implements Iterable<Object>, Iterator<Object> {
             
             return rval;
         }
+=======
+	/**
+	 * Appends all the values in a specified DataColumn into this column.
+	 * 
+	 * @param column The column whose values will be included into this one.
+	 * @return Success or failure of the operation.
+	 */
+	public boolean append (DataColumn <E> column) {
+		return (this.values.addAll (column.values));
+	}
+>>>>>>> master
 
 }

@@ -10,12 +10,12 @@ package testviews;
  *
  * @author tako
  */
-public class newdatasetview extends javax.swing.JPanel {
+public class TestDataSetView extends javax.swing.JPanel {
 
     /**
      * Creates new form newdatasetview
      */
-    public newdatasetview() {
+    public TestDataSetView() {
         initComponents();
     }
 
@@ -81,7 +81,7 @@ public class newdatasetview extends javax.swing.JPanel {
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(layout.createSequentialGroup()
                         .addContainerGap()
                         .addComponent(group_by_combo_box, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))

@@ -1,43 +1,49 @@
 package org.pvg.plasmagraph.utils.data;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.Iterator;
+<<<<<<< HEAD
 import java.util.ListIterator;
 import java.util.NoSuchElementException;
+=======
+>>>>>>> master
 
 import org.apache.commons.math3.linear.Array2DRowRealMatrix;
 import org.jfree.data.category.DefaultCategoryDataset;
-import org.jfree.data.general.PieDataset;
-import org.jfree.data.xy.DefaultXYDataset;
-import org.jfree.data.xy.XYDataset;
 import org.jfree.data.xy.XYSeries;
 import org.jfree.data.xy.XYSeriesCollection;
+import org.pvg.plasmagraph.utils.exceptions.IncorrectParametersException;
+import org.pvg.plasmagraph.utils.template.Template;
 
 /**
+ * Container of DataColumns. Provides methods to create JFree Datasets.
  * 
  * @author Gerardo A. Navas Morales
  */
-public class DataSet implements Iterable<DataColumn>, Iterator<DataColumn> {
+@SuppressWarnings ("rawtypes")
+public class DataSet implements Iterable<DataColumn> {
 	/** Container for DataColumns. */
-	private ArrayList<DataColumn> values;
-	/**
-	 * Position of Iterator object; used for the implementation of Iterator and
-	 * Iterable.
-	 */
-	private int position = 0;
+	private ArrayList <DataColumn> values;
+	/***/
+	private boolean grouped;
 
 	/**
+	 * Constructor. Creates a new ArrayList of DataColumns for this object.
+	 * There should only exist one DataSet for any given time.
 	 * 
+	 * @param grouped Boolean flag stating whether the DataSet includes a group by column or not.
 	 */
-	public DataSet () {
-		values = new ArrayList<DataColumn> ();
+	public DataSet (boolean grouped) {
+		this.values = new ArrayList <> ();
+		this.grouped = grouped;
 	}
 
 	/**
 	 * Allows a new DataColumn into the DataSet if and only if its length
 	 * is the same as every other column. (Read: The first one is checked.)
 	 * 
-	 * @param o
+	 * @param o DataColumn to add to the DataSet.
 	 * @return Boolean describing the success or failure of the action.
 	 */
 	public boolean add (DataColumn o) {
@@ -53,22 +59,29 @@ public class DataSet implements Iterable<DataColumn>, Iterator<DataColumn> {
 	}
 
 	/**
-	 * Removes a DataColumn from the DataSet.
-	 * 
-	 * @param o The DataColumn to remove.
-	 * @return Boolean describing the success or failure of the action.
-	 */
-	public boolean remove (DataColumn o) {
-		return (this.values.remove (o));
-	}
-
-	/**
-	 * 
-	 * @param i
+	 * Appends all the columns of a DataSet into this DataSet
+	 * TODO: JavaDocs.
+	 * @param column
 	 * @return
 	 */
-	public DataColumn remove (int i) {
-		return (this.values.remove (i));
+	public boolean append (DataSet ds) {
+		boolean success = true;
+		
+		for (int i = 0; (i < ds.size () && success); ++i) {
+			success = values.get (i).append (ds.get (i));
+		}
+		
+		return (success);
+	}
+	
+	/**
+	 * Searches for a specific DataColumn. Responds if it found it or not.
+	 * 
+	 * @param o Column being searched for.
+	 * @return A boolean stating if the column was found or not.
+	 */
+	public boolean contains (DataColumn o) {
+		return (this.values.contains (o));
 	}
 	
 	/**
@@ -80,7 +93,7 @@ public class DataSet implements Iterable<DataColumn>, Iterator<DataColumn> {
 	public int find (DataColumn o) {
 		return (this.values.indexOf (o));
 	}
-	
+
 	/**
 	 * Searches all DataColumns for the column name provided.
 	 * 
@@ -100,24 +113,77 @@ public class DataSet implements Iterable<DataColumn>, Iterator<DataColumn> {
 	}
 
 	/**
-	 * Searches for a specific DataColumn. Responds if it found it or not.
+	 * Getter method. Provides access to a DataColumn at an index's location.
 	 * 
-	 * @param o Column being searched for.
-	 * @return A boolean stating if the column was found or not.
-	 */
-	public boolean contains (DataColumn o) {
-		return (this.values.contains (o));
-	}
-
-	/**
-	 * 
-	 * @param i
-	 * @return
+	 * @param i The index where the desired DataColumn is located.
+	 * @return The DataColumn at the index location.
 	 */
 	public DataColumn get (int i) {
 		return (this.values.get (i));
 	}
 	
+	/**
+	 * Getter method. Provides the column length for the first column, the representative for all other columns.
+	 * 
+	 * @return An integer length of the columns.
+	 */
+	public int getColumnLength () {
+		if (this.values.size () > 0) {
+			return (this.values.get (0).size ());
+		} else {
+			return (0);
+		}
+	}
+	
+	/**
+	 * Getter method. Provides the column length for a given column.
+	 * 
+	 * @param index The column whose length will be checked.
+	 * @return An integer length of the selected column.
+	 */
+	public int getColumnLength (int index) {
+		return (this.values.get (index).size ());
+	}
+	
+	/**
+	 * Provides the Group By column, if it exists.
+	 * 
+	 * @return The Group By DataColumn if it exists, or null if it does not exist.
+	 */
+	public DataColumn getGroup () {
+		if (!this.isGrouped ()) {
+			return (null);
+		} else {
+			return (this.values.get (0));
+		}
+	}
+	
+	/**
+	 * Provides the DataColumn that contains the X values of the DataSet.
+	 * 
+	 * @return The X value DataColumn, depending on the size of the DataSet.
+	 */
+	public DataColumn getX () {
+		if (!this.isGrouped ()) {
+			return (this.values.get (0));
+		} else {
+			return (this.values.get (1));
+		}
+	}
+
+	/**
+	 * Provides the DataColumn that contains the Y values of the DataSet.
+	 * 
+	 * @return The Y value DataColumn, depending on the size of the DataSet.
+	 */
+	public DataColumn getY () {
+		if (!this.isGrouped ()) {
+			return (this.values.get (1));
+		} else {
+			return (this.values.get (2));
+		}
+	}
+
 	/**
 	 * Getter method. Provides whether the entire DataSet is populated by DoubleColumns.
 	 * 
@@ -155,7 +221,7 @@ public class DataSet implements Iterable<DataColumn>, Iterator<DataColumn> {
 		}
 		return (true);
 	}
-	
+
 	/**
 	 * Getter method. Provides whether the one DataColumn is a StringColumn.
 	 * 
@@ -165,22 +231,10 @@ public class DataSet implements Iterable<DataColumn>, Iterator<DataColumn> {
 	public boolean isString (int index) {
 		return (this.values.get (index).containsStrings ());
 	}
-
-	/**
-	 * Getter method. Provides the size of the ArrayList contained.
-	 * 
-	 * @return Integer value of the current size of the ArrayList.
-	 */
-	public int size () {
-		return (this.values.size ());
-	}
-
-	/**
-	 * Getter method. Provides a string representation of the ArrayList.
-	 * 
-	 * @return A String representation of the entire ArrayList.
-	 */
+	
+	// Iterator / Iterable methods.
 	@Override
+<<<<<<< HEAD
 	public String toString () {
 		
 		StringBuilder str = new StringBuilder();		
@@ -195,110 +249,31 @@ public class DataSet implements Iterable<DataColumn>, Iterator<DataColumn> {
 		}
 		
 		return str.toString();
-	}
-	
-	/**
-	 * 
-	 * @return
-	 */
-	public int getColumnLength () {
-		if (this.values.size () > 0) {
-			return (this.values.get (0).size ());
-		} else {
-			return (0);
-		}
-	}
-	
-	/**
-	 * 
-	 * @param index
-	 * @return
-	 */
-	public int getColumnLength (int index) {
-		return (this.values.get (index).size ());
-	}
-
-	/**
-	 * 
-	 * @return
-	 */
-	public XYSeries toXYGraphDataset () {
-		XYSeries series = new XYSeries (this.getDataSetName ());
-
-		if (this.isDouble ()) {
-			for (int row = 0; row < this.getColumnLength (); ++row) {
-				series.add ((double) this.values.get (0).get (row),
-						((double) this.values.get (1).get (row)));
-			}
-		}
-		
-		return (series);
-	}
-	
-	/**
-	 * 
-	 * @return
-	 */
-	public DefaultCategoryDataset toBarGraphDataset () {
-		DefaultCategoryDataset dataset = new DefaultCategoryDataset ();
-		String series = "Series 1";
-		
-		// Assume the X column (Column 0) has the category data.
-		// Assume the Y column (Column 1) has the quantity data. (Cannot be a string)
-		
-		// We need to know what are the column types for each of them.
-		if (this.isDouble (0)) {
-			for (int row = 0; (row < this.getColumnLength ()); ++row) {
-				dataset.addValue ((Number) (double) this.values.get (1).get (row),
-						series, (double) this.values.get (0).get (row));
-			}
-		} else {
-			for (int row = 0; (row < this.getColumnLength ()); ++row) {
-				dataset.addValue ((Number) (double) this.values.get (1).get (row),
-						series, (String) this.values.get (0).get (row));
-			}
-		}
-		
-		return (dataset);
-	}
-
-	/**
-	 * 
-	 * @return
-	 */
-	public Comparable<String> getDataSetName () {
-		if (this.values.size () == 2) {
-			return ("" + this.values.get(0).getColumnName () + " vs. " +
-					this.values.get (1).getColumnName ());
-		} else {
-			return ("Default");
-		}
-	}
-	
-	// Iterator / Iterable methods.
-	@Override
+=======
 	public Iterator<DataColumn> iterator () {
-		this.position = 0;
-		return (this);
+		return (this.values.iterator ());
+>>>>>>> master
+	}
+	
+	/**
+	 * Removes a DataColumn from the DataSet.
+	 * 
+	 * @param o The DataColumn to remove.
+	 * @return Boolean describing the success or failure of the action.
+	 */
+	public boolean remove (DataColumn o) {
+		return (this.values.remove (o));
 	}
 
-	@Override
-	public boolean hasNext () {
-		return (position < values.size ());
+	/**
+	 * Getter method. Provides the size of the ArrayList contained.
+	 * 
+	 * @return Integer value of the current size of the ArrayList.
+	 */
+	public int size () {
+		return (this.values.size ());
 	}
-
-	@Override
-	public DataColumn next () {
-		if (position == values.size ()) {
-			throw new NoSuchElementException ();
-		}
-		return (values.get (++position));
-	}
-
-	@Override
-	public void remove () {
-		this.values.remove (position--);
-	}
+	
 
 	/**
 	 * Creates a double [][] containing all the values in this DataSet.
@@ -320,6 +295,143 @@ public class DataSet implements Iterable<DataColumn>, Iterator<DataColumn> {
 		
 		// Return a double 2DArray.
 		return (matrix.getData ());
+	}
+	
+	/**
+	 * Given a group of index values and a name, provides a JFree CategoryDataset
+	 * for the purpose of graphing Bar Graphs.
+	 * TODO: Make the method more robust. Add flexibility for varying combinations of double and string!
+	 * 
+	 * @param p Pair of index values with a pre-defined name.
+	 * @return A DefaultCategoryDataset containing the desired data.
+	 */
+	public DefaultCategoryDataset toBarGraphDataset (GraphPair p) {
+		DefaultCategoryDataset dataset = new DefaultCategoryDataset ();
+		
+		// Assume the X column (Column 0) has the category data.
+		// Assume the Y column (Column 1) has the quantity data. (Cannot be a string)
+		
+		// We need to know what are the column types for each of them.
+		if (this.isDouble (p.getIndex1 ())) {
+			for (int row = 0; (row < this.getColumnLength ()); ++row) {
+				dataset.addValue ((Number) (double) this.values.get (p.getIndex2 ()).get (row),
+						p.getName (), (double) this.values.get (p.getIndex1 ()).get (row));
+			}
+		} else {
+			for (int row = 0; (row < this.getColumnLength ()); ++row) {
+				dataset.addValue ((Number) (double) this.values.get (p.getIndex2 ()).get (row),
+						p.getName (), (String) this.values.get (p.getIndex1 ()).get (row));
+			}
+		}
+		
+		return (dataset);
+	}
+	
+	/**
+	 * Given a group of index values and a name, provides a JFree XYSeriesCollection
+	 * Dataset for the purpose of graphing XY Graphs.
+	 * 
+	 * @param t 
+	 * @param p Pair of index values with a pre-defined name.
+	 * @return An XYSeries containing the desired data.
+	 * @throws IncorrectParametersException 
+	 */
+	public XYSeriesCollection toGroupedXYGraphDataset (String series_name, Template t) throws IncorrectParametersException {
+		XYSeriesCollection grouped_series = new XYSeriesCollection ();
+		
+		// Find the group_by column index.
+		int grouped_column = this.find (t.getGroupByColumn ());
+		
+		HashMap <Object, XYSeries> sets = new HashMap <> ();
+		
+		// For each row
+		// Check the type of the group.
+		boolean valid = true;
+		for (DataColumn dc : this.values) {
+			valid = valid && (dc.containsDoubles () || (this.find (dc) == grouped_column));
+		}
+		
+		if (valid) {
+			for (int i = 0; (i < this.getColumnLength ()); ++i) {
+				
+				// If the type is new (I.E. does not exist yet in the collection)
+				// Add it into the collection as a new XYSeries.
+				Object key = this.values.get (grouped_column).get (i);
+				if (sets.containsKey (key)) {
+					sets.get (key).add (new org.jfree.data.xy.XYDataItem (
+							(double) this.values.get (1).get (i),
+							(double) this.values.get (2).get (i)));
+				}
+			}
+			
+			for (XYSeries xy : sets.values ()) {
+				grouped_series.addSeries (xy);
+			}
+			
+			return (grouped_series);
+		} else {
+			throw (new IncorrectParametersException ());
+		}
+		
+	}
+	
+	/**
+	 * Getter method. Provides a string representation of the ArrayList.
+	 * 
+	 * @return A String representation of the entire ArrayList.
+	 */
+	@Override
+	public String toString () {
+		StringBuilder sb = new StringBuilder ();
+		
+		for (DataColumn dc : this.values) {
+			sb.append (dc.toString ()).append ("\n");
+		}
+		
+		return (sb.toString ());
+	}
+	
+	/**
+	 * Given a group of index values and a name, provides a JFree XYSeries Dataset
+	 * for the purpose of graphing XY Graphs.
+	 * 
+	 * @param p Pair of index values with a pre-defined name.
+	 * @return An XYSeries containing the desired data.
+	 */
+	public XYSeries toXYGraphDataset (String series_name) {
+		XYSeries series = new XYSeries (series_name);
+
+		if (this.isDouble ()) {
+			for (int row = 0; row < this.getColumnLength (); ++row) {
+				series.add ((double) this.values.get (0).get (row),
+						((double) this.values.get (1).get (row)));
+			}
+		}
+		
+		return (series);
+	}
+
+	/**
+	 * Provides the number of parameters that exist in this DataSet.
+	 * This is also known as the K in some statistical functions.
+	 * 
+	 * @return The number of parameters that this DataSet contains.
+	 */
+	public int getNumParameters () {
+		if (this.grouped) {
+			return (this.size () - 1);
+		} else {
+			return (this.size ());
+		}
+	}
+	
+	/**
+	 * Getter method for the "grouped" private variable.
+	 * 
+	 * @return A boolean stating whether this DataSet contains a Group By column or not.
+	 */
+	public boolean isGrouped () {
+		return (this.grouped);
 	}
         
         /**

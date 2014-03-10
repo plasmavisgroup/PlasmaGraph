@@ -11,6 +11,8 @@ public final class ColumnType {
 	public static final ColumnType DOUBLE = new ColumnType ("Double");
 	/** Reference for a "String" Column. */
 	public static final ColumnType STRING = new ColumnType ("String");
+	/** Reference for a "DateTime" Column. */
+	public static final ColumnType DATETIME = new ColumnType ("Date Time");
 	/** Name of column type. */
 	private String name;
 	
@@ -47,6 +49,7 @@ public final class ColumnType {
 	 */
 	public static String [] getOptions () {
     	return (new String []
-    			{ColumnType.DOUBLE.toString (), ColumnType.STRING.toString ()});
+    			{ColumnType.DOUBLE.toString (), ColumnType.STRING.toString (),
+    			ColumnType.DATETIME.toString ()});
     }
 }
