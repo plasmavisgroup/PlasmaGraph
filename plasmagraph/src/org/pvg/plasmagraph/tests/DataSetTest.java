@@ -8,6 +8,7 @@ import org.jfree.chart.plot.PlotOrientation;
 import org.junit.Test;
 import org.pvg.plasmagraph.utils.data.DataColumn;
 import org.pvg.plasmagraph.utils.data.DataSet;
+import org.pvg.plasmagraph.utils.data.GraphPair;
 import org.pvg.plasmagraph.utils.graphs.BarGraph;
 import org.pvg.plasmagraph.utils.graphs.XYGraph;
 import org.pvg.plasmagraph.utils.template.Template;
@@ -16,16 +17,16 @@ public class DataSetTest {
 
 	@Test
 	public void testDataSet () {
-		DataColumn<String> dc = new DataColumn<String> ("Words per Minute", "string");
+		DataColumn<String> dc = new DataColumn<> ("Words per Minute", "string");
 		assertTrue ("Test the type parameter:", dc.getType ().equals ("String"));
 	}
 
 	@Test
 	public void testAdd () {
 		// Set up test.
-		DataSet ds = new DataSet ();
-		DataColumn<String> dc1 = new DataColumn<String> ("Pie Flavors", "string");
-		DataColumn<Double> dc2 = new DataColumn<Double> ("Pie Quantity", "double");
+		DataSet ds = new DataSet (false);
+		DataColumn<String> dc1 = new DataColumn<> ("Pie Flavors", "string");
+		DataColumn<Double> dc2 = new DataColumn<> ("Pie Quantity", "double");
 		
 		// add(string)
 		assertFalse ("Basic add (String) test with DataColumn: ", dc1.add (""));
@@ -65,21 +66,21 @@ public class DataSetTest {
 		System.out.println (ds.toString ());
 	}
 
-	@Test
-	public void testRemoveDataColumn () {
-		DataSet ds = prepareDataset ();
-		System.out.println (ds.toString ());
-		
-		assertTrue ("Removing first datacolumn: ", ds.remove (0) != null);
-	}
+	//@Test
+	//public void testRemoveDataColumn () {
+	//	DataSet ds = prepareDataset ();
+	//	System.out.println (ds.toString ());
+	//	
+	//	assertTrue ("Removing first datacolumn: ", ds.remove (0) != null);
+	//}
 
 
 	@Test
 	public void testFind () {
 		// Generate DataSet
-		DataSet ds = new DataSet ();
-		DataColumn <Double> dc1 = new DataColumn <Double> ("Time", "double");
-		DataColumn <Double> dc2 = new DataColumn <Double> ("Distance", "double");
+		DataSet ds = new DataSet (false);
+		DataColumn <Double> dc1 = new DataColumn <> ("Time", "double");
+		DataColumn <Double> dc2 = new DataColumn <> ("Distance", "double");
 		
 		dc1.add (0.0); dc2.add (0.0);
 		dc1.add (1.0); dc2.add (5.0);
@@ -105,7 +106,7 @@ public class DataSetTest {
 	public void testContains () {
 		DataSet ds = prepareDataset ();
 		
-		DataColumn<String> dc1 = new DataColumn<String> ("Pie Flavors", "string");
+		DataColumn<String> dc1 = new DataColumn<> ("Pie Flavors", "string");
 		dc1.add ("Pecan");
 		dc1.add ("Apple");
 		dc1.add ("Cherry");
@@ -118,9 +119,9 @@ public class DataSetTest {
 	@Test
 	public void testGet () {
 		// Generate DataSet
-		DataSet ds = new DataSet ();
-		DataColumn <Double> dc1 = new DataColumn <Double> ("Time", "double");
-		DataColumn <Double> dc2 = new DataColumn <Double> ("Distance", "double");
+		DataSet ds = new DataSet (false);
+		DataColumn <Double> dc1 = new DataColumn <> ("Time", "double");
+		DataColumn <Double> dc2 = new DataColumn <> ("Distance", "double");
 		
 		dc1.add (0.0); dc2.add (0.0);
 		dc1.add (1.0); dc2.add (5.0);
@@ -178,9 +179,10 @@ public class DataSetTest {
 	@Test
 	public void testToXYGraphDataset () {
 		// Generate DataSet
-		DataSet ds = new DataSet ();
-		DataColumn <Double> dc1 = new DataColumn <Double> ("Time", "double");
-		DataColumn <Double> dc2 = new DataColumn <Double> ("Distance", "double");
+		DataSet ds = new DataSet (false);
+		DataColumn <Double> dc1 = new DataColumn <> ("Time", "double");
+		DataColumn <Double> dc2 = new DataColumn <> ("Distance", "double");
+		GraphPair p = new GraphPair (0, 1, "To XY Graph Dataset Test");
 		
 		dc1.add (0.0); dc2.add (0.0);
 		dc1.add (1.0); dc2.add (5.0);
@@ -196,7 +198,7 @@ public class DataSetTest {
 		//t.openTemplate (new java.io.File ("./template/graph_test.tem"));
 		
 		// Graph data via the XYGraph class!
-		XYGraph chart = new XYGraph (t, ds);
+		XYGraph chart = new XYGraph (t, ds, p);
 		chart.pack ();
 		chart.setVisible (true);
 		assertTrue ("Correctly Displayed?: ", JOptionPane.showConfirmDialog
@@ -208,6 +210,7 @@ public class DataSetTest {
 	@Test
 	public void testToBarGraphDataset () {
 		DataSet ds = prepareDataset ();
+		GraphPair p = new GraphPair (0, 1, "To Bar Graph Dataset Test");
 		
 		// Generate Template.
 		Template t = new Template ();
@@ -215,7 +218,7 @@ public class DataSetTest {
 		//t.openTemplate (new java.io.File ("./template/graph_test.tem"));
 		
 		// Graph data via the XYGraph class!
-		BarGraph chart = new BarGraph (t, ds);
+		BarGraph chart = new BarGraph (t, ds, p);
 		chart.pack ();
 		chart.setVisible (true);
 		assertTrue ("Correctly Displayed?: ", JOptionPane.showConfirmDialog
@@ -227,11 +230,21 @@ public class DataSetTest {
 	@Test
 	public void testGetColumnLength () {
 		DataSet ds = prepareDataset ();
-		DataSet empty = new DataSet ();
+		DataSet empty = new DataSet (false);
 		
 		assertTrue ("Checking column length.", ds.getColumnLength () == 3);
 		assertTrue ("Checking col. len. of empty col.: ", empty.getColumnLength () == 0);
 		assertTrue ("Checking index columnLength:", ds.getColumnLength () == ds.getColumnLength (1));
+	}
+	
+	@Test
+	public void testAppendDataSet () {
+		DataSet ds1 = prepareDataset ();
+		DataSet ds2 = prepareDataset ();
+		
+		assertTrue ("Testing append success.", ds1.append (ds2));
+		assertEquals ("Testing resulting DataSet size.", 2, ds1.size ());
+		assertEquals ("Testing resulting DataSet column size.", 6, ds1.getColumnLength ());
 	}
 	
 	// Support methods.
@@ -240,7 +253,7 @@ public class DataSetTest {
 	 * @return A basic dataset to test over.
 	 */
 	private DataSet prepareDataset () {
-		DataSet ds = new DataSet ();
+		DataSet ds = new DataSet (false);
 		DataColumn<String> dc1 = new DataColumn<String> ("Pie Flavors", "string");
 		DataColumn<Double> dc2 = new DataColumn<Double> ("Pie Quantity", "double");
 		

@@ -9,24 +9,38 @@ import javax.swing.event.ChangeEvent;
 import javax.swing.event.ChangeListener;
 
 import org.pvg.plasmagraph.models.MainModel;
+import org.pvg.plasmagraph.utils.exceptions.TemplateGroupByColumnNotFoundException;
 import org.pvg.plasmagraph.views.AestheticView;
 import org.pvg.plasmagraph.views.DataSetView;
 import org.pvg.plasmagraph.views.MainView;
 import org.pvg.plasmagraph.views.ToolView;
 
-// TODO: Add more JavaDoc comments!
+/**
+ * Controller for the Main MVC.
+ * Manages messages being sent around the program from the MainView.
+ * 
+ * @author Gerardo A. Navas Morales
+ */
 public class MainController {
     /** Reference to model related to this controller. */
-    private MainModel main_model;
+    MainModel main_model;
     /** Reference to view related to this controller. */
-    private MainView main_view;
+    MainView main_view;
     /** Reference to AestheticView included in this Frame's JTabbedFrame. */
-    private AestheticView aesthetic_view;
+    AestheticView aesthetic_view;
     /** Reference to DataSetView included in this Frame's JTabbedFrame. */
-    private DataSetView data_view;
+    DataSetView data_view;
     /** Reference to ToolView included in this Frame's JTabbedFrame. */
-    private ToolView tool_view;
+    ToolView tool_view;
     
+    /**
+     * 
+     * @param main_model
+     * @param main_view
+     * @param aesthetic_view_reference
+     * @param data_view_reference
+     * @param tool_view_reference
+     */
     public MainController (MainModel main_model, MainView main_view, 
                     AestheticView aesthetic_view_reference, DataSetView data_view_reference,
                     ToolView tool_view_reference) {
@@ -204,7 +218,8 @@ public class MainController {
 
                 @Override
                 protected Void doInBackground () throws Exception {
-                    main_model.graph ();
+                    main_model.graph (main_view.getOutlierSwitch (),
+                    		main_view.getInterpolationSwitch ());
                     return null;
                 }
                 
@@ -241,21 +256,26 @@ public class MainController {
         
         @Override
         public void stateChanged (ChangeEvent arg0) {
-            if (arg0.getSource () instanceof JTabbedPane) {
-                switch (((JTabbedPane) arg0.getSource ()).getSelectedComponent ().getName ()) {
-                    case "Aesthetic View":
-                        aesthetic_view.updateView ();
-                        break;
-                    case "Data Set View":
-                        data_view.updateView ();
-                        break;
-                    case "Tool View":
-                        tool_view.updateView ();
-                        break;
-                    default:
-                        break;
-                }
-            }
+        	try {
+	            if (arg0.getSource () instanceof JTabbedPane) {
+	                switch (((JTabbedPane) arg0.getSource ()).getSelectedComponent ().getName ()) {
+	                    case "Aesthetic View": //$NON-NLS-1$
+	                        aesthetic_view.updateView ();
+	                        break;
+	                    case "Data Set View": //$NON-NLS-1$
+							data_view.updateView ();
+	                        break;
+	                    case "Tool View": //$NON-NLS-1$
+	                        tool_view.updateView ();
+	                        break;
+	                    default:
+	                        break;
+	                }
+	            }
+        	} catch (TemplateGroupByColumnNotFoundException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
         }
     }
     

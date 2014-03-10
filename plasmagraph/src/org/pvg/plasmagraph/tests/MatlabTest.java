@@ -5,7 +5,7 @@ import static org.junit.Assert.*;
 import java.io.File;
 
 import org.junit.Test;
-import org.pvg.plasmagraph.utils.data.DataSet;
+import org.pvg.plasmagraph.utils.data.HeaderData;
 import org.pvg.plasmagraph.utils.data.readers.MatlabReader;
 
 public class MatlabTest {
@@ -24,7 +24,7 @@ public class MatlabTest {
         MatlabReader mlr = new MatlabReader();
         //DataSet data = mlr.toDataSet(dummy, filter);
         //mlr.toString(dummy);
-        DataSet data = mlr.toDataSet(dummy);
+        HeaderData data = mlr.toDataSet(dummy);
         //System.out.println(data.toString());
         
         fail ("Not yet implemented"); // TODO

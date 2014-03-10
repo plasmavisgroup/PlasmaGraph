@@ -1,8 +1,15 @@
 package org.pvg.plasmagraph.utils.data;
 
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.Iterator;
-import java.util.NoSuchElementException;
+import java.util.Set;
+
+import javax.swing.event.ChangeEvent;
+import javax.swing.event.ChangeListener;
+
+import org.jfree.data.category.DefaultCategoryDataset;
+import org.jfree.data.xy.XYSeries;
 
 /**
  * A reference-holding object, to be used parallel to DataSet, that maintains 
@@ -12,17 +19,18 @@ import java.util.NoSuchElementException;
  * 
  * @author Gerardo A. Navas Morales
  */
-public class DataReference implements Iterator<Pair>, Iterable<Pair>{
+public class DataReference implements Iterable<GraphPair> {
+	/** Collection of listeners for any change that occurs in this DataReference. */
+    private Set <ChangeListener> listeners;
 	/** Container for Reference Pairs. */
-	private ArrayList<Pair> table;
-	/** Position of Iterator object; used for the implementation of Iterator and Iterable. */
-	private int position = 0;
+	private ArrayList<GraphPair> table;
 	
 	/**
 	 * Constructor; initializes the ArrayList container.
 	 */
 	public DataReference () {
-		table = new ArrayList <Pair> ();
+		this.listeners = new HashSet <> ();
+		table = new ArrayList <> ();
 	}
 	
 	/**
@@ -32,12 +40,14 @@ public class DataReference implements Iterator<Pair>, Iterable<Pair>{
 	 * @param p Pair to add to the ArrayList.
 	 * @return A boolean specifying method success (true) or failure (false).
 	 */
-	public boolean add (Pair p) {
+	public boolean add (GraphPair p) {
 	    // Check to see if the indices are even possible.
 	    // Also check to see if the name of the Pair is even useful.
-	    if ((p.getIndex1 () > 0) && (p.getIndex2 () > 0) &&
+	    if ((p.getIndex1 () >= 0) && (p.getIndex2 () >= 0) &&
 	            (p.getName ().contains ("vs."))) {
-	        return (table.add(p));
+	    	boolean b = table.add(p);
+	    	this.notifyListeners ();
+	        return (b);
 	    } else {
 	        return (false);
 	    }
@@ -53,13 +63,7 @@ public class DataReference implements Iterator<Pair>, Iterable<Pair>{
 	 * @return A boolean specifying method success (true) or failure (false).
 	 */
 	public boolean add (int p1, int p2, String name) {
-	    // Check to see if the indices are even possible.
-	    // Also check to see if the name of the Pair is even useful.
-	    if ((p1 > 0) && (p2 > 0) && (name.contains ("vs."))) {
-	        return (table.add (new Pair (p1, p2, name)));
-	    } else {
-	        return (false);
-	    }
+	    return (this.add (new GraphPair (p1, p2, name)));
 	}
 
 	/**
@@ -69,8 +73,10 @@ public class DataReference implements Iterator<Pair>, Iterable<Pair>{
 	 * @param index Location on the ArrayList where the object to be removed is located.
 	 * @return A Pair that was removed from the ArrayList.
 	 */
-	public Pair remove (int index) {
-	    return (table.remove(index));
+	public GraphPair remove (int index) {
+		GraphPair p = table.remove (index);
+		this.notifyListeners ();
+	    return (p);
     }
 	
 	/**
@@ -80,8 +86,19 @@ public class DataReference implements Iterator<Pair>, Iterable<Pair>{
 	 * @param p Pair to remove from the ArrayList.
 	 * @return A boolean specifying method success (true) or failure (false).
 	 */
-	public boolean remove (Pair p) {
-		return (table.remove(p));
+	public boolean remove (GraphPair p) {
+		boolean b = table.remove (p);
+		this.notifyListeners ();
+		return (b);
+	}
+	
+	/**
+	 * Removes all pairs from the DataReference object.
+	 * Only used to reset the Pairs when an incompatible Data file is imported.
+	 */
+	public void reset () {
+		this.table.clear ();
+		this.notifyListeners ();
 	}
 
 	/**
@@ -91,7 +108,7 @@ public class DataReference implements Iterator<Pair>, Iterable<Pair>{
 	 * @param p Pair to find in the ArrayList.
 	 * @return Index location of the object in the ArrayList.
 	 */
-	public int findIndex (Pair p) {
+	public int findIndex (GraphPair p) {
 		return (table.indexOf(p));
 	}
 	
@@ -120,7 +137,7 @@ public class DataReference implements Iterator<Pair>, Iterable<Pair>{
      * @param p Pair to find in the ArrayList.
      * @return Index location of the object in the ArrayList.
      */
-    public Pair findPair (int index) {
+    public GraphPair findPair (int index) {
         return (table.get (index));
     }
     
@@ -132,7 +149,7 @@ public class DataReference implements Iterator<Pair>, Iterable<Pair>{
      * @param s Sting name of the Pair in the ArrayList.
      * @return Index location of the object in the ArrayList.
      */
-    public Pair findPair (String s) {
+    public GraphPair findPair (String s) {
         int j = 0; boolean found = false;
         for (int i = 0; (i < table.size()) && !found; ++i) {
             if (table.get(i).getName().equals(s)) {
@@ -148,7 +165,7 @@ public class DataReference implements Iterator<Pair>, Iterable<Pair>{
 	 * @param index Location of Pair.
 	 * @return The desired Pair at the provided index.
 	 */
-	public Pair get (int index) {
+	public GraphPair get (int index) {
 	    return (table.get (index));
 	}
 	
@@ -158,31 +175,12 @@ public class DataReference implements Iterator<Pair>, Iterable<Pair>{
      */
     public String [] getNames () {
         String [] names = new String [table.size ()];
-        ArrayList <String> pair_names = new ArrayList <String> ();
-        for (Pair p : this.table) {
+        ArrayList <String> pair_names = new ArrayList <> ();
+        for (GraphPair p : this.table) {
             pair_names.add (p.getName ());
         }
         pair_names.toArray (names);
         return (names);
-    }
-    
-    /**
-     * Provides a DataSet around a Pair whose index is provided.
-     * Based on the primary dataset passed by reference.
-     * 
-     * @param pair_position Index location of the Pair to extract.
-     * @param main_dataset Reference to the primary DataSet.
-     * @return A new DataSet, containing the desired Pair of data.
-     */
-    public DataSet createPair (int pair_position, DataSet main_dataset) {
-        DataSet d = new DataSet ();
-        
-        Pair p = get (pair_position);
-        	
-    	d.add (main_dataset.get(p.getIndex1 () - 1));
-        d.add (main_dataset.get(p.getIndex2 () - 1));
-        
-        return (d);
     }
 	
 	/**
@@ -204,7 +202,7 @@ public class DataReference implements Iterator<Pair>, Iterable<Pair>{
 	public String toString () {
 	    String s = "";
 	    
-	    for (Pair p : this.table) {
+	    for (GraphPair p : this.table) {
 	        s += p.toString () + "\n";
 	    }
 	    
@@ -212,24 +210,41 @@ public class DataReference implements Iterator<Pair>, Iterable<Pair>{
 	}
 
 	@Override
-	public Iterator<Pair> iterator () {
-		return (this);
+	public Iterator<GraphPair> iterator () {
+		return (this.table.iterator ());
 	}
 
-	@Override
-	public boolean hasNext () {
-		return (position < table.size());
+	public int size () {
+		return (this.table.size ());
 	}
-
-	@Override
-	public Pair next () {
-		if (position == table.size()) { throw new NoSuchElementException (); }
-	    return (table.get(++position));
+	
+	// Event Methods
+	/**
+	 * Adds the listener provided to the notification list.
+	 * 
+	 * @param listener Listener to add to the notification list.
+	 */
+	public void addChangeListener (ChangeListener listener) {
+	    this.listeners.add (listener);
 	}
-
-	@Override
-	public void remove () {
-		throw new UnsupportedOperationException();
+	
+	/**
+	 * Removes the listener provided from the notification list.
+	 * 
+	 * @param listener Listener to remove from notification list.
+	 */
+	public void removeChangeListener (ChangeListener listener) {
+	    this.listeners.remove (listener);
+	}
+	
+	/**
+	 * Sends a ChangeEvent to all listeners of this object,
+	 * declaring that this Template object has been changed in some way.
+	 */
+	public void notifyListeners () {
+	    for (ChangeListener c : listeners) {
+	        c.stateChanged (new ChangeEvent (this));
+	    }
 	}
 	
 }

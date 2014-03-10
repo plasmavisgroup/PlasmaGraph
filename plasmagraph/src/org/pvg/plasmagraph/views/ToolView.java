@@ -35,10 +35,20 @@ public class ToolView extends javax.swing.JPanel {
 	* Updates ToolView's Components based on the current state of the Template.
 	*/
     public void updateView () {
-        this.interpolation_type_combo_box.setSelectedItem (this.tool_model.getTemplate ().getInterpolationType ().toString ());
-        this.outlier_action_combo_box.setSelectedItem (this.tool_model.getTemplate ().getOutlierResponse ().toString ());
-        updateTargetDataSetComboBox ();
+        this.updateTemplateView ();
     }
+    
+    /**
+	* Updates ToolView's Template-based Components based on the current 
+	* state of the Template.
+	*/
+	public void updateTemplateView () {
+		this.interpolation_type_combo_box.setSelectedItem (this.tool_model.getTemplate ().getInterpolationType ().toString ());
+        this.outlier_action_combo_box.setSelectedItem (this.tool_model.getTemplate ().getOutlierResponse ().toString ());
+        this.lower_bound_text_field.setText (String.valueOf (this.tool_model.getTemplate ().getLowerInterval ()));
+        this.upper_bound_text_field.setText (String.valueOf (this.tool_model.getTemplate ().getUpperInterval ()));
+        this.interval_text_field.setText (String.valueOf (this.tool_model.getTemplate ().getInterpolationInterval ()));
+	}
     
     /**
 	* Getter Method. Provides this object's selected interpolation type in the form of an InterpolationType object.
@@ -74,16 +84,6 @@ public class ToolView extends javax.swing.JPanel {
             return (OutlierResponse.REMOVE);
         }
     }
-
-    /**
-	* Getter Method. Provides this object's selected data pair's index for the
-	* purposes of performing Interpolation or Outlier Search operations on them.
-	*
-	* @return Integer value of the selected index for the "target_data_set_combo_box".
-	*/
-    public int getSelectedDataPairIndex () {
-        return (this.target_data_set_combo_box.getSelectedIndex ());
-    }
     
     /**
      * Getter Method. Returns the contents of the "lower_bound_text_field" as a
@@ -116,16 +116,6 @@ public class ToolView extends javax.swing.JPanel {
 	}
     
     /**
-	* Setter Method. Updates the selected data pair's combo box options based on the
-	* values contained in "tool_model"'s DataReference object.
-	*/
-    private void updateTargetDataSetComboBox () {
-        target_data_set_combo_box.setModel
-            (new javax.swing.DefaultComboBoxModel <String>
-            (tool_model.getDataReferenceNames ()));
-    }
-    
-    /**
 	* Initializes the visual components of this view form.
 	*/
     private void initComponents () {
@@ -140,17 +130,13 @@ public class ToolView extends javax.swing.JPanel {
         lower_bound_text_field = new javax.swing.JTextField();
         upper_bound_text_field = new javax.swing.JTextField();
         interval_text_field = new javax.swing.JTextField();
-        outlier_model = new javax.swing.DefaultComboBoxModel <String> (
+        outlier_model = new javax.swing.DefaultComboBoxModel <> (
                 OutlierResponse.getOptions ());
-        interpolation_model = new javax.swing.DefaultComboBoxModel <String>
+        interpolation_model = new javax.swing.DefaultComboBoxModel <>
         		(InterpolationType.getOptions ());
-        target_data_model = new javax.swing.DefaultComboBoxModel <String> (
-        		new String [] {"Derp", "Nope"});
-        interpolation_type_combo_box = new javax.swing.JComboBox <String>
+        interpolation_type_combo_box = new javax.swing.JComboBox <>
         		(interpolation_model);
-        target_data_set_combo_box = new javax.swing.JComboBox <String>
-        		(target_data_model);
-        outlier_action_combo_box = new javax.swing.JComboBox <String>
+        outlier_action_combo_box = new javax.swing.JComboBox <>
         		(outlier_model);
         interpolation_separator = new javax.swing.JSeparator();
         outlier_separator = new javax.swing.JSeparator();
@@ -160,9 +146,13 @@ public class ToolView extends javax.swing.JPanel {
         lower_bound_label.setText ("Lower Bound");
         upper_bound_label.setText ("Upper Bound");
         interval_label.setText ("# of Points");
+        lower_bound_text_field.setText ("0");
+        upper_bound_text_field.setText ("10");
+        interval_text_field.setText ("100");
         lower_bound_text_field.setHorizontalAlignment (javax.swing.JTextField.TRAILING);
         upper_bound_text_field.setHorizontalAlignment (javax.swing.JTextField.TRAILING);
         interval_text_field.setHorizontalAlignment (javax.swing.JTextField.TRAILING);
+
         
         // Outlier Filtering
         outlier_filtering_label.setText ("Outlier Filtering");
@@ -196,8 +186,7 @@ public class ToolView extends javax.swing.JPanel {
                             .addGroup(layout.createSequentialGroup()
                                 .addComponent(upper_bound_label)
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                                .addComponent(upper_bound_text_field))
-                            .addComponent(target_data_set_combo_box, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                                .addComponent(upper_bound_text_field))))
                     .addGroup(layout.createSequentialGroup()
                         .addComponent(outlier_filtering_label)
                         .addGap(42, 42, 42)
@@ -210,7 +199,6 @@ public class ToolView extends javax.swing.JPanel {
             .addGroup(layout.createSequentialGroup()
                 .addContainerGap()
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(target_data_set_combo_box, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                         .addComponent(interpolation_label)
                         .addComponent(interpolation_type_combo_box, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
@@ -246,10 +234,8 @@ public class ToolView extends javax.swing.JPanel {
     private javax.swing.JLabel interval_label;
     private javax.swing.JComboBox <String> interpolation_type_combo_box;
     private javax.swing.JComboBox <String> outlier_action_combo_box;
-    private javax.swing.JComboBox <String> target_data_set_combo_box;
     private javax.swing.DefaultComboBoxModel <String> outlier_model;
     private javax.swing.DefaultComboBoxModel <String> interpolation_model;
-    private javax.swing.DefaultComboBoxModel <String> target_data_model;
     private javax.swing.JSeparator interpolation_separator;
     private javax.swing.JSeparator outlier_separator;
     private javax.swing.JTextField lower_bound_text_field;

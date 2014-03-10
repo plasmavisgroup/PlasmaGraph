@@ -10,12 +10,12 @@ package testviews;
  *
  * @author tako
  */
-public class NewView extends javax.swing.JPanel {
+public class TestOptionsView extends javax.swing.JPanel {
 
     /**
      * Creates new form NewView
      */
-    public NewView() {
+    public TestOptionsView() {
         initComponents();
     }
 

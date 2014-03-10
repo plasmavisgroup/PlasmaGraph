@@ -10,10 +10,11 @@ import org.jfree.chart.plot.PlotOrientation;
 import org.junit.Test;
 import org.pvg.plasmagraph.utils.data.DataColumn;
 import org.pvg.plasmagraph.utils.data.DataSet;
+import org.pvg.plasmagraph.utils.data.GraphPair;
 import org.pvg.plasmagraph.utils.graphs.BarGraph;
 import org.pvg.plasmagraph.utils.graphs.XYGraph;
 import org.pvg.plasmagraph.utils.template.Template;
-public class GraphTests {
+public class GraphTest {
 	
 	Random rand = new Random ();
 	
@@ -21,13 +22,14 @@ public class GraphTests {
 	public void testXYGraphs () {
 		// Generate data.
 		DataSet ds = xyDataTest ();
+		GraphPair p = new GraphPair (0, 1, "XY Graph Test");
 		
 		// Generate Template.
 		Template t = new Template ();
 		//t.openTemplate (new java.io.File ("./template/graph_test.tem"));
 		
 		// Graph data via the XYGraph class!
-		XYGraph chart = new XYGraph (t, ds);
+		XYGraph chart = new XYGraph (t, ds, p);
 		chart.pack ();
 		chart.setVisible (true);
 		
@@ -42,6 +44,7 @@ public class GraphTests {
 	public void testBarGraph () {
 		// Generate data.
 		DataSet ds = BarGraphDataSet ();
+		GraphPair p = new GraphPair (0, 1, "Bar Graph Test");
 		
 		// Generate Template.
 		Template t = new Template ();
@@ -49,7 +52,7 @@ public class GraphTests {
 		//t.openTemplate (new java.io.File ("./template/graph_test.tem"));
 		
 		// Graph data via the XYGraph class!
-		BarGraph chart = new BarGraph (t, ds);
+		BarGraph chart = new BarGraph (t, ds, p);
 		chart.pack ();
 		chart.setVisible (true);
 		
@@ -61,9 +64,9 @@ public class GraphTests {
 	}
 	
 	private DataSet BarGraphDataSet () {
-		DataSet ds = new DataSet ();
-		DataColumn<String> dc1 = new DataColumn<String> ("Pie Flavors", "string");
-		DataColumn<Double> dc2 = new DataColumn<Double> ("Pie Quantity", "double");
+		DataSet ds = new DataSet (false);
+		DataColumn<String> dc1 = new DataColumn<> ("Pie Flavors", "string");
+		DataColumn<Double> dc2 = new DataColumn<> ("Pie Quantity", "double");
 		
 		dc1.add ("Pecan");
 		dc1.add ("Apple");
@@ -86,13 +89,13 @@ public class GraphTests {
 	 * @return A new DataSet of DataRows with Time / Position / Velocity data.
 	 */
 	private DataSet xyDataTest () {
-		DataSet ds = new DataSet ();
+		DataSet ds = new DataSet (false);
 		
 		// Columns: Time, Position, Velocity
 		double prev = 0;
 		// Initialize a new row...
-		DataColumn <Double> r1 = new DataColumn <Double> ("Time", "double");
-		DataColumn <Double> r2 = new DataColumn <Double> ("Position", "double");
+		DataColumn <Double> r1 = new DataColumn <> ("Time", "double");
+		DataColumn <Double> r2 = new DataColumn <> ("Position", "double");
 		
 		for (int i = 0; i < 5; ++i ) {
 			
