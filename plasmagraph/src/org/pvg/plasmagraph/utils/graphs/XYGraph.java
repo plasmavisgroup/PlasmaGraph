@@ -78,18 +78,6 @@ public class XYGraph extends JFrame implements Graph {
 	}
 
 	/**
-	 * Basic constructor. Creates a XYGraph from a Template and DataSet reference.
-	 * 
-	 * @param t_reference Template reference used in the formation of 
-	 * various parts of the graph.
-	 * @param ds_reference DataSet reference used in the creation of the graph.
-	 */
-	public XYGraph (Template t_reference, ArrayList <DoublePoint> set, GraphPair p) {
-		super (t_reference.getChartName ());
-		setContentPane (createJPanel (t_reference, set, p));
-	}
-
-	/**
 	 * Creates a JPanel containing the chart. Sets the availability of graph-saving.
 	 * 
 	 * @param t Template reference used in the formation of various parts 

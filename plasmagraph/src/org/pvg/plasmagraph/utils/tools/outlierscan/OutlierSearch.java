@@ -1,7 +1,9 @@
 package org.pvg.plasmagraph.utils.tools.outlierscan;
 
-import org.pvg.plasmagraph.utils.data.DataReference;
+import org.pvg.plasmagraph.utils.data.DataSet;
+import org.pvg.plasmagraph.utils.data.GraphPair;
 import org.pvg.plasmagraph.utils.data.HeaderData;
+import org.pvg.plasmagraph.utils.exceptions.FunctionNotImplementedException;
 import org.pvg.plasmagraph.utils.template.Template;
 import org.pvg.plasmagraph.utils.tools.outlierscan.methods.ClusterScanning;
 import org.pvg.plasmagraph.utils.tools.outlierscan.methods.ModifiedThompsonTauScanning;
@@ -15,15 +17,16 @@ public class OutlierSearch {
      * and all outliers via the IQR (Interquartile Range) method.
      * 
      * @param ds The focused DataSet of values.
+     * @throws FunctionNotImplementedException 
      */
-    public static void scanForOutliers (HeaderData hd, Template t, DataReference dr) {
+    public static DataSet scanForOutliers (HeaderData hd, Template t, GraphPair p) throws FunctionNotImplementedException {
 
     	// XY Graphs require a clustering method.
     	if (t.getChartType () == ChartType.XY_GRAPH) {
     		
     		ScanMethod sm = new ClusterScanning ();
     		
-    		sm.scan (hd, t, dr);
+    		return (sm.scan (hd, t, p));
     		
     	} // Bar Charts require a simple y-value method, like the Modified Thompson Tau!
     	else if (t.getChartType () == ChartType.BAR_GRAPH) {
@@ -31,12 +34,11 @@ public class OutlierSearch {
     		// Modified Thompson Tau!
     		ScanMethod sm = new ModifiedThompsonTauScanning ();
         	
-    		sm.scan (hd, t, dr);
+    		return (sm.scan (hd, t, p));
     		
     	}
     	else {
-    		javax.swing.JOptionPane.showMessageDialog (null, 
-    				"This is not a supported graph type for this function!");
+    		throw (new FunctionNotImplementedException ());
     	}
     	
     }

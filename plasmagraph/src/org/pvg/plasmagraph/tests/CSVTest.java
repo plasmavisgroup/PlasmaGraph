@@ -99,7 +99,10 @@ public class CSVTest {
 		DataSet ds1 = new DataSet (false);
 		HeaderData hd = new HeaderData ();
 		csv.getHeaders (hd);
-		csv.toDataSet (ds1, new GraphPair (0, 1, ""), hd, t);
+		
+		System.out.println (hd.toString ());
+		
+		csv.toDataSet (ds1, new GraphPair (0, 1, ""), hd);
 		
 		// Create simulated comparison file.
 		DataSet ds2 = new DataSet (false);

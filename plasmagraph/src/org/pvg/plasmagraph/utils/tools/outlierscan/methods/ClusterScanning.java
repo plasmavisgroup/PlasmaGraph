@@ -9,43 +9,52 @@ import org.apache.commons.math3.ml.clustering.Cluster;
 import org.apache.commons.math3.ml.clustering.DBSCANClusterer;
 import org.apache.commons.math3.ml.clustering.DoublePoint;
 import org.pvg.plasmagraph.utils.ExceptionHandler;
+import org.pvg.plasmagraph.utils.data.DataColumn;
 import org.pvg.plasmagraph.utils.data.DataReference;
 import org.pvg.plasmagraph.utils.data.DataSet;
 import org.pvg.plasmagraph.utils.data.GraphPair;
 import org.pvg.plasmagraph.utils.data.HeaderData;
+import org.pvg.plasmagraph.utils.exceptions.FunctionNotImplementedException;
 import org.pvg.plasmagraph.utils.graphs.XYGraph;
 import org.pvg.plasmagraph.utils.template.Template;
 import org.pvg.plasmagraph.utils.tools.outlierscan.OutlierDistance;
 import org.pvg.plasmagraph.utils.tools.outlierscan.distances.MahalanobisDistance;
 import org.pvg.plasmagraph.utils.types.ChartType;
+import org.pvg.plasmagraph.utils.types.ColumnType;
 import org.pvg.plasmagraph.utils.types.OutlierResponse;
 
 public class ClusterScanning implements ScanMethod {
 
 	@Override
-	public void scan (HeaderData hd, Template t, DataReference dr) {
-		
+	public DataSet scan (HeaderData hd, Template t, GraphPair p) throws FunctionNotImplementedException {
+
 		// Prepare tools for Outlier Scan use.
     	ArrayList <DoublePoint> outlier_array = new ArrayList<> ();
     	List <Cluster<DoublePoint>> dbl_cluster = new ArrayList <> ();
+    	
+    	// ds will always contain the original data.
     	DataSet ds;
     	
-    	// For each pair that we'll be graphing, do the following.
-    	for (GraphPair p : dr) {
-    		ds = hd.populateData (p);//, t);
-    		
-    		// Populate the outlier_array with the correct values.
-    		populate (outlier_array, ds, p);
-    		
-    		// Separate the main values from the outliers, and ask if they'll be graphed.
-    		if (search (dbl_cluster, outlier_array, t)) {
-    			
-    			// Graph as desired.
-        		graph (outlier_array, t, p);
-    		}
-    	}
+		ds = hd.populateData (p);
+		
+		// Populate the outlier_array with the correct values.
+		populate (outlier_array, ds, p);
+		
+		// Separate the main values from the outliers, and ask if they'll be removed.
+		if (search (dbl_cluster, outlier_array, t)) {
+			
+			// Add the core data to the ArrayList.
+			ds = toDataSet (outlier_array, hd.get (p.getIndex1 ()).getKey (),
+					hd.get (p.getIndex2 ()).getKey ());
+			
+			// Graph as desired.
+    		//graph (outlier_array, t, p);
+			
+		}
+    	
+		return (ds);
 	}
-	
+
 	private void populate (List<DoublePoint> outlier_array, DataSet ds, GraphPair p) {
 
 		// For each line in the DataSet, add the Pair's values to the outlier_array.
@@ -81,35 +90,6 @@ public class ClusterScanning implements ScanMethod {
 			return (warn (dbl_cluster, outlier_array, d.getDistanceType (), false));
 		}
 	}
-
-	/**
-	 * Graphs the data provided to it!
-	 * 
-	 * @param outlier_array Data container for the DataSet to scan through.
-	 * @param t Template object of the PlasmaGraph program that defines graph qualities.
-	 */
-	private static void graph (ArrayList<DoublePoint> outlier_array, Template t, GraphPair p) {
-		
-		if (t.getChartType () == ChartType.XY_GRAPH) {
-			
-			XYGraph graph = new XYGraph (t, outlier_array, p);
-			graph.pack ();
-			graph.setVisible (true);
-			
-		} else if (t.getChartType () == ChartType.BAR_GRAPH) {
-			
-			ExceptionHandler.createFunctionNotImplementedException ("Bar Graph Outlier Scan");
-			
-			//BarGraph graph = new BarGraph (t, outlier_array, p);
-			//graph.pack ();
-			//graph.setVisible (true);
-			
-		} else {
-			
-			ExceptionHandler.createFunctionNotImplementedException ("Other Graph Outlier Scan");
-		
-		}
-	}
 	
 	// "scan" support functions
 	/**
@@ -125,17 +105,17 @@ public class ClusterScanning implements ScanMethod {
 	private static boolean warn (List<Cluster<DoublePoint>> dbl_cluster,
 			ArrayList<DoublePoint> outlier_array, String distance_type, boolean ask) {
 		
-		// Prepare the data containers.
-		int total_points = dbl_cluster.size ();
+		// Prepare the outlier container.
 		List <DoublePoint> outliers = getOutliers (dbl_cluster);
 		
 		// Generate the message.
 		StringBuilder sb = new StringBuilder ();
 		
 		sb.append ("Distance Type used: ")
-				.append (distance_type);
+				.append (distance_type)
+				.append ("\n");
 		sb.append ("Total number of points: ")
-				.append (total_points)
+				.append (dbl_cluster.size ())
 				.append ("\n");
 		sb.append ("Number of outliers found: ")
 				.append (outliers.size ())
@@ -232,4 +212,32 @@ public class ClusterScanning implements ScanMethod {
 		return (b);
 	}
 
+	/**
+	 * Turns an ArrayList of DoublePoints into a DataSet.
+	 * 
+	 * @param outlier_array ArrayList of data obtained.
+	 * @return A DataSet containing said data.
+	 */
+	private DataSet toDataSet (ArrayList <DoublePoint> outlier_array,
+			String column_name1, String column_name2) {
+
+		// Prepare DataSet and DataColumns.
+		DataSet ds = new DataSet (false);
+		DataColumn<Double> dc1 = new DataColumn<> (column_name1, ColumnType.DOUBLE);
+		DataColumn<Double> dc2 = new DataColumn<> (column_name2, ColumnType.DOUBLE);
+		
+		// Populate DataColumns
+		for (DoublePoint dp : outlier_array) {
+			
+			dc1.add (new Double (dp.getPoint ()[0]));
+			dc2.add (new Double (dp.getPoint ()[1]));
+			
+		}
+		
+		// Add DataColumns to DataSet.
+		ds.add (dc1); ds.add (dc2);
+		
+		// Return DataSet
+		return (ds);
+	}
 }

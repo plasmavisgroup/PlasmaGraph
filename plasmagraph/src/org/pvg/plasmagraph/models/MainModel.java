@@ -2,6 +2,7 @@ package org.pvg.plasmagraph.models;
 
 //Class Import Block
 import java.io.File;
+import java.util.ArrayList;
 
 import javax.swing.JFileChooser;
 import javax.swing.JOptionPane;
@@ -10,14 +11,17 @@ import javax.swing.filechooser.FileNameExtensionFilter;
 import org.pvg.plasmagraph.utils.ExceptionHandler;
 import org.pvg.plasmagraph.utils.FileUtilities;
 import org.pvg.plasmagraph.utils.data.DataReference;
+import org.pvg.plasmagraph.utils.data.DataSet;
 import org.pvg.plasmagraph.utils.data.HeaderData;
 import org.pvg.plasmagraph.utils.data.GraphPair;
 import org.pvg.plasmagraph.utils.data.filter.DataFilter;
 import org.pvg.plasmagraph.utils.data.filter.DataFilterWindow;
 import org.pvg.plasmagraph.utils.data.readers.CSVProcessor;
 import org.pvg.plasmagraph.utils.data.readers.MatlabReader;
+import org.pvg.plasmagraph.utils.exceptions.FunctionNotImplementedException;
 import org.pvg.plasmagraph.utils.exceptions.IncorrectParametersException;
 import org.pvg.plasmagraph.utils.graphs.BarGraph;
+import org.pvg.plasmagraph.utils.graphs.GraphViewer;
 import org.pvg.plasmagraph.utils.graphs.XYGraph;
 import org.pvg.plasmagraph.utils.template.Template;
 import org.pvg.plasmagraph.utils.tools.interpolation.Interpolator;
@@ -403,43 +407,100 @@ public class MainModel {
      * @param outlier_switch 
      * @param interpolation_switch 
      * @throws IncorrectParametersException 
+     * @throws FunctionNotImplementedException 
      */
-    public void graph (boolean outlier_switch, boolean interpolation_switch) throws IncorrectParametersException {
+    public void graph (boolean outlier_switch, boolean interpolation_switch) throws IncorrectParametersException, FunctionNotImplementedException {
     	
     	if (outlier_switch) {
-    		log ("Outlier Scanning...");
-    		OutlierSearch.scanForOutliers (hd, t, dr);
+    		scannedGraphing (interpolation_switch);
+    	} else {
+    		unscannedGraphing (interpolation_switch);
     	}
     	
-    	if (interpolation_switch) {
-    		log ("Interpolating.");
-			Interpolator.interpolate (hd, t, dr);
+    }
+    
+    /**
+     * Graphs the columns specified in DataReference dr with 
+     * data in DataSet ds according to the settings in Template t.
+     * Uses JFreeChart to create the appropriate graph!
+     * Does not scan the data for outliers before other functions.
+     * 
+     * @param interpolation_switch 
+     * @throws IncorrectParametersException 
+     */
+    private void unscannedGraphing (boolean interpolation_switch) throws IncorrectParametersException {
+    	// Repeat for each GraphPair to use to generate a graph.
+    	for (GraphPair p : dr) {
+    	
+	    	if (interpolation_switch) {
+	    		
+	    		log ("Interpolating.");
+				Interpolator.interpolate (hd, t, p);
+	    		
+	    	} else {
+	    		
+	    		if (t.getChartType ().equals (ChartType.XY_GRAPH)) {
+	    				
+	    				// Create the graph
+	    				GraphViewer.createXYGraph (t, hd, p);
+	    			
+	    		} else if (t.getChartType ().equals (ChartType.BAR_GRAPH)) {
+	    				
+	    				// Create the graph
+	    				GraphViewer.createBarGraph (t, hd, p);
+	    			
+	    		} else {
+	    			ExceptionHandler.createFunctionNotImplementedException 
+	    					("Graph - Not XY or Bar Graph");
+	    		}
+	    	}
+    	}
+    }
+    
+    /**
+     * Graphs the columns specified in DataReference dr with 
+     * data in DataSet ds according to the settings in Template t.
+     * Uses JFreeChart to create the appropriate graph!
+     * Scans the data for outliers before other functions.
+     * 
+     * @param interpolation_switch 
+     * @throws IncorrectParametersException 
+     * @throws FunctionNotImplementedException 
+     */
+    private void scannedGraphing (boolean interpolation_switch) throws IncorrectParametersException, FunctionNotImplementedException {
+    	for (GraphPair p: dr) {
+    		//log ("Outlier Scanning...");
+    		DataSet ds = OutlierSearch.scanForOutliers (hd, t, p);
     		
-    	} else {
-    		if (t.getChartType ().equals (ChartType.XY_GRAPH)) {
-    			for (GraphPair p : dr) {
-    				
-    				// Create the graph
-    				XYGraph graph = new XYGraph (t, hd, p);
-    				
-    				// Display the graph.
-    				graph.pack ();
-    				graph.setVisible (true);
-    			}
-    		} else if (t.getChartType ().equals (ChartType.BAR_GRAPH)) {
-    			for (GraphPair p : dr) {
-    				
-    				// Create the graph
-    				BarGraph graph = new BarGraph (t, hd, p);
-    				
-    				// Display the graph.
-    				graph.pack ();
-    				graph.setVisible (true);
-    			}
-    		} else {
-    			ExceptionHandler.createFunctionNotImplementedException 
-    					("Graph - Not XY or Bar Graph");
-    		}
+    		if (interpolation_switch) {
+    			
+        		//log ("Interpolating.");
+    			Interpolator.interpolate (ds, t, p);
+        		
+        	} else {
+        		
+        		if (t.getChartType ().equals (ChartType.XY_GRAPH)) {
+        				// Create the graph
+        				XYGraph graph = new XYGraph (t, ds, p);
+        				
+        				// Display the graph.
+        				graph.pack ();
+        				graph.setVisible (true);
+        			
+        		} else if (t.getChartType ().equals (ChartType.BAR_GRAPH)) {
+        				
+        				// Create the graph
+        				BarGraph graph = new BarGraph (t, ds, p);
+        				
+        				// Display the graph.
+        				graph.pack ();
+        				graph.setVisible (true);
+        			
+        		} else {
+        			ExceptionHandler.createFunctionNotImplementedException 
+        					("Graph - Not XY or Bar Graph");
+        		}
+        	}
     	}
     }
 

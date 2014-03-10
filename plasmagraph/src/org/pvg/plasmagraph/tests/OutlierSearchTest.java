@@ -16,6 +16,7 @@ import org.pvg.plasmagraph.utils.data.DataSet;
 import org.pvg.plasmagraph.utils.data.GraphPair;
 import org.pvg.plasmagraph.utils.data.HeaderData;
 import org.pvg.plasmagraph.utils.data.readers.CSVProcessor;
+import org.pvg.plasmagraph.utils.graphs.GraphViewer;
 import org.pvg.plasmagraph.utils.template.Template;
 import org.pvg.plasmagraph.utils.tools.outlierscan.OutlierSearch;
 import org.pvg.plasmagraph.utils.tools.outlierscan.distances.MahalanobisDistance;
@@ -42,21 +43,20 @@ public class OutlierSearchTest {
 		Template t = new Template ();
 		t.setChartType (ChartType.XY_GRAPH);
 		t.setOutlierResponse (OutlierResponse.WARN);
-		t.setOrientation (PlotOrientation.HORIZONTAL);
+		t.setOrientation (PlotOrientation.VERTICAL);
 		
-		// Prepare the DataReference
-		DataReference dr = new DataReference ();
+		// Prepare the GraphPair
 		sb.append (hd.get (1).getKey ())
 		  .append (" vs. ") //$NON-NLS-1$
 		  .append (hd.get (3).getKey ());
 		
-		dr.add (new GraphPair (2, 5, sb.toString ()));
+		GraphPair p = new GraphPair (6, 7, sb.toString ());
 		
 		// Clean the StringBuilder. It gets clogged sometimes.
 		sb.delete (0, sb.length () - 1);
 		
 		// Perform the procedure.
-		OutlierSearch.scanForOutliers (hd, t, dr);
+		GraphViewer.createXYGraph (t, OutlierSearch.scanForOutliers (hd, t, p), p);
 		
 		// Check if it worked.
 		assertTrue ("Proper Outlier Removal Test", JOptionPane.showConfirmDialog
@@ -83,11 +83,10 @@ public class OutlierSearchTest {
 		
 		// Perform the procedure.
 		double mahalanobis_distance = m_dist_calculator.distance (outliers);
-		System.out.println ("The Mahalanobis Distance is: " + mahalanobis_distance);
 		
 		// Check if it worked.
 		assertTrue ("Proper Mahalanobis Distance Value Test", JOptionPane.showConfirmDialog
-				(null, "Did the procedure produce a non-null / non-NaN number?",
+				(null, "Is " + mahalanobis_distance + " a non-null / non-NaN number?",
 						"Proper return value?",
 						JOptionPane.YES_NO_OPTION) == JOptionPane.YES_OPTION);
 		

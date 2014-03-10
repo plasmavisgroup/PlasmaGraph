@@ -7,8 +7,10 @@ import org.apache.commons.math3.stat.descriptive.moment.StandardDeviation;
 import org.apache.commons.math3.stat.inference.TTest;
 import org.pvg.plasmagraph.utils.ExceptionHandler;
 import org.pvg.plasmagraph.utils.data.DataReference;
+import org.pvg.plasmagraph.utils.data.DataSet;
 import org.pvg.plasmagraph.utils.data.HeaderData;
 import org.pvg.plasmagraph.utils.data.GraphPair;
+import org.pvg.plasmagraph.utils.exceptions.FunctionNotImplementedException;
 import org.pvg.plasmagraph.utils.template.Template;
 
 /**
@@ -21,9 +23,9 @@ import org.pvg.plasmagraph.utils.template.Template;
 public class ModifiedThompsonTauScanning implements ScanMethod {
 
 	@Override
-	public void scan (HeaderData hd, Template t, DataReference dr) {
+	public DataSet scan (HeaderData hd, Template t, GraphPair dr) throws FunctionNotImplementedException {
 		// TODO Auto-generated method stub
-		ExceptionHandler.createFunctionNotImplementedException ("Modified Thompson Tau Scanning");
+		throw (new FunctionNotImplementedException ());
 	}
 	
 	private void populate (ArrayList<Double> outlier_array, HeaderData ds, 

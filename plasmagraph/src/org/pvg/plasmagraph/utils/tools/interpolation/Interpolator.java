@@ -1,5 +1,7 @@
 package org.pvg.plasmagraph.utils.tools.interpolation;
 
+import java.util.ArrayList;
+
 import javax.swing.JOptionPane;
 
 import org.apache.commons.math3.analysis.interpolation.SplineInterpolator;
@@ -40,6 +42,22 @@ public class Interpolator {
 	/**
 	 * External path to interpolate data and graph said data.
 	 * 
+	 * @param ds The de-outliered DataSet to interpolate.
+	 * @param t The settings the DataSet is based upon.
+	 * @param dr The DataReference object containing all the pairs to interpolate.
+	 */
+	public static void interpolate (ArrayList <DataSet> ads, Template t, DataReference dr) {
+		// For all of the DataReference pairs in dr...
+		// Assumption: "dr" is the same size as "ads".
+		// Proven by: ads is created in a for-loop.
+		for (int counter = 0; (counter < dr.size ()); ++counter) {
+			interpolate (ads.get (counter), t, dr.get (counter));
+		}
+	}
+	
+	/**
+	 * External path to interpolate data and graph said data.
+	 * 
 	 * @param hd The Headers to use for the interpolation.
 	 * @param t The settings the DataSet is based upon.
 	 * @param p The DataReference pair to interpolate from the DataSet provided.
@@ -48,7 +66,27 @@ public class Interpolator {
     	
     	// Create a DataSet for this interpolation.
     	DataSet ds = hd.populateData (p);
-    	System.out.println (ds.toString ());
+
+        // Check which of the different regressions you'll be doing.
+        XYSeries interpolated_dataset = getInterpolation (ds, t, p);
+        
+        //System.out.println (printXYSeries (interpolated_dataset));
+        
+        // Graph it!
+        graphInterpolation (ds.toXYGraphDataset (p.getName ()), interpolated_dataset, t);
+        
+    }
+    
+    /**
+	 * External path to interpolate data and graph said data. Method used to interface with 
+	 * 
+	 * @param hd The Headers to use for the interpolation.
+	 * @param t The settings the DataSet is based upon.
+	 * @param p The DataReference pair to interpolate from the DataSet provided.
+	 */
+    public static void interpolate (DataSet ds, Template t, GraphPair p) {
+    	
+    	// Create a DataSet for this interpolation.
 
         // Check which of the different regressions you'll be doing.
         XYSeries interpolated_dataset = getInterpolation (ds, t, p);
@@ -75,8 +113,6 @@ public class Interpolator {
 		XYSeries regression_dataset;
 		// Temporary regression container.
 		double [] regression_params;
-		// Pearson's r Container.
-		double pearsons_r;
 		// Pearsons Correlation calculator for most functions.
     	PearsonsCorrelation p_correlation = new PearsonsCorrelation ();
     	// XYDataset container for some JFree operations.
@@ -276,6 +312,7 @@ public class Interpolator {
     /**
      * Provides a window stating the R-squared value for the non-linear
      * regression performed.
+     * For more information, please refer to: {@link http://www.graphpad.com/guides/prism/6/curve-fitting/index.htm?r2_ameasureofgoodness_of_fitoflinearregression.htm}
      * 
      * @param ds The DataSet to find an R-Squared value of.
      * @param f The PolynomialFunction2D used to calculate the residual Sum of Squares.
@@ -310,13 +347,14 @@ public class Interpolator {
 			append (1 - ((ss_res / (n - k)) / (ss_tot / (n - 1))));
 		
 		// Show the dialog.
-		JOptionPane.showInternalMessageDialog (null, sb.toString (), "R-Squared Calculation", JOptionPane.INFORMATION_MESSAGE);
+		JOptionPane.showMessageDialog (null, sb.toString (), "R-Squared Calculation", JOptionPane.INFORMATION_MESSAGE);
 		
 	}
     
     /**
      * Provides a window stating the R-squared value for the non-linear
      * regression performed.
+     * For more information, please refer to: {@link http://www.graphpad.com/guides/prism/6/curve-fitting/index.htm?r2_ameasureofgoodness_of_fitoflinearregression.htm}
      * 
      * @param ds The DataSet to find an R-Squared value of.
      * @param f The PolynomialSplineFunction used to calculate the residual Sum of Squares.
@@ -351,7 +389,7 @@ public class Interpolator {
 			append (1 - ((ss_res / (n - k)) / (ss_tot / (n - 1))));
 		
 		// Show the dialog.
-		JOptionPane.showInternalMessageDialog (null, sb.toString (), "R-Squared Calculation", JOptionPane.INFORMATION_MESSAGE);
+		JOptionPane.showMessageDialog (null, sb.toString (), "R-Squared Calculation", JOptionPane.INFORMATION_MESSAGE);
 		
 	}
 

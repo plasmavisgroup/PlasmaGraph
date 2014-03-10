@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <section name="Workbench">
 	<item value="C:\Users\tako\Documents\GitHub\PlasmaGraph\plasmagraph\lib\JARs" key="org.eclipse.jdt.ui.lastextjar"/>
+	<item value="false" key="SortMembers.sort_all"/>
 	<section name="DialogBounds_OverrideMethodDialog">
 		<item value="527" key="DIALOG_WIDTH"/>
 		<item value="218" key="DIALOG_Y_ORIGIN"/>
