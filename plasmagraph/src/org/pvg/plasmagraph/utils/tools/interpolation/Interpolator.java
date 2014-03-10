@@ -5,6 +5,7 @@ import javax.swing.JOptionPane;
 import org.apache.commons.math3.analysis.interpolation.SplineInterpolator;
 import org.apache.commons.math3.analysis.polynomials.PolynomialSplineFunction;
 import org.apache.commons.math3.stat.correlation.PearsonsCorrelation;
+import org.apache.commons.math3.stat.descriptive.SummaryStatistics;
 import org.apache.commons.math3.stat.regression.RegressionResults;
 import org.apache.commons.math3.stat.regression.SimpleRegression;
 import org.jfree.data.function.*;
@@ -81,9 +82,7 @@ public class Interpolator {
     	// XYDataset container for some JFree operations.
     	XYSeriesCollection regression_set = 
     			new XYSeriesCollection (ds.toXYGraphDataset (p.getName ()));
-    	// Test Calls.
-    	//System.out.println ("Series: \n" + printXYSeries (ds.toXYGraphDataset ()));
-    	
+
     	//======================================================================================//
     	// Perform the regression and get the dataset out of it, depending on the type
     	// of regression to perform.
@@ -107,54 +106,58 @@ public class Interpolator {
     					t.getLowerInterval (), t.getUpperInterval (), t.getInterpolationInterval (), getSeriesKey(t));
     		}
     		
-    		// Obtain the R-Squared value.
-    		pearsons_r = p_correlation.correlation (createArrayFromSeries (regression_dataset, true),
-    				createArrayFromSeries (regression_dataset, false));
+    		// Obtain and show the R value.
+    		showPearsonRValidity (p_correlation.correlation (createArrayFromSeries (regression_dataset, true),
+    				createArrayFromSeries (regression_dataset, false)), ds.getColumnLength ());
         	
         } //======================================================================================//
     	else if (t.getInterpolationType ().equals (InterpolationType.QUADRATIC)) {
         	
     		regression_params = org.jfree.data.statistics.Regression.
         			getPolynomialRegression (regression_set, 0, 2);
-        	
+    		PolynomialFunction2D func = new PolynomialFunction2D (new double [] 
+        			{regression_params[0], regression_params[1], 
+        			regression_params[2]});
+    		
         	regression_dataset = DatasetUtilities.sampleFunction2DToSeries
-        			(new PolynomialFunction2D
-        				(new double [] {regression_params[0], regression_params[1], regression_params[2]}),
-        			t.getLowerInterval (), t.getUpperInterval (),
+        			(func, t.getLowerInterval (), t.getUpperInterval (),
 					t.getInterpolationInterval (), getSeriesKey(t));
         	
-        	pearsons_r = p_correlation.correlation (createArrayFromSeries (regression_dataset, true),
-        			createArrayFromSeries (regression_dataset, false));
+        	// Obtain and show the R-squared value.
+        	showRSquaredValidity (ds, func);
         	
         }  //======================================================================================//
         else if (t.getInterpolationType ().equals (InterpolationType.CUBIC)) {
         	
         	regression_params = org.jfree.data.statistics.Regression.
         			getPolynomialRegression (regression_set, 0, 3);
+        	PolynomialFunction2D func = new PolynomialFunction2D (new double [] 
+        			{regression_params[0], regression_params[1], 
+        			regression_params[2], regression_params[3]});
         	
         	regression_dataset = DatasetUtilities.sampleFunction2DToSeries
-        			(new PolynomialFunction2D
-        					(new double [] {regression_params[0], regression_params[1], regression_params[2], regression_params[3]}),
-        			t.getLowerInterval (), t.getUpperInterval (),
+        			(func, t.getLowerInterval (), t.getUpperInterval (),
 					t.getInterpolationInterval (), getSeriesKey(t));
         	
-        	pearsons_r = p_correlation.correlation (createArrayFromSeries (regression_dataset, true),
-        			createArrayFromSeries (regression_dataset, false));
+        	// Obtain and show the R-squared value.
+        	showRSquaredValidity (ds, func);
         	
         }  //======================================================================================// 
         else if (t.getInterpolationType ().equals (InterpolationType.QUARTIC)) {
         	
         	regression_params = org.jfree.data.statistics.Regression.
         			getPolynomialRegression (regression_set, 0, 4);
+        	PolynomialFunction2D func = new PolynomialFunction2D (new double [] 
+        			{regression_params[0], regression_params[1], 
+        			regression_params[2], regression_params[3], 
+        			regression_params[4]});
         	
         	regression_dataset = DatasetUtilities.sampleFunction2DToSeries
-        			(new PolynomialFunction2D
-        					(new double [] {regression_params[0], regression_params[1], regression_params[2], regression_params[3], regression_params[4]}),
-        			t.getLowerInterval (), t.getUpperInterval (),
+        			(func, t.getLowerInterval (), t.getUpperInterval (),
 					t.getInterpolationInterval (), getSeriesKey(t));
         	
-        	pearsons_r = p_correlation.correlation (createArrayFromSeries (regression_dataset, true),
-        			createArrayFromSeries (regression_dataset, false));
+        	// Obtain and show the R-squared value.
+        	showRSquaredValidity (ds, func);
         	
         } //======================================================================================//
     	else { // if (t.getInterpolationType ().equals (InterpolationType.SPLINE))
@@ -168,17 +171,15 @@ public class Interpolator {
         	// Create data from function.
         	regression_dataset = createSeries (func, t);
         	
-        	// Obtain r_squared value from data.
-        	pearsons_r = p_correlation.correlation (createArrayFromSeries (regression_dataset, true), 
-        			createArrayFromSeries (regression_dataset, false));
+        	// Obtain and show the R-squared value.
+        	showRSquaredValidity (ds, func);
         	
         }  //======================================================================================//
     	
-    	showRegressionValidity (pearsons_r, ds.getColumnLength ());
     	
 		return (regression_dataset);
     }
-	
+
 	/**
 	 * Provides an XYSeries via an PolynomialSplineFunction's result value-generation function.
 	 * 
@@ -238,10 +239,7 @@ public class Interpolator {
 		graph_data.addSeries (interpolation_dataset);
 		graph_data.addSeries (interpolated_dataset);
 		
-		//System.out.println (printXYSeries (interpolation_dataset));
-		//System.out.println (printXYSeries (interpolated_dataset));
 		// Graph Interpolation and its original data.
-		// TODO: Make new Constructor in XYGraph for XYSeriesCollection and Template.
 		XYGraph graph = new XYGraph (t, graph_data);
 		graph.pack ();
 		graph.setVisible (true);
@@ -258,22 +256,104 @@ public class Interpolator {
     }
     
     /**
-     * Provides a window that states the R-Squared value for the interpolation
+     * Provides a window that states the R value for the interpolation
      * and if it matches with the standard table's values for the 
      * 99%, 98%, 95%, and 90% CI.
      * 
      * @param r_squared The Correlation Coefficient, obtained by squaring the
      * Pearson Coefficient.
      */
-    private static void showRegressionValidity (double r, int number_of_points) {
+    private static void showPearsonRValidity (double r, int number_of_points) {
     	StringBuilder sb = new StringBuilder ();
-    	
+
     	sb.append ("Graph's R Value: ").append (r).append ("\n");
     	sb.append (DataConfidence.provideCIValidity (r, number_of_points));
     	
     	JOptionPane.showMessageDialog (null, sb.toString (), "Interpolation Validity Check", JOptionPane.WARNING_MESSAGE);
     	//JOptionPane.showConfirmDialog (null, sb.toString (), "Interpolation Validity Check", JOptionPane.OK_OPTION);
     }
+    
+    /**
+     * Provides a window stating the R-squared value for the non-linear
+     * regression performed.
+     * 
+     * @param ds The DataSet to find an R-Squared value of.
+     * @param f The PolynomialFunction2D used to calculate the residual Sum of Squares.
+     */
+    private static void showRSquaredValidity (DataSet ds, PolynomialFunction2D f) {
+		SummaryStatistics stat_generator = new SummaryStatistics ();
+		
+		// Get the Sum of Squares of the Residuals.
+		for (Object o : ds.getY ()) {
+			stat_generator.addValue (Math.abs (((double) o) - 
+					f.getValue ((double) ds.getX ().get (ds.getY ().find (o)))));
+		}
+		double ss_res = stat_generator.getSumsq ();
+		
+		// Get the Sum of Squares of the Mean Line.
+		double mean = stat_generator.getMean ();
+		
+		stat_generator.clear ();
+		for (Object o : ds.get (1)) {
+			stat_generator.addValue (Math.abs (((double) o) - mean));
+		}
+		
+		double ss_tot = stat_generator.getSumsq ();
+		
+		int n = ds.getColumnLength ();
+		int k = ds.getNumParameters ();
+		
+		// Prepare the message
+		StringBuilder sb = new StringBuilder ();
+		
+		sb.append ("The R-Squared value for this regression is: ").
+			append (1 - ((ss_res / (n - k)) / (ss_tot / (n - 1))));
+		
+		// Show the dialog.
+		JOptionPane.showInternalMessageDialog (null, sb.toString (), "R-Squared Calculation", JOptionPane.INFORMATION_MESSAGE);
+		
+	}
+    
+    /**
+     * Provides a window stating the R-squared value for the non-linear
+     * regression performed.
+     * 
+     * @param ds The DataSet to find an R-Squared value of.
+     * @param f The PolynomialSplineFunction used to calculate the residual Sum of Squares.
+     */
+    private static void showRSquaredValidity (DataSet ds, PolynomialSplineFunction f) {
+		SummaryStatistics stat_generator = new SummaryStatistics ();
+		
+		// Get the Sum of Squares of the Residuals.
+		for (Object o : ds.getY ()) {
+			stat_generator.addValue (Math.abs (((double) o) - 
+					f.value ((double) ds.getX ().get (ds.getY ().find (o)))));
+		}
+		double ss_res = stat_generator.getSumsq ();
+		
+		// Get the Sum of Squares of the Mean Line.
+		double mean = stat_generator.getMean ();
+		
+		stat_generator.clear ();
+		for (Object o : ds.get (1)) {
+			stat_generator.addValue (Math.abs (((double) o) - mean));
+		}
+		
+		double ss_tot = stat_generator.getSumsq ();
+		
+		int n = ds.getColumnLength ();
+		int k = ds.getNumParameters ();
+		
+		// Prepare the message
+		StringBuilder sb = new StringBuilder ();
+		
+		sb.append ("The R-Squared value for this regression is: ").
+			append (1 - ((ss_res / (n - k)) / (ss_tot / (n - 1))));
+		
+		// Show the dialog.
+		JOptionPane.showInternalMessageDialog (null, sb.toString (), "R-Squared Calculation", JOptionPane.INFORMATION_MESSAGE);
+		
+	}
 
 	/**
 	 * Testing method.

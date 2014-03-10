@@ -186,4 +186,14 @@ public class DataColumn<E> implements Iterable<E> {
 		return (this.values.isEmpty ());
 	}
 
+	/**
+	 * Appends all the values in a specified DataColumn into this column.
+	 * 
+	 * @param column The column whose values will be included into this one.
+	 * @return Success or failure of the operation.
+	 */
+	public boolean append (DataColumn <E> column) {
+		return (this.values.addAll (column.values));
+	}
+
 }

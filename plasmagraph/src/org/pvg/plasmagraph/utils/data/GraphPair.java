@@ -18,14 +18,14 @@ public class GraphPair {
 	/**
 	 * Constructor; creates a new Pair.
 	 * 
-	 * @param i First index to graph.
+	 * @param column1 First index to graph.
 	 * @param j Second index to graph.
 	 * @param n Name of DataSet provided in ListModel.
 	 */
-	public GraphPair (int i, int j, String n) {
-		index1 = i;
-		index2 = j;
-		name = n;
+	public GraphPair (int column1, int column2, String name) {
+		index1 = column1;
+		index2 = column2;
+		this.name = name;
 	}
 	
 	/**

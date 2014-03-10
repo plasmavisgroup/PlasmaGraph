@@ -11,6 +11,7 @@ import org.pvg.plasmagraph.utils.data.DataSet;
 import org.pvg.plasmagraph.utils.data.GraphPair;
 import org.pvg.plasmagraph.utils.data.HeaderData;
 import org.pvg.plasmagraph.utils.data.readers.CSVProcessor;
+import org.pvg.plasmagraph.utils.template.Template;
 
 public class CSVTest {
 	String default_csv_path = 
@@ -93,13 +94,15 @@ public class CSVTest {
 	public void testToDataSet () throws Exception {
 		CSVProcessor csv = new CSVProcessor (new File (this.default_csv_path));
 		// Open tested method file.
-		DataSet ds1 = new DataSet ();
+		Template t = new Template ();
+		
+		DataSet ds1 = new DataSet (false);
 		HeaderData hd = new HeaderData ();
 		csv.getHeaders (hd);
-		csv.toDataSet (ds1, new GraphPair (0, 1, ""), hd);
+		csv.toDataSet (ds1, new GraphPair (0, 1, ""), hd, t);
 		
 		// Create simulated comparison file.
-		DataSet ds2 = new DataSet ();
+		DataSet ds2 = new DataSet (false);
 		DataColumn <Double> dc1 = new DataColumn <> ("Time (s)", "double");
 		dc1.add (0.0); dc1.add (1.0); dc1.add (2.0); dc1.add (3.0); dc1.add (4.0);
 		dc1.add (5.0); dc1.add (6.0); dc1.add (7.0); dc1.add (8.0); dc1.add (9.0);
@@ -132,7 +135,7 @@ public class CSVTest {
 		assertTrue ("getHeaders (...) method success?", headers_success);
 		
 		// Create simulated comparison file.
-		DataSet ds1 = new DataSet ();
+		DataSet ds1 = new DataSet (false);
 		DataColumn <Double> dc1 = new DataColumn <> ("Time (s)", "double");
 		DataColumn <Double> dc2 = new DataColumn <> ("Distance (m)", "double");
 		ds1.add (dc1); ds1.add (dc2);

@@ -16,6 +16,7 @@ import org.pvg.plasmagraph.utils.data.filter.DataFilter;
 import org.pvg.plasmagraph.utils.data.filter.DataFilterWindow;
 import org.pvg.plasmagraph.utils.data.readers.CSVProcessor;
 import org.pvg.plasmagraph.utils.data.readers.MatlabReader;
+import org.pvg.plasmagraph.utils.exceptions.IncorrectParametersException;
 import org.pvg.plasmagraph.utils.graphs.BarGraph;
 import org.pvg.plasmagraph.utils.graphs.XYGraph;
 import org.pvg.plasmagraph.utils.template.Template;
@@ -86,7 +87,6 @@ public class MainModel {
         // Prepare the FileFilter
         FileNameExtensionFilter mat_filter = new FileNameExtensionFilter (
                 "Matlab Files", "mat");
-        // TODO: Decide if you want to keep "supporting" CSV files.
         FileNameExtensionFilter csv_filter = new FileNameExtensionFilter (
                 "Comma-Separated Value Files", "csv");
         
@@ -129,7 +129,6 @@ public class MainModel {
                 
                 CSVProcessor csv = new CSVProcessor (f);
                 try {
-                	csv.read ();
 	                if (csv.getHeaders (hd)) {
 	                	JOptionPane.showMessageDialog (null,
 	                			"Data Column names extracted successfully.");
@@ -403,8 +402,9 @@ public class MainModel {
      * 
      * @param outlier_switch 
      * @param interpolation_switch 
+     * @throws IncorrectParametersException 
      */
-    public void graph (boolean outlier_switch, boolean interpolation_switch) {
+    public void graph (boolean outlier_switch, boolean interpolation_switch) throws IncorrectParametersException {
     	
     	if (outlier_switch) {
     		log ("Outlier Scanning...");
@@ -418,15 +418,21 @@ public class MainModel {
     	} else {
     		if (t.getChartType ().equals (ChartType.XY_GRAPH)) {
     			for (GraphPair p : dr) {
+    				
+    				// Create the graph
     				XYGraph graph = new XYGraph (t, hd, p);
     				
+    				// Display the graph.
     				graph.pack ();
     				graph.setVisible (true);
     			}
     		} else if (t.getChartType ().equals (ChartType.BAR_GRAPH)) {
     			for (GraphPair p : dr) {
+    				
+    				// Create the graph
     				BarGraph graph = new BarGraph (t, hd, p);
     				
+    				// Display the graph.
     				graph.pack ();
     				graph.setVisible (true);
     			}

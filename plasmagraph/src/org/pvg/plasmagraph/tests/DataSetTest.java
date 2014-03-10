@@ -24,7 +24,7 @@ public class DataSetTest {
 	@Test
 	public void testAdd () {
 		// Set up test.
-		DataSet ds = new DataSet ();
+		DataSet ds = new DataSet (false);
 		DataColumn<String> dc1 = new DataColumn<> ("Pie Flavors", "string");
 		DataColumn<Double> dc2 = new DataColumn<> ("Pie Quantity", "double");
 		
@@ -78,7 +78,7 @@ public class DataSetTest {
 	@Test
 	public void testFind () {
 		// Generate DataSet
-		DataSet ds = new DataSet ();
+		DataSet ds = new DataSet (false);
 		DataColumn <Double> dc1 = new DataColumn <> ("Time", "double");
 		DataColumn <Double> dc2 = new DataColumn <> ("Distance", "double");
 		
@@ -119,7 +119,7 @@ public class DataSetTest {
 	@Test
 	public void testGet () {
 		// Generate DataSet
-		DataSet ds = new DataSet ();
+		DataSet ds = new DataSet (false);
 		DataColumn <Double> dc1 = new DataColumn <> ("Time", "double");
 		DataColumn <Double> dc2 = new DataColumn <> ("Distance", "double");
 		
@@ -179,7 +179,7 @@ public class DataSetTest {
 	@Test
 	public void testToXYGraphDataset () {
 		// Generate DataSet
-		DataSet ds = new DataSet ();
+		DataSet ds = new DataSet (false);
 		DataColumn <Double> dc1 = new DataColumn <> ("Time", "double");
 		DataColumn <Double> dc2 = new DataColumn <> ("Distance", "double");
 		GraphPair p = new GraphPair (0, 1, "To XY Graph Dataset Test");
@@ -230,11 +230,21 @@ public class DataSetTest {
 	@Test
 	public void testGetColumnLength () {
 		DataSet ds = prepareDataset ();
-		DataSet empty = new DataSet ();
+		DataSet empty = new DataSet (false);
 		
 		assertTrue ("Checking column length.", ds.getColumnLength () == 3);
 		assertTrue ("Checking col. len. of empty col.: ", empty.getColumnLength () == 0);
 		assertTrue ("Checking index columnLength:", ds.getColumnLength () == ds.getColumnLength (1));
+	}
+	
+	@Test
+	public void testAppendDataSet () {
+		DataSet ds1 = prepareDataset ();
+		DataSet ds2 = prepareDataset ();
+		
+		assertTrue ("Testing append success.", ds1.append (ds2));
+		assertEquals ("Testing resulting DataSet size.", 2, ds1.size ());
+		assertEquals ("Testing resulting DataSet column size.", 6, ds1.getColumnLength ());
 	}
 	
 	// Support methods.
@@ -243,7 +253,7 @@ public class DataSetTest {
 	 * @return A basic dataset to test over.
 	 */
 	private DataSet prepareDataset () {
-		DataSet ds = new DataSet ();
+		DataSet ds = new DataSet (false);
 		DataColumn<String> dc1 = new DataColumn<String> ("Pie Flavors", "string");
 		DataColumn<Double> dc2 = new DataColumn<Double> ("Pie Quantity", "double");
 		

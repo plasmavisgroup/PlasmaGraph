@@ -17,6 +17,7 @@ import org.jfree.data.xy.XYSeriesCollection;
 import org.pvg.plasmagraph.utils.data.DataSet;
 import org.pvg.plasmagraph.utils.data.GraphPair;
 import org.pvg.plasmagraph.utils.data.HeaderData;
+import org.pvg.plasmagraph.utils.exceptions.IncorrectParametersException;
 import org.pvg.plasmagraph.utils.template.Template;
 
 // TODO: Documentation!
@@ -41,10 +42,11 @@ public class XYGraph extends JFrame implements Graph {
 	 * @param t_reference Template reference used in the formation of 
 	 * various parts of the graph.
 	 * @param ds_reference DataSet reference used in the creation of the graph.
+	 * @throws IncorrectParametersException 
 	 */
-	public XYGraph (Template t_reference, HeaderData hd, GraphPair p) {
-		super(t_reference.getChartName ());
-		setContentPane (createJPanel (t_reference, hd.populateData (p), p));
+	public XYGraph (Template t_reference, HeaderData hd, GraphPair p) throws IncorrectParametersException {
+		this (t_reference, hd.populateGroupedData (p, t_reference).
+				toGroupedXYGraphDataset (p.getName (), t_reference));
 	}
 	
 	/**
@@ -55,7 +57,7 @@ public class XYGraph extends JFrame implements Graph {
 	 * @param ds_reference DataSet reference used in the creation of the graph.
 	 */
 	public XYGraph (Template t_reference, DataSet ds, GraphPair p) {
-		super(t_reference.getChartName ());
+		super (t_reference.getChartName ());
 		setContentPane (createJPanel (t_reference, ds, p));
 	}
 	
@@ -71,7 +73,7 @@ public class XYGraph extends JFrame implements Graph {
 	 * creation of the graph.
 	 */
 	public XYGraph (Template t_reference, XYSeriesCollection graph_data) {
-		super(t_reference.getChartName ());
+		super (t_reference.getChartName ());
 		setContentPane (createJPanel (t_reference, graph_data));
 	}
 
@@ -129,7 +131,7 @@ public class XYGraph extends JFrame implements Graph {
 	@Override
 	public XYDataset createDataset (Template t, DataSet ds, GraphPair p) {
 		DefaultXYDataset set = new DefaultXYDataset ();
-		XYSeries s = ds.toXYGraphDataset (p);
+		XYSeries s = ds.toXYGraphDataset (p.getName ());
 		set.addSeries (s.getKey (), s.toArray ());
 
 		return (set);
@@ -151,8 +153,14 @@ public class XYGraph extends JFrame implements Graph {
 				t.getYAxisLabel (), t.getXAxisLabel (), 
 				(XYDataset) set, t.getOrientation (), t.generatesLegend (),
 				t.generatesTooltips (), t.generatesURLs ());
-		//System.out.println ("reached chart creation!");
-		//org.jfree.chart.plot.XYPlot plot = c.getXYPlot();
+
+		org.jfree.chart.plot.XYPlot plot = c.getXYPlot();
+		
+		// Set axis names.
+		plot.getDomainAxis ().setLabel (t.getXAxisLabel ());
+		plot.getRangeAxis ().setLabel (t.getYAxisLabel ());
+		
+		// Set chart title.
 		
 		return (c);
 	}

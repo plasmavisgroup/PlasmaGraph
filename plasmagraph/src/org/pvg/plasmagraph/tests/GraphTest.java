@@ -64,7 +64,7 @@ public class GraphTest {
 	}
 	
 	private DataSet BarGraphDataSet () {
-		DataSet ds = new DataSet ();
+		DataSet ds = new DataSet (false);
 		DataColumn<String> dc1 = new DataColumn<> ("Pie Flavors", "string");
 		DataColumn<Double> dc2 = new DataColumn<> ("Pie Quantity", "double");
 		
@@ -89,7 +89,7 @@ public class GraphTest {
 	 * @return A new DataSet of DataRows with Time / Position / Velocity data.
 	 */
 	private DataSet xyDataTest () {
-		DataSet ds = new DataSet ();
+		DataSet ds = new DataSet (false);
 		
 		// Columns: Time, Position, Velocity
 		double prev = 0;

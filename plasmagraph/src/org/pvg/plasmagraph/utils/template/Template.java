@@ -31,7 +31,7 @@ public class Template {
 	// Variables
     // Event Firing
     /** Collection of listeners for any change that occurs in this Template. */
-    private Set <ChangeListener> listeners = new HashSet <ChangeListener> ();
+    private Set <ChangeListener> listeners = new HashSet <> ();
     
 	// Classifications
     /** Type of the Chart. Can be XY/Line/Bar/Line_Chart. */
@@ -59,7 +59,8 @@ public class Template {
 	
 	// Data Set Features
 	/** The column name to categorize series of data by. Default is: "None".*/
-	private boolean group_by;
+	//private boolean group_by;
+	private String group_by_column;
 	
 	// Tool Features
 	/** The type of interpolation that is default to this Template. (LINEAR, POLYNOMIAL or POWER) */
@@ -88,7 +89,8 @@ public class Template {
 		this.using_tooltips 				= true;
 		this.generate_urls 					= false;
 		this.orientation 					= PlotOrientation.VERTICAL;
-		this.group_by						= false;
+		//this.group_by						= false;
+		this.group_by_column				= "None";
 		this.default_interpolation_type 	= InterpolationType.LINEAR;
 		this.default_outlier_reaction 		= OutlierResponse.WARN;
 		this.interpolation_lower_range 		= 0.0;
@@ -110,7 +112,7 @@ public class Template {
 	 */
 	public Template (String name, ChartType type, String x, String y, 
 			boolean legend, boolean tooltips, boolean urls, PlotOrientation o,
-			boolean group, InterpolationType interpolation, OutlierResponse outlier,
+			String group, InterpolationType interpolation, OutlierResponse outlier,
 			double lower, double upper, int n) {
 		this.chart_name 					= name;
 		this.chart_type 					= type;
@@ -120,7 +122,8 @@ public class Template {
 		this.using_tooltips 				= tooltips;
 		this.generate_urls 					= urls;
 		this.orientation					= o;
-		this.group_by						= group;
+		//this.group_by						= group;
+		this.group_by_column				= group;
 		this.default_interpolation_type 	= interpolation;
 		this.default_outlier_reaction 		= outlier;
 		this.interpolation_lower_range 		= lower;
@@ -173,7 +176,8 @@ public class Template {
             
             // Data Set Features
             output = reader.readLine ();
-            this.group_by = new Boolean (output);
+            //this.group_by = new Boolean (output);
+            this.group_by_column = output;
             
             // Tool Features
             // Interpolation Type
@@ -265,7 +269,8 @@ public class Template {
             sb.append (this.orientation.toString () + ls);
             
             // Data Set Features
-            sb.append (Boolean.toString (group_by) + ls);
+            //sb.append (Boolean.toString (group_by) + ls);
+            sb.append (this.group_by_column + ls);
             
             // Tool Features
             sb.append (this.default_interpolation_type.toString () + ls);
@@ -318,7 +323,8 @@ public class Template {
 	    sb.append ("Tooltips?: " + Boolean.toString (using_tooltips) + ls);
 	    sb.append ("URL Generation?: " + Boolean.toString (generate_urls) + ls);
 	    sb.append ("Interpolation: " + default_interpolation_type.toString () + ls);
-	    sb.append ("Data Set Grouping by Experiment?: " + Boolean.toString (group_by) + ls);
+	   //sb.append ("Data Set Grouping by Experiment?: " + Boolean.toString (group_by) + ls);
+	    sb.append ("Data Set Grouping by: " + group_by_column + ls);
 	    sb.append ("Outlier Reaction: " + default_outlier_reaction.toString () + ls);
 	    sb.append ("Lower Interpolation Range: " + interpolation_lower_range + ls);
         sb.append ("Upper Interpolation Range: " + interpolation_upper_range + ls);
@@ -458,21 +464,21 @@ public class Template {
 		this.orientation = orientation;
 	}
 	
-	/**
+/*	*//**
 	 * Getter Method. Provides the "group_by" variable.
 	 * @return A boolean variable, "group_by", contained by this object.
-	 */
+	 *//*
 	public boolean isGroupedByExperiment () {
 		return (group_by);
 	}
 
-	/**
+	*//**
 	 * Setter Method. Changes the "group_by" variable.
 	 * @param experiment The new boolean variable to replace this object's "group_by" variable's contents.
-	 */
+	 *//*
 	public final void setGroupedByExperiment (boolean experiment) {
 		this.group_by = experiment;
-	}
+	}*/
 
 	/**
 	 * Getter Method. Provides the "default_interpolation_type" variable.
@@ -554,6 +560,14 @@ public class Template {
 		this.interpolation_point_amount = interval;
 	}
 	
+	public String getGroupByColumn () {
+		return (group_by_column);
+	}
+
+	public void setGroupByColumnn (String column) {
+		this.group_by_column = column;
+	}
+
 	// Event Methods
 	/**
 	 * Adds the listener provided to the notification list.

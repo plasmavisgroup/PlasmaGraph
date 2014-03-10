@@ -15,8 +15,8 @@ import org.pvg.plasmagraph.utils.data.GraphPair;
 import org.pvg.plasmagraph.utils.data.HeaderData;
 import org.pvg.plasmagraph.utils.graphs.XYGraph;
 import org.pvg.plasmagraph.utils.template.Template;
-import org.pvg.plasmagraph.utils.tools.outlierscan.MahalanobisDistance;
 import org.pvg.plasmagraph.utils.tools.outlierscan.OutlierDistance;
+import org.pvg.plasmagraph.utils.tools.outlierscan.distances.MahalanobisDistance;
 import org.pvg.plasmagraph.utils.types.ChartType;
 import org.pvg.plasmagraph.utils.types.OutlierResponse;
 
@@ -32,7 +32,7 @@ public class ClusterScanning implements ScanMethod {
     	
     	// For each pair that we'll be graphing, do the following.
     	for (GraphPair p : dr) {
-    		ds = hd.populateData (p);
+    		ds = hd.populateData (p);//, t);
     		
     		// Populate the outlier_array with the correct values.
     		populate (outlier_array, ds, p);
@@ -51,8 +51,8 @@ public class ClusterScanning implements ScanMethod {
 		// For each line in the DataSet, add the Pair's values to the outlier_array.
 		for (int i = 0; (i < ds.getColumnLength ()); ++i) {
 			outlier_array.add (new DoublePoint (new double [] {
-					Double.parseDouble ((String) ds.get (0).get (i)),
-					Double.parseDouble ((String) ds.get (1).get (i))
+					(double) ds.get (0).get (i),
+					(double) ds.get (1).get (i)
 				}));
 		}
 	}

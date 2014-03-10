@@ -1,5 +1,6 @@
-package org.pvg.plasmagraph.utils.tools.outlierscan;
+package org.pvg.plasmagraph.utils.tools.outlierscan.distances;
 
+import java.math.BigDecimal;
 import java.util.ArrayList;
 
 import org.apache.commons.math3.linear.Array2DRowRealMatrix;
@@ -7,6 +8,7 @@ import org.apache.commons.math3.linear.LUDecomposition;
 import org.apache.commons.math3.linear.RealMatrix;
 import org.apache.commons.math3.ml.clustering.DoublePoint;
 import org.apache.commons.math3.stat.correlation.Covariance;
+import org.pvg.plasmagraph.utils.tools.outlierscan.OutlierDistance;
 
 public class MahalanobisDistance implements OutlierDistance {
 
@@ -34,7 +36,7 @@ public class MahalanobisDistance implements OutlierDistance {
     	for (int i = 0; (i < outlier_array.size ()); ++i) {
     		xy_matrix.setRow (i, outlier_array.get (i).getPoint ());
     	}
-
+    	
     	// Generate the u matrix. (Mean)
     	RealMatrix u_matrix = new Array2DRowRealMatrix (outlier_array.size (), outlier_array.get (0).getPoint ().length);
     	
@@ -71,12 +73,25 @@ public class MahalanobisDistance implements OutlierDistance {
         // of the data structures in this program, we require the transposition of the second appearance of the first matrix, instead.
         // This change does not affect the results of this calculation in any important way.
         RealMatrix distSquared = xu_matrix.multiply (inverse_covariance.multiply (xu_matrix.transpose ()));
-
-        return Math.sqrt(distSquared.getEntry(0, 0));
+        
+        //System.out.println ("Mahalanobis Distance was: " + Math.sqrt(distSquared.getEntry(0, 0)));
+        return (Math.sqrt(distSquared.getEntry(0, 0)));
     }  
 
 	@Override
 	public String getDistanceType () {
 		return "Mahalanobis Distance";
+	}
+	
+	private void printArrayContents (ArrayList <DoublePoint> p_array) {
+		System.out.println ("Contents of ArrayList \'outlier_array\': ");
+    	for (DoublePoint p : p_array) {
+    		System.out.println (p.toString ());
+    	}
+	}
+	
+	private void printMatrixContents (RealMatrix m) {
+		System.out.println (m.getRowDimension () + " x " + m.getColumnDimension ());
+        System.out.println (m.toString ());
 	}
 }

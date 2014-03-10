@@ -34,7 +34,8 @@ public class DataSetController {
         // Automatically add listeners to Data Set Tab via view.
         // Update Template or DataReference Listeners
         data_view.addChartTypeListener (new ChartTypeListener ());
-        data_view.addGroupByListener (new GroupByListener ());
+        //data_view.addGroupByListener (new GroupByListener ());
+        data_view.addGroupByColumnListener (new GroupByColumnListener ());
         data_view.addAddButtonListener (new AddButtonListener ());
         data_view.addRemoveButtonListener (new RemoveButtonListener ());
         // Update View Listener
@@ -72,7 +73,7 @@ public class DataSetController {
      * 
      * @author Gerardo A. Navas Morales
      */
-    class GroupByListener implements ActionListener {
+    class GroupByColumnListener implements ActionListener {
         
         /**
          * Calls a DataSetModel method to change the chart type on the Template.
@@ -80,8 +81,8 @@ public class DataSetController {
         @Override
         public void actionPerformed (ActionEvent arg0) {
             try {
-				data_model.getTemplate ().setGroupedByExperiment 
-						(data_view.getGroupingByElement ());
+				data_model.getTemplate ().setGroupByColumnn (
+						data_view.getGroupingByElement ());
 			} catch (Exception e) {
 				// TODO Throw a Dialog Exception
 			}
@@ -170,6 +171,7 @@ public class DataSetController {
                 @Override
                 protected Void doInBackground () throws Exception {
                     data_view.updateTemplateView ();
+                    data_view.updateGroupByComboBoxSelection ();
                     return null;
                 }
                 
@@ -199,6 +201,7 @@ public class DataSetController {
                 @Override
                 protected Void doInBackground () throws Exception {
                     data_view.updateAvailableList ();
+                    data_view.updateGroupByComboBox ();
                     return null;
                 }
                 

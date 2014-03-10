@@ -16,6 +16,7 @@ import org.pvg.plasmagraph.utils.data.DataColumn;
 import org.pvg.plasmagraph.utils.data.DataSet;
 import org.pvg.plasmagraph.utils.data.GraphPair;
 import org.pvg.plasmagraph.utils.data.HeaderData;
+import org.pvg.plasmagraph.utils.template.Template;
 import org.pvg.plasmagraph.utils.types.ColumnType;
 import org.pvg.plasmagraph.utils.types.FileType;
 
@@ -122,6 +123,41 @@ public class CSVProcessor implements FileProcessor {
 		// Once the columns are ready, populate the columns with the correct data!
 		this.populateColumns (ds, p);
 	}
+	
+	/**
+	 * Transforms the List<String[]> data object that CSVReader dumps out
+	 * into a proper DataSet for the purposes of PlasmaGraph.
+	 * 
+	 * @return A DataSet object with its DataGroups being of the DataRow type.
+	 * @throws Exception Malformed data set; columns are of different sizes.
+	 */
+	@Override
+	public void toDataSet (DataSet ds, GraphPair p, HeaderData hd, Template t) throws Exception {
+		// First, check to see if the file's been even read.
+		if (this.csv_data.size () == 0) {
+			
+			this.read ();
+		}
+		
+		// Figure out the column you're looking for.
+		int column_index = -1;
+		for (int i = 0; (i < this.csv_data.get (0).length) && (column_index == -1); ++i) {
+			
+			// If the current column's name is equal to the column name in the Template.
+			if (t.getGroupByColumn ().equals (this.csv_data.get (0)[i].trim ())) {
+				
+				column_index = i;
+				
+			}
+			
+		}
+		
+		// Now, prepare the columns of the DataSet.
+		this.prepareColumns (ds, p, hd, column_index);
+		
+		// Once the columns are ready, populate the columns with the correct data!
+		this.populateColumns (ds, p, column_index);
+	}
 
 	/**
 	 * Helper method. Prepares the DataColumn variables that are contained in
@@ -133,6 +169,73 @@ public class CSVProcessor implements FileProcessor {
 	 */
 	private void prepareColumns (DataSet ds, GraphPair p, HeaderData hd) {
 		// Take the first index of the GraphPair, find it in the List we have here,
+		/// and create the column it needs in the DataSet.
+		
+		if (hd.get (p.getIndex1 ()).getValue () == ColumnType.DATETIME) {
+			
+			ds.add (new DataColumn <java.util.Date> (hd.get (p.getIndex1 ()).getKey (), 
+					hd.get (p.getIndex1 ()).getValue ()));
+			
+		} else if (hd.get (p.getIndex1 ()).getValue () == ColumnType.DOUBLE) {
+			
+			ds.add (new DataColumn <Double> (hd.get (p.getIndex1 ()).getKey (), 
+					hd.get (p.getIndex1 ()).getValue ()));
+			
+		} else {
+			
+			ds.add (new DataColumn <String> (hd.get (p.getIndex1 ()).getKey (), 
+					hd.get (p.getIndex1 ()).getValue ()));
+			
+		}
+		
+		// Now do that for the other GraphPair index.
+		if (hd.get (p.getIndex2 ()).getValue () == ColumnType.DATETIME) {
+			
+			ds.add (new DataColumn <Double> (hd.get (p.getIndex2 ()).getKey (), 
+					hd.get (p.getIndex2 ()).getValue ()));
+			
+		} else if (hd.get (p.getIndex2 ()).getValue () == ColumnType.DOUBLE) {
+			
+			ds.add (new DataColumn <Double> (hd.get (p.getIndex2 ()).getKey (), 
+					hd.get (p.getIndex2 ()).getValue ()));
+			
+		} else {
+			
+			ds.add (new DataColumn <Double> (hd.get (p.getIndex2 ()).getKey (), 
+					hd.get (p.getIndex2 ()).getValue ()));
+			
+		}
+	}
+	
+	/**
+	 * Helper method. Prepares the DataColumn variables that are contained in
+	 * the DataSet, with help from the HeaderData and a GraphPair.
+	 * 
+	 * @param ds DataSet container already provided.
+	 * @param p GraphPair object containing the index values of the DataSet's columns.
+	 * @param hd HeaderData object containing the Column names and types.
+	 * @param group_column_index Integer containing the column index of the group_by column.
+	 */
+	private void prepareColumns (DataSet ds, GraphPair p, HeaderData hd, int group_column_index) {
+		// First, Add the data regarding the group_by column.
+		Pair <String, ColumnType> c = hd.get (hd.find (this.csv_data.get (0)
+				[group_column_index].trim ()));
+		
+		if (c.getValue () == ColumnType.DATETIME) {
+			
+			ds.add (new DataColumn <java.util.Date> (c.getKey (), c.getValue ()));
+			
+		} else if (c.getValue () == ColumnType.DOUBLE) {
+			
+			ds.add (new DataColumn <Double> (c.getKey (), c.getValue ()));
+			
+		} else {
+			
+			ds.add (new DataColumn <String> (c.getKey (), c.getValue ()));
+			
+		}
+		
+		// Now, take the first index of the GraphPair, find it in the List we have here,
 		/// and create the column it needs in the DataSet.
 		
 		if (hd.get (p.getIndex1 ()).getValue () == ColumnType.DATETIME) {
@@ -189,33 +292,111 @@ public class CSVProcessor implements FileProcessor {
 			if (this.isValidRow (this.csv_data.get (i), p)) {
 				// Take only the values of the two index values of the GraphPair p and put them
 				// into the DataSet ds.
-				
-				// Populate as the correct type.
-				if (ds.get (i).getType ().equals (ColumnType.DATETIME)) {
+				for (int j = 0; (j < ds.size ()); ++j) {
 					
-					// Populating the first column in ds.
-					ds.get (0).add (dv.validate (this.csv_data.get (i) [p.getIndex1 ()].trim ()));
-					// Populating the second column in ds.
-					ds.get (1).add (dv.validate (this.csv_data.get (i) [p.getIndex2 ()].trim ()));
+					// Populate as the correct type.
+					if (ds.get (j).getType ().equals (ColumnType.DATETIME.toString ())) {
+						
+						// Get the column index to use.
+						int pair_index = (j == 0) ? p.getIndex1 () : p.getIndex2 ();
+						
+						// Populating the column in ds.
+						ds.get (j).add (dv.validate (this.csv_data.get (i) [pair_index].trim ()));
+						
+					} else if (ds.get (j).getType ().equals (ColumnType.DOUBLE.toString ())) {
+						
+						// Get the column index to use.
+						int pair_index = (j == 0) ? p.getIndex1 () : p.getIndex2 ();
+						
+						// Populating the column in ds.
+						ds.get (j).add (
+								Double.valueOf (
+										this.csv_data.get (i) [pair_index].trim ()));
+						
+					} else { // String!
+						
+						// Get the column index to use.
+						int pair_index = (j == 0) ? p.getIndex1 () : p.getIndex2 ();
+						
+						// Populating the column in ds.
+						ds.get (j).add (this.csv_data.get (i) [pair_index].trim ());
+						
+					}
+				}
+			}
+		}
+	}
+	
+	/**
+	 * Helper method. Populates the provided DataSet with data from this object's
+	 * List of String arrays, csv_data, based on the index values of the GraphPair p.
+	 * 
+	 * @param ds DataSet container already provided.
+	 * @param p GraphPair object containing the index values of the DataSet's columns.
+	 * @param column_index Template object containing the group_by column string.
+	 */
+	private void populateColumns (DataSet ds, GraphPair p, int group_column_index) {
+		
+		DateValidator dv = new DateValidator ();
+		
+		// For each row in the List of String Arrays that we have, save the first.
+		for (int i = 1; (i < this.csv_data.size ()); ++i) {
+			
+			// If the data is valid...
+			if (this.isValidRow (this.csv_data.get (i), p, group_column_index)) {
+				// Take only the values of the two index values of the GraphPair p and put them
+				// into the DataSet ds.
+				for (int j = 0; (j < ds.size ()); ++j) {
 					
-				} else if (ds.get (i).getType ().equals (ColumnType.DOUBLE)) {
-					
-					// Populating the first column in ds.
-					ds.get (0).add (
-							Double.valueOf (
-									this.csv_data.get (i) [p.getIndex1 ()].trim ()));
-					// Populating the second column in ds.
-					ds.get (1).add (
-							Double.valueOf (
-									this.csv_data.get (i) [p.getIndex2 ()].trim ()));
-					
-				} else { // String!
-					
-					// Populating the first column in ds.
-					ds.get (0).add (this.csv_data.get (i) [p.getIndex1 ()].trim ());
-					// Populating the second column in ds.
-					ds.get (1).add (this.csv_data.get (i) [p.getIndex2 ()].trim ());
-				
+					// Populate as the correct type.
+					if (ds.get (j).getType ().equals (ColumnType.DATETIME.toString ())) {
+						
+						// Get the column index to use.
+						int pair_index;
+						if (j == 0) {
+							pair_index = group_column_index;
+						} else if (j == 1) {
+							pair_index = p.getIndex1 ();
+						} else { // j == 2
+							pair_index = p.getIndex2 ();
+						}
+						
+						// Populating the column in ds.
+						ds.get (j).add (dv.validate (this.csv_data.get (i) [pair_index].trim ()));
+						
+					} else if (ds.get (j).getType ().equals (ColumnType.DOUBLE.toString ())) {
+						
+						// Get the column index to use.
+						int pair_index;
+						if (j == 0) {
+							pair_index = group_column_index;
+						} else if (j == 1) {
+							pair_index = p.getIndex1 ();
+						} else { // j == 2
+							pair_index = p.getIndex2 ();
+						}
+						
+						// Populating the column in ds.
+						ds.get (j).add (
+								Double.valueOf (
+										this.csv_data.get (i) [pair_index].trim ()));
+						
+					} else { // String!
+						
+						// Get the column index to use.
+						int pair_index;
+						if (j == 0) {
+							pair_index = group_column_index;
+						} else if (j == 1) {
+							pair_index = p.getIndex1 ();
+						} else { // j == 2
+							pair_index = p.getIndex2 ();
+						}
+						
+						// Populating the column in ds.
+						ds.get (j).add (this.csv_data.get (i) [pair_index].trim ());
+						
+					}
 				}
 			}
 		}
@@ -389,7 +570,8 @@ public class CSVProcessor implements FileProcessor {
 	 * Checks to see if the string provided is a null value, contains the word 
 	 * NaN, or is empty.
 	 * 
-	 * @param string String value containing a potential term for a data set.
+	 * @param s String value containing a potential term for a data set.
+	 * @param p GraphPair object containing the two columns to validate.
 	 * @return A boolean describing if the value is valid or not.
 	 */
 	private boolean isValidRow (String [] s, GraphPair p) {
@@ -397,9 +579,24 @@ public class CSVProcessor implements FileProcessor {
 				this.isValidItem (s[p.getIndex2 ()]));
 	}
 	
+	/**
+	 * Checks to see if the string provided is a null value, contains the word 
+	 * NaN, or is empty.
+	 * 
+	 * @param string String value containing a potential term for a data set.
+	 * @param p GraphPair object containing the two columns to validate.
+	 * @param grouping_column Int value of the column index of the group_by column.
+	 * @return A boolean describing if the value is valid or not.
+	 */
+	private boolean isValidRow (String [] s, GraphPair p, int grouping_column) {
+		return (this.isValidItem (s [p.getIndex1 ()]) &&
+				this.isValidItem (s [p.getIndex2 ()]) &&
+				this.isValidItem (s [grouping_column]));
+	}
+	
 	private boolean isValidItem (String s) {
-		return ((!s.equals (null)) && (!s.equals ("")) && 
-				(!s.equals ("NaN")));
+		return ((!s.trim ().equals (null)) && (!s.trim ().equals ("")) && 
+				(!s.trim ().equals ("NaN")));
 	}
 
 	@Override

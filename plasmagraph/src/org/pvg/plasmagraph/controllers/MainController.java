@@ -9,6 +9,7 @@ import javax.swing.event.ChangeEvent;
 import javax.swing.event.ChangeListener;
 
 import org.pvg.plasmagraph.models.MainModel;
+import org.pvg.plasmagraph.utils.exceptions.TemplateGroupByColumnNotFoundException;
 import org.pvg.plasmagraph.views.AestheticView;
 import org.pvg.plasmagraph.views.DataSetView;
 import org.pvg.plasmagraph.views.MainView;
@@ -255,21 +256,26 @@ public class MainController {
         
         @Override
         public void stateChanged (ChangeEvent arg0) {
-            if (arg0.getSource () instanceof JTabbedPane) {
-                switch (((JTabbedPane) arg0.getSource ()).getSelectedComponent ().getName ()) {
-                    case "Aesthetic View": //$NON-NLS-1$
-                        aesthetic_view.updateView ();
-                        break;
-                    case "Data Set View": //$NON-NLS-1$
-                        data_view.updateView ();
-                        break;
-                    case "Tool View": //$NON-NLS-1$
-                        tool_view.updateView ();
-                        break;
-                    default:
-                        break;
-                }
-            }
+        	try {
+	            if (arg0.getSource () instanceof JTabbedPane) {
+	                switch (((JTabbedPane) arg0.getSource ()).getSelectedComponent ().getName ()) {
+	                    case "Aesthetic View": //$NON-NLS-1$
+	                        aesthetic_view.updateView ();
+	                        break;
+	                    case "Data Set View": //$NON-NLS-1$
+							data_view.updateView ();
+	                        break;
+	                    case "Tool View": //$NON-NLS-1$
+	                        tool_view.updateView ();
+	                        break;
+	                    default:
+	                        break;
+	                }
+	            }
+        	} catch (TemplateGroupByColumnNotFoundException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
         }
     }
     

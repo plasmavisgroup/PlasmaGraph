@@ -65,7 +65,7 @@ public class MainView extends javax.swing.JFrame {
         menu_bar = new javax.swing.JMenuBar ();
         data_menu = new javax.swing.JMenu ();
         import_data_option = new javax.swing.JMenuItem ();
-        data_filter_menu = new javax.swing.JMenu ();
+        //data_filter_menu = new javax.swing.JMenu ();
         import_data_filter_option = new javax.swing.JMenuItem ();
         modify_data_filter_option = new javax.swing.JMenuItem ();
         save_data_filter_option = new javax.swing.JMenuItem ();
@@ -82,25 +82,22 @@ public class MainView extends javax.swing.JFrame {
         exit_menu_option = new javax.swing.JMenuItem ();
         
         setDefaultCloseOperation (javax.swing.WindowConstants.EXIT_ON_CLOSE);
-        setTitle (Messages.getString("MainView.string_0")); //$NON-NLS-1$
-        setName (Messages.getString("MainView.string_1")); //$NON-NLS-1$
+        setTitle ("PlasmaGraph");
+        setName ("PlasmaGraph");
         
         // Data Menu
-        data_menu.setText (Messages.getString("MainView.string_2")); //$NON-NLS-1$
-        data_menu.setToolTipText (Messages.getString("MainView.string_3")); //$NON-NLS-1$
+        data_menu.setText ("Data");
+        data_menu.setToolTipText ("Manages all Data-related operations.");
         
         // Import Data
         import_data_option.setAccelerator (javax.swing.KeyStroke.getKeyStroke (
                 java.awt.event.KeyEvent.VK_D,
                 java.awt.event.InputEvent.CTRL_MASK));
-        import_data_option.setText (Messages.getString("MainView.string_4")); //$NON-NLS-1$
-        import_data_option
-                .setToolTipText (Messages.getString("MainView.string_5")); //$NON-NLS-1$
-        import_data_option.setActionCommand (Messages.getString("MainView.string_6")); //$NON-NLS-1$
+        import_data_option.setText ("Import Data");
         data_menu.add (import_data_option);
         
         menu_bar.add (data_menu);
-        
+        /*
         // Data Filter Menu
         data_filter_menu.setText (Messages.getString("MainView.string_7")); //$NON-NLS-1$
         data_filter_menu
@@ -136,73 +133,54 @@ public class MainView extends javax.swing.JFrame {
         data_filter_menu.add (save_data_filter_option);
         
         menu_bar.add (data_filter_menu);
-        
+        */
         // Template Menu
-        template_menu.setText (Messages.getString("MainView.string_17")); //$NON-NLS-1$
-        template_menu.setToolTipText (Messages.getString("MainView.string_18")); //$NON-NLS-1$
+        template_menu.setText ("Templates"); //$NON-NLS-1$
+        template_menu.setToolTipText ("Manages all Template-related operations."); //$NON-NLS-1$
         
         // Import Template
         import_template_option.setAccelerator (javax.swing.KeyStroke
                 .getKeyStroke (java.awt.event.KeyEvent.VK_T,
                         java.awt.event.InputEvent.CTRL_MASK));
-        import_template_option.setText (Messages.getString("MainView.string_19")); //$NON-NLS-1$
-        import_template_option
-                .setToolTipText (Messages.getString("MainView.string_20")); //$NON-NLS-1$
-        import_template_option.setActionCommand (Messages.getString("MainView.string_21")); //$NON-NLS-1$
+        import_template_option.setText ("Import Template"); //$NON-NLS-1$
         template_menu.add (import_template_option);
         
         // Save Template
         save_template_option.setAccelerator (javax.swing.KeyStroke
                 .getKeyStroke (java.awt.event.KeyEvent.VK_S,
                         java.awt.event.InputEvent.CTRL_MASK));
-        save_template_option.setText (Messages.getString("MainView.string_22")); //$NON-NLS-1$
-        save_template_option
-                .setToolTipText (Messages.getString("MainView.string_23")); //$NON-NLS-1$
-        save_template_option.setActionCommand (Messages.getString("MainView.string_24")); //$NON-NLS-1$
+        save_template_option.setText ("Save Template"); //$NON-NLS-1$
         template_menu.add (save_template_option);
         
         menu_bar.add (template_menu);
         
         // Graph Menu
-        graph_menu.setText (Messages.getString("MainView.string_25")); //$NON-NLS-1$
-        graph_menu
-                .setToolTipText (Messages.getString("MainView.string_26"));   //$NON-NLS-1$
+        graph_menu.setText ("Graphing"); //$NON-NLS-1$
+        graph_menu.setToolTipText ("Contains all graphing-related functions.");
         
         // Basic Graphing
-        basic_graphing_radio_button.setText (Messages.getString("MainView.string_27")); //$NON-NLS-1$
-        basic_graphing_radio_button.setToolTipText (Messages.getString("MainView.string_28") //$NON-NLS-1$
-        		+ Messages.getString("MainView.string_29")); //$NON-NLS-1$
+        basic_graphing_radio_button.setText ("Simple Graphing"); //$NON-NLS-1$
         graph_menu.add (basic_graphing_radio_button);
         
         // Interpolation
-        interpolation_radio_button.setText (Messages.getString("MainView.string_30")); //$NON-NLS-1$
-        interpolation_radio_button.setToolTipText (Messages.getString("MainView.string_31") //$NON-NLS-1$
-        		+ Messages.getString("MainView.string_32")); //$NON-NLS-1$
+        interpolation_radio_button.setText ("Graphing with Interpolation");
         graph_menu.add (interpolation_radio_button);
         
         graphing_options_radio_button_group.add (basic_graphing_radio_button);
         graphing_options_radio_button_group.add (interpolation_radio_button);
         
         // Outlier Search
-        outlier_check_box.setText (Messages.getString("MainView.string_33")); //$NON-NLS-1$
-        outlier_check_box.setToolTipText (Messages.getString("MainView.string_34") //$NON-NLS-1$
-        		+ Messages.getString("MainView.string_35")); //$NON-NLS-1$
+        outlier_check_box.setText ("Find Outliers before Graphing");
         graph_menu.add (outlier_check_box);
         
         menu_bar.add (graph_menu);
         
         // Create Graph
-        create_graph_option.setText (Messages.getString("MainView.string_36")); //$NON-NLS-1$
-        create_graph_option.setActionCommand (Messages.getString("MainView.string_37")); //$NON-NLS-1$
+        create_graph_option.setText ("Create Graph");
         graph_menu.add (create_graph_option);
         
-        // Options Menu
-        options_menu.setText (Messages.getString("MainView.string_38")); //$NON-NLS-1$
-        
         // Exit Program
-        exit_menu_option.setText (Messages.getString("MainView.string_39")); //$NON-NLS-1$
-        exit_menu_option.setToolTipText (Messages.getString("MainView.string_40")); //$NON-NLS-1$
-        exit_menu_option.setActionCommand (Messages.getString("MainView.string_41")); //$NON-NLS-1$
+        exit_menu_option.setText ("Close");
         options_menu.add (exit_menu_option);
         
         menu_bar.add (options_menu);
@@ -222,17 +200,12 @@ public class MainView extends javax.swing.JFrame {
                 javax.swing.GroupLayout.Alignment.LEADING).addComponent (
                 tab_pane, javax.swing.GroupLayout.DEFAULT_SIZE, 378,
                 Short.MAX_VALUE));
-        
-        getAccessibleContext ()
-                .setAccessibleDescription (
-                        Messages.getString("MainView.string_42")); //$NON-NLS-1$
-        
         pack ();
     }
 
     // Variables declaration - do not modify
     private javax.swing.JMenuItem create_graph_option;
-    private javax.swing.JMenu data_filter_menu;
+    //private javax.swing.JMenu data_filter_menu;
     private javax.swing.JMenu data_menu;
     private javax.swing.JMenu graph_menu;
     private javax.swing.JMenu options_menu;

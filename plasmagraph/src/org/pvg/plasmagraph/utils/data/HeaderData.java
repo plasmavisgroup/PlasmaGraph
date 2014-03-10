@@ -15,6 +15,8 @@ import javax.swing.event.ChangeListener;
 import org.apache.commons.math3.util.Pair;
 import org.pvg.plasmagraph.utils.ExceptionHandler;
 import org.pvg.plasmagraph.utils.data.readers.CSVProcessor;
+import org.pvg.plasmagraph.utils.exceptions.UnsuccessfulInsertOperationException;
+import org.pvg.plasmagraph.utils.template.Template;
 import org.pvg.plasmagraph.utils.types.ColumnType;
 import org.pvg.plasmagraph.utils.types.FileType;
 
@@ -193,16 +195,21 @@ public class HeaderData implements Iterable<Pair <String, ColumnType>> {
 	 * @return A new DataSet containing a full set of data, ready for graphing.
 	 */
 	public DataSet populateData (GraphPair p) {
-		DataSet ds = new DataSet ();
+		ArrayList <DataSet> ads = new ArrayList <> ();
 		
 		try {
 		
 			for (Entry<File, FileType> e : this.file_list) {
+				
+				DataSet ds = new DataSet (false);
+				
 				if (e.getValue ().equals (FileType.CSV)) {
 					
 					CSVProcessor csv_reader = new CSVProcessor (e.getKey ());
 					
 					csv_reader.toDataSet (ds, p, this);
+					
+					ads.add (ds);
 					
 				} else if (e.getValue ().equals (FileType.MAT)) {
 					
@@ -221,11 +228,82 @@ public class HeaderData implements Iterable<Pair <String, ColumnType>> {
 							("Extracting data from non-CSV / MAT files.");
 				}
 			}
+			
+			// If there's more than one DataSet, condense the DataSets into one!
+			if (ads.size () > 1) {
+				// Take the other DataSets, take that same column from each, and
+				// append them to the return one!
+				for (int set_index = 1; (set_index < ads.size ()); ++set_index) {
+					if (!ads.get (0).append (ads.get (set_index))) {
+						throw (new UnsuccessfulInsertOperationException ());
+					}
+				}
+			}
+			
 		} catch (Exception ex) {
 			System.out.println (ex.getMessage ());
 		}
 		
-		return (ds);
+		// Regardless, return the first DataSet in ads.
+		return (ads.get (0));
+	}
+	
+	/**
+	 * Populates a list of DataSets based on the GraphPair provided and the files this object
+	 * maintains.
+	 * 
+	 * @return A new DataSet containing a full set of data, ready for graphing.
+	 */
+	public DataSet populateGroupedData (GraphPair p, Template t) {
+		ArrayList<DataSet> ads = new ArrayList <> ();
+		
+		try {
+		
+			for (Entry<File, FileType> e : this.file_list) {
+				
+				DataSet ds = new DataSet (true);
+				
+				if (e.getValue ().equals (FileType.CSV)) {
+					
+					CSVProcessor csv_reader = new CSVProcessor (e.getKey ());
+					
+					csv_reader.toDataSet (ds, p, this, t);
+					ads.add (ds);
+					
+				} else if (e.getValue ().equals (FileType.MAT)) {
+					
+					// TODO: get a working version of MatlabReader.
+					// TODO: rename MatlabReader to MatlabProcessor.
+					// TODO: Fit MatlabReader to FileProcessor interface.
+					//MatlabProcessor mat_reader = new MatlabProcessor (e.getKey ());
+					
+					// TODO: edit the function in the original to fit this new style.
+					//mat_reader.toDataSet (ds, p, this);
+					ExceptionHandler.createFunctionNotImplementedException 
+							("Extracting data from MAT files.");
+					
+				} else {
+					ExceptionHandler.createFunctionNotImplementedException 
+							("Extracting data from non-CSV / MAT files.");
+				}
+			}
+			
+			// If there's more than one DataSet, condense the DataSets into one!
+			if (ads.size () > 1) {
+				// Take the other DataSets, take that same column from each, and
+				// append them to the return one!
+				for (int set_index = 1; (set_index < ads.size ()); ++set_index) {
+					if (!ads.get (0).append (ads.get (set_index))) {
+						throw (new UnsuccessfulInsertOperationException ());
+					}
+				}
+			}
+			
+		} catch (Exception ex) {
+			System.out.println (ex.getMessage ());
+		}
+		
+		return (ads.get (0));
 	}
 	
 	// Iterator / Iterable methods.

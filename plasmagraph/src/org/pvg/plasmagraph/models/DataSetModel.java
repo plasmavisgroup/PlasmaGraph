@@ -3,6 +3,8 @@ package org.pvg.plasmagraph.models;
 // Class Import Block
 import java.util.ArrayList;
 
+import javax.swing.ComboBoxModel;
+import javax.swing.DefaultComboBoxModel;
 import javax.swing.DefaultListModel;
 import javax.swing.ListModel;
 
@@ -52,7 +54,7 @@ public class DataSetModel {
      * 
      * @return A ListModel of Strings containing the column names of HeaderData.
      */
-    public ListModel<String> resetAvailableList () {
+    public ListModel <String> resetAvailableList () {
     	// Reset the old lists.
     	DefaultListModel <String> list_available = new DefaultListModel <> ();
     	
@@ -70,7 +72,7 @@ public class DataSetModel {
      * 
      * @return A ListModel of Strings containing the pair names of DataReference.
      */
-    public ListModel<String> resetSelectedList () {
+    public ListModel <String> resetSelectedList () {
     	// Reset the old lists.
     	DefaultListModel <String> list_selected = new DefaultListModel <> ();
     	
@@ -80,6 +82,30 @@ public class DataSetModel {
         }
         
         return (list_selected);
+    }
+    
+    /**
+     * Takes the current DataReference and inserts the pair names into a new
+     * ListModel<String>.
+     * 
+     * @return A ListModel of Strings containing the pair names of DataReference.
+     */
+    public ComboBoxModel <String> resetGroupByBox () {	
+    	// This int's value must not change.
+    	int s = hd.size ();
+    	
+    	String [] group_array = new String [s + 1];
+    	
+    	group_array[0] = "None";
+    	
+    	if (s > 0) {
+    		for (int i = 1; (i <= s); ++i) {
+        		group_array[i] = hd.get (i - 1).getKey ();
+        	}
+    	}
+    	
+        
+        return (new DefaultComboBoxModel <> (group_array));
     }
     
     /**
