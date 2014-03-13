@@ -64,7 +64,7 @@ public class BarGraph extends JFrame implements Graph {
 	 */
 	@Override
 	public JPanel createJPanel (Template t, DataSet ds, GraphPair p) {
-		chart = createChart (createDataset(t, ds, p), t);
+		chart = createChart (createDataset(t, ds, p), t, p);
 		ChartPanel c = new ChartPanel (chart, false, true, false, true, true);
 		return (c);
 	}
@@ -79,7 +79,7 @@ public class BarGraph extends JFrame implements Graph {
 	 */
 	@Override
 	public JPanel createJPanel (Template t, ArrayList set, GraphPair p) {
-		chart = createChart (createDataset(t, set, p), t);
+		chart = createChart (createDataset(t, set, p), t, p);
 		ChartPanel c = new ChartPanel (chart, false, true, false, true, true);
 		return (c);
 	}
@@ -138,7 +138,7 @@ public class BarGraph extends JFrame implements Graph {
 	 * @return A JFreeChart containing the visual representation of the graph.
 	 */
 	@Override
-	public JFreeChart createChart (Dataset set, Template t) {
+	public JFreeChart createChart (Dataset set, Template t, GraphPair p) {
 		JFreeChart c = ChartFactory.createBarChart (t.getChartName (),
 				t.getYAxisLabel (), t.getXAxisLabel (), (DefaultCategoryDataset) set,
 				t.getOrientation (), t.generatesLegend (),

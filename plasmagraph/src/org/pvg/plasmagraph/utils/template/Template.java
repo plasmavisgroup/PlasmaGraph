@@ -369,6 +369,16 @@ public class Template {
 	}
 
 	/**
+	 * Getter method. Checks to see if the ChartName is currently in its default
+	 * state.
+	 * 
+	 * @return True if the chart_name variable is equal to "Empty vs. Variable"; else, False.
+	 */
+	public boolean isDefaultChartName () {
+		return (this.chart_name.equals ("Empty vs. Variable"));
+	}
+	
+	/**
 	 * Getter Method. Provides the "x_axis_label" variable.
      * @return A String variable, "x_axis_label", contained by this object.
 	 */
@@ -382,6 +392,16 @@ public class Template {
 	 */
 	public final void setXAxisLabel (String label) {
 		this.x_axis_label = label;
+	}
+	
+	/**
+	 * Getter method. Checks to see if the XAxisLabel is currently in its default
+	 * state.
+	 * 
+	 * @return True if the x_axis_label variable is equal to "X Axis"; else, False.
+	 */
+	public boolean isDefaultXAxisLabel () {
+		return (this.x_axis_label.equals ("X Axis"));
 	}
 
 	/**
@@ -398,6 +418,16 @@ public class Template {
 	 */
 	public final void setYAxisLabel (String label) {
 		this.y_axis_label = label;
+	}
+	
+	/**
+	 * Getter method. Checks to see if the YAxisLabel is currently in its default
+	 * state.
+	 * 
+	 * @return True if the x_axis_label variable is equal to "Y Axis"; else, False.
+	 */
+	public boolean isDefaultYAxisLabel () {
+		return (this.x_axis_label.equals ("Y Axis"));
 	}
 
 	/**

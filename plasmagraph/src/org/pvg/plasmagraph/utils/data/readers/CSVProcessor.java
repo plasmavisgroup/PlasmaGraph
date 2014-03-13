@@ -24,6 +24,8 @@ import au.com.bytecode.opencsv.CSVReader;
 import au.com.bytecode.opencsv.CSVWriter;
 
 /**
+ * Data processor class. Manages the reading of CSV files and creates DataSets
+ * for this project's usage.
  * 
  * @author Gerardo A. Navas Morales
  */
@@ -71,7 +73,7 @@ public class CSVProcessor implements FileProcessor {
 	 * Default, full-batch way to write a CSV. 
 	 * Writes to the original file location.
 	 */
-	@Override
+	//@Override
 	public void write () {
 		this.write (csv_file);
 	}
@@ -82,7 +84,7 @@ public class CSVProcessor implements FileProcessor {
 	 * 
 	 * @param f The file object whose location will be used instead of the default.
 	 */
-	@Override
+	//@Override
 	public void write (File f) {
 		// Open CSV file "f".
 		try (CSVWriter csv = new CSVWriter (new BufferedWriter
@@ -106,13 +108,13 @@ public class CSVProcessor implements FileProcessor {
 	 * Transforms the List<String[]> data object that CSVReader dumps out
 	 * into a proper DataSet for the purposes of PlasmaGraph.
 	 * 
-	 * @return A DataSet object with its DataGroups being of the DataRow type.
+	 * @param ds A DataSet object with its DataGroups being of the DataRow type.
 	 * @throws Exception Malformed data set; columns are of different sizes.
 	 */
 	@Override
 	public void toDataSet (DataSet ds, GraphPair p, HeaderData hd) throws Exception {
 		// First, check to see if the file's been even read.
-		if (this.csv_data.size () == 0) {
+		if (this.csv_data.isEmpty ()) {
 			
 			this.read ();
 		}
@@ -134,7 +136,7 @@ public class CSVProcessor implements FileProcessor {
 	@Override
 	public void toDataSet (DataSet ds, GraphPair p, HeaderData hd, Template t) throws Exception {
 		// First, check to see if the file's been even read.
-		if (this.csv_data.size () == 0) {
+		if (this.csv_data.isEmpty ()) {
 			
 			this.read ();
 		}
@@ -450,12 +452,12 @@ public class CSVProcessor implements FileProcessor {
 	@Override
 	public boolean getHeaders (HeaderData hd) throws Exception {
 		// First, check to see if the file's been even read.
-		if (this.csv_data.size () == 0) {
+		if (this.csv_data.isEmpty ()) {
 			this.read ();
 		}
 		
 		// Now we can continue.
-		if (hd.size () == 0) {
+		if (hd.isEmpty ()) {
 			if (this.checkColumnSizes ()) {
 				// For each column in this row...
 				
@@ -463,22 +465,10 @@ public class CSVProcessor implements FileProcessor {
 					
 					// What is the type of the data in that column.
 					ColumnType col_type = this.getType (i);
-					if (col_type.equals (ColumnType.DATETIME)) {
-						
-						// Date is properly validated? Then it's a datetime.
-						hd.add (new Pair <> (csv_data.get(0)[i].trim (), col_type));
-					
-					} else if (col_type.equals (ColumnType.DOUBLE)) {
-						
-						// Number? Then it's a double
-						hd.add (new Pair <> (csv_data.get(0)[i].trim (), col_type));
-						
-					} else {
-						
-						// Not a number or a date? Then it's a string.
-						hd.add (new Pair <> (csv_data.get(0)[i].trim (), col_type));
-						
-					}
+
+					// And just put it in!
+					hd.add (new Pair <> (csv_data.get(0)[i].trim (), col_type));
+
 				}
 				
 				// Then add that new file to the DataSet's list of files to import.
@@ -523,13 +513,13 @@ public class CSVProcessor implements FileProcessor {
 				new org.apache.commons.validator.routines.DateValidator ();
 		
 		// Now, verify the contents of "s" for the type of value it contains.
-		if (NumberUtils.isNumber (s.trim ())) {
-			
-			return (ColumnType.DOUBLE);
-			
-		} else if (d.validate (s) != null) {
+		if (d.validate (s) != null) {
 			
 			return (ColumnType.DATETIME);
+			
+		} else if (NumberUtils.isNumber (s.trim ())) {
+			
+			return (ColumnType.DOUBLE);
 			
 		} else {
 			

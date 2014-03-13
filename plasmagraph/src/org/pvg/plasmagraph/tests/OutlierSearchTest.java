@@ -23,6 +23,11 @@ import org.pvg.plasmagraph.utils.tools.outlierscan.distances.MahalanobisDistance
 import org.pvg.plasmagraph.utils.types.ChartType;
 import org.pvg.plasmagraph.utils.types.OutlierResponse;
 
+/**
+ * TODO
+ * @author Gerardo A. Navas Morales
+ */
+@SuppressWarnings ("javadoc")
 public class OutlierSearchTest {
 
 	private String default_file_path = 

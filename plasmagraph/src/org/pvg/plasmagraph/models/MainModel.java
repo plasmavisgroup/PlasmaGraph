@@ -2,7 +2,6 @@ package org.pvg.plasmagraph.models;
 
 //Class Import Block
 import java.io.File;
-import java.util.ArrayList;
 
 import javax.swing.JFileChooser;
 import javax.swing.JOptionPane;
@@ -17,7 +16,7 @@ import org.pvg.plasmagraph.utils.data.GraphPair;
 import org.pvg.plasmagraph.utils.data.filter.DataFilter;
 import org.pvg.plasmagraph.utils.data.filter.DataFilterWindow;
 import org.pvg.plasmagraph.utils.data.readers.CSVProcessor;
-import org.pvg.plasmagraph.utils.data.readers.MatlabReader;
+import org.pvg.plasmagraph.utils.data.readers.MatlabProcessor;
 import org.pvg.plasmagraph.utils.exceptions.FunctionNotImplementedException;
 import org.pvg.plasmagraph.utils.exceptions.IncorrectParametersException;
 import org.pvg.plasmagraph.utils.graphs.BarGraph;
@@ -52,7 +51,7 @@ public class MainModel {
     // TODO: Change to NIO 2.0 Path class!
     String TEMPLATE_EXTENSION = ".tem";
     String DATA_FILTER_EXTENSION = ".df";
-    String default_data_path = "./test/csv/";
+    String default_data_path = "./plasmagraph/test/";
     String default_template_path = "./test/template/";
     String default_filter_path = "./test/data_filter/";
     
@@ -62,10 +61,10 @@ public class MainModel {
      * 
      * @param t_reference
      *            Settings - Template reference provided by PlasmaGraph.
-     * @param ds_reference
-     *            Data - DataSet reference provided by PlasmaGraph.
+     * @param hd_reference Header - HeaderData reference provided by PlasmaGraph.
      * @param df_reference
      *            Filter - DataFilter reference provided by PlasmaGraph.
+     * @param dr_reference Graphing Pairs - DataReference reference provided by PlasmaGraph.
      */
     public MainModel (Template t_reference, HeaderData hd_reference,
             DataFilter df_reference, DataReference dr_reference) {
@@ -74,9 +73,6 @@ public class MainModel {
         hd = hd_reference;
         df = df_reference;
         dr = dr_reference;
-        
-        // Prepare FileChooser.
-        
     }
     
     /**
@@ -112,21 +108,17 @@ public class MainModel {
             if (FileUtilities.getExtension (f).equals (
                     mat_filter.getExtensions ()[0])) {
                 
-                // TODO: Implement Data Reading for MATLAB Files.
-                ExceptionHandler
-                        .createFunctionNotImplementedException ("MATLAB File Reader");
-                /*
-                 * MatlabReader mat = new MatlabReader (f);
-                 * try {
-                 * mat.read ();
-                 * if (mat.getHeaders (hd)) {
-                 * // TODO: Change message to "Data Columns extracted successfully." ?
-                 * JOptionPane.showConfirmDialog (null, "Data Column names extracted successfully.");
-                 * }
-                 * } catch (Exception ex) {
-                 * ExceptionHandler.createMalformedDataFileException ("Matlab File Reader");
-                 * }
-                 */
+                 MatlabProcessor mat = new MatlabProcessor (f);
+                 try {
+                	 mat.read ();
+                	 if (mat.getHeaders (hd)) {
+                		 // TODO: Change message to "Data Columns extracted successfully." ?
+            		 	JOptionPane.showConfirmDialog (null, "Data Column names extracted successfully.");
+                	 }
+                 } catch (Exception ex) {
+                	 ExceptionHandler.createMalformedDataFileException ("Matlab File Reader");
+                 }
+                 
                 
             } else if (FileUtilities.getExtension (f).equals (
                     csv_filter.getExtensions ()[0])) {
@@ -410,7 +402,6 @@ public class MainModel {
      * @throws FunctionNotImplementedException 
      */
     public void graph (boolean outlier_switch, boolean interpolation_switch) throws IncorrectParametersException, FunctionNotImplementedException {
-    	
     	if (outlier_switch) {
     		scannedGraphing (interpolation_switch);
     	} else {
@@ -521,4 +512,11 @@ public class MainModel {
 	private void log (String txt){
         System.out.println (txt);
     }
+
+	/**
+	 * Resets the HeaderData object.
+	 */
+	public void resetData () {
+		this.hd.clear ();
+	}
 }

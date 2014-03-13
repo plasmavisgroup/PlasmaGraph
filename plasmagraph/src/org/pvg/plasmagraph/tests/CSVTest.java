@@ -13,6 +13,7 @@ import org.pvg.plasmagraph.utils.data.HeaderData;
 import org.pvg.plasmagraph.utils.data.readers.CSVProcessor;
 import org.pvg.plasmagraph.utils.template.Template;
 
+@SuppressWarnings ("javadoc")
 public class CSVTest {
 	String default_csv_path = 
 			"C:/Users/tako/Documents/GitHub/PlasmaGraph/plasmagraph/test/csv/csv_test.csv";

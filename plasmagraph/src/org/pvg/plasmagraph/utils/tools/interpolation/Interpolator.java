@@ -23,6 +23,11 @@ import org.pvg.plasmagraph.utils.template.Template;
 import org.pvg.plasmagraph.utils.tools.DataConfidence;
 import org.pvg.plasmagraph.utils.types.InterpolationType;
 
+/**
+ * TODO
+ * 
+ * @author Gerardo A. Navas Morales
+ */
 public class Interpolator {
   
 	/**
@@ -42,7 +47,7 @@ public class Interpolator {
 	/**
 	 * External path to interpolate data and graph said data.
 	 * 
-	 * @param ds The de-outliered DataSet to interpolate.
+	 * @param ads The de-outliered ArrayList of DataSets to interpolate.
 	 * @param t The settings the DataSet is based upon.
 	 * @param dr The DataReference object containing all the pairs to interpolate.
 	 */
@@ -73,14 +78,14 @@ public class Interpolator {
         //System.out.println (printXYSeries (interpolated_dataset));
         
         // Graph it!
-        graphInterpolation (ds.toXYGraphDataset (p.getName ()), interpolated_dataset, t);
+        graphInterpolation (ds.toXYGraphDataset (p), interpolated_dataset, t, p);
         
     }
     
     /**
 	 * External path to interpolate data and graph said data. Method used to interface with 
 	 * 
-	 * @param hd The Headers to use for the interpolation.
+	 * @param ds The DataSet to use for the interpolation.
 	 * @param t The settings the DataSet is based upon.
 	 * @param p The DataReference pair to interpolate from the DataSet provided.
 	 */
@@ -94,7 +99,7 @@ public class Interpolator {
         //System.out.println (printXYSeries (interpolated_dataset));
         
         // Graph it!
-        graphInterpolation (ds.toXYGraphDataset (p.getName ()), interpolated_dataset, t);
+        graphInterpolation (ds.toXYGraphDataset (p), interpolated_dataset, t, p);
         
     }
 
@@ -117,7 +122,7 @@ public class Interpolator {
     	PearsonsCorrelation p_correlation = new PearsonsCorrelation ();
     	// XYDataset container for some JFree operations.
     	XYSeriesCollection regression_set = 
-    			new XYSeriesCollection (ds.toXYGraphDataset (p.getName ()));
+    			new XYSeriesCollection (ds.toXYGraphDataset (p));
 
     	//======================================================================================//
     	// Perform the regression and get the dataset out of it, depending on the type
@@ -267,16 +272,17 @@ public class Interpolator {
 	 * @param interpolation_dataset
 	 * @param interpolated_dataset
 	 * @param t
+	 * @param p 
 	 */
 	private static void graphInterpolation (XYSeries interpolation_dataset,
-			XYSeries interpolated_dataset, Template t) {
+			XYSeries interpolated_dataset, Template t, GraphPair p) {
 		// Combine the two datasets into an XYSeriesCollection
 		XYSeriesCollection graph_data = new XYSeriesCollection ();
 		graph_data.addSeries (interpolation_dataset);
 		graph_data.addSeries (interpolated_dataset);
 		
 		// Graph Interpolation and its original data.
-		XYGraph graph = new XYGraph (t, graph_data);
+		XYGraph graph = new XYGraph (t, graph_data, p);
 		graph.pack ();
 		graph.setVisible (true);
 	}

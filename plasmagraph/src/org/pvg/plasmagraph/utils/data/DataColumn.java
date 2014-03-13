@@ -2,7 +2,6 @@ package org.pvg.plasmagraph.utils.data;
 
 import java.util.ArrayList;
 import java.util.Iterator;
-<<<<<<< HEAD
 import java.util.ListIterator;
 import java.util.NoSuchElementException;
 
@@ -10,13 +9,7 @@ import org.pvg.plasmagraph.utils.types.ColumnType;
 
 import com.jmatio.types.MLChar;
 
-public class DataColumn<E> implements Iterable<Object>, Iterator<Object> {
-=======
-
-import org.pvg.plasmagraph.utils.types.ColumnType;
-
 public class DataColumn<E> implements Iterable<E> {
->>>>>>> master
 
 	/** Container for DataColumns. */
 	private ArrayList<E> values;
@@ -164,55 +157,7 @@ public class DataColumn<E> implements Iterable<E> {
 	public boolean containsStrings () {
 		return (type.equals (ColumnType.STRING));
 	}
-	
-<<<<<<< HEAD
-	@Override
-	public String toString () {
-		StringBuilder str = new StringBuilder();		
-		ListIterator<E> litr = this.values.listIterator();
-		
-		str.append("Name: ");
-		str.append(this.getName());
-		str.append(System.getProperty("line.separator"));
-		
-		str.append("Type: ");
-		str.append(this.getType());
-		str.append(System.getProperty("line.separator"));
-		
-		str.append("Size: ");
-		str.append(this.values.size());
-		str.append(System.getProperty("line.separator"));
-		
-		str.append("Values: [");
-		
-		while(litr.hasNext()) {
-			Object element = litr.next();
-			if(!(element instanceof MLChar))
-				str.append(element.toString());
-			
-			if(element instanceof MLChar){
-				MLChar mlcharElement = (MLChar) element;
-				for(int i = 0; i < mlcharElement.getSize(); i++)
-					str.append(mlcharElement.getChar(0, i).toString());
-			}
-			
-			if(!litr.hasNext()){
-				
-			}else{
-				str.append(", ");
-			}
-		}
-		
-		str.append("]");
-		
-		return str.toString();
-	}
 
-	// Iterator / Iterable methods.
-	@Override
-	public boolean hasNext () {
-		return (position < values.size ());
-=======
 	/**
 	 * Comparing method. Provides verification for Dates.
 	 * 
@@ -220,7 +165,6 @@ public class DataColumn<E> implements Iterable<E> {
 	 */
 	public boolean containsDates () {
 		return (type.equals (ColumnType.DATETIME));
->>>>>>> master
 	}
 	
 	@Override
@@ -268,48 +212,44 @@ public class DataColumn<E> implements Iterable<E> {
 	public boolean isEmpty () {
 		return (this.values.isEmpty ());
 	}
-
-<<<<<<< HEAD
-	public void addAll(DataColumn column) {
-		for(int index = 0; index < column.size(); index++){
-			this.values.add((E) column.get(index));
-		}		
-	}
+	
+	/**
+	 * 
+	 */
+    @Override
+    public boolean equals(Object o){
+        boolean rval = false;
         
-        @Override
-        public boolean equals(Object o){
-            boolean rval = false;
+        if(o instanceof DataColumn){
+            rval = true;
+            DataColumn dc = (DataColumn) o;
             
-            if(o instanceof DataColumn){
-                rval = true;
-                DataColumn dc = (DataColumn) o;
-                
-                if(this.size() != dc.size()){
-                	
-                    rval = false;
-                }
-                
-                if(!this.getName().equals (dc.getName())){
-                	
-                	System.out.println (this.getName () + " versus " + dc.getName ());
-                    rval = false;
-                }
-                
-                if(this.getType() != dc.getType()){
-                	
-                    rval = false;
-                }
-                
-                for(int i = 0; i < this.size() && rval; i++){
-                    if(!this.get(i).equals (dc.get(i))){
-                        rval = false;
-                    }
-                }
+            if(this.size() != dc.size()){
+            	
+                rval = false;
             }
             
-            return rval;
+            if(!this.getName().equals (dc.getName())){
+            	
+            	System.out.println (this.getName () + " versus " + dc.getName ());
+                rval = false;
+            }
+            
+            if(this.getType() != dc.getType()){
+            	
+                rval = false;
+            }
+            
+            for(int i = 0; i < this.size() && rval; i++){
+                if(!this.get(i).equals (dc.get(i))){
+                    rval = false;
+                }
+            }
         }
-=======
+        
+        return rval;
+    }
+
 	/**
 	 * Appends all the values in a specified DataColumn into this column.
 	 * 
@@ -319,6 +259,5 @@ public class DataColumn<E> implements Iterable<E> {
 	public boolean append (DataColumn <E> column) {
 		return (this.values.addAll (column.values));
 	}
->>>>>>> master
 
 }

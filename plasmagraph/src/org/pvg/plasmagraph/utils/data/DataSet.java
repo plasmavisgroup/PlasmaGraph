@@ -3,11 +3,6 @@ package org.pvg.plasmagraph.utils.data;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Iterator;
-<<<<<<< HEAD
-import java.util.ListIterator;
-import java.util.NoSuchElementException;
-=======
->>>>>>> master
 
 import org.apache.commons.math3.linear.Array2DRowRealMatrix;
 import org.jfree.data.category.DefaultCategoryDataset;
@@ -232,27 +227,8 @@ public class DataSet implements Iterable<DataColumn> {
 		return (this.values.get (index).containsStrings ());
 	}
 	
-	// Iterator / Iterable methods.
-	@Override
-<<<<<<< HEAD
-	public String toString () {
-		
-		StringBuilder str = new StringBuilder();		
-		ListIterator<DataColumn> litr = this.values.listIterator();
-		while(litr.hasNext()) {
-			Object column = litr.next();
-			str.append("-- Column --");
-			str.append(System.getProperty("line.separator"));
-			str.append(column.toString());
-			str.append(System.getProperty("line.separator"));			
-			str.append(System.getProperty("line.separator"));
-		}
-		
-		return str.toString();
-=======
 	public Iterator<DataColumn> iterator () {
 		return (this.values.iterator ());
->>>>>>> master
 	}
 	
 	/**
@@ -385,7 +361,7 @@ public class DataSet implements Iterable<DataColumn> {
 		StringBuilder sb = new StringBuilder ();
 		
 		for (DataColumn dc : this.values) {
-			sb.append (dc.toString ()).append ("\n");
+			sb.append (dc.toString ()).append (System.getProperty("line.separator"));
 		}
 		
 		return (sb.toString ());
@@ -398,8 +374,8 @@ public class DataSet implements Iterable<DataColumn> {
 	 * @param p Pair of index values with a pre-defined name.
 	 * @return An XYSeries containing the desired data.
 	 */
-	public XYSeries toXYGraphDataset (String series_name) {
-		XYSeries series = new XYSeries (series_name);
+	public XYSeries toXYGraphDataset (GraphPair p) {
+		XYSeries series = new XYSeries (p.getName ());
 
 		if (this.isDouble ()) {
 			for (int row = 0; row < this.getColumnLength (); ++row) {
@@ -434,30 +410,30 @@ public class DataSet implements Iterable<DataColumn> {
 		return (this.grouped);
 	}
         
-        /**
-         * 
-         * @param o
-         * @return 
-         */
-        @Override
-        public boolean equals (Object o) {
-            boolean rval = false;
-            if (o instanceof DataSet) {
-                DataSet ds = (DataSet) o;
-                rval = true;
-                
-                if(this.size() != ds.size()){
-                	
-                    rval = false;
-                }
-                
-                for(int i = 0; i < this.values.size() && rval; i++){
-                    if(!this.values.get(i).equals(ds.get(i))){
-                        rval = false;
-                    }
-                }               
+    /**
+     * 
+     * @param o
+     * @return 
+     */
+    @Override
+    public boolean equals (Object o) {
+        boolean rval = false;
+        if (o instanceof DataSet) {
+            DataSet ds = (DataSet) o;
+            rval = true;
+            
+            if(this.size() != ds.size()){
+            	
+                rval = false;
             }
             
-            return rval;
+            for(int i = 0; i < this.values.size() && rval; i++){
+                if(!this.values.get(i).equals(ds.get(i))){
+                    rval = false;
+                }
+            }               
         }
+        
+        return rval;
+    }
 }

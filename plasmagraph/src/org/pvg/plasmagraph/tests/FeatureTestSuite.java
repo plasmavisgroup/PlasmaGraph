@@ -5,7 +5,7 @@ import org.junit.runners.Suite;
 @RunWith(Suite.class)
 @Suite.SuiteClasses({
 	CSVTest.class,
-	MatlabTest.class,
+	MATTest.class,
 	DataSetTest.class,
 	TemplateTest.class,
 	ReferenceTest.class,
@@ -15,6 +15,7 @@ import org.junit.runners.Suite;
 	HeaderDataTest.class
 })
 
+@SuppressWarnings ("javadoc")
 public class FeatureTestSuite {
 	// Empty Class
 	// Exists only for the annotations above.

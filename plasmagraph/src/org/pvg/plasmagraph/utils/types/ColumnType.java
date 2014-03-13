@@ -1,5 +1,9 @@
 package org.pvg.plasmagraph.utils.types;
 
+import org.apache.commons.lang3.math.NumberUtils;
+
+import com.jmatio.types.MLArray;
+
 /**
  * Setting container object for the possible types of Columns available in 
  * the PlasmaGraph program.
@@ -52,4 +56,14 @@ public final class ColumnType {
     			{ColumnType.DOUBLE.toString (), ColumnType.STRING.toString (),
     			ColumnType.DATETIME.toString ()});
     }
+
+	/**
+	 * Checks if the type provided is a valid type.
+	 * 
+	 * @return True if the ColumnType object contains the word "Double", "String", or "Date Time"; else, False.
+	 */
+	public boolean isValidType () {
+		return ((this.name == "Double") || (this.name == "String") 
+				|| (this.name == "Date Time"));
+	}
 }

@@ -10,6 +10,7 @@ import org.pvg.plasmagraph.utils.types.ChartType;
 import org.pvg.plasmagraph.utils.types.InterpolationType;
 import org.pvg.plasmagraph.utils.types.OutlierResponse;
 
+@SuppressWarnings ("javadoc")
 public class TemplateTest {
     String default_template_path = "C:/Users/tako/Documents/GitHub/PlasmaGraph/plasmagraph/test/template/template_test.tem";
     

@@ -10,6 +10,11 @@ import org.pvg.plasmagraph.utils.data.DataSet;
 import org.pvg.plasmagraph.utils.data.GraphPair;
 import org.pvg.plasmagraph.utils.template.Template;
 
+/**
+ * TODO
+ * 
+ * @author Gerardo A. Navas Morales
+ */
 public interface Graph {
 	
 	/**
@@ -18,6 +23,7 @@ public interface Graph {
 	 * @param t Template reference used in the formation of various parts 
 	 * of the graph.
 	 * @param ds DataSet reference used in the creation of the graph.
+	 * @param p 
 	 * @return A JPanel containing the graph.
 	 */
 	JPanel createJPanel (Template t, DataSet ds, GraphPair p);
@@ -29,6 +35,7 @@ public interface Graph {
 	 * @param t Template reference used in the formation of various parts 
 	 * of the graph.
 	 * @param ds DataSet reference used in the creation of the graph.
+	 * @param p 
 	 * @return A Dataset containing the DataSet's data values
 	 */
 	Dataset createDataset (Template t, DataSet ds, GraphPair p);
@@ -41,9 +48,10 @@ public interface Graph {
 	 * @param set Dataset reference used in the creation of the graph.
 	 * @param t Template reference used in the formation of various parts 
 	 * of the graph.
+	 * @param p 
 	 * @return A JFreeChart containing the visual representation of the graph.
 	 */
-	JFreeChart createChart (Dataset set, Template t);
+	JFreeChart createChart (Dataset set, Template t, GraphPair p);
 	
 	/**
 	 * Creates a JPanel containing the chart. Sets the availability of graph-saving.
@@ -51,6 +59,7 @@ public interface Graph {
 	 * @param t Template reference used in the formation of various parts 
 	 * of the graph.
 	 * @param ds DataSet reference used in the creation of the graph.
+	 * @param p 
 	 * @return A JPanel containing the graph.
 	 */
 	@SuppressWarnings ("rawtypes")
@@ -63,6 +72,7 @@ public interface Graph {
 	 * @param t Template reference used in the formation of various parts 
 	 * of the graph.
 	 * @param ds DataSet reference used in the creation of the graph.
+	 * @param p 
 	 * @return A Dataset containing the DataSet's data values
 	 */
 	@SuppressWarnings ("rawtypes")

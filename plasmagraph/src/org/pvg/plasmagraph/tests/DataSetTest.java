@@ -13,6 +13,7 @@ import org.pvg.plasmagraph.utils.graphs.BarGraph;
 import org.pvg.plasmagraph.utils.graphs.XYGraph;
 import org.pvg.plasmagraph.utils.template.Template;
 
+@SuppressWarnings ("javadoc")
 public class DataSetTest {
 
 	@Test

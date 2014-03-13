@@ -13,6 +13,7 @@ import org.pvg.plasmagraph.utils.data.readers.CSVProcessor;
 import org.pvg.plasmagraph.utils.template.Template;
 import org.pvg.plasmagraph.utils.types.ColumnType;
 
+@SuppressWarnings ("javadoc")
 public class HeaderDataTest {
 
 	@Test

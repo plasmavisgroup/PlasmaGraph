@@ -15,6 +15,7 @@ import javax.swing.event.ChangeListener;
 import org.apache.commons.math3.util.Pair;
 import org.pvg.plasmagraph.utils.ExceptionHandler;
 import org.pvg.plasmagraph.utils.data.readers.CSVProcessor;
+import org.pvg.plasmagraph.utils.data.readers.MatlabProcessor;
 import org.pvg.plasmagraph.utils.exceptions.UnsuccessfulInsertOperationException;
 import org.pvg.plasmagraph.utils.template.Template;
 import org.pvg.plasmagraph.utils.types.ColumnType;
@@ -62,7 +63,8 @@ public class HeaderData implements Iterable<Pair <String, ColumnType>> {
 	 * Allows a new Pair <String, ColumnType> into the HeaderData if and only if its length
 	 * is the same as every other column. (Read: The first one is checked.)
 	 * 
-	 * @param o Pair <String, ColumnType> to add to the HeaderData.
+	 * @param s String name of the column being added.
+	 * @param o ColumnType of the column being added.
 	 * @return Boolean describing the success or failure of the action.
 	 */
 	public boolean add (String s, ColumnType o) {
@@ -120,6 +122,22 @@ public class HeaderData implements Iterable<Pair <String, ColumnType>> {
 	 */
 	public boolean contains (Pair <String, ColumnType> o) {
 		return (this.columns.contains (o));
+	}
+	
+	/**
+	 * Searches for a specific Column Name. Responds if it found it or not.
+	 * 
+	 * @param s String name of the column being searched for.
+	 * @return A boolean stating if the column was found or not.
+	 */
+	public boolean contains (String s) {
+		boolean found = false;
+		
+		for (int i = 0; (i < this.columns.size ()) && !found; ++i) {
+			found = (this.columns.get (i).getKey ().equals (s));
+		}
+		
+		return (found);
 	}
 
 	/**
@@ -192,6 +210,7 @@ public class HeaderData implements Iterable<Pair <String, ColumnType>> {
 	 * Populates a DataSet based on the GraphPair provided and the files this object
 	 * maintains.
 	 * 
+	 * @param p GraphPair object containing the columns to be graphed.
 	 * @return A new DataSet containing a full set of data, ready for graphing.
 	 */
 	public DataSet populateData (GraphPair p) {
@@ -213,15 +232,11 @@ public class HeaderData implements Iterable<Pair <String, ColumnType>> {
 					
 				} else if (e.getValue ().equals (FileType.MAT)) {
 					
-					// TODO: get a working version of MatlabReader.
-					// TODO: rename MatlabReader to MatlabProcessor.
-					// TODO: Fit MatlabReader to FileProcessor interface.
-					//MatlabProcessor mat_reader = new MatlabProcessor (e.getKey ());
+					MatlabProcessor mat_reader = new MatlabProcessor (e.getKey ());
 					
-					// TODO: edit the function in the original to fit this new style.
-					//mat_reader.toDataSet (ds, p, this);
-					ExceptionHandler.createFunctionNotImplementedException 
-							("Extracting data from MAT files.");
+					mat_reader.toDataSet (ds, p, this);
+					
+					ads.add (ds);
 					
 				} else {
 					ExceptionHandler.createFunctionNotImplementedException 
@@ -251,6 +266,9 @@ public class HeaderData implements Iterable<Pair <String, ColumnType>> {
 	/**
 	 * Populates a list of DataSets based on the GraphPair provided and the files this object
 	 * maintains.
+	 * 
+	 * @param p GraphPair object containing the columns to be graphed.
+	 * @param t Template object containing the GroupBy column to group data by.
 	 * 
 	 * @return A new DataSet containing a full set of data, ready for graphing.
 	 */
@@ -368,7 +386,6 @@ public class HeaderData implements Iterable<Pair <String, ColumnType>> {
 	 * Helper method. Provides interface to file_list.
 	 * 
 	 * @param file File object to add to Map.
-	 * @param type File extension of object.
 	 * @return Boolean describinb the success or failure of the operation.
 	 */
 	public boolean removeFile (File file) {
@@ -380,5 +397,22 @@ public class HeaderData implements Iterable<Pair <String, ColumnType>> {
 		
 		// Never found it; failure!
 		return (false);
+	}
+	
+	/**
+	 * Getter method. Provides information on the existance of data in this object.
+	 * 
+	 * @return True if this object has at least one pair of data; otherwise, false.
+	 */
+	public boolean isEmpty () {
+		return (this.columns.isEmpty ());
+	}
+
+	/**
+	 * Resets all data contained in this object, save for the listeners attached to it.
+	 */
+	public void clear () {
+		this.columns.clear ();
+		this.file_list.clear ();
 	}
 }

@@ -15,6 +15,7 @@ import org.pvg.plasmagraph.utils.tools.interpolation.Interpolator;
 import org.pvg.plasmagraph.utils.types.FileType;
 import org.pvg.plasmagraph.utils.types.InterpolationType;
 
+@SuppressWarnings ("javadoc")
 public class InterpolatorTest {
 	String linear_data = "C:/Users/tako/Documents/GitHub/PlasmaGraph"
 			+ "/plasmagraph/test/interpolation/lindata.csv";

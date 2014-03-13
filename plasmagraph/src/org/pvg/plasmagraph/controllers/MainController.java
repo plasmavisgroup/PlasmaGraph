@@ -54,13 +54,14 @@ public class MainController {
         // Automatically add listeners to Main Panel via view.
         // Data
         main_view.addDataImportMenuListener (new DataImportMenuListener ());
+        main_view.addDataResetMenuListener (new DataResetMenuListener ());
         // Template
         main_view.addTemplateImportMenuListener (new TemplateImportMenuListener ());
         main_view.addTemplateSaveMenuListener (new TemplateSaveMenuListener ());
         // Data Filter
-        main_view.addDataFilterImportMenuListener (new DataFilterImportMenuListener ());
-        main_view.addDataFilterEditMenuListener (new DataFilterEditMenuListener ());
-        main_view.addDataFilterSaveMenuListener (new DataFilterSaveMenuListener ());
+        //main_view.addDataFilterImportMenuListener (new DataFilterImportMenuListener ());
+        //main_view.addDataFilterEditMenuListener (new DataFilterEditMenuListener ());
+        //main_view.addDataFilterSaveMenuListener (new DataFilterSaveMenuListener ());
         // Graph
         main_view.addGraphMenuListener (new GraphMenuListener ());
         // Exit
@@ -71,6 +72,10 @@ public class MainController {
         setUpTabs ();
     }
     
+    /**
+     * Sets up the tabs that will be viewed in the JTabbedPane, and configuring other
+     * related JTabbedPane settings.
+     */
     public void setUpTabs () {
         // Adding Tabs to JTabbedPane
         main_view.getTabPane ().addTab (aesthetic_view.getName (), aesthetic_view);
@@ -95,6 +100,28 @@ public class MainController {
                 @Override
                 protected Void doInBackground () throws Exception {
                     main_model.importData ();
+                    return null;
+                }
+                
+            };
+            
+            data_worker.run ();
+            
+        }
+        
+    }
+    
+    class DataResetMenuListener implements ActionListener {
+        
+        @Override
+        public void actionPerformed (ActionEvent arg0) {
+            SwingWorker <Void, Void> data_worker = new SwingWorker <Void, Void> () {
+
+                @Override
+                protected Void doInBackground () throws Exception {
+                    main_model.resetData ();
+                    data_view.updateAvailableList ();
+                    data_view.updateSelectedList ();
                     return null;
                 }
                 

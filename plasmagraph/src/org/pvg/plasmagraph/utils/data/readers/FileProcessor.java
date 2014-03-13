@@ -11,8 +11,8 @@ import org.pvg.plasmagraph.utils.template.Template;
 public interface FileProcessor {
 
 	public void read ();
-	public void write ();
-	public void write (File f);
+	//public void write ();
+	//public void write (File f);
 	
 	public boolean getHeaders (HeaderData hd) throws Exception;
 	

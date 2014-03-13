@@ -65,10 +65,11 @@ public class MainView extends javax.swing.JFrame {
         menu_bar = new javax.swing.JMenuBar ();
         data_menu = new javax.swing.JMenu ();
         import_data_option = new javax.swing.JMenuItem ();
+        reset_data_option = new javax.swing.JMenuItem ();
         //data_filter_menu = new javax.swing.JMenu ();
-        import_data_filter_option = new javax.swing.JMenuItem ();
-        modify_data_filter_option = new javax.swing.JMenuItem ();
-        save_data_filter_option = new javax.swing.JMenuItem ();
+        //import_data_filter_option = new javax.swing.JMenuItem ();
+        //modify_data_filter_option = new javax.swing.JMenuItem ();
+        //save_data_filter_option = new javax.swing.JMenuItem ();
         template_menu = new javax.swing.JMenu ();
         import_template_option = new javax.swing.JMenuItem ();
         save_template_option = new javax.swing.JMenuItem ();
@@ -95,6 +96,10 @@ public class MainView extends javax.swing.JFrame {
                 java.awt.event.InputEvent.CTRL_MASK));
         import_data_option.setText ("Import Data");
         data_menu.add (import_data_option);
+        
+        // Reset Data
+        reset_data_option.setText ("Reset Data");
+        data_menu.add (reset_data_option);
         
         menu_bar.add (data_menu);
         /*
@@ -169,6 +174,8 @@ public class MainView extends javax.swing.JFrame {
         graphing_options_radio_button_group.add (basic_graphing_radio_button);
         graphing_options_radio_button_group.add (interpolation_radio_button);
         
+        graphing_options_radio_button_group.setSelected (basic_graphing_radio_button.getModel (), true);
+        
         // Outlier Search
         outlier_check_box.setText ("Find Outliers before Graphing");
         graph_menu.add (outlier_check_box);
@@ -212,6 +219,7 @@ public class MainView extends javax.swing.JFrame {
     private javax.swing.JMenuItem exit_menu_option;
     private javax.swing.JMenuItem import_data_filter_option;
     private javax.swing.JMenuItem import_data_option;
+    private javax.swing.JMenuItem reset_data_option;
     private javax.swing.JMenuItem import_template_option;
     private javax.swing.JMenuBar menu_bar;
     private javax.swing.JMenuItem modify_data_filter_option;
@@ -246,6 +254,16 @@ public class MainView extends javax.swing.JFrame {
         this.import_data_option.addActionListener (dataImportMenuListener);
         
     }
+    
+    /**
+     * Creates a new ActionListener for the Reset Data menu function.
+     * 
+     * @param dataResetMenuListener
+     *            Action Listener for the Reset Data menu function.
+     */
+    public void addDataResetMenuListener (ActionListener dataResetMenuListener) {
+		this.reset_data_option.addActionListener (dataResetMenuListener);
+	}
     
     // Template Listener Methods
     /**
