@@ -3,6 +3,7 @@ package org.pvg.plasmagraph.views;
 import java.awt.event.ActionListener;
 
 import javax.swing.JTabbedPane;
+import org.pvg.plasmagraph.controllers.MainController;
 
 import org.pvg.plasmagraph.models.MainModel;
 
@@ -66,6 +67,7 @@ public class MainView extends javax.swing.JFrame {
         data_menu = new javax.swing.JMenu ();
         import_data_option = new javax.swing.JMenuItem ();
         reset_data_option = new javax.swing.JMenuItem ();
+        matfile_log = new javax.swing.JMenuItem();
         //data_filter_menu = new javax.swing.JMenu ();
         //import_data_filter_option = new javax.swing.JMenuItem ();
         //modify_data_filter_option = new javax.swing.JMenuItem ();
@@ -101,7 +103,13 @@ public class MainView extends javax.swing.JFrame {
         reset_data_option.setText ("Reset Data");
         data_menu.add (reset_data_option);
         
+        // Display dataset from MATLAB in a log
+        matfile_log.setText ("View data");
+        data_menu.add (matfile_log);
+        
         menu_bar.add (data_menu);
+        
+        
         /*
         // Data Filter Menu
         data_filter_menu.setText (Messages.getString("MainView.string_7")); //$NON-NLS-1$
@@ -220,6 +228,7 @@ public class MainView extends javax.swing.JFrame {
     private javax.swing.JMenuItem import_data_filter_option;
     private javax.swing.JMenuItem import_data_option;
     private javax.swing.JMenuItem reset_data_option;
+    private javax.swing.JMenuItem matfile_log;
     private javax.swing.JMenuItem import_template_option;
     private javax.swing.JMenuBar menu_bar;
     private javax.swing.JMenuItem modify_data_filter_option;
@@ -264,6 +273,10 @@ public class MainView extends javax.swing.JFrame {
     public void addDataResetMenuListener (ActionListener dataResetMenuListener) {
 		this.reset_data_option.addActionListener (dataResetMenuListener);
 	}
+    
+    public void addViewDataMenuListener(ActionListener viewDataMenuListener) {
+        this.matfile_log.addActionListener (viewDataMenuListener);
+    }
     
     // Template Listener Methods
     /**
@@ -361,5 +374,5 @@ public class MainView extends javax.swing.JFrame {
      */
     public void addTabListener (javax.swing.event.ChangeListener tabListener) {
         this.tab_pane.addChangeListener (tabListener);
-    }
+    }    
 }

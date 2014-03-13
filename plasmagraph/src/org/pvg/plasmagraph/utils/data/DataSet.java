@@ -3,6 +3,7 @@ package org.pvg.plasmagraph.utils.data;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Iterator;
+import java.util.ListIterator;
 
 import org.apache.commons.math3.linear.Array2DRowRealMatrix;
 import org.jfree.data.category.DefaultCategoryDataset;
@@ -357,14 +358,19 @@ public class DataSet implements Iterable<DataColumn> {
 	 * @return A String representation of the entire ArrayList.
 	 */
 	@Override
-	public String toString () {
-		StringBuilder sb = new StringBuilder ();
-		
-		for (DataColumn dc : this.values) {
-			sb.append (dc.toString ()).append (System.getProperty("line.separator"));
-		}
-		
-		return (sb.toString ());
+	public String toString () {		
+                StringBuilder str = new StringBuilder();	
+                ListIterator<DataColumn> litr = this.values.listIterator();
+                while(litr.hasNext()) {
+                    Object column = litr.next();
+                    str.append("-- Column --");
+                    str.append(System.getProperty("line.separator"));
+                    str.append(column.toString());
+                    str.append(System.getProperty("line.separator"));	
+                    str.append(System.getProperty("line.separator"));
+                }
+
+                return str.toString();
 	}
 	
 	/**

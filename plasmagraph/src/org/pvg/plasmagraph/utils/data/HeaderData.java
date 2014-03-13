@@ -415,4 +415,12 @@ public class HeaderData implements Iterable<Pair <String, ColumnType>> {
 		this.columns.clear ();
 		this.file_list.clear ();
 	}
+
+    public File getFile(int i) throws Exception {
+        if(!this.file_list.iterator().hasNext()){
+            throw new Exception("Please import a data file first first");
+        }else{
+           return (this.file_list.iterator().next().getKey());
+        }        
+    }
 }
