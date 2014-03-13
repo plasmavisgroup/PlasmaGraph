@@ -20,6 +20,7 @@ import org.pvg.plasmagraph.views.*;
  */
 public class PlasmaGraph {
 
+	@SuppressWarnings ("javadoc")
 	public static void main (String [] args) {
 	    SwingUtilities.invokeLater (new Runnable () {
             @SuppressWarnings ("unused")
@@ -54,6 +55,9 @@ public class PlasmaGraph {
             
                 // Set the currently-visible view.
                 main_view.setVisible(true);
+                
+                // Start off by running the Import Data function!
+                main_model.importData ();
             }
 	    });
 	}

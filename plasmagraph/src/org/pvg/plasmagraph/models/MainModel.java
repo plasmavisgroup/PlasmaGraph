@@ -95,7 +95,7 @@ public class MainModel {
         open_file.addChoosableFileFilter (csv_filter);
         open_file.addChoosableFileFilter (mat_filter);
         // Set the default file filter.
-        open_file.setFileFilter (csv_filter);
+        open_file.setFileFilter (mat_filter);
         // Set the current directory
         open_file.setCurrentDirectory (new File (default_data_path));
         
@@ -521,6 +521,9 @@ public class MainModel {
 		this.hd.clear ();
 	}
 
+    /**
+     * @throws Exception
+     */
     public void prepareDataLog() throws Exception {
         MatlabProcessor mat_reader = new MatlabProcessor (hd.getFile(0));
         DatasetLogView dsview = new DatasetLogView(mat_reader.toString());

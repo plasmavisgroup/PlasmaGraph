@@ -1,5 +1,6 @@
 package org.pvg.plasmagraph.utils.graphs;
 
+import java.awt.Color;
 import java.util.ArrayList;
 
 import javax.swing.JFrame;
@@ -103,10 +104,12 @@ public class XYGraph extends JFrame implements Graph {
 
 		org.jfree.chart.plot.XYPlot plot = c.getXYPlot();
 		
-		// Set axis names.
+		// Set axis names and scales.
 		String [] s = p.getName ().split ("vs", 2);
 		System.out.println (p.getName ());
 		
+		// X Axis
+		// Label
 		if (t.isDefaultXAxisLabel ()) {
 			ValueAxis domain = new NumberAxis ();
 			System.out.println (s[0]);
@@ -115,6 +118,11 @@ public class XYGraph extends JFrame implements Graph {
 			plot.setDomainAxis (domain);
 		}
 		
+		// Scale
+		// TODO
+		
+		// Y Axis
+		// Label
 		if (t.isDefaultYAxisLabel ()) {
 			ValueAxis range = new NumberAxis ();
 			System.out.println (s[1]);
@@ -123,9 +131,16 @@ public class XYGraph extends JFrame implements Graph {
 			plot.setRangeAxis (range);
 		}
 		
+		// Scale
+		// TODO
+		
+		// Set Chart name.
 		if (t.isDefaultChartName ()) {
 			c.setTitle (p.getName ());
 		}
+		
+		// Change background color.
+		plot.setBackgroundPaint (Color.WHITE);
 		
 		return (c);
 	}
