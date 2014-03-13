@@ -55,6 +55,7 @@ public class MainController {
         // Data
         main_view.addDataImportMenuListener (new DataImportMenuListener ());
         main_view.addDataResetMenuListener (new DataResetMenuListener ());
+        main_view.addViewDataMenuListener (new ViewDataMenuListener ());
         // Template
         main_view.addTemplateImportMenuListener (new TemplateImportMenuListener ());
         main_view.addTemplateSaveMenuListener (new TemplateSaveMenuListener ());
@@ -89,6 +90,8 @@ public class MainController {
         main_view.getTabPane ().setMnemonicAt (2, java.awt.event.KeyEvent.VK_T);
         
     }
+
+
     
     // Data Action Listener Inner Classes
     class DataImportMenuListener implements ActionListener {
@@ -122,6 +125,26 @@ public class MainController {
                     main_model.resetData ();
                     data_view.updateAvailableList ();
                     data_view.updateSelectedList ();
+                    return null;
+                }
+                
+            };
+            
+            data_worker.run ();
+            
+        }
+        
+    }
+    
+        class ViewDataMenuListener implements ActionListener {
+        
+        @Override
+        public void actionPerformed (ActionEvent arg0) {
+            SwingWorker <Void, Void> data_worker = new SwingWorker <Void, Void> () {
+
+                @Override
+                protected Void doInBackground () throws Exception {
+                    main_model.prepareDataLog();
                     return null;
                 }
                 

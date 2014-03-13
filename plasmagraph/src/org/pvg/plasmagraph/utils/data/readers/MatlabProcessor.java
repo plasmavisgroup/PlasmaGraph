@@ -540,6 +540,7 @@ public class MatlabProcessor implements FileProcessor {
 	 */
 	public String toString () {
 
+            /*
 		StringBuilder str = new StringBuilder ();
 
 		for (MLArray m : this.mat_data.values ()) {
@@ -556,7 +557,25 @@ public class MatlabProcessor implements FileProcessor {
 		}
 
 		return str.toString ();
+            */
+            
+            StringBuilder str = new StringBuilder();
+            DataSet columns = toDataSet();
+
+            str.append(columns.toString());
+
+            return str.toString(); 
 	}
+        
+        private DataSet toDataSet () {
+            
+            DataSet ds = new DataSet (false);
+            for (MLArray m : this.mat_data.values()) {
+                ds.add(this.getColumn(m));
+            }
+            
+            return (ds);
+        }
 
 	/**
 	 * Getter method. Provides the Map object obtained from the file.

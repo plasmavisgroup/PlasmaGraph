@@ -26,6 +26,7 @@ import org.pvg.plasmagraph.utils.template.Template;
 import org.pvg.plasmagraph.utils.tools.interpolation.Interpolator;
 import org.pvg.plasmagraph.utils.tools.outlierscan.OutlierSearch;
 import org.pvg.plasmagraph.utils.types.ChartType;
+import org.pvg.plasmagraph.views.DatasetLogView;
 
 /**
  * Primary Model for the PlasmaGraph product.
@@ -519,4 +520,11 @@ public class MainModel {
 	public void resetData () {
 		this.hd.clear ();
 	}
+
+    public void prepareDataLog() throws Exception {
+        MatlabProcessor mat_reader = new MatlabProcessor (hd.getFile(0));
+        DatasetLogView dsview = new DatasetLogView(mat_reader.toString());
+        dsview.pack();
+        dsview.setVisible(true);
+    }
 }
