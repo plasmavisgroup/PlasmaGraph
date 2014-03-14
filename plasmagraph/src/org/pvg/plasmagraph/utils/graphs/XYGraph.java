@@ -1,6 +1,7 @@
 package org.pvg.plasmagraph.utils.graphs;
 
 import java.awt.Color;
+import java.awt.Font;
 import java.util.ArrayList;
 
 import javax.swing.JFrame;
@@ -10,6 +11,8 @@ import org.apache.commons.math3.ml.clustering.DoublePoint;
 import org.jfree.chart.ChartFactory;
 import org.jfree.chart.ChartPanel;
 import org.jfree.chart.JFreeChart;
+import org.jfree.chart.axis.LogAxis;
+import org.jfree.chart.axis.LogarithmicAxis;
 import org.jfree.chart.axis.NumberAxis;
 import org.jfree.chart.axis.ValueAxis;
 import org.jfree.data.general.Dataset;
@@ -105,34 +108,41 @@ public class XYGraph extends JFrame implements Graph {
 		org.jfree.chart.plot.XYPlot plot = c.getXYPlot();
 		
 		// Set axis names and scales.
-		String [] s = p.getName ().split ("vs", 2);
-		System.out.println (p.getName ());
+		String [] s = p.getName ().split ("vs.", 2);
 		
 		// X Axis
-		// Label
+		// Label and Scale
 		if (t.isDefaultXAxisLabel ()) {
-			ValueAxis domain = new NumberAxis ();
-			System.out.println (s[0]);
-			domain.setLabel (s[0]);
-			//domain.setLabelFont (Font.getFont ("Arial"));
+			
+			ValueAxis domain = new LogAxis (s[0].trim ());//NumberAxis ();
+			//domain.setLabel (s[0].trim ());
+			domain.setLabelFont (new Font ("Arial", Font.BOLD, 16));
 			plot.setDomainAxis (domain);
+			
+		} else {
+			
+			ValueAxis domain = new LogAxis (t.getXAxisLabel ());
+			domain.setLabelFont (new Font ("Arial", Font.BOLD, 16));
+			plot.setDomainAxis (domain);
+			
 		}
-		
-		// Scale
-		// TODO
 		
 		// Y Axis
-		// Label
+		// Label and Scale
 		if (t.isDefaultYAxisLabel ()) {
-			ValueAxis range = new NumberAxis ();
-			System.out.println (s[1]);
-			range.setLabel (s[1]);
-			//range.setLabelFont (Font.getFont ("Arial"));
+			
+			ValueAxis range = new LogAxis (s[1].trim ());//new NumberAxis ();;
+			//range.setLabel (s[1].trim ());
+			range.setLabelFont (new Font ("Arial", Font.BOLD, 16));
 			plot.setRangeAxis (range);
+			
+		} else {
+			
+			ValueAxis range = new LogAxis (t.getYAxisLabel ());
+			range.setLabelFont (new Font ("Arial", Font.BOLD, 16));
+			plot.setRangeAxis (range);
+			
 		}
-		
-		// Scale
-		// TODO
 		
 		// Set Chart name.
 		if (t.isDefaultChartName ()) {
@@ -141,6 +151,8 @@ public class XYGraph extends JFrame implements Graph {
 		
 		// Change background color.
 		plot.setBackgroundPaint (Color.WHITE);
+		plot.setRangeGridlinePaint (Color.BLACK);
+		plot.setDomainGridlinePaint (Color.BLACK);
 		
 		return (c);
 	}

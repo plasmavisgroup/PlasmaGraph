@@ -427,7 +427,7 @@ public class Template {
 	 * @return True if the x_axis_label variable is equal to "Y Axis"; else, False.
 	 */
 	public boolean isDefaultYAxisLabel () {
-		return (this.x_axis_label.equals ("Y Axis"));
+		return (this.y_axis_label.equals ("Y Axis"));
 	}
 
 	/**
