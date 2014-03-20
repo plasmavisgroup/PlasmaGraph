@@ -10,22 +10,10 @@ import javax.swing.filechooser.FileNameExtensionFilter;
 import org.pvg.plasmagraph.utils.ExceptionHandler;
 import org.pvg.plasmagraph.utils.FileUtilities;
 import org.pvg.plasmagraph.utils.data.DataReference;
-import org.pvg.plasmagraph.utils.data.DataSet;
 import org.pvg.plasmagraph.utils.data.HeaderData;
-import org.pvg.plasmagraph.utils.data.GraphPair;
-import org.pvg.plasmagraph.utils.data.filter.DataFilter;
-import org.pvg.plasmagraph.utils.data.filter.DataFilterWindow;
 import org.pvg.plasmagraph.utils.data.readers.CSVProcessor;
 import org.pvg.plasmagraph.utils.data.readers.MatlabProcessor;
-import org.pvg.plasmagraph.utils.exceptions.FunctionNotImplementedException;
-import org.pvg.plasmagraph.utils.exceptions.IncorrectParametersException;
-import org.pvg.plasmagraph.utils.graphs.BarGraph;
-import org.pvg.plasmagraph.utils.graphs.GraphViewer;
-import org.pvg.plasmagraph.utils.graphs.XYGraph;
 import org.pvg.plasmagraph.utils.template.Template;
-import org.pvg.plasmagraph.utils.tools.interpolation.Interpolator;
-import org.pvg.plasmagraph.utils.tools.outlierscan.OutlierSearch;
-import org.pvg.plasmagraph.utils.types.ChartType;
 import org.pvg.plasmagraph.views.DatasetLogView;
 
 /**
@@ -43,8 +31,6 @@ public class MainModel {
     Template t;
     /** Reference to PlasmaGraph's DataSet, passed via constructor reference. */
     HeaderData hd;
-    /** Reference to PlasmaGraph's DataFilter, passed via constructor reference. */
-    DataFilter df;
     /** Reference to PlasmaGraph's DataReference, passed via constructor reference. */
     DataReference dr;
     
@@ -63,16 +49,13 @@ public class MainModel {
      * @param t_reference
      *            Settings - Template reference provided by PlasmaGraph.
      * @param hd_reference Header - HeaderData reference provided by PlasmaGraph.
-     * @param df_reference
-     *            Filter - DataFilter reference provided by PlasmaGraph.
      * @param dr_reference Graphing Pairs - DataReference reference provided by PlasmaGraph.
      */
     public MainModel (Template t_reference, HeaderData hd_reference,
-            DataFilter df_reference, DataReference dr_reference) {
+            DataReference dr_reference) {
         // Update currently-used Template, Data, and Data Filter Sources.
         t = t_reference;
         hd = hd_reference;
-        df = df_reference;
         dr = dr_reference;
     }
     
@@ -114,7 +97,7 @@ public class MainModel {
                 	 mat.read ();
                 	 if (mat.getHeaders (hd)) {
                 		 // TODO: Change message to "Data Columns extracted successfully." ?
-            		 	JOptionPane.showConfirmDialog (null, "Data Column names extracted successfully.");
+            		 	JOptionPane.showMessageDialog (null, "Data Column names extracted successfully.");
                 	 }
                  } catch (Exception ex) {
                 	 ExceptionHandler.createMalformedDataFileException ("Matlab File Reader");
@@ -233,103 +216,6 @@ public class MainModel {
     }
     
     /**
-     * Imports a new DataFilter file to the reference variable this Model
-     * contains.
-     * Allows the user to specify the location wherein it will be loaded from.
-     */
-    public void importDataFilter () {
-        // Prepare the JFileChooser for use.
-        JFileChooser open_file = new JFileChooser ();
-        createOpenFileChooser (open_file);
-        
-        // Prepare the FileFilter
-        FileNameExtensionFilter data_filter = new FileNameExtensionFilter (
-                "Data Filter Files", "daf");
-        
-        // Insert the FileFilter into the JFileChooser
-        open_file.addChoosableFileFilter (data_filter);
-        // Set the default file filter.
-        open_file.setFileFilter (data_filter);
-        // Set the current directory
-        open_file.setCurrentDirectory (new File (default_filter_path));
-        
-        // Open the dialog!
-        int return_value = open_file.showOpenDialog (null);
-        
-        // Check to see what the user selected, and act on it!
-        if (return_value == JFileChooser.APPROVE_OPTION) {
-
-            // Dialog: Ask if overwrite data?
-            if (JOptionPane.showConfirmDialog (null,
-                    "Do you wish to overwrite the current data filter?",
-                    "Overwrite Data Filter", JOptionPane.YES_NO_OPTION) == JOptionPane.YES_OPTION) {
-                
-                // Read the data.
-                df = new DataFilter (open_file);
-                
-            } else {
-                JOptionPane.showMessageDialog (null,
-                        "The current data filter will not be overwritten.",
-                        "Overwrite Data Filter - Stopped",
-                        JOptionPane.PLAIN_MESSAGE);
-            }
-        } else if (return_value == JFileChooser.ERROR_OPTION) {
-            ExceptionHandler
-                    .createFileSelectionException ("Importing Data Filter");
-        }
-        // "return_value == JFileChooser.CANCEL_OPTION" has no response.
-    }
-    
-    /**
-     * Initializes the DataFilterWindow JFrame, and sets it visibility to true.
-     * WARNING: This is not a modal window, which means that there can be issues
-     * with
-     * how data is processed. There is NO EXPECTATION OF RETROACTIVE CHANGES;
-     * THE USER
-     * MUST REQUEST FOR A NEW IMPORT BEFORE BEING ABLE TO USE THE NEW FILTERS.
-     */
-    public void editDataFilter () {
-        // Initialize the DataFilterWindow, and get it running!
-        DataFilterWindow dfw = new DataFilterWindow (df);
-        dfw.setVisible (true);
-        // dfw.setAlwaysOnTop(true);
-    }
-    
-    /**
-     * Saves the current status of the DataFilter.
-     * Allows the user to specify the location wherein it will be saved.
-     */
-    public void saveDataFilter () {
-        // Prepare the JFileChooser for use.
-        JFileChooser save_file = new JFileChooser ();
-        createOpenFileChooser (save_file);
-        
-        // Prepare the FileFilter
-        FileNameExtensionFilter data_filter = new FileNameExtensionFilter (
-                "Data Filter Files", "daf");
-        
-        // Insert the FileFilter into the JFileChooser
-        save_file.addChoosableFileFilter (data_filter);
-        // Set the default file filter.
-        save_file.setFileFilter (data_filter);
-        // Set the current directory
-        save_file.setCurrentDirectory (new File (default_filter_path));
-        
-        int return_value = save_file.showSaveDialog (null);
-        
-        // Check to see what the user selected, and act on it!
-        if (return_value == JFileChooser.APPROVE_OPTION) {
-            
-            // Save the data.
-            df.save (save_file);
-                
-        } else if (return_value == JFileChooser.ERROR_OPTION) {
-            ExceptionHandler.createFileSelectionException ("Saving Data Filter");
-        }
-        // "return_value == JFileChooser.CANCEL_OPTION" has no response.
-    }
-    
-    /**
      * Helper method that automatically performs some edits to an Open-centric
      * JFileChooser.
      * TODO: Remove this method and incorporate its process to the
@@ -373,13 +259,6 @@ public class MainModel {
      * Asks the user if they want to store their changes one last time before leaving!
      */
     public void exit () {
-        // Ask if user wants to save DataFilter
-        if (JOptionPane.showConfirmDialog (null,
-                "Do you want to save your Data Filter before exiting PlasmaGraph?",
-                "Save Data Filter?", JOptionPane.YES_NO_OPTION) == JOptionPane.YES_OPTION) {
-            this.saveDataFilter ();
-        }
-        
         // Ask if user wants to save Template
         if (JOptionPane.showConfirmDialog (null,
                         "Do you want to save your Template before exiting PlasmaGraph?",
@@ -390,110 +269,6 @@ public class MainModel {
         // Close.
         // This probably isn't the best way to do it, though.
         System.exit (0);
-    }
-    
-    /**
-     * Graphs the columns specified in DataReference dr with 
-     * data in DataSet ds according to the settings in Template t.
-     * Uses JFreeChart to create the appropriate graph!
-     * 
-     * @param outlier_switch 
-     * @param interpolation_switch 
-     * @throws IncorrectParametersException 
-     * @throws FunctionNotImplementedException 
-     */
-    public void graph (boolean outlier_switch, boolean interpolation_switch) throws IncorrectParametersException, FunctionNotImplementedException {
-    	if (outlier_switch) {
-    		scannedGraphing (interpolation_switch);
-    	} else {
-    		unscannedGraphing (interpolation_switch);
-    	}
-    	
-    }
-    
-    /**
-     * Graphs the columns specified in DataReference dr with 
-     * data in DataSet ds according to the settings in Template t.
-     * Uses JFreeChart to create the appropriate graph!
-     * Does not scan the data for outliers before other functions.
-     * 
-     * @param interpolation_switch 
-     * @throws IncorrectParametersException 
-     */
-    private void unscannedGraphing (boolean interpolation_switch) throws IncorrectParametersException {
-    	// Repeat for each GraphPair to use to generate a graph.
-    	for (GraphPair p : dr) {
-    	
-	    	if (interpolation_switch) {
-	    		
-	    		log ("Interpolating.");
-				Interpolator.interpolate (hd, t, p);
-	    		
-	    	} else {
-	    		
-	    		if (t.getChartType ().equals (ChartType.XY_GRAPH)) {
-	    				
-	    				// Create the graph
-	    				GraphViewer.createXYGraph (t, hd, p);
-	    			
-	    		} else if (t.getChartType ().equals (ChartType.BAR_GRAPH)) {
-	    				
-	    				// Create the graph
-	    				GraphViewer.createBarGraph (t, hd, p);
-	    			
-	    		} else {
-	    			ExceptionHandler.createFunctionNotImplementedException 
-	    					("Graph - Not XY or Bar Graph");
-	    		}
-	    	}
-    	}
-    }
-    
-    /**
-     * Graphs the columns specified in DataReference dr with 
-     * data in DataSet ds according to the settings in Template t.
-     * Uses JFreeChart to create the appropriate graph!
-     * Scans the data for outliers before other functions.
-     * 
-     * @param interpolation_switch 
-     * @throws IncorrectParametersException 
-     * @throws FunctionNotImplementedException 
-     */
-    private void scannedGraphing (boolean interpolation_switch) throws IncorrectParametersException, FunctionNotImplementedException {
-    	for (GraphPair p: dr) {
-    		//log ("Outlier Scanning...");
-    		DataSet ds = OutlierSearch.scanForOutliers (hd, t, p);
-    		
-    		if (interpolation_switch) {
-    			
-        		//log ("Interpolating.");
-    			Interpolator.interpolate (ds, t, p);
-        		
-        	} else {
-        		
-        		if (t.getChartType ().equals (ChartType.XY_GRAPH)) {
-        				// Create the graph
-        				XYGraph graph = new XYGraph (t, ds, p);
-        				
-        				// Display the graph.
-        				graph.pack ();
-        				graph.setVisible (true);
-        			
-        		} else if (t.getChartType ().equals (ChartType.BAR_GRAPH)) {
-        				
-        				// Create the graph
-        				BarGraph graph = new BarGraph (t, ds, p);
-        				
-        				// Display the graph.
-        				graph.pack ();
-        				graph.setVisible (true);
-        			
-        		} else {
-        			ExceptionHandler.createFunctionNotImplementedException 
-        					("Graph - Not XY or Bar Graph");
-        		}
-        	}
-    	}
     }
 
     /**
@@ -510,6 +285,7 @@ public class MainModel {
 	 * 
 	 * @param txt Text to print in console.
 	 */
+	@SuppressWarnings ("unused")
 	private void log (String txt){
         System.out.println (txt);
     }
@@ -522,9 +298,13 @@ public class MainModel {
 	}
 
     /**
+     * Opens the DataLogView in order to present a visual representation of the
+     * data currently being accounted for.
+     * 
      * @throws Exception
      */
     public void prepareDataLog() throws Exception {
+    	// TODO: Make it account for all the possible types of files.
         MatlabProcessor mat_reader = new MatlabProcessor (hd.getFile(0));
         DatasetLogView dsview = new DatasetLogView(mat_reader.toString());
         dsview.pack();

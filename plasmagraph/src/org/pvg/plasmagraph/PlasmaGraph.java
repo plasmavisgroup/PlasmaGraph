@@ -7,7 +7,6 @@ import org.pvg.plasmagraph.controllers.*;
 import org.pvg.plasmagraph.models.*;
 import org.pvg.plasmagraph.utils.data.DataReference;
 import org.pvg.plasmagraph.utils.data.HeaderData;
-import org.pvg.plasmagraph.utils.data.filter.DataFilter;
 import org.pvg.plasmagraph.utils.template.*;
 import org.pvg.plasmagraph.views.*;
 
@@ -23,6 +22,7 @@ public class PlasmaGraph {
 	@SuppressWarnings ("javadoc")
 	public static void main (String [] args) {
 	    SwingUtilities.invokeLater (new Runnable () {
+	    	
             @SuppressWarnings ("unused")
 			@Override
             public void run () {
@@ -30,14 +30,7 @@ public class PlasmaGraph {
                 Template t = new Template ();
                 HeaderData hd = new HeaderData ();
                 DataReference dr = new DataReference ();
-                DataFilter df = new DataFilter ();
-                
-                // Create all MVC components and connect them.
-                // Aesthetic MVC
-                AestheticModel aesthetic_model = new AestheticModel (t);
-                AestheticView aesthetic_view = new AestheticView (aesthetic_model);
-                AestheticController aesthetic_controller = new AestheticController (aesthetic_model, aesthetic_view);
-                
+                      
                 // Data Set MVC
                 DataSetModel data_model = new DataSetModel (t, hd, dr);
                 DataSetView data_view = new DataSetView (data_model);
@@ -49,16 +42,24 @@ public class PlasmaGraph {
                 ToolController tool_controller = new ToolController (tool_model, tool_view);
                 
                 // Main MVC
-                MainModel main_model = new MainModel (t, hd, df, dr);
+                MainModel main_model = new MainModel (t, hd, dr);
                 MainView main_view = new MainView (main_model);
-                MainController main_controller = new MainController (main_model, main_view, aesthetic_view, data_view, tool_view);
+                MainController main_controller = new MainController (main_model, main_view, data_view, tool_view); // aesthetic_view, data_view, tool_view);
             
-                // Set the currently-visible view.
-                main_view.setVisible(true);
+                // Graph MVC
+                GraphModel graph_model = new GraphModel (hd, dr, t);
+                GraphView graph_view = new GraphView (graph_model);
+				GraphController graph_controller = new GraphController (graph_model, graph_view);
+                
+                // Set the currently-visible views.
+                main_view.setVisible (true);
+                graph_view.setVisible (true);
                 
                 // Start off by running the Import Data function!
-                main_model.importData ();
+                main_model.importData (); 
+                
             }
 	    });
+	    
 	}
 }

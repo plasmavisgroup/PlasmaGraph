@@ -253,7 +253,7 @@ public class HeaderDataTest {
 			CSVProcessor csv = new CSVProcessor (new File (linear_data));
 			HeaderData hd = new HeaderData ();
 			csv.getHeaders (hd);
-			GraphPair p = new GraphPair (0, 1, "Time (s) vs. Distance (m)");
+			GraphPair p = new GraphPair (0, "Time (s)", 1, "Distance (m)");
 			
 			DataSet ds = hd.populateData (p);
 			
@@ -277,7 +277,6 @@ public class HeaderDataTest {
 		try {
 			// Prepare Template
 			Template t = new Template ();
-			t.setGroupByColumnn ("Experiment Number");
 			
 			// Prepare Data
 			CSVProcessor csv = new CSVProcessor (new File (linear_data));
@@ -285,12 +284,13 @@ public class HeaderDataTest {
 			csv.getHeaders (hd);
 			
 			// Prepare Pair.
-			GraphPair p = new GraphPair (6, 7, "Temperature_1 (eV) vs. Plasma Potential_1 (V)");
+			GraphPair p = new GraphPair (0, "Experiment Number", 6, 
+					"Temperature_1 (eV)", 7, "Plasma Potential_1 (V)");
 			
 			DataSet ds = hd.populateGroupedData (p, t);
 			
 			// Test
-			assertEquals (t.getGroupByColumn (), 
+			assertEquals (p.getGroupName (), 
 					ds.get (0).getColumnName ());
 			assertEquals (hd.get (p.getIndex1 ()).getKey (), 
 					ds.get (1).getColumnName ());
@@ -323,7 +323,7 @@ public class HeaderDataTest {
 				csv.getHeaders (hd);
 				
 				// Prepare Pair.
-				GraphPair p = new GraphPair (0, 1, "Time (s) vs. Distance (m)");
+				GraphPair p = new GraphPair (0, "Time (s)", 1, "Distance (m)");
 				
 				DataSet ds = hd.populateData (p);
 				

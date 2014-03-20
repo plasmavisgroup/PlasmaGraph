@@ -183,7 +183,7 @@ public class DataSetTest {
 		DataSet ds = new DataSet (false);
 		DataColumn <Double> dc1 = new DataColumn <> ("Time", "double");
 		DataColumn <Double> dc2 = new DataColumn <> ("Distance", "double");
-		GraphPair p = new GraphPair (0, 1, "To XY Graph Dataset Test");
+		GraphPair p = new GraphPair (0, "Time", 1, "Distance");
 		
 		dc1.add (0.0); dc2.add (0.0);
 		dc1.add (1.0); dc2.add (5.0);
@@ -200,10 +200,9 @@ public class DataSetTest {
 		
 		// Graph data via the XYGraph class!
 		XYGraph chart = new XYGraph (t, ds, p);
-		chart.pack ();
-		chart.setVisible (true);
+		chart.testGraph ();
 		assertTrue ("Correctly Displayed?: ", JOptionPane.showConfirmDialog
-				(chart, "Does the graph look like an XY Graph?",
+				(null, "Does the graph look like an XY Graph?",
 						"Proper XY Graph?",
 						JOptionPane.YES_NO_OPTION) == JOptionPane.YES_OPTION);
 	}
@@ -211,7 +210,7 @@ public class DataSetTest {
 	@Test
 	public void testToBarGraphDataset () {
 		DataSet ds = prepareDataset ();
-		GraphPair p = new GraphPair (0, 1, "To Bar Graph Dataset Test");
+		GraphPair p = new GraphPair (0, "Pie Flavors", 1, "Pie Quantity");
 		
 		// Generate Template.
 		Template t = new Template ();
@@ -220,10 +219,9 @@ public class DataSetTest {
 		
 		// Graph data via the XYGraph class!
 		BarGraph chart = new BarGraph (t, ds, p);
-		chart.pack ();
-		chart.setVisible (true);
+		chart.testGraph ();
 		assertTrue ("Correctly Displayed?: ", JOptionPane.showConfirmDialog
-				(chart, "Does the graph look like a Bar Graph?",
+				(null, "Does the graph look like a Bar Graph?",
 						"Proper Bar Graph?",
 						JOptionPane.YES_NO_OPTION) == JOptionPane.YES_OPTION);
 	}

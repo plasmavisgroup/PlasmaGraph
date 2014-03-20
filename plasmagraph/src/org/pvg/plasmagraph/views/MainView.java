@@ -1,9 +1,7 @@
 package org.pvg.plasmagraph.views;
 
 import java.awt.event.ActionListener;
-
 import javax.swing.JTabbedPane;
-import org.pvg.plasmagraph.controllers.MainController;
 
 import org.pvg.plasmagraph.models.MainModel;
 
@@ -16,6 +14,7 @@ import org.pvg.plasmagraph.models.MainModel;
  */
 @SuppressWarnings ("serial")
 public class MainView extends javax.swing.JFrame {
+	
     // Externally-referenced variables.
     /** Reference to model related to this controller. */
     @SuppressWarnings ("unused")
@@ -33,30 +32,6 @@ public class MainView extends javax.swing.JFrame {
         // Initialize visual components.
         initComponents ();
     }
-    
-    /**
-     * Getter method. Provides the state of the Outlier Search Check Box.
-     * @return A boolean describing if the Outlier Search Check Box is selected or not.
-     */
-	public boolean getOutlierSwitch () {
-		return (this.outlier_check_box.isSelected ());
-	}
-
-	/**
-     * Getter method. Provides the state of the Interpolation Radio Button.
-     * @return A boolean describing if the Interpolation Radio Button is selected or not.
-     */
-	public boolean getInterpolationSwitch () {
-		return (this.interpolation_radio_button.isSelected ());
-	}
-	
-	/**
-     * Getter method. Provides the state of the Basic Graphing Radio Button.
-     * @return A boolean describing if the Basic Graphing Radio Button is selected or not.
-     */
-	public boolean getBasicGraphingSwitch () {
-		return (this.basic_graphing_radio_button.isSelected ());
-	}
      
     /**
      * Initializes the visual components of this view form.
@@ -68,19 +43,9 @@ public class MainView extends javax.swing.JFrame {
         import_data_option = new javax.swing.JMenuItem ();
         reset_data_option = new javax.swing.JMenuItem ();
         matfile_log = new javax.swing.JMenuItem();
-        //data_filter_menu = new javax.swing.JMenu ();
-        //import_data_filter_option = new javax.swing.JMenuItem ();
-        //modify_data_filter_option = new javax.swing.JMenuItem ();
-        //save_data_filter_option = new javax.swing.JMenuItem ();
         template_menu = new javax.swing.JMenu ();
         import_template_option = new javax.swing.JMenuItem ();
         save_template_option = new javax.swing.JMenuItem ();
-        graph_menu = new javax.swing.JMenu ();
-        interpolation_radio_button = new javax.swing.JRadioButtonMenuItem ();
-        basic_graphing_radio_button = new javax.swing.JRadioButtonMenuItem ();
-        graphing_options_radio_button_group = new javax.swing.ButtonGroup ();
-        outlier_check_box = new javax.swing.JCheckBox ();
-        create_graph_option = new javax.swing.JMenuItem ();
         options_menu = new javax.swing.JMenu ();
         exit_menu_option = new javax.swing.JMenuItem ();
         
@@ -109,44 +74,6 @@ public class MainView extends javax.swing.JFrame {
         
         menu_bar.add (data_menu);
         
-        
-        /*
-        // Data Filter Menu
-        data_filter_menu.setText (Messages.getString("MainView.string_7")); //$NON-NLS-1$
-        data_filter_menu
-                .setToolTipText (Messages.getString("MainView.string_8")); //$NON-NLS-1$
-        
-        // Import Data Filter
-        import_data_filter_option.setAccelerator (javax.swing.KeyStroke
-                .getKeyStroke (java.awt.event.KeyEvent.VK_F,
-                        java.awt.event.InputEvent.CTRL_MASK));
-        import_data_filter_option.setText (Messages.getString("MainView.string_9")); //$NON-NLS-1$
-        import_data_filter_option
-                .setToolTipText (Messages.getString("MainView.string_10")); //$NON-NLS-1$
-        import_data_filter_option.setActionCommand (Messages.getString("MainView.string_11")); //$NON-NLS-1$
-        data_filter_menu.add (import_data_filter_option);
-        
-        // Modify Data Filter
-        modify_data_filter_option.setAccelerator (javax.swing.KeyStroke
-                .getKeyStroke (java.awt.event.KeyEvent.VK_M,
-                        java.awt.event.InputEvent.CTRL_MASK));
-        modify_data_filter_option.setText (Messages.getString("MainView.string_12")); //$NON-NLS-1$
-        modify_data_filter_option
-                .setToolTipText (Messages.getString("MainView.string_13")); //$NON-NLS-1$
-        modify_data_filter_option.setActionCommand (Messages.getString("MainView.string_14")); //$NON-NLS-1$
-        data_filter_menu.add (modify_data_filter_option);
-        
-        // Save Data Filter
-        save_data_filter_option.setAccelerator (javax.swing.KeyStroke
-                .getKeyStroke (java.awt.event.KeyEvent.VK_I,
-                        java.awt.event.InputEvent.CTRL_MASK));
-        save_data_filter_option.setText (Messages.getString("MainView.string_15")); //$NON-NLS-1$
-        save_data_filter_option
-                .setToolTipText (Messages.getString("MainView.string_16")); //$NON-NLS-1$
-        data_filter_menu.add (save_data_filter_option);
-        
-        menu_bar.add (data_filter_menu);
-        */
         // Template Menu
         template_menu.setText ("Templates"); //$NON-NLS-1$
         template_menu.setToolTipText ("Manages all Template-related operations."); //$NON-NLS-1$
@@ -167,33 +94,6 @@ public class MainView extends javax.swing.JFrame {
         
         menu_bar.add (template_menu);
         
-        // Graph Menu
-        graph_menu.setText ("Graphing"); //$NON-NLS-1$
-        graph_menu.setToolTipText ("Contains all graphing-related functions.");
-        
-        // Basic Graphing
-        basic_graphing_radio_button.setText ("Simple Graphing"); //$NON-NLS-1$
-        graph_menu.add (basic_graphing_radio_button);
-        
-        // Interpolation
-        interpolation_radio_button.setText ("Graphing with Interpolation");
-        graph_menu.add (interpolation_radio_button);
-        
-        graphing_options_radio_button_group.add (basic_graphing_radio_button);
-        graphing_options_radio_button_group.add (interpolation_radio_button);
-        
-        graphing_options_radio_button_group.setSelected (basic_graphing_radio_button.getModel (), true);
-        
-        // Outlier Search
-        outlier_check_box.setText ("Find Outliers before Graphing");
-        graph_menu.add (outlier_check_box);
-        
-        menu_bar.add (graph_menu);
-        
-        // Create Graph
-        create_graph_option.setText ("Create Graph");
-        graph_menu.add (create_graph_option);
-        
         // Exit Program
         exit_menu_option.setText ("Close");
         options_menu.add (exit_menu_option);
@@ -209,37 +109,31 @@ public class MainView extends javax.swing.JFrame {
         getContentPane ().setLayout (layout);
         layout.setHorizontalGroup (layout.createParallelGroup (
                 javax.swing.GroupLayout.Alignment.LEADING).addComponent (
-                tab_pane, javax.swing.GroupLayout.DEFAULT_SIZE, 643,
+                tab_pane, javax.swing.GroupLayout.DEFAULT_SIZE, 240,
                 Short.MAX_VALUE));
         layout.setVerticalGroup (layout.createParallelGroup (
                 javax.swing.GroupLayout.Alignment.LEADING).addComponent (
-                tab_pane, javax.swing.GroupLayout.DEFAULT_SIZE, 378,
+                tab_pane, javax.swing.GroupLayout.DEFAULT_SIZE, 640,
                 Short.MAX_VALUE));
         pack ();
     }
 
     // Variables declaration - do not modify
-    private javax.swing.JMenuItem create_graph_option;
-    //private javax.swing.JMenu data_filter_menu;
+    private javax.swing.JTabbedPane tab_pane;
+    
+    private javax.swing.JMenuBar menu_bar;
+    
     private javax.swing.JMenu data_menu;
-    private javax.swing.JMenu graph_menu;
-    private javax.swing.JMenu options_menu;
-    private javax.swing.JMenuItem exit_menu_option;
-    private javax.swing.JMenuItem import_data_filter_option;
     private javax.swing.JMenuItem import_data_option;
     private javax.swing.JMenuItem reset_data_option;
     private javax.swing.JMenuItem matfile_log;
-    private javax.swing.JMenuItem import_template_option;
-    private javax.swing.JMenuBar menu_bar;
-    private javax.swing.JMenuItem modify_data_filter_option;
-    private javax.swing.JMenuItem save_data_filter_option;
-    private javax.swing.JMenuItem save_template_option;
-    private javax.swing.JRadioButtonMenuItem basic_graphing_radio_button;
-    private javax.swing.JRadioButtonMenuItem interpolation_radio_button;
-    private javax.swing.ButtonGroup graphing_options_radio_button_group;
-    private javax.swing.JCheckBox outlier_check_box;
-    private javax.swing.JTabbedPane tab_pane;
+
     private javax.swing.JMenu template_menu;
+    private javax.swing.JMenuItem import_template_option;
+    private javax.swing.JMenuItem save_template_option;
+    
+    private javax.swing.JMenu options_menu;
+    private javax.swing.JMenuItem exit_menu_option;
     // End of variables declaration
     
     // Created by Gerardo A. Navas Morales.
@@ -252,7 +146,7 @@ public class MainView extends javax.swing.JFrame {
         return (this.tab_pane);
     }
     
- // Data Listener Methods
+    // Data Listener Methods
     /**
      * Creates a new ActionListener for the Import Data menu function.
      * 
@@ -274,6 +168,11 @@ public class MainView extends javax.swing.JFrame {
 		this.reset_data_option.addActionListener (dataResetMenuListener);
 	}
     
+    /**
+     * Creates a new ActionListener for the View Data menu function.
+     * 
+     * @param viewDataMenuListener Action Listener for the View Data menu function.
+     */
     public void addViewDataMenuListener(ActionListener viewDataMenuListener) {
         this.matfile_log.addActionListener (viewDataMenuListener);
     }
@@ -302,57 +201,6 @@ public class MainView extends javax.swing.JFrame {
             ActionListener templateSaveMenuListener) {
         this.save_template_option.addActionListener (templateSaveMenuListener);
         
-    }
-    
-    // Data Filter Listener Methods
-    /**
-     * Creates a new ActionListener for the Import Data Filter menu function.
-     * 
-     * @param dataFilterImportMenuListener
-     *            Action Listener for the Import Data Filter menu function.
-     */
-    public void addDataFilterImportMenuListener (
-            ActionListener dataFilterImportMenuListener) {
-        this.import_data_filter_option
-                .addActionListener (dataFilterImportMenuListener);
-        
-    }
-    
-    /**
-     * Creates a new ActionListener for the Edit Data Filter menu function.
-     * 
-     * @param dataFilterEditMenuListener
-     *            Action Listener for the Edit Data Filter menu function.
-     */
-    public void addDataFilterEditMenuListener (
-            ActionListener dataFilterEditMenuListener) {
-        this.modify_data_filter_option
-                .addActionListener (dataFilterEditMenuListener);
-        
-    }
-    
-    /**
-     * Creates a new ActionListener for the Save Data Filter menu function.
-     * 
-     * @param dataFilterSaveMenuListener
-     *            Action Listener for the Save Data Filter menu function.
-     */
-    public void addDataFilterSaveMenuListener (
-            ActionListener dataFilterSaveMenuListener) {
-        this.save_data_filter_option
-                .addActionListener (dataFilterSaveMenuListener);
-        
-    }
-    
-    // Graph Listener Methods
-    /**
-     * Creates a new ActionListener for the Create Graph menu function.
-     * 
-     * @param graphMenuListener
-     *            Action Listener for the Create Graph menu function.
-     */
-    public void addGraphMenuListener (ActionListener graphMenuListener) {
-        this.create_graph_option.addActionListener (graphMenuListener);
     }
     
     // Exit Listener Method

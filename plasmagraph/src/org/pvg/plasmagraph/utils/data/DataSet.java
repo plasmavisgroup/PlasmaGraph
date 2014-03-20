@@ -9,7 +9,7 @@ import org.apache.commons.math3.linear.Array2DRowRealMatrix;
 import org.jfree.data.category.DefaultCategoryDataset;
 import org.jfree.data.xy.XYSeries;
 import org.jfree.data.xy.XYSeriesCollection;
-import org.pvg.plasmagraph.utils.exceptions.IncorrectParametersException;
+import org.pvg.plasmagraph.utils.exceptions.InvalidParametersException;
 import org.pvg.plasmagraph.utils.template.Template;
 
 /**
@@ -56,9 +56,9 @@ public class DataSet implements Iterable<DataColumn> {
 
 	/**
 	 * Appends all the columns of a DataSet into this DataSet
-	 * TODO: JavaDocs.
-	 * @param column
-	 * @return
+	 * 
+	 * @param ds The DataSet to add to this DataSet.
+	 * @return A boolean describing the success or failure of the entire operation.
 	 */
 	public boolean append (DataSet ds) {
 		boolean success = true;
@@ -292,7 +292,7 @@ public class DataSet implements Iterable<DataColumn> {
 		if (this.isDouble (p.getIndex1 ())) {
 			for (int row = 0; (row < this.getColumnLength ()); ++row) {
 				dataset.addValue ((Number) (double) this.values.get (p.getIndex2 ()).get (row),
-						p.getName (), (double) this.values.get (p.getIndex1 ()).get (row));
+						p.getIndex1Name (), (double) this.values.get (p.getIndex1 ()).get (row));
 			}
 		} else {
 			for (int row = 0; (row < this.getColumnLength ()); ++row) {
@@ -308,16 +308,16 @@ public class DataSet implements Iterable<DataColumn> {
 	 * Given a group of index values and a name, provides a JFree XYSeriesCollection
 	 * Dataset for the purpose of graphing XY Graphs.
 	 * 
-	 * @param t 
-	 * @param p Pair of index values with a pre-defined name.
+	 * @param series_name The name of the series being created.
+	 * @param dr DataReference object used to obtain the name of the Grouping column.
 	 * @return An XYSeries containing the desired data.
-	 * @throws IncorrectParametersException 
+	 * @throws InvalidParametersException Thrown when the columns provided are invalid due to type (not doubles) or existance (not found).
 	 */
-	public XYSeriesCollection toGroupedXYGraphDataset (String series_name, Template t) throws IncorrectParametersException {
+	public XYSeriesCollection toGroupedXYGraphDataset (String series_name, DataReference dr) throws InvalidParametersException {
 		XYSeriesCollection grouped_series = new XYSeriesCollection ();
 		
 		// Find the group_by column index.
-		int grouped_column = this.find (t.getGroupByColumn ());
+		int grouped_column = this.find (dr.get ().getGroupName ());
 		
 		HashMap <Object, XYSeries> sets = new HashMap <> ();
 		
@@ -347,7 +347,7 @@ public class DataSet implements Iterable<DataColumn> {
 			
 			return (grouped_series);
 		} else {
-			throw (new IncorrectParametersException ());
+			throw (new InvalidParametersException ("Grouping Data"));
 		}
 		
 	}

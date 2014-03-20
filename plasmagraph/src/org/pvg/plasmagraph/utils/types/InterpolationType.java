@@ -7,6 +7,8 @@ package org.pvg.plasmagraph.utils.types;
  * @author Gerardo A. Navas Morales
  */
 public final class InterpolationType {
+	/** Reference for No Regression. */
+    public static final InterpolationType NONE = new InterpolationType ("None");
     /** Reference for a "Linear" Regression. */
     public static final InterpolationType LINEAR = new InterpolationType ("Linear");
     /** Reference for a "Quadratic" Polynomial Regression. */
@@ -54,8 +56,8 @@ public final class InterpolationType {
 	 */
     public static String [] getOptions () {
     	return (new String []
-    			{InterpolationType.LINEAR.toString (), InterpolationType.QUADRATIC.toString (),
-    			InterpolationType.CUBIC.toString (), InterpolationType.QUARTIC.toString (),
-    			InterpolationType.SPLINE.toString ()});
+    			{InterpolationType.NONE.toString (), InterpolationType.LINEAR.toString (), 
+    			InterpolationType.QUADRATIC.toString (), InterpolationType.CUBIC.toString (), 
+    			InterpolationType.QUARTIC.toString (), InterpolationType.SPLINE.toString ()});
     }
 }

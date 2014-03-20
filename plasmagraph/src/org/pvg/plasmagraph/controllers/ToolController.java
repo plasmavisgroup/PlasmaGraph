@@ -9,7 +9,6 @@ import javax.swing.SwingWorker;
 import javax.swing.event.ChangeEvent;
 import javax.swing.event.ChangeListener;
 
-import org.pvg.plasmagraph.controllers.DataSetController.DataViewReferenceListener;
 import org.pvg.plasmagraph.models.ToolModel;
 import org.pvg.plasmagraph.views.ToolView;
 
@@ -40,9 +39,6 @@ public class ToolController {
         // Update Template Listeners
         tool_view.addInterpolationTypeListener (new InterpolationTypeListener ());
         tool_view.addOutlierResponseListener (new OutlierResponseListener ());
-        tool_view.addLowerBoundListener (new LowerBoundListener ());
-        tool_view.addUpperBoundListener (new UpperBoundListener ());
-        tool_view.addIntervalListener (new IntervalListener ());
         // Update View Listeners
         tool_model.addTemplateChangeListener (new ToolViewTemplateListener ());
     }
@@ -65,6 +61,9 @@ public class ToolController {
         public void actionPerformed (ActionEvent e) {
             tool_model.getTemplate ().setInterpolationType
             (tool_view.getInterpolationType ());
+            
+            // Notify relevant listeners.
+            tool_model.getTemplate ().notifyListeners ();
         }
         
     }
@@ -86,83 +85,10 @@ public class ToolController {
         public void actionPerformed (ActionEvent e) {
             tool_model.getTemplate ().setOutlierResponse
             (tool_view.getOutlierResponseType ());
+            
+         // Notify relevant listeners.
+            tool_model.getTemplate ().notifyListeners ();
         }
-        
-    }
-    
-    /**
-     * Listener for the Template that contains all settings for the program.
-     * Relies on FocusListener in order to know that a change has occurred
-     * in the Template. 
-     * 
-     * @author Gerardo A. Navas Morales
-     */
-    class LowerBoundListener implements FocusListener {
-        
-
-		@Override
-		public void focusGained (FocusEvent e) {
-			// Empty
-		}
-
-		/**
-		 * Updates the Template with the value in the view.
-		 */
-		@Override
-		public void focusLost (FocusEvent e) {
-            tool_model.getTemplate ().setLowerInterval
-    		(tool_view.getLowerInterval ());
-		}
-        
-    }
-    
-    /**
-     * Listener for the Template that contains all settings for the program.
-     * Relies on FocusListener in order to know that a change has occurred
-     * in the Template. 
-     * 
-     * @author Gerardo A. Navas Morales
-     */
-    class UpperBoundListener implements FocusListener {
-        
-		@Override
-		public void focusGained (FocusEvent e) {
-			// Empty
-		}
-
-		/**
-		 * Updates the Template with the value in the view.
-		 */
-		@Override
-		public void focusLost (FocusEvent e) {
-            tool_model.getTemplate ().setUpperInterval
-    				(tool_view.getUpperInterval ());
-		}
-        
-    }
-    
-    /**
-     * Listener for the Template that contains all settings for the program.
-     * Relies on FocusListener in order to know that a change has occurred
-     * in the Template. 
-     * 
-     * @author Gerardo A. Navas Morales
-     */
-    class IntervalListener implements FocusListener {
-        
-		@Override
-		public void focusGained (FocusEvent e) {
-			// Empty
-		}
-
-		/**
-		 * Updates the Template with the value in the view.
-		 */
-		@Override
-		public void focusLost (FocusEvent e) {
-			tool_model.getTemplate ().setInterpolationInterval
-    			(tool_view.getInterval ());
-		}
         
     }
     

@@ -35,7 +35,7 @@ public class InterpolatorTest {
 		CSVProcessor csv = new CSVProcessor (new File (linear_data));
 		HeaderData hd = new HeaderData ();
 		csv.getHeaders (hd);
-		GraphPair p = new GraphPair (0, 1, "Linear Interpolation Test");
+		GraphPair p = new GraphPair (0, "Time (s)", 1, "Distance (m)");
 		
 		// Prepare the Template
 		Template t = new Template ();
@@ -57,7 +57,7 @@ public class InterpolatorTest {
 		CSVProcessor csv = new CSVProcessor (new File (quadratic_data));
 		HeaderData hd = new HeaderData ();
 		csv.getHeaders (hd);
-		GraphPair p = new GraphPair (0, 1, "Quadratic Interpolation Test");
+		GraphPair p = new GraphPair (0, "Time (s)", 1, "Distance (m)");
 		
 		// Prepare the Template
 		Template t = new Template ();
@@ -78,7 +78,7 @@ public class InterpolatorTest {
 		CSVProcessor csv = new CSVProcessor (new File (cubic_data));
 		HeaderData hd = new HeaderData ();
 		csv.getHeaders (hd);
-		GraphPair p = new GraphPair (0, 1, "Cubic Interpolation Test");
+		GraphPair p = new GraphPair (0, "Time (s)", 1, "Distance (m)");
 		
 		// Prepare the Template
 		Template t = new Template ();
@@ -100,7 +100,7 @@ public class InterpolatorTest {
 		CSVProcessor csv = new CSVProcessor (new File (spline_data));//quartic_data));
 		HeaderData hd = new HeaderData ();
 		csv.getHeaders (hd);
-		GraphPair p = new GraphPair (0, 1, "Quartic Interpolation Test");
+		GraphPair p = new GraphPair (0, "Time (s)", 1, "Distance (m)");
 		
 		// Prepare the Template
 		Template t = new Template ();
@@ -122,7 +122,7 @@ public class InterpolatorTest {
 		CSVProcessor csv = new CSVProcessor (new File (linear_data));//spline_data));
 		HeaderData hd = new HeaderData ();
 		csv.getHeaders (hd);
-		GraphPair p = new GraphPair (0, 1, "Spline Interpolation Test");
+		GraphPair p = new GraphPair (0, "Time (s)", 1, "Distance (m)");
 		
 		// Prepare the Template
 		Template t = new Template ();

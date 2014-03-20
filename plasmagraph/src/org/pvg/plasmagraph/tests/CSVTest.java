@@ -103,7 +103,7 @@ public class CSVTest {
 		
 		System.out.println (hd.toString ());
 		
-		csv.toDataSet (ds1, new GraphPair (0, 1, ""), hd);
+		csv.toDataSet (ds1, new GraphPair (0, "Column 1", 1, "Column 2"), hd);
 		
 		// Create simulated comparison file.
 		DataSet ds2 = new DataSet (false);

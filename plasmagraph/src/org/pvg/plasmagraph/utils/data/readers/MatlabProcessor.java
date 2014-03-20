@@ -435,7 +435,7 @@ public class MatlabProcessor implements FileProcessor {
 			/** create and add the data column to the result set **/
 			if (e.getKey ().equals (hd.get (p.getIndex1 ()).getKey ())
 					|| e.getKey ().equals (hd.get (p.getIndex2 ()).getKey ())
-					|| e.getKey ().equals (t.getGroupByColumn ())) {
+					|| e.getKey ().equals (p.getGroupName ())) {
 				ds.add (getColumn (e.getValue ()));
 			}
 		}

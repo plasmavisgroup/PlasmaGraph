@@ -1,9 +1,6 @@
 package org.pvg.plasmagraph.utils.tools.interpolation;
 
-import java.util.ArrayList;
-
 import javax.swing.JOptionPane;
-
 import org.apache.commons.math3.analysis.interpolation.SplineInterpolator;
 import org.apache.commons.math3.analysis.polynomials.PolynomialSplineFunction;
 import org.apache.commons.math3.stat.correlation.PearsonsCorrelation;
@@ -18,6 +15,7 @@ import org.pvg.plasmagraph.utils.data.DataReference;
 import org.pvg.plasmagraph.utils.data.DataSet;
 import org.pvg.plasmagraph.utils.data.GraphPair;
 import org.pvg.plasmagraph.utils.data.HeaderData;
+import org.pvg.plasmagraph.utils.graphs.Graph;
 import org.pvg.plasmagraph.utils.graphs.XYGraph;
 import org.pvg.plasmagraph.utils.template.Template;
 import org.pvg.plasmagraph.utils.tools.DataConfidence;
@@ -36,28 +34,11 @@ public class Interpolator {
 	 * @param hd The Headers to use for the interpolation.
 	 * @param t The settings the DataSet is based upon.
 	 * @param dr The DataReference object containing all the pairs to interpolate.
-	 */
-	public static void interpolate (HeaderData hd, Template t, DataReference dr) {
-		// For all of the DataReference pairs in dr...
-		for (GraphPair p : dr) {
-			interpolate (hd, t, p);
-		}
-	}
-	
-	/**
-	 * External path to interpolate data and graph said data.
 	 * 
-	 * @param ads The de-outliered ArrayList of DataSets to interpolate.
-	 * @param t The settings the DataSet is based upon.
-	 * @param dr The DataReference object containing all the pairs to interpolate.
+	 * @return 
 	 */
-	public static void interpolate (ArrayList <DataSet> ads, Template t, DataReference dr) {
-		// For all of the DataReference pairs in dr...
-		// Assumption: "dr" is the same size as "ads".
-		// Proven by: ads is created in a for-loop.
-		for (int counter = 0; (counter < dr.size ()); ++counter) {
-			interpolate (ads.get (counter), t, dr.get (counter));
-		}
+	public static Graph interpolate (HeaderData hd, Template t, DataReference dr) {
+		return (interpolate (hd, t, dr.get ()));
 	}
 	
 	/**
@@ -66,8 +47,10 @@ public class Interpolator {
 	 * @param hd The Headers to use for the interpolation.
 	 * @param t The settings the DataSet is based upon.
 	 * @param p The DataReference pair to interpolate from the DataSet provided.
+	 * 
+	 * @return An XYGraph object containing an interpolated chart.
 	 */
-    public static void interpolate (HeaderData hd, Template t, GraphPair p) {
+    public static Graph interpolate (HeaderData hd, Template t, GraphPair p) {
     	
     	// Create a DataSet for this interpolation.
     	DataSet ds = hd.populateData (p);
@@ -78,7 +61,8 @@ public class Interpolator {
         //System.out.println (printXYSeries (interpolated_dataset));
         
         // Graph it!
-        graphInterpolation (ds.toXYGraphDataset (p), interpolated_dataset, t, p);
+        return (graphInterpolation (ds.toXYGraphDataset (p), 
+        		interpolated_dataset, t, p));
         
     }
     
@@ -88,8 +72,10 @@ public class Interpolator {
 	 * @param ds The DataSet to use for the interpolation.
 	 * @param t The settings the DataSet is based upon.
 	 * @param p The DataReference pair to interpolate from the DataSet provided.
+	 * 
+     * @return An XYGraph object containing an interpolated chart.
 	 */
-    public static void interpolate (DataSet ds, Template t, GraphPair p) {
+    public static Graph interpolate (DataSet ds, Template t, GraphPair p) {
     	
     	// Create a DataSet for this interpolation.
 
@@ -99,7 +85,8 @@ public class Interpolator {
         //System.out.println (printXYSeries (interpolated_dataset));
         
         // Graph it!
-        graphInterpolation (ds.toXYGraphDataset (p), interpolated_dataset, t, p);
+        return (graphInterpolation (ds.toXYGraphDataset (p), 
+        		interpolated_dataset, t, p));
         
     }
 
@@ -274,7 +261,7 @@ public class Interpolator {
 	 * @param t
 	 * @param p 
 	 */
-	private static void graphInterpolation (XYSeries interpolation_dataset,
+	private static XYGraph graphInterpolation (XYSeries interpolation_dataset,
 			XYSeries interpolated_dataset, Template t, GraphPair p) {
 		// Combine the two datasets into an XYSeriesCollection
 		XYSeriesCollection graph_data = new XYSeriesCollection ();
@@ -282,9 +269,7 @@ public class Interpolator {
 		graph_data.addSeries (interpolated_dataset);
 		
 		// Graph Interpolation and its original data.
-		XYGraph graph = new XYGraph (t, graph_data, p);
-		graph.pack ();
-		graph.setVisible (true);
+		return (new XYGraph (t, graph_data, p));
 	}
     
 	/**

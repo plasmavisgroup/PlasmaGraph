@@ -146,7 +146,7 @@ public class CSVProcessor implements FileProcessor {
 		for (int i = 0; (i < this.csv_data.get (0).length) && (column_index == -1); ++i) {
 			
 			// If the current column's name is equal to the column name in the Template.
-			if (t.getGroupByColumn ().equals (this.csv_data.get (0)[i].trim ())) {
+			if (p.getGroupName ().equals (this.csv_data.get (0)[i].trim ())) {
 				
 				column_index = i;
 				
