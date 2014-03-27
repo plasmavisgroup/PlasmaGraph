@@ -1,5 +1,6 @@
 package org.pvg.plasmagraph.models;
 
+import javax.swing.JOptionPane;
 import javax.swing.event.ChangeListener;
 
 import org.jfree.chart.JFreeChart;
@@ -54,7 +55,6 @@ public class GraphModel {
 	 * @return A JFreeChart object containing an XYGraph or a BarGraph to display.
 	 */
 	public JFreeChart graph () {
-
 		if (t.isSearching ()) {
 
 			return scannedGraphing (t.isInterpolating ()).getChart ();
@@ -64,7 +64,6 @@ public class GraphModel {
 			return unscannedGraphing (t.isInterpolating ()).getChart ();
 
 		}
-
 	}
 
 	/**
@@ -78,7 +77,27 @@ public class GraphModel {
 	private Graph unscannedGraphing (boolean interpolation_switch) {
 		
 		// Verify if data exists in the HeaderData object.
-		if (!(hd.isEmpty () && dr.isEmpty ())) {
+		if (!this.hd.hasValidGraphTypes (this.t.getChartType (), this.dr.get ())) {
+			
+			JOptionPane.showMessageDialog (
+					null, "Error: This graph does not have the correct column types for the selected chart type.\n"
+					+ "Please try again with the proper column types for a " + this.t.getChartType ().toString () + ".");
+			return (this.graphEmptyChart ());
+			
+		}
+		
+		// Verify if there is a GraphPair ready to be graphed.
+		else if (!this.dr.get ().isReady ()) {
+			
+			JOptionPane.showMessageDialog (
+					null, "Error: This graph requires both an X Axis and Y Axis "
+					+ "column selected before it can be graphed.\n");
+			return (this.graphEmptyChart ());
+			
+		} 
+		
+		// If both of these requirements are satisfied, graph away!
+		else {
 
 			if (interpolation_switch) {
 
@@ -98,21 +117,6 @@ public class GraphModel {
 
 				}
 			}
-		} else {
-
-			// Create a dummy graph, instead.
-			if (ChartType.XY_GRAPH.equals (t.getChartType ())) {
-
-				// Create a dummy XYGraph.
-				return (new XYGraph (t));
-
-			} else {// if (t.getChartType ().equals (ChartType.BAR_GRAPH)) {
-
-				// Create a dummy BarGraph.
-				return (new BarGraph (t));
-
-			}
-
 		}
 	}
 
@@ -124,50 +128,67 @@ public class GraphModel {
 	 * @param interpolation_switch
 	 */
 	private Graph scannedGraphing (boolean interpolation_switch) {
-		try {
-			// Verify if data exists in the HeaderData object.
-			if (!hd.isEmpty () && dr.isEmpty ()) {
-	
+		
+		// Verify if data exists in the HeaderData object.
+		if (!this.hd.hasValidGraphTypes (this.t.getChartType (), this.dr.get ())) {
+			
+			JOptionPane.showMessageDialog (
+					null, "Error: This graph does not have the correct column types for the selected chart type.\n"
+					+ "Please try again with the proper column types for a " + this.t.getChartType ().toString () + ".");
+			return (this.graphEmptyChart ());
+			
+		}
+		
+		// Verify if there is a GraphPair ready to be graphed.
+		else if (!this.dr.get ().isReady ()) {
+			
+			JOptionPane.showMessageDialog (
+					null, "Error: This graph requires both an X Axis and Y Axis "
+					+ "column selected before it can be graphed.\n");
+			return (this.graphEmptyChart ());
+			
+		} 
+		// If both of these requirements are satisfied, graph away!
+		else {
+			try {
 				DataSet ds = OutlierSearch.scanForOutliers (hd, t, dr.get ());
-	
+
 				if (interpolation_switch) {
-	
+
 					return (Interpolator.interpolate (ds, t, dr.get ()));
-	
+
 				} else {
-	
+
 					if (ChartType.XY_GRAPH.equals (t.getChartType ())) {
 						// Create the graph
 						return (new XYGraph (t, ds, dr.get ()));
-	
+
 					} else {// if (t.getChartType ().equals (ChartType.BAR_GRAPH)) {
-	
+
 						// Create the graph
 						return (new BarGraph (t, ds, dr.get ()));
-	
+
 					}
 				}
-	
-			} else {
-	
-				// Create a dummy graph, instead.
-				if (ChartType.XY_GRAPH.equals (t.getChartType ())) {
-	
-					// Create a dummy XYGraph.
-					return (new XYGraph (t));
-	
-				} else {// if (t.getChartType ().equals (ChartType.BAR_GRAPH)) {
-	
-					// Create a dummy BarGraph.
-					return (new BarGraph (t));
-	
-				}
-	
+			} catch (FunctionNotImplementedException ex) {
+				ex.showMessage ();
+				return (this.graphEmptyChart ());
 			}
-		
-		} catch (FunctionNotImplementedException e) {
-			e.showMessage ();
-			return null;
+		}
+	}
+	
+	private Graph graphEmptyChart () {
+		// Create a dummy graph, instead.
+		if (ChartType.XY_GRAPH.equals (t.getChartType ())) {
+
+			// Create a dummy XYGraph.
+			return (new XYGraph (t));
+
+		} else {// if (t.getChartType ().equals (ChartType.BAR_GRAPH)) {
+
+			// Create a dummy BarGraph.
+			return (new BarGraph (t));
+
 		}
 	}
 
@@ -210,6 +231,7 @@ public class GraphModel {
 	 * @param txt
 	 *            Text to print in console.
 	 */
+	@SuppressWarnings ("unused")
 	private void log (String txt) {
 		System.out.println (txt);
 	}

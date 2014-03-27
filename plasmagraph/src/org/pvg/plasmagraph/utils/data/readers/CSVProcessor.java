@@ -109,10 +109,9 @@ public class CSVProcessor implements FileProcessor {
 	 * into a proper DataSet for the purposes of PlasmaGraph.
 	 * 
 	 * @param ds A DataSet object with its DataGroups being of the DataRow type.
-	 * @throws Exception Malformed data set; columns are of different sizes.
 	 */
 	@Override
-	public void toDataSet (DataSet ds, GraphPair p, HeaderData hd) throws Exception {
+	public void toDataSet (DataSet ds, GraphPair p, HeaderData hd) {
 		// First, check to see if the file's been even read.
 		if (this.csv_data.isEmpty ()) {
 			
@@ -173,38 +172,38 @@ public class CSVProcessor implements FileProcessor {
 		// Take the first index of the GraphPair, find it in the List we have here,
 		/// and create the column it needs in the DataSet.
 		
-		if (hd.get (p.getIndex1 ()).getValue () == ColumnType.DATETIME) {
+		if (hd.get (p.getXIndex ()).getValue () == ColumnType.DATETIME) {
 			
-			ds.add (new DataColumn <java.util.Date> (hd.get (p.getIndex1 ()).getKey (), 
-					hd.get (p.getIndex1 ()).getValue ()));
+			ds.add (new DataColumn <java.util.Date> (hd.get (p.getXIndex ()).getKey (), 
+					hd.get (p.getXIndex ()).getValue ()));
 			
-		} else if (hd.get (p.getIndex1 ()).getValue () == ColumnType.DOUBLE) {
+		} else if (hd.get (p.getXIndex ()).getValue () == ColumnType.DOUBLE) {
 			
-			ds.add (new DataColumn <Double> (hd.get (p.getIndex1 ()).getKey (), 
-					hd.get (p.getIndex1 ()).getValue ()));
+			ds.add (new DataColumn <Double> (hd.get (p.getXIndex ()).getKey (), 
+					hd.get (p.getXIndex ()).getValue ()));
 			
 		} else {
 			
-			ds.add (new DataColumn <String> (hd.get (p.getIndex1 ()).getKey (), 
-					hd.get (p.getIndex1 ()).getValue ()));
+			ds.add (new DataColumn <String> (hd.get (p.getXIndex ()).getKey (), 
+					hd.get (p.getXIndex ()).getValue ()));
 			
 		}
 		
 		// Now do that for the other GraphPair index.
-		if (hd.get (p.getIndex2 ()).getValue () == ColumnType.DATETIME) {
+		if (hd.get (p.getYIndex ()).getValue () == ColumnType.DATETIME) {
 			
-			ds.add (new DataColumn <Double> (hd.get (p.getIndex2 ()).getKey (), 
-					hd.get (p.getIndex2 ()).getValue ()));
+			ds.add (new DataColumn <Double> (hd.get (p.getYIndex ()).getKey (), 
+					hd.get (p.getYIndex ()).getValue ()));
 			
-		} else if (hd.get (p.getIndex2 ()).getValue () == ColumnType.DOUBLE) {
+		} else if (hd.get (p.getYIndex ()).getValue () == ColumnType.DOUBLE) {
 			
-			ds.add (new DataColumn <Double> (hd.get (p.getIndex2 ()).getKey (), 
-					hd.get (p.getIndex2 ()).getValue ()));
+			ds.add (new DataColumn <Double> (hd.get (p.getYIndex ()).getKey (), 
+					hd.get (p.getYIndex ()).getValue ()));
 			
 		} else {
 			
-			ds.add (new DataColumn <Double> (hd.get (p.getIndex2 ()).getKey (), 
-					hd.get (p.getIndex2 ()).getValue ()));
+			ds.add (new DataColumn <Double> (hd.get (p.getYIndex ()).getKey (), 
+					hd.get (p.getYIndex ()).getValue ()));
 			
 		}
 	}
@@ -240,38 +239,38 @@ public class CSVProcessor implements FileProcessor {
 		// Now, take the first index of the GraphPair, find it in the List we have here,
 		/// and create the column it needs in the DataSet.
 		
-		if (hd.get (p.getIndex1 ()).getValue () == ColumnType.DATETIME) {
+		if (hd.get (p.getXIndex ()).getValue () == ColumnType.DATETIME) {
 			
-			ds.add (new DataColumn <java.util.Date> (hd.get (p.getIndex1 ()).getKey (), 
-					hd.get (p.getIndex1 ()).getValue ()));
+			ds.add (new DataColumn <java.util.Date> (hd.get (p.getXIndex ()).getKey (), 
+					hd.get (p.getXIndex ()).getValue ()));
 			
-		} else if (hd.get (p.getIndex1 ()).getValue () == ColumnType.DOUBLE) {
+		} else if (hd.get (p.getXIndex ()).getValue () == ColumnType.DOUBLE) {
 			
-			ds.add (new DataColumn <Double> (hd.get (p.getIndex1 ()).getKey (), 
-					hd.get (p.getIndex1 ()).getValue ()));
+			ds.add (new DataColumn <Double> (hd.get (p.getXIndex ()).getKey (), 
+					hd.get (p.getXIndex ()).getValue ()));
 			
 		} else {
 			
-			ds.add (new DataColumn <String> (hd.get (p.getIndex1 ()).getKey (), 
-					hd.get (p.getIndex1 ()).getValue ()));
+			ds.add (new DataColumn <String> (hd.get (p.getXIndex ()).getKey (), 
+					hd.get (p.getXIndex ()).getValue ()));
 			
 		}
 		
 		// Now do that for the other GraphPair index.
-		if (hd.get (p.getIndex2 ()).getValue () == ColumnType.DATETIME) {
+		if (hd.get (p.getYIndex ()).getValue () == ColumnType.DATETIME) {
 			
-			ds.add (new DataColumn <Double> (hd.get (p.getIndex2 ()).getKey (), 
-					hd.get (p.getIndex2 ()).getValue ()));
+			ds.add (new DataColumn <Double> (hd.get (p.getYIndex ()).getKey (), 
+					hd.get (p.getYIndex ()).getValue ()));
 			
-		} else if (hd.get (p.getIndex2 ()).getValue () == ColumnType.DOUBLE) {
+		} else if (hd.get (p.getYIndex ()).getValue () == ColumnType.DOUBLE) {
 			
-			ds.add (new DataColumn <Double> (hd.get (p.getIndex2 ()).getKey (), 
-					hd.get (p.getIndex2 ()).getValue ()));
+			ds.add (new DataColumn <Double> (hd.get (p.getYIndex ()).getKey (), 
+					hd.get (p.getYIndex ()).getValue ()));
 			
 		} else {
 			
-			ds.add (new DataColumn <Double> (hd.get (p.getIndex2 ()).getKey (), 
-					hd.get (p.getIndex2 ()).getValue ()));
+			ds.add (new DataColumn <Double> (hd.get (p.getYIndex ()).getKey (), 
+					hd.get (p.getYIndex ()).getValue ()));
 			
 		}
 	}
@@ -300,7 +299,7 @@ public class CSVProcessor implements FileProcessor {
 					if (ds.get (j).getType ().equals (ColumnType.DATETIME.toString ())) {
 						
 						// Get the column index to use.
-						int pair_index = (j == 0) ? p.getIndex1 () : p.getIndex2 ();
+						int pair_index = (j == 0) ? p.getXIndex () : p.getYIndex ();
 						
 						// Populating the column in ds.
 						ds.get (j).add (dv.validate (this.csv_data.get (i) [pair_index].trim ()));
@@ -308,7 +307,7 @@ public class CSVProcessor implements FileProcessor {
 					} else if (ds.get (j).getType ().equals (ColumnType.DOUBLE.toString ())) {
 						
 						// Get the column index to use.
-						int pair_index = (j == 0) ? p.getIndex1 () : p.getIndex2 ();
+						int pair_index = (j == 0) ? p.getXIndex () : p.getYIndex ();
 						
 						// Populating the column in ds.
 						ds.get (j).add (
@@ -318,7 +317,7 @@ public class CSVProcessor implements FileProcessor {
 					} else { // String!
 						
 						// Get the column index to use.
-						int pair_index = (j == 0) ? p.getIndex1 () : p.getIndex2 ();
+						int pair_index = (j == 0) ? p.getXIndex () : p.getYIndex ();
 						
 						// Populating the column in ds.
 						ds.get (j).add (this.csv_data.get (i) [pair_index].trim ());
@@ -358,9 +357,9 @@ public class CSVProcessor implements FileProcessor {
 						if (j == 0) {
 							pair_index = group_column_index;
 						} else if (j == 1) {
-							pair_index = p.getIndex1 ();
+							pair_index = p.getXIndex ();
 						} else { // j == 2
-							pair_index = p.getIndex2 ();
+							pair_index = p.getYIndex ();
 						}
 						
 						// Populating the column in ds.
@@ -373,9 +372,9 @@ public class CSVProcessor implements FileProcessor {
 						if (j == 0) {
 							pair_index = group_column_index;
 						} else if (j == 1) {
-							pair_index = p.getIndex1 ();
+							pair_index = p.getXIndex ();
 						} else { // j == 2
-							pair_index = p.getIndex2 ();
+							pair_index = p.getYIndex ();
 						}
 						
 						// Populating the column in ds.
@@ -390,9 +389,9 @@ public class CSVProcessor implements FileProcessor {
 						if (j == 0) {
 							pair_index = group_column_index;
 						} else if (j == 1) {
-							pair_index = p.getIndex1 ();
+							pair_index = p.getXIndex ();
 						} else { // j == 2
-							pair_index = p.getIndex2 ();
+							pair_index = p.getYIndex ();
 						}
 						
 						// Populating the column in ds.
@@ -565,8 +564,8 @@ public class CSVProcessor implements FileProcessor {
 	 * @return A boolean describing if the value is valid or not.
 	 */
 	private boolean isValidRow (String [] s, GraphPair p) {
-		return (this.isValidItem (s[p.getIndex1 ()]) &&
-				this.isValidItem (s[p.getIndex2 ()]));
+		return (this.isValidItem (s[p.getXIndex ()]) &&
+				this.isValidItem (s[p.getYIndex ()]));
 	}
 	
 	/**
@@ -579,8 +578,8 @@ public class CSVProcessor implements FileProcessor {
 	 * @return A boolean describing if the value is valid or not.
 	 */
 	private boolean isValidRow (String [] s, GraphPair p, int grouping_column) {
-		return (this.isValidItem (s [p.getIndex1 ()]) &&
-				this.isValidItem (s [p.getIndex2 ()]) &&
+		return (this.isValidItem (s [p.getXIndex ()]) &&
+				this.isValidItem (s [p.getYIndex ()]) &&
 				this.isValidItem (s [grouping_column]));
 	}
 	

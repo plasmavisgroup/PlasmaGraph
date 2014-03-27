@@ -19,15 +19,15 @@
           <Component id="jSeparator1" max="32767" attributes="0"/>
           <Component id="jSeparator2" alignment="0" max="32767" attributes="0"/>
           <Component id="jSeparator3" alignment="0" max="32767" attributes="0"/>
+          <Component id="jSeparator4" alignment="0" max="32767" attributes="0"/>
           <Group type="102" attributes="0">
               <EmptySpace max="-2" attributes="0"/>
-              <Component id="chart_title_label" min="-2" max="-2" attributes="0"/>
-              <EmptySpace min="0" pref="0" max="32767" attributes="0"/>
-          </Group>
-          <Group type="102" attributes="0">
               <Group type="103" groupAlignment="0" attributes="0">
-                  <Group type="102" alignment="0" attributes="0">
-                      <EmptySpace max="-2" attributes="0"/>
+                  <Group type="102" attributes="0">
+                      <Component id="chart_title_label" min="-2" max="-2" attributes="0"/>
+                      <EmptySpace min="0" pref="0" max="32767" attributes="0"/>
+                  </Group>
+                  <Group type="102" attributes="0">
                       <Group type="103" groupAlignment="0" attributes="0">
                           <Component id="x_axis_name_text_field" alignment="1" max="32767" attributes="0"/>
                           <Component id="x_axis_type_combo_box" alignment="1" pref="220" max="32767" attributes="0"/>
@@ -35,38 +35,27 @@
                           <Component id="y_axis_name_text_field" alignment="1" max="32767" attributes="0"/>
                           <Component id="y_axis_type_combo_box" alignment="1" max="32767" attributes="0"/>
                           <Component id="y_column_combo_box" alignment="1" max="32767" attributes="0"/>
-                      </Group>
-                  </Group>
-                  <Group type="102" alignment="0" attributes="0">
-                      <EmptySpace max="-2" attributes="0"/>
-                      <Component id="group_by_column_combo_box" max="32767" attributes="0"/>
-                  </Group>
-                  <Group type="102" attributes="0">
-                      <EmptySpace max="-2" attributes="0"/>
-                      <Group type="103" groupAlignment="0" attributes="0">
+                          <Component id="group_by_column_combo_box" alignment="0" max="32767" attributes="0"/>
                           <Component id="chart_title_text_field" max="32767" attributes="0"/>
                           <Component id="chart_type_combo_box" alignment="0" max="32767" attributes="0"/>
-                          <Group type="102" alignment="0" attributes="0">
-                              <Component id="chart_type_label" min="-2" max="-2" attributes="0"/>
+                          <Group type="102" attributes="0">
+                              <Group type="103" groupAlignment="0" attributes="0">
+                                  <Component id="chart_type_label" alignment="0" min="-2" max="-2" attributes="0"/>
+                                  <Component id="x_column_label" alignment="0" min="-2" max="-2" attributes="0"/>
+                                  <Component id="x_axis_name_label" alignment="0" min="-2" max="-2" attributes="0"/>
+                                  <Component id="x_axis_type_label" alignment="0" min="-2" max="-2" attributes="0"/>
+                                  <Component id="y_column_label" alignment="0" min="-2" max="-2" attributes="0"/>
+                                  <Component id="y_axis_name_label" alignment="0" min="-2" max="-2" attributes="0"/>
+                                  <Component id="y_axis_type_label" alignment="0" min="-2" max="-2" attributes="0"/>
+                                  <Component id="group_by_column_label" alignment="0" min="-2" max="-2" attributes="0"/>
+                              </Group>
                               <EmptySpace min="0" pref="0" max="32767" attributes="0"/>
                           </Group>
+                          <Component id="graph_button" max="32767" attributes="0"/>
                       </Group>
-                  </Group>
-                  <Group type="102" attributes="0">
                       <EmptySpace max="-2" attributes="0"/>
-                      <Group type="103" groupAlignment="0" attributes="0">
-                          <Component id="x_column_label" alignment="0" min="-2" max="-2" attributes="0"/>
-                          <Component id="x_axis_name_label" alignment="0" min="-2" max="-2" attributes="0"/>
-                          <Component id="x_axis_type_label" alignment="0" min="-2" max="-2" attributes="0"/>
-                          <Component id="y_column_label" alignment="0" min="-2" max="-2" attributes="0"/>
-                          <Component id="y_axis_name_label" alignment="0" min="-2" max="-2" attributes="0"/>
-                          <Component id="y_axis_type_label" alignment="0" min="-2" max="-2" attributes="0"/>
-                          <Component id="group_by_column_label" alignment="0" min="-2" max="-2" attributes="0"/>
-                      </Group>
-                      <EmptySpace min="0" pref="0" max="32767" attributes="0"/>
                   </Group>
               </Group>
-              <EmptySpace max="-2" attributes="0"/>
           </Group>
       </Group>
     </DimensionLayout>
@@ -115,6 +104,10 @@
               <Component id="group_by_column_label" min="-2" max="-2" attributes="0"/>
               <EmptySpace max="-2" attributes="0"/>
               <Component id="group_by_column_combo_box" min="-2" max="-2" attributes="0"/>
+              <EmptySpace max="-2" attributes="0"/>
+              <Component id="jSeparator4" min="-2" pref="10" max="-2" attributes="0"/>
+              <EmptySpace max="-2" attributes="0"/>
+              <Component id="graph_button" min="-2" max="-2" attributes="0"/>
               <EmptySpace max="32767" attributes="0"/>
           </Group>
       </Group>
@@ -246,6 +239,13 @@
           </StringArray>
         </Property>
       </Properties>
+    </Component>
+    <Component class="javax.swing.JButton" name="graph_button">
+      <Properties>
+        <Property name="text" type="java.lang.String" value="Graph"/>
+      </Properties>
+    </Component>
+    <Component class="javax.swing.JSeparator" name="jSeparator4">
     </Component>
   </SubComponents>
 </Form>

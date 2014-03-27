@@ -13,6 +13,8 @@ public final class AxisType {
 	public static final AxisType LOG = new AxisType ("Logarithmic Axis");
 	/** Reference for a "Date Axis" Chart. */
 	public static final AxisType DATE = new AxisType ("Date Axis");
+	/** Reference for a "Category Axis" Chart. */
+	public static final AxisType CATEGORY = new AxisType ("Category Axis");
 	/** Name of chart type. */
 	private String name;
 	
@@ -47,9 +49,19 @@ public final class AxisType {
 	 * 
 	 * @return A String array containing all the possible types this class holds.
 	 */
-	public static String [] getOptions () {
+	public static String [] getXYOptions () {
     	return (new String []
-    			{AxisType.STANDARD.toString (), AxisType.LOG.toString (),
-    			AxisType.DATE.toString ()});
+    			{AxisType.STANDARD.toString (), AxisType.LOG.toString ()});
+    }
+
+	/**
+	 * Provides a list of options that may be selected.
+	 * Specifically for use in the various views.
+	 * 
+	 * @return A String array containing all the possible types this class holds.
+	 */
+	public static String [] getBarOptions () {
+    	return (new String []
+    			{AxisType.CATEGORY.toString ()});//, AxisType.DATE.toString ()});
     }
 }

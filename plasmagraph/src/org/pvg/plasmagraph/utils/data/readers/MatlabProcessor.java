@@ -17,6 +17,8 @@ import org.pvg.plasmagraph.utils.data.DataColumn;
 import org.pvg.plasmagraph.utils.data.DataSet;
 import org.pvg.plasmagraph.utils.data.GraphPair;
 import org.pvg.plasmagraph.utils.data.HeaderData;
+import org.pvg.plasmagraph.utils.exceptions.FunctionNotImplementedException;
+import org.pvg.plasmagraph.utils.exceptions.InvalidDataSizeException;
 import org.pvg.plasmagraph.utils.template.Template;
 import org.pvg.plasmagraph.utils.types.ColumnType;
 import org.pvg.plasmagraph.utils.types.FileType;
@@ -274,12 +276,14 @@ public class MatlabProcessor implements FileProcessor {
 	 * @param ds
 	 *            A DataSet object with its DataGroups being of the DataRow
 	 *            type.
-	 * @throws Exception
-	 *             Malformed data set; columns are of different sizes.
+	 * @throws FunctionNotImplementedException
+	 * 			   A specific function of this class is currently unavailable.            
+	 * @throws InvalidDataSizeException 
 	 */
 	@Override
 	public void toDataSet (DataSet ds, GraphPair p, HeaderData hd)
-			throws Exception {
+			throws FunctionNotImplementedException, InvalidDataSizeException {
+		
 		// First, check to see if the file's been even read.
 		if (this.mat_data.isEmpty ()) {
 
@@ -288,17 +292,16 @@ public class MatlabProcessor implements FileProcessor {
 		}
 
 		// Create a container of MLArrays that will be graphed.
-		ArrayList <MLArray> columns = new ArrayList <> ();
-		
+		ArrayList <MLArray> columns = new ArrayList <> (p.getNumberOfColumns ());
 		
 		/** iterate over every group of data in the level 5 MAT-File **/
 		for (Entry <String, MLArray> e : this.mat_data.entrySet ()) {
 			
 			/** create and add the data column to the result set **/
-			if (e.getKey ().equals (hd.get (p.getIndex1 ()).getKey ())
-					|| e.getKey ().equals (hd.get (p.getIndex2 ()).getKey ())) {
+			if (e.getKey ().equals (hd.get (p.getXIndex ()).getKey ())
+					|| e.getKey ().equals (hd.get (p.getYIndex ()).getKey ())) {
 				
-				//ds.add (getColumn (e.getValue ()));
+				//System.out.println ("Log!");
 				columns.add (e.getValue ());
 				
 				// Create the DataColumns for each column.
@@ -309,6 +312,7 @@ public class MatlabProcessor implements FileProcessor {
 		// Test the arrays for valid data before insterting them into the DataSet.
 		if (columns.size () == 2) {
 			
+			// In each rows, check the value for all MLArrays, and make sure the values are acceptable..
 			for (int row = 0; (row < columns.get (0).getM ()); ++row) {
 				
 				// Use a flag to verify the validity of the row.
@@ -324,7 +328,7 @@ public class MatlabProcessor implements FileProcessor {
 						if (c_type.equals (ColumnType.DATETIME)) {
 						
 							// Dunno! Throw an error!
-							throw (new Exception ("I don't know how to deal with Dates yet!"));
+							throw (new FunctionNotImplementedException ("Date values."));
 							
 							// Change the MLArray to something that deals with dates.
 							// Interpret the value of the row into a date? Can DateValidator do this?
@@ -352,7 +356,7 @@ public class MatlabProcessor implements FileProcessor {
 						if (c_type.equals (ColumnType.DATETIME)) {
 							
 							// Dunno! Throw an error!
-							throw (new Exception ("I don't know how to deal with Dates yet!"));
+							throw (new FunctionNotImplementedException ("Date values."));
 							
 						} else if (c_type.equals (ColumnType.DOUBLE)) {
 							
@@ -371,7 +375,7 @@ public class MatlabProcessor implements FileProcessor {
 			}
 			
 		} else {
-			throw (new Exception ("Incorrect number of columns obtained in MatlabProcessor."));
+			throw (new InvalidDataSizeException ("MatlabProcessor"));
 		}
 
 	}
@@ -395,7 +399,11 @@ public class MatlabProcessor implements FileProcessor {
 	 * @return True if the value isn't a NaN, is not Infinite, and is not null; else, False.
 	 */
 	private boolean isValid (Double d) {
-		return (!(Double.isNaN (d) && (Double.isInfinite (d) && (d == null))));
+		return (!((Double.isNaN (d)) || 
+				(Double.isInfinite (d)) ||
+				(d == null) ||
+				(d == 0.0) ||
+				(d == 0)));
 	}
 
 	/**
@@ -405,7 +413,11 @@ public class MatlabProcessor implements FileProcessor {
 	 * @return True if the value isn't a NaN, is not null, and is not empty (""); else, False.
 	 */
 	private boolean isValid (String s) {
-		return (!((s == null) && (s == "NaN") && (s == "")));
+		return (!((s == null) ||
+				(s == "NaN") ||
+				(s == "") ||
+				(s == "0.0") ||
+				(s == "0")));
 	}
 
 	/**
@@ -433,8 +445,8 @@ public class MatlabProcessor implements FileProcessor {
 		for (Entry <String, MLArray> e : this.mat_data.entrySet ()) {
 
 			/** create and add the data column to the result set **/
-			if (e.getKey ().equals (hd.get (p.getIndex1 ()).getKey ())
-					|| e.getKey ().equals (hd.get (p.getIndex2 ()).getKey ())
+			if (e.getKey ().equals (hd.get (p.getXIndex ()).getKey ())
+					|| e.getKey ().equals (hd.get (p.getYIndex ()).getKey ())
 					|| e.getKey ().equals (p.getGroupName ())) {
 				ds.add (getColumn (e.getValue ()));
 			}
@@ -567,15 +579,15 @@ public class MatlabProcessor implements FileProcessor {
             return str.toString(); 
 	}
         
-        private DataSet toDataSet () {
-            
-            DataSet ds = new DataSet (false);
-            for (MLArray m : this.mat_data.values()) {
-                ds.add(this.getColumn(m));
-            }
-            
-            return (ds);
+    private DataSet toDataSet () {
+        
+        DataSet ds = new DataSet (false);
+        for (MLArray m : this.mat_data.values()) {
+            ds.add(this.getColumn(m));
         }
+        
+        return (ds);
+    }
 
 	/**
 	 * Getter method. Provides the Map object obtained from the file.

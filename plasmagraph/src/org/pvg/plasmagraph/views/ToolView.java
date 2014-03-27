@@ -1,6 +1,9 @@
 package org.pvg.plasmagraph.views;
 
+import java.awt.event.ItemListener;
+
 import org.pvg.plasmagraph.models.ToolModel;
+import org.pvg.plasmagraph.utils.types.ChartType;
 import org.pvg.plasmagraph.utils.types.InterpolationType;
 import org.pvg.plasmagraph.utils.types.OutlierResponse;
 
@@ -35,18 +38,42 @@ public class ToolView extends javax.swing.JPanel {
 	* Updates ToolView's Components based on the current state of the Template.
 	*/
     public void updateView () {
-        this.updateTemplateView ();
+    	if (ChartType.XY_GRAPH.equals (tool_model.getTemplate ().getChartType ())) {
+    		
+    		this.updateXYView ();
+    		
+    	} else {//if (ChartType.BAR_GRAPH.equals (tool_model.getTemplate ().getChartType ())) {
+    		
+    		this.updateBarView ();
+    		
+    	}
     }
     
-    /**
-	* Updates ToolView's Template-based Components based on the current 
-	* state of the Template.
-	*/
-	public void updateTemplateView () {
-		this.interpolation_type_combo_box.setSelectedItem (this.tool_model.getTemplate ().getInterpolationType ().toString ());
-        this.outlier_response_combo_box.setSelectedItem (this.tool_model.getTemplate ().getOutlierResponse ().toString ());
+    private void updateXYView () {
+
+    	// Enable everything.
+    	this.interpolation_type_combo_box.setEnabled (true);
+    	this.outlier_response_combo_box.setEnabled (true);
+    	
+    	// Update view.
+    	this.interpolation_type_combo_box.setSelectedItem (
+    			this.tool_model.getTemplate ().getInterpolationType ().toString ());
+        this.outlier_response_combo_box.setSelectedItem (
+        		this.tool_model.getTemplate ().getOutlierResponse ().toString ());
 	}
     
+    private void updateBarView () {
+    	
+    	// Disable everything.
+    	this.interpolation_type_combo_box.setEnabled (false);
+    	this.outlier_response_combo_box.setEnabled (false);
+    	
+    	// Update view.
+    	this.interpolation_type_combo_box.setSelectedIndex (0);
+        this.outlier_response_combo_box.setSelectedIndex (0);
+	}
+
+
     /**
 	* Getter Method. Provides this object's selected interpolation type in the form of an InterpolationType object.
 	* @return InterpolationType object based on its representation in the "interpolation_type_combo_box" Component.
@@ -161,10 +188,8 @@ public class ToolView extends javax.swing.JPanel {
 	*
 	* @param interpolationTypeListener ActionListener object provided by its Controller.
 	*/
-    public void addInterpolationTypeListener (
-            java.awt.event.ActionListener interpolationTypeListener) {
-        this.interpolation_type_combo_box
-                .addActionListener (interpolationTypeListener);
+    public void addInterpolationTypeListener (ItemListener interpolationTypeListener) {
+        this.interpolation_type_combo_box.addItemListener (interpolationTypeListener);
     }
     
     /**
@@ -172,8 +197,7 @@ public class ToolView extends javax.swing.JPanel {
 	*
 	* @param outlierResponseListener ActionListener object provided by its Controller.
 	*/
-    public void addOutlierResponseListener (
-            java.awt.event.ActionListener outlierResponseListener) {
-        this.outlier_response_combo_box.addActionListener (outlierResponseListener);
+    public void addOutlierResponseListener (ItemListener outlierResponseListener) {
+        this.outlier_response_combo_box.addItemListener (outlierResponseListener);
     }
 }

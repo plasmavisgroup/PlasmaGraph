@@ -29,7 +29,7 @@ import org.pvg.plasmagraph.utils.types.OutlierResponse;
 public class OutlierSearchTest {
 
 	private String default_file_path = 
-			"C:/Users/tako/Documents/GitHub/PlasmaGraph/plasmagraph/test/csv/Parameter2013-06-11.csv"; //$NON-NLS-1$
+			"C:/Users/tako/Documents/GitHub/PlasmaGraph/plasmagraph/test/csv/csv_outlier_test.csv"; //$NON-NLS-1$
 	
 	@Test
 	public void testClusterScanning () throws Exception {
@@ -47,8 +47,8 @@ public class OutlierSearchTest {
 		t.setOrientation (PlotOrientation.VERTICAL);
 		
 		// Prepare the GraphPair
-		GraphPair p = new GraphPair (6, hd.get (6).getKey (), 
-				7, hd.get (7).getKey ());
+		GraphPair p = new GraphPair (0, hd.get (0).getKey (), 
+				1, hd.get (1).getKey ());
 		
 		// Perform the procedure.
 		XYGraph g = new XYGraph (t, OutlierSearch.scanForOutliers (hd, t, p), p);

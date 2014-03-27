@@ -2,8 +2,10 @@ package org.pvg.plasmagraph.controllers;
 
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.FocusAdapter;
 import java.awt.event.FocusEvent;
-import java.awt.event.FocusListener;
+import java.awt.event.ItemEvent;
+import java.awt.event.ItemListener;
 
 import javax.swing.SwingWorker;
 import javax.swing.event.ChangeEvent;
@@ -25,6 +27,8 @@ public class DataSetController {
 	DataSetModel data_model;
 	/** Reference to view related to this controller. */
 	DataSetView data_view;
+	/** Reference to graphing MVC related to this controller. */
+	GraphController graph_controller;
 
 	/**
 	 * Constructor for DataSetControllers. Used only by the PlasmaGraph class,
@@ -34,11 +38,13 @@ public class DataSetController {
 	 *            Reference to this object's model.
 	 * @param data_view
 	 *            Refernece to this object's view.
+	 * @param graph_controller Refernece to this object's graphing MVC.
 	 */
-	public DataSetController (DataSetModel data_model, DataSetView data_view) {
+	public DataSetController (DataSetModel data_model, DataSetView data_view, GraphController graph_controller) {
 		// Set related objects into proper positions in object.
 		this.data_model = data_model;
 		this.data_view = data_view;
+		this.graph_controller = graph_controller;
 
 		// Automatically add listeners to Data Set Tab via view.
 
@@ -60,11 +66,12 @@ public class DataSetController {
 		data_view.addYColumnListener (new YColumnListener ());
 		// group_by_column_combo_box
 		data_view.addGroupByColumnListener (new GroupByColumnListener ());
+		// Graph Trigger
+		data_view.addGraphListener (new GraphListener ());
 
 		// Update View Listener
 		data_model.addTemplateChangeListener (new DataViewTemplateListener ());
-		data_model
-				.addHeaderDataChangeListener (new DataViewHeaderDataListener ());
+		data_model.addHeaderDataChangeListener (new DataViewHeaderDataListener ());
 	}
 
 	/**
@@ -73,22 +80,19 @@ public class DataSetController {
 	 * 
 	 * @author Gerardo A. Navas Morales
 	 */
-	class ChartTitleListener implements FocusListener {
-
-		@Override
-		public void focusGained (FocusEvent e) {
-			// Empty
-		}
+	class ChartTitleListener extends FocusAdapter {
 
 		/**
 		 * Calls a DataSetModel method to change the chart type on the Template.
 		 */
 		@Override
 		public void focusLost (FocusEvent e) {
+			
 			data_model.getTemplate ().setChartName (data_view.getChartName ());
 
 			// Notify relevant listeners.
 			data_model.getTemplate ().notifyListeners ();
+			
 		}
 
 	}
@@ -105,17 +109,34 @@ public class DataSetController {
 		 * Calls a DataSetModel method to change the chart type on the Template.
 		 */
 		@Override
-		public void actionPerformed (ActionEvent arg0) {
-			try {
-				data_model.getTemplate ().setChartType (
-						data_view.getChartType ());
+		public void actionPerformed (ActionEvent e) {
+			data_model.getTemplate ().setChartType (
+					data_view.getChartType ());
+
+			// Notify relevant listeners.
+			data_model.getTemplate ().notifyListeners ();
+		}
+
+	}
+	
+	/**
+	 * Listener for the "group_by" JComboBox part of the DataSetView. Relies on
+	 * ActionListener to manage messages.
+	 * 
+	 * @author Gerardo A. Navas Morales
+	 */
+	class GroupByColumnListener implements ActionListener {
+
+		/**
+		 * Calls a DataSetModel method to change the chart type on the Template.
+		 */
+
+		@Override
+		public void actionPerformed (ActionEvent e) {
+				data_model.changeGroup (data_view.getGroupingByElement ());
 
 				// Notify relevant listeners.
-				data_model.getTemplate ().notifyListeners ();
-				
-			} catch (Exception e) {
-				// TODO Throw a Dialog Exception
-			}
+				data_model.getReference ().notifyListeners ();
 		}
 
 	}
@@ -129,22 +150,14 @@ public class DataSetController {
 	class XColumnListener implements ActionListener {
 
 		/**
-		 * Calls a DataSetModel method to change the chart type on the Template.
+		 * Calls a DataSetModel method to change the x axis column on the Template.
 		 */
 		@Override
-		public void actionPerformed (ActionEvent arg0) {
-			try {
+		public void actionPerformed (ActionEvent e) {
+				data_model.changeXColumn (data_view.getXColumn ());
 				
-				data_model.getTemplate ().setXAxisColumn (data_view.getXColumn ());
-				data_model.setGraphPair (data_view.getGroupingByElement (),
-						data_view.getXColumn (), data_view.getYColumn ());
-
 				// Notify relevant listeners.
-				data_model.getTemplate ().notifyListeners ();
 				data_model.getReference ().notifyListeners ();
-			} catch (Exception e) {
-				// TODO Throw a Dialog Exception
-			}
 		}
 
 	}
@@ -158,22 +171,14 @@ public class DataSetController {
 	class YColumnListener implements ActionListener {
 
 		/**
-		 * Calls a DataSetModel method to change the chart type on the Template.
+		 * Calls a DataSetModel method to change the y axis column on the Template.
 		 */
 		@Override
-		public void actionPerformed (ActionEvent arg0) {
-			try {
-				
-				data_model.getTemplate ().setYAxisColumn (data_view.getYColumn ());
-				data_model.setGraphPair (data_view.getGroupingByElement (),
-						data_view.getXColumn (), data_view.getYColumn ());
+		public void actionPerformed (ActionEvent e) {
+			data_model.changeYColumn (data_view.getYColumn ());
 
-				// Notify relevant listeners.
-				data_model.getTemplate ().notifyListeners ();
-				data_model.getReference ().notifyListeners ();
-			} catch (Exception e) {
-				// TODO Throw a Dialog Exception
-			}
+			// Notify relevant listeners.
+			data_model.getReference ().notifyListeners ();
 		}
 
 	}
@@ -184,22 +189,19 @@ public class DataSetController {
 	 * 
 	 * @author Gerardo A. Navas Morales
 	 */
-	class XAxisNameListener implements FocusListener {
-
-		@Override
-		public void focusGained (FocusEvent e) {
-			// Empty
-		}
+	class XAxisNameListener extends FocusAdapter {
 
 		/**
 		 * Calls a DataSetModel method to change the chart type on the Template.
 		 */
 		@Override
 		public void focusLost (FocusEvent e) {
+			
 			data_model.getTemplate ().setXAxisLabel (data_view.getXAxisName ());
 
 			// Notify relevant listeners.
 			data_model.getTemplate ().notifyListeners ();
+			
 		}
 
 	}
@@ -210,22 +212,23 @@ public class DataSetController {
 	 * 
 	 * @author Gerardo A. Navas Morales
 	 */
-	class YAxisNameListener implements FocusListener {
-
-		@Override
-		public void focusGained (FocusEvent e) {
-			// Empty
-		}
+	class YAxisNameListener extends FocusAdapter {
 
 		/**
 		 * Calls a DataSetModel method to change the chart type on the Template.
 		 */
 		@Override
 		public void focusLost (FocusEvent e) {
-			data_model.getTemplate ().setYAxisLabel (data_view.getYAxisName ());
-
-			// Notify relevant listeners.
-			data_model.getTemplate ().notifyListeners ();
+			try {
+				
+				data_model.getTemplate ().setYAxisLabel (data_view.getYAxisName ());
+	
+				// Notify relevant listeners.
+				data_model.getTemplate ().notifyListeners ();
+				
+			} catch (Exception ex) {
+				// TODO Throw a Dialog Exception
+			}
 		}
 
 	}
@@ -242,14 +245,14 @@ public class DataSetController {
 		 * Calls a DataSetModel method to change the chart type on the Template.
 		 */
 		@Override
-		public void actionPerformed (ActionEvent arg0) {
+		public void actionPerformed (ActionEvent e) {
 			try {
 				data_model.getTemplate ().setXAxisType (
-						data_view.getYAxisType ());
+						data_view.getXAxisType ());
 
 				// Notify relevant listeners.
 				data_model.getTemplate ().notifyListeners ();
-			} catch (Exception e) {
+			} catch (Exception ex) {
 				// TODO Throw a Dialog Exception
 			}
 		}
@@ -268,44 +271,33 @@ public class DataSetController {
 		 * Calls a DataSetModel method to change the chart type on the Template.
 		 */
 		@Override
-		public void actionPerformed (ActionEvent arg0) {
+		public void actionPerformed (ActionEvent e) {
 			try {
-				data_model.getTemplate ().setYAxisType (
-						data_view.getYAxisType ());
-
-				// Notify relevant listeners.
-				data_model.getTemplate ().notifyListeners ();
-			} catch (Exception e) {
+					data_model.getTemplate ().setYAxisType (
+							data_view.getYAxisType ());
+	
+					// Notify relevant listeners.
+					data_model.getTemplate ().notifyListeners ();
+			} catch (Exception ex) {
 				// TODO Throw a Dialog Exception
 			}
 		}
 
 	}
-
+	
 	/**
-	 * Listener for the "group_by" JComboBox part of the DataSetView. Relies on
-	 * ActionListener to manage messages.
+	 * Listener for the "graph" JButton part of the DataSetView. Relies
+	 * on ActionListener to manage messages.
 	 * 
 	 * @author Gerardo A. Navas Morales
 	 */
-	class GroupByColumnListener implements ActionListener {
+	class GraphListener implements ActionListener {
 
-		/**
-		 * Calls a DataSetModel method to change the chart type on the Template.
-		 */
 		@Override
 		public void actionPerformed (ActionEvent arg0) {
-			try {
-				data_model.setGraphPair (data_view.getGroupingByElement (),
-						data_view.getXColumn (), data_view.getYColumn ());
-
-				// Notify relevant listeners.
-				data_model.getReference ().notifyListeners ();
-			} catch (Exception e) {
-				// TODO Throw a Dialog Exception
-			}
+			graph_controller.graph ();
 		}
-
+		
 	}
 
 	/**
@@ -326,8 +318,12 @@ public class DataSetController {
 
 				@Override
 				protected Void doInBackground () throws Exception {
+					
 					data_view.updateView ();
+					
+					//System.out.println ("It's the ObjectListeners in the way!");
 					return null;
+					
 				}
 
 			};
@@ -355,10 +351,13 @@ public class DataSetController {
 
 				@Override
 				protected Void doInBackground () throws Exception {
+					
 					data_view.updateXAxisColumn ();
 					data_view.updateYAxisColumn ();
 					data_view.updateGroupBy ();
+					//System.out.println ("It's the ObjectListeners in the way!");
 					return null;
+					
 				}
 
 			};

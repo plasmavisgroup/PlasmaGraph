@@ -56,8 +56,11 @@ public final class InterpolationType {
 	 */
     public static String [] getOptions () {
     	return (new String []
-    			{InterpolationType.NONE.toString (), InterpolationType.LINEAR.toString (), 
-    			InterpolationType.QUADRATIC.toString (), InterpolationType.CUBIC.toString (), 
-    			InterpolationType.QUARTIC.toString (), InterpolationType.SPLINE.toString ()});
+    			{InterpolationType.NONE.toString (), 
+    			InterpolationType.LINEAR.toString (), 
+    			InterpolationType.QUADRATIC.toString (),
+    			//InterpolationType.CUBIC.toString (), 
+    			//InterpolationType.QUARTIC.toString (), 
+    			InterpolationType.SPLINE.toString ()});
     }
 }

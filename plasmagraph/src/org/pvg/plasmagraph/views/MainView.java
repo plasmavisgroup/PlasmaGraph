@@ -113,7 +113,7 @@ public class MainView extends javax.swing.JFrame {
                 Short.MAX_VALUE));
         layout.setVerticalGroup (layout.createParallelGroup (
                 javax.swing.GroupLayout.Alignment.LEADING).addComponent (
-                tab_pane, javax.swing.GroupLayout.DEFAULT_SIZE, 640,
+                tab_pane, javax.swing.GroupLayout.DEFAULT_SIZE, 665,
                 Short.MAX_VALUE));
         pack ();
     }

@@ -64,9 +64,9 @@ public class Template {
 	/** Type of Axis used by the Y Axis. Default is "Standard". */
 	private AxisType y_axis_type;
 	/** Name of the selected column for the X Axis. */
-	private String x_axis_column_name;
+	//private String x_axis_column_name;
 	/** Name of the selected column for the Y Axis. */
-	private String y_axis_column_name;
+	//private String y_axis_column_name;
 	
 	// Tool Features
 	/** The type of interpolation that is default to this Template. */
@@ -259,9 +259,9 @@ public class Template {
 	 * Getter Method. Provides the "x_axis_column_name" variable.
      * @return A String variable, "x_axis_column_name", contained by this object.
 	 */
-	public String getXAxisColumn () {
+	/*public String getXAxisColumn () {
 		return (x_axis_column_name);
-	}
+	}*/
 	
 	/**
 	 * Getter Method. Provides the current AxisType for the X Axis.
@@ -284,10 +284,10 @@ public class Template {
 	 * Getter Method. Provides the "y_axis_column_name" variable.
      * @return A String variable, "y_axis_column_name", contained by this object.
 	 */
-	public String getYAxisColumn () {
+/*	public String getYAxisColumn () {
 		return (y_axis_column_name);
 	}
-
+*/
 	/**
 	 * Getter Method. Provides the current AxisType for the Y Axis.
 	 * 
@@ -626,9 +626,9 @@ public class Template {
 	 * Setter Method. Changes the "x_axis_column_name" variable.
      * @param column_name The new String variable to replace this object's "x_axis_column_name" variable's contents.
 	 */
-	public void setXAxisColumn (String column_name) {
+/*	public void setXAxisColumn (String column_name) {
 		this.x_axis_column_name = column_name;
-	}
+	}*/
 	
 	/**
 	 * Setter Method. Sets this object's X Axis AxisType to that of the parameter provided.
@@ -664,11 +664,11 @@ public class Template {
 	public void setXAxisType (String xAxisType) {
 		if (AxisType.STANDARD.toString ().equals (xAxisType)) {
 			
-			this.y_axis_type = AxisType.STANDARD;
+			this.x_axis_type = AxisType.STANDARD;
 			
 		} else if (AxisType.LOG.toString ().equals (xAxisType)) {
 			
-			this.y_axis_type = AxisType.LOG;
+			this.x_axis_type = AxisType.LOG;
 			
 		}
 	}
@@ -685,10 +685,10 @@ public class Template {
 	 * Setter Method. Changes the "y_axis_column_name" variable.
      * @param column_name The new String variable to replace this object's "y_axis_column_name" variable's contents.
 	 */
-	public void setYAxisColumn (String column_name) {
+/*	public void setYAxisColumn (String column_name) {
 		this.y_axis_column_name = column_name;
 	}
-
+*/
 	/**
 	 * Setter Method. Sets this object's Y Axis AxisType to that of the parameter provided.
 	 * 

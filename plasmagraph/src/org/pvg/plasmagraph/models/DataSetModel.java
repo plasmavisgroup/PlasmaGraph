@@ -116,6 +116,27 @@ public class DataSetModel {
 				hd.get (hd.find (xColumn)), hd.find (xColumn),
 				hd.get (hd.find (yColumn)), hd.find (yColumn));
 	}
+	
+	/**
+	 * @param groupingByElement
+	 */
+	public void changeGroup (String groupingByElement) {
+		this.dr.changeGroup (hd.find (groupingByElement), groupingByElement);
+	}
+
+	/**
+	 * @param xColumn
+	 */
+	public void changeXColumn (String xColumn) {
+		this.dr.changeX (hd.find (xColumn), xColumn);
+	}
+
+	/**
+	 * @param yColumn
+	 */
+	public void changeYColumn (String yColumn) {
+		this.dr.changeY (hd.find (yColumn), yColumn);
+	}
     
     /**
      * Getter method. Returns template.

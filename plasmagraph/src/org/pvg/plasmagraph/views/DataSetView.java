@@ -1,10 +1,9 @@
 package org.pvg.plasmagraph.views;
 
+import java.awt.event.FocusAdapter;
 import java.awt.event.ActionListener;
-import java.awt.event.FocusListener;
 
 import javax.swing.DefaultComboBoxModel;
-
 import org.pvg.plasmagraph.models.DataSetModel;
 import org.pvg.plasmagraph.utils.exceptions.TemplateGroupByColumnNotFoundException;
 import org.pvg.plasmagraph.utils.types.AxisType;
@@ -27,7 +26,7 @@ public class DataSetView extends javax.swing.JPanel {
 	public DataSetView (DataSetModel dm) {
 		initComponents ();
 		
-		data_model = dm;
+		this.data_model = dm;
 	}
 	
 	/**
@@ -37,10 +36,38 @@ public class DataSetView extends javax.swing.JPanel {
      * @throws TemplateGroupByColumnNotFoundException 
      */
     public void updateView () throws TemplateGroupByColumnNotFoundException {
+    	if (ChartType.XY_GRAPH.equals (data_model.getTemplate ().getChartType ())) {
+    		
+    		this.updateXYView ();
+    		
+    	} else {//if (ChartType.BAR_GRAPH.equals (data_model.getTemplate ().getChartType ())) {
+    		
+    		this.updateBarView ();
+    		
+    	}
+    }
+    
+    private void updateXYView () {
+    	// Enable the X Axis Type.
+    	this.x_axis_type_combo_box.setEnabled (true);
+    	
+    	// Update view.
     	this.updateChartTitle ();
     	this.updateChartType ();
-    	this.updateGroupBy ();
-    }
+    	this.updateAxesTypes ();
+    	this.updateAxesNames ();
+	}
+	
+    private void updateBarView () {
+		// Disable the X Axis Type.
+    	this.x_axis_type_combo_box.setEnabled (false);
+    	
+    	// Update view.
+    	this.updateChartTitle ();
+    	this.updateChartType ();
+    	this.updateAxesTypes ();
+    	this.updateAxesNames ();
+	}
     
     /**
      * Updates the ChartTitle's selected option.
@@ -54,7 +81,7 @@ public class DataSetView extends javax.swing.JPanel {
     }
     
     /**
-     * Updates the ChartType option's available options and the selected option.
+     * Updates the ChartType options available options and the selected option.
      */
     public void updateChartType () {
     	// Update available options.
@@ -67,6 +94,63 @@ public class DataSetView extends javax.swing.JPanel {
     }
     
     /**
+     * Update the XAxisType and YAxisType combo boxes with their proper selections
+     * as per the Template.
+     */
+    public void updateAxesTypes () {
+    	if (ChartType.XY_GRAPH.equals (data_model.getTemplate ().getChartType ())) {
+    		
+    		// Update available options.
+    		x_axis_type_combo_box.setModel (
+    				new javax.swing.DefaultComboBoxModel <String> (
+    				AxisType.getXYOptions ()));
+    		
+    		y_axis_type_combo_box.setModel (
+    				new javax.swing.DefaultComboBoxModel <String> (
+					AxisType.getXYOptions ()));
+
+    		
+    		// Update selected option.
+    		this.x_axis_type_combo_box.setSelectedItem (
+        			this.data_model.getTemplate ().getXAxisType ().toString ());
+        	
+        	this.y_axis_type_combo_box.setSelectedItem (
+        			this.data_model.getTemplate ().getYAxisType ().toString ());
+    		
+    	} else {//if (ChartType.BAR_GRAPH.equals (data_model.getTemplate ().getChartType ())) {
+    		
+    		// Update available options.
+    		x_axis_type_combo_box.setModel (
+    				new javax.swing.DefaultComboBoxModel <String> (
+    				AxisType.getBarOptions ()));
+    		
+    		y_axis_type_combo_box.setModel (
+    				new javax.swing.DefaultComboBoxModel <String> (
+					AxisType.getXYOptions ()));
+    		
+    		// Update selected option.
+    		this.x_axis_type_combo_box.setSelectedItem (AxisType.CATEGORY.toString ());
+        			//this.data_model.getTemplate ().getXAxisType ().toString ());
+        	
+        	this.y_axis_type_combo_box.setSelectedItem (
+        			this.data_model.getTemplate ().getYAxisType ().toString ());
+    		
+    	}
+    }
+    
+    /**
+     * Update the X and Y Axis Name Text Boxes with their proper names as per
+     * the Template.
+     */
+    public void updateAxesNames () {
+    	this.x_axis_name_label.setText (
+    			this.data_model.getTemplate ().getXAxisLabel ());
+    	
+    	this.y_axis_name_label.setText (
+    			this.data_model.getTemplate ().getYAxisLabel ());
+    }
+    
+    /**
      * Updates the model for the X Column combo box.
      */
     public void updateXAxisColumn () {
@@ -75,9 +159,6 @@ public class DataSetView extends javax.swing.JPanel {
     	
     	// Try to find the column specified in the Template.
     	this.x_column_combo_box.setSelectedIndex (0);
-    	this.x_column_combo_box.setSelectedItem (
-    			this.data_model.getTemplate ().getXAxisColumn ());
-    		
     }
     
     /**
@@ -89,8 +170,6 @@ public class DataSetView extends javax.swing.JPanel {
     	
     	// Try to find the column specified in the Template.
     	this.y_column_combo_box.setSelectedIndex (0);
-    	this.y_column_combo_box.setSelectedItem (
-    			this.data_model.getTemplate ().getYAxisColumn ());
     }
     
     /**
@@ -160,6 +239,8 @@ public class DataSetView extends javax.swing.JPanel {
 		jSeparator3 = new javax.swing.JSeparator ();
 		group_by_column_label = new javax.swing.JLabel ();
 		group_by_column_combo_box = new javax.swing.JComboBox <String> ();
+		graph_button = new javax.swing.JButton();
+        jSeparator4 = new javax.swing.JSeparator();
 
 		x_column_label.setText ("X Column");
 		x_axis_name_label.setText ("X Axis Name");
@@ -170,9 +251,9 @@ public class DataSetView extends javax.swing.JPanel {
 		y_axis_type_label.setText ("Y Axis Type");
 
 		x_axis_type_combo_box
-				.setModel (new javax.swing.DefaultComboBoxModel <String> (AxisType.getOptions ()));
+				.setModel (new javax.swing.DefaultComboBoxModel <String> (AxisType.getXYOptions ()));
 		y_axis_type_combo_box
-				.setModel (new javax.swing.DefaultComboBoxModel <String> (AxisType.getOptions ()));
+				.setModel (new javax.swing.DefaultComboBoxModel <String> (AxisType.getXYOptions ()));
 
 		chart_type_label.setText ("Chart Type");
 		chart_type_combo_box
@@ -184,51 +265,46 @@ public class DataSetView extends javax.swing.JPanel {
 				.setModel (new javax.swing.DefaultComboBoxModel <String> (
 						new String [] { "None" }));
 
-		javax.swing.GroupLayout layout = new javax.swing.GroupLayout(this);
+		graph_button.setText("Graph");
+
+        javax.swing.GroupLayout layout = new javax.swing.GroupLayout(this);
         this.setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addComponent(jSeparator1)
             .addComponent(jSeparator2)
             .addComponent(jSeparator3)
+            .addComponent(jSeparator4)
             .addGroup(layout.createSequentialGroup()
                 .addContainerGap()
-                .addComponent(chart_title_label)
-                .addGap(0, 0, Short.MAX_VALUE))
-            .addGroup(layout.createSequentialGroup()
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(layout.createSequentialGroup()
-                        .addContainerGap()
+                        .addComponent(chart_title_label)
+                        .addGap(0, 0, Short.MAX_VALUE))
+                    .addGroup(layout.createSequentialGroup()
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addComponent(x_axis_name_text_field, javax.swing.GroupLayout.Alignment.TRAILING)
                             .addComponent(x_axis_type_combo_box, javax.swing.GroupLayout.Alignment.TRAILING, 0, 220, Short.MAX_VALUE)
                             .addComponent(x_column_combo_box, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                             .addComponent(y_axis_name_text_field, javax.swing.GroupLayout.Alignment.TRAILING)
                             .addComponent(y_axis_type_combo_box, javax.swing.GroupLayout.Alignment.TRAILING, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                            .addComponent(y_column_combo_box, javax.swing.GroupLayout.Alignment.TRAILING, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
-                    .addGroup(layout.createSequentialGroup()
-                        .addContainerGap()
-                        .addComponent(group_by_column_combo_box, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-                    .addGroup(layout.createSequentialGroup()
-                        .addContainerGap()
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(y_column_combo_box, javax.swing.GroupLayout.Alignment.TRAILING, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                            .addComponent(group_by_column_combo_box, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                             .addComponent(chart_title_text_field)
                             .addComponent(chart_type_combo_box, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                             .addGroup(layout.createSequentialGroup()
-                                .addComponent(chart_type_label)
-                                .addGap(0, 0, Short.MAX_VALUE))))
-                    .addGroup(layout.createSequentialGroup()
-                        .addContainerGap()
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(x_column_label)
-                            .addComponent(x_axis_name_label)
-                            .addComponent(x_axis_type_label)
-                            .addComponent(y_column_label)
-                            .addComponent(y_axis_name_label)
-                            .addComponent(y_axis_type_label)
-                            .addComponent(group_by_column_label))
-                        .addGap(0, 0, Short.MAX_VALUE)))
-                .addContainerGap())
+                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                    .addComponent(chart_type_label)
+                                    .addComponent(x_column_label)
+                                    .addComponent(x_axis_name_label)
+                                    .addComponent(x_axis_type_label)
+                                    .addComponent(y_column_label)
+                                    .addComponent(y_axis_name_label)
+                                    .addComponent(y_axis_type_label)
+                                    .addComponent(group_by_column_label))
+                                .addGap(0, 0, Short.MAX_VALUE))
+                            .addComponent(graph_button, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                        .addContainerGap())))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -275,6 +351,10 @@ public class DataSetView extends javax.swing.JPanel {
                 .addComponent(group_by_column_label)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(group_by_column_combo_box, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(jSeparator4, javax.swing.GroupLayout.PREFERRED_SIZE, 10, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(graph_button)
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
 	}
@@ -301,12 +381,14 @@ public class DataSetView extends javax.swing.JPanel {
 	private javax.swing.JLabel y_column_label;
 	private javax.swing.JComboBox <String> group_by_column_combo_box;
 	private javax.swing.JLabel group_by_column_label;
+	private javax.swing.JSeparator jSeparator4;
+	private javax.swing.JButton graph_button;
 	// End of variables declaration
 	
 	// Listener Methods.	
 	/**
      * Registers the "group_by" JComboBox as an object that should be
-     * listened upon a new selection being made.
+     * listened upon a new option being chosen.
      * 
      * @param groupByColumnListener
      *            ActionListener object provided by its Controller.
@@ -317,28 +399,28 @@ public class DataSetView extends javax.swing.JPanel {
 
 	/**
 	 * Registers the "chart_title" JTextField as an object that should be
-	 * listened upon a new selection being typed.
+	 * listened upon deselecting the box.
 	 * 
 	 * @param chartTitleListener ActionListener object provided by its Controller.
 	 */
-	public void addChartTitleListener (FocusListener chartTitleListener) {
+	public void addChartTitleListener (FocusAdapter chartTitleListener) {
 		this.chart_title_text_field.addFocusListener (chartTitleListener);
 	}
 	
 	/**
      * Registers the "chart_type" JComboBox as an object that should be
-     * listened upon a new selection being made.
+     * listened upon a new option being chosen.
      * 
-     * @param changeChartTypeListener
+     * @param chartTypeListener
      *            ActionListener object provided by its Controller.
      */
-    public void addChartTypeListener (ActionListener changeChartTypeListener) {
-        this.chart_type_combo_box.addActionListener (changeChartTypeListener);
+    public void addChartTypeListener (ActionListener chartTypeListener) {
+        this.chart_type_combo_box.addActionListener (chartTypeListener);
     }
     
     /**
 	 * Registers the "x_column" JComboBox as an object that should be
-	 * listened upon a new selection being typed.
+	 * listened upon a new option being chosen.
 	 * 
 	 * @param xColumnListener ActionListener object provided by its Controller.
 	 */
@@ -348,7 +430,7 @@ public class DataSetView extends javax.swing.JPanel {
 
 	/**
 	 * Registers the "y_column" JComboBox as an object that should be
-	 * listened upon a new selection being typed.
+	 * listened upon a new option being chosen.
 	 * 
 	 * @param yColumnListener ActionListener object provided by its Controller.
 	 */
@@ -358,27 +440,27 @@ public class DataSetView extends javax.swing.JPanel {
 
 	/**
 	 * Registers the "x_axis_name" JTextField as an object that should be
-	 * listened upon a new selection being typed.
+	 * listened upon deselecting the box.
 	 * 
 	 * @param xAxisNameListener ActionListener object provided by its Controller.
 	 */
-	public void addXAxisNameListener (FocusListener xAxisNameListener) {
+	public void addXAxisNameListener (FocusAdapter xAxisNameListener) {
 		this.x_axis_name_text_field.addFocusListener (xAxisNameListener);
 	}
 
 	/**
 	 * Registers the "y_axis_name" JTextField as an object that should be
-	 * listened upon a new selection being typed.
+	 * listened upon deselecting the box.
 	 * 
 	 * @param yAxisNameListener ActionListener object provided by its Controller.
 	 */
-	public void addYAxisNameListener (FocusListener yAxisNameListener) {
+	public void addYAxisNameListener (FocusAdapter yAxisNameListener) {
 		this.y_axis_name_text_field.addFocusListener (yAxisNameListener);
 	}
 
 	/**
 	 * Registers the "x_axis_type" JComboBox as an object that should be
-	 * listened upon a new selection being typed.
+	 * listened upon a new option being chosen.
 	 * 
 	 * @param xAxisTypeListener ActionListener object provided by its Controller.
 	 */
@@ -388,12 +470,22 @@ public class DataSetView extends javax.swing.JPanel {
 
 	/**
 	 * Registers the "y_axis_type" JComboBox as an object that should be
-	 * listened upon a new selection being typed.
+	 * listened upon a new option being chosen.
 	 * 
 	 * @param yAxisTypeListener ActionListener object provided by its Controller.
 	 */
 	public void addYAxisTypeListener (ActionListener yAxisTypeListener) {
 		this.y_axis_type_combo_box.addActionListener (yAxisTypeListener);
+	}
+	
+	/**
+	 * Registers the "graph_button" JButton as an object that should be
+	 * listened upon being selected.
+	 * 
+	 * @param graphListener ActionListener object provided by its Controller.
+	 */
+	public void addGraphListener (ActionListener graphListener) {
+		this.graph_button.addActionListener (graphListener);
 	}
 	
 	// Getter Methods
@@ -474,16 +566,6 @@ public class DataSetView extends javax.swing.JPanel {
 	public String getYAxisType () {
 		return ((String) this.y_axis_type_combo_box.getSelectedItem ());
 	}
-	
-	/**
-     * Getter Method. Provides this object's "group_by_combo_box"'s value.
-     * 
-     * @return A String object selected by the user from the list of available data columns.
-     */
-    public boolean isGrouped () {
-    	//return (this.group_by_check_box.isSelected ());
-    	return (this.group_by_column_combo_box.getSelectedIndex () != -1);
-    }
     
     /**
      * Getter Method. Provides this object's "group_by_combo_box"'s value.
@@ -491,7 +573,6 @@ public class DataSetView extends javax.swing.JPanel {
      * @return A String object selected by the user from the list of available data columns.
      */
     public String getGroupingByElement () {
-    	//return (this.group_by_check_box.isSelected ());
     	return (String) (this.group_by_column_combo_box.getSelectedItem ());
     }
 }

@@ -4,6 +4,8 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.FocusEvent;
 import java.awt.event.FocusListener;
+import java.awt.event.ItemEvent;
+import java.awt.event.ItemListener;
 
 import javax.swing.SwingWorker;
 import javax.swing.event.ChangeEvent;
@@ -51,20 +53,23 @@ public class ToolController {
      * 
      * @author Gerardo A. Navas Morales
      */
-    class InterpolationTypeListener implements ActionListener {
+    class InterpolationTypeListener implements ItemListener {
         
         /**
          * Bridge between ToolView and ToolModel; changes Template's
          * Interpolation Type value.
          */
-        @Override
-        public void actionPerformed (ActionEvent e) {
-            tool_model.getTemplate ().setInterpolationType
-            (tool_view.getInterpolationType ());
-            
-            // Notify relevant listeners.
-            tool_model.getTemplate ().notifyListeners ();
-        }
+		@Override
+		public void itemStateChanged (ItemEvent e) {
+			// TODO Auto-generated method stub
+			if (e.getStateChange () == ItemEvent.SELECTED) {
+				tool_model.getTemplate ().setInterpolationType
+	            (tool_view.getInterpolationType ());
+	            
+	            // Notify relevant listeners.
+	            tool_model.getTemplate ().notifyListeners ();
+			}
+		}
         
     }
     
@@ -76,19 +81,21 @@ public class ToolController {
      * 
      * @author Gerardo A. Navas Morales
      */
-    class OutlierResponseListener implements ActionListener {
+    class OutlierResponseListener implements ItemListener {
         
         /**
          * Updates the Template's Outlier Response value.
          */
-        @Override
-        public void actionPerformed (ActionEvent e) {
-            tool_model.getTemplate ().setOutlierResponse
-            (tool_view.getOutlierResponseType ());
-            
-         // Notify relevant listeners.
-            tool_model.getTemplate ().notifyListeners ();
-        }
+		@Override
+		public void itemStateChanged (ItemEvent e) {
+			if (e.getStateChange () == ItemEvent.SELECTED) {
+				 tool_model.getTemplate ().setOutlierResponse
+		            (tool_view.getOutlierResponseType ());
+		            
+		         // Notify relevant listeners.
+		            tool_model.getTemplate ().notifyListeners ();
+			}
+		}
         
     }
     
@@ -110,7 +117,7 @@ public class ToolController {
 
                 @Override
                 protected Void doInBackground () throws Exception {
-                    tool_view.updateTemplateView ();
+                    tool_view.updateView ();
                     return null;
                 }
                 

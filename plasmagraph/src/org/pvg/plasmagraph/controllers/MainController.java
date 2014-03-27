@@ -2,6 +2,8 @@ package org.pvg.plasmagraph.controllers;
 
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.WindowAdapter;
+import java.awt.event.WindowEvent;
 
 import javax.swing.JTabbedPane;
 import javax.swing.SwingWorker;
@@ -67,7 +69,7 @@ public class MainController {
 		// Exit
 		main_view.addExitMenuListener (new ExitMenuListener ());
 		// Tabs
-		main_view.addTabListener (new TabListener ());
+		//main_view.addTabListener (new TabListener ());
 		// Finish up setup by preparing tabs.
 		setUpTabs ();
 	}
@@ -119,7 +121,6 @@ public class MainController {
 					data_view.updateXAxisColumn ();
 					data_view.updateYAxisColumn ();
 					data_view.updateGroupBy ();
-					//data_view.updateGroupBySelection ();
 					return null;
 				}
 
@@ -212,6 +213,25 @@ public class MainController {
 		}
 
 	}
+	
+	class WindowExitListener extends WindowAdapter {
+
+		@Override
+		public void windowClosing (WindowEvent arg0) {
+			SwingWorker <Void, Void> exit_worker = new SwingWorker <Void, Void> () {
+
+				@Override
+				protected Void doInBackground () throws Exception {
+					main_model.exit ();
+					return null;
+				}
+
+			};
+
+			exit_worker.run ();
+		}
+
+	}
 
 	// Tab Listener Inner Class
 	class TabListener implements ChangeListener {
@@ -236,5 +256,4 @@ public class MainController {
 			}
 		}
 	}
-
 }

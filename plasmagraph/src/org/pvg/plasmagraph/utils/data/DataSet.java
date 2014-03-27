@@ -1,16 +1,19 @@
 package org.pvg.plasmagraph.utils.data;
 
 import java.util.ArrayList;
+import java.util.Comparator;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.ListIterator;
+import java.util.Map;
+import java.util.Map.Entry;
+import java.util.TreeMap;
 
 import org.apache.commons.math3.linear.Array2DRowRealMatrix;
 import org.jfree.data.category.DefaultCategoryDataset;
 import org.jfree.data.xy.XYSeries;
 import org.jfree.data.xy.XYSeriesCollection;
 import org.pvg.plasmagraph.utils.exceptions.InvalidParametersException;
-import org.pvg.plasmagraph.utils.template.Template;
 
 /**
  * Container of DataColumns. Provides methods to create JFree Datasets.
@@ -63,8 +66,18 @@ public class DataSet implements Iterable<DataColumn> {
 	public boolean append (DataSet ds) {
 		boolean success = true;
 		
-		for (int i = 0; (i < ds.size () && success); ++i) {
-			success = values.get (i).append (ds.get (i));
+		if (this.size () == 0) {
+			
+			for (DataColumn dc : ds) {
+				this.add (dc);
+			}
+			
+		} else {
+			
+			for (int i = 0; (i < ds.size () && success); ++i) {
+				success = values.get (i).append (ds.get (i));
+			}
+			
 		}
 		
 		return (success);
@@ -289,15 +302,15 @@ public class DataSet implements Iterable<DataColumn> {
 		// Assume the Y column (Column 1) has the quantity data. (Cannot be a string)
 		
 		// We need to know what are the column types for each of them.
-		if (this.isDouble (p.getIndex1 ())) {
+		if (this.isDouble (p.getXIndex ())) {
 			for (int row = 0; (row < this.getColumnLength ()); ++row) {
-				dataset.addValue ((Number) (double) this.values.get (p.getIndex2 ()).get (row),
-						p.getIndex1Name (), (double) this.values.get (p.getIndex1 ()).get (row));
+				dataset.addValue ((Number) (double) this.values.get (p.getYIndex ()).get (row),
+						p.getXIndexName (), (double) this.values.get (p.getXIndex ()).get (row));
 			}
 		} else {
 			for (int row = 0; (row < this.getColumnLength ()); ++row) {
-				dataset.addValue ((Number) (double) this.values.get (p.getIndex2 ()).get (row),
-						p.getName (), (String) this.values.get (p.getIndex1 ()).get (row));
+				dataset.addValue ((Number) (double) this.values.get (p.getYIndex ()).get (row),
+						p.getName (), (String) this.values.get (p.getXIndex ()).get (row));
 			}
 		}
 		
@@ -359,18 +372,16 @@ public class DataSet implements Iterable<DataColumn> {
 	 */
 	@Override
 	public String toString () {		
-                StringBuilder str = new StringBuilder();	
-                ListIterator<DataColumn> litr = this.values.listIterator();
-                while(litr.hasNext()) {
-                    Object column = litr.next();
-                    str.append("-- Column --");
-                    str.append(System.getProperty("line.separator"));
-                    str.append(column.toString());
-                    str.append(System.getProperty("line.separator"));	
-                    str.append(System.getProperty("line.separator"));
-                }
+        StringBuilder str = new StringBuilder();	
+        for (DataColumn column : this.values) {
+            str.append("-- Column --");
+            str.append(System.getProperty("line.separator"));
+            str.append(column.toString());
+            str.append(System.getProperty("line.separator"));	
+            str.append(System.getProperty("line.separator"));
+        }
 
-                return str.toString();
+        return str.toString();
 	}
 	
 	/**
@@ -385,8 +396,8 @@ public class DataSet implements Iterable<DataColumn> {
 
 		if (this.isDouble ()) {
 			for (int row = 0; row < this.getColumnLength (); ++row) {
-				series.add ((double) this.values.get (0).get (row),
-						((double) this.values.get (1).get (row)));
+				series.add ((double) this.getX ().get (row),
+						((double) this.getY ().get (row)));
 			}
 		}
 		
@@ -442,4 +453,47 @@ public class DataSet implements Iterable<DataColumn> {
         
         return rval;
     }
+
+    /**
+     * Orders data based on the X column's values.
+     * 
+     * @param x_column 
+     * @param y_column 
+     */
+	public void orderData (double [] x_column, double [] y_column) {
+		// Create the data column map.
+		final Map<Double, Double> map = new HashMap <Double, Double> ();
+		
+		// Test
+		//System.out.println (this.toString ());
+		
+		// Populate the map.
+		for (int i = 0; (i < this.getColumnLength ()); ++i) {
+			map.put ((Double) this.getX ().get (i), (Double) this.getY ().get (i));
+		}
+		
+		// Create the sorting map.
+		Map <Double, Double> sorted_map = new TreeMap <Double, Double> (
+				new Comparator <Double> () {
+	        public int compare (Double o1, Double o2) {
+	            return o1.compareTo (o2);
+	        }
+	    });
+		
+		// Include the data column map into the sorting map and let it sort automatically.
+		sorted_map.putAll(map);
+	    
+	    // Now, pull the data out into the arrays.
+		Iterator <Map.Entry <Double, Double>> row_iterator = sorted_map.entrySet ().iterator ();
+		Map.Entry <Double, Double> row;
+		
+		// For each value in the sorted map, put them in their respective arrays.
+		for (int i = 0; (i < sorted_map.size ()); ++i) {
+			row = row_iterator.next ();
+			
+			x_column [i] = row.getKey ();
+			y_column [i] = row.getValue ();
+	    }
+	    
+	}
 }

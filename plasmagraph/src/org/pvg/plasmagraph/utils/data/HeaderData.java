@@ -16,8 +16,11 @@ import org.apache.commons.math3.util.Pair;
 import org.pvg.plasmagraph.utils.ExceptionHandler;
 import org.pvg.plasmagraph.utils.data.readers.CSVProcessor;
 import org.pvg.plasmagraph.utils.data.readers.MatlabProcessor;
+import org.pvg.plasmagraph.utils.exceptions.FunctionNotImplementedException;
+import org.pvg.plasmagraph.utils.exceptions.InvalidDataSizeException;
 import org.pvg.plasmagraph.utils.exceptions.UnsuccessfulInsertOperationException;
 import org.pvg.plasmagraph.utils.template.Template;
+import org.pvg.plasmagraph.utils.types.ChartType;
 import org.pvg.plasmagraph.utils.types.ColumnType;
 import org.pvg.plasmagraph.utils.types.FileType;
 
@@ -214,53 +217,58 @@ public class HeaderData implements Iterable<Pair <String, ColumnType>> {
 	 * @return A new DataSet containing a full set of data, ready for graphing.
 	 */
 	public DataSet populateData (GraphPair p) {
-		ArrayList <DataSet> ads = new ArrayList <> ();
+		DataSet rds = new DataSet (false);
 		
+		// Try to pull the data out of every file and append it into the current DataSet.
 		try {
-		
-			for (Entry<File, FileType> e : this.file_list) {
-				
-				DataSet ds = new DataSet (false);
-				
-				if (e.getValue ().equals (FileType.CSV)) {
-					
-					CSVProcessor csv_reader = new CSVProcessor (e.getKey ());
-					
-					csv_reader.toDataSet (ds, p, this);
-					
-					ads.add (ds);
-					
-				} else if (e.getValue ().equals (FileType.MAT)) {
-					
-					MatlabProcessor mat_reader = new MatlabProcessor (e.getKey ());
-					
-					mat_reader.toDataSet (ds, p, this);
-					
-					ads.add (ds);
-					
-				} else {
-					ExceptionHandler.createFunctionNotImplementedException 
-							("Extracting data from non-CSV / MAT files.");
-				}
-			}
 			
-			// If there's more than one DataSet, condense the DataSets into one!
-			if (ads.size () > 1) {
-				// Take the other DataSets, take that same column from each, and
-				// append them to the return one!
-				for (int set_index = 1; (set_index < ads.size ()); ++set_index) {
-					if (!ads.get (0).append (ads.get (set_index))) {
-						throw (new UnsuccessfulInsertOperationException ());
-					}
-				}
+			for (Entry <File, FileType> e : this.file_list) {
+				
+				rds.append (this.getData (e, p));
+				
+				//System.out.println ("Successfully (?) appended a new set of data!");
+				//System.out.println ("Contents of the data are: " + rds.toString ());
+				
 			}
 			
 		} catch (Exception ex) {
-			System.out.println (ex.getMessage ());
+			
+			// Trying to grab two data sets when there's only one?
+			System.out.println ("Error in HeaderData!\n" + ex.toString ());
+			
 		}
 		
-		// Regardless, return the first DataSet in ads.
-		return (ads.get (0));
+		// Regardless, return the DataSet.
+		return (rds);
+	}
+	
+	private DataSet getData (Entry<File, FileType> e, GraphPair p) 
+			throws FunctionNotImplementedException, InvalidDataSizeException {
+		
+		DataSet ds = new DataSet (false);
+		
+		if (e.getValue ().equals (FileType.CSV)) {
+			
+			CSVProcessor csv_reader = new CSVProcessor (e.getKey ());
+			
+			csv_reader.toDataSet (ds, p, this);
+			
+		} else if (e.getValue ().equals (FileType.MAT)) {
+			
+			MatlabProcessor mat_reader = new MatlabProcessor (e.getKey ());
+			
+			mat_reader.toDataSet (ds, p, this);
+			
+			//System.out.println ("Derp: " + ds.toString ());
+			
+		} else {
+			
+			throw (new FunctionNotImplementedException 
+					("Extracting data from non-CSV / MAT files."));
+			
+		}
+		
+		return (ds);
 	}
 	
 	/**
@@ -297,11 +305,11 @@ public class HeaderData implements Iterable<Pair <String, ColumnType>> {
 					
 					// TODO: edit the function in the original to fit this new style.
 					//mat_reader.toDataSet (ds, p, this);
-					ExceptionHandler.createFunctionNotImplementedException 
+					ExceptionHandler.handleFunctionNotImplementedException 
 							("Extracting data from MAT files.");
 					
 				} else {
-					ExceptionHandler.createFunctionNotImplementedException 
+					ExceptionHandler.handleFunctionNotImplementedException 
 							("Extracting data from non-CSV / MAT files.");
 				}
 			}
@@ -421,11 +429,31 @@ public class HeaderData implements Iterable<Pair <String, ColumnType>> {
      * @return
      * @throws Exception
      */
-    public File getFile(int i) throws Exception {
+    public File getFile (int i) throws Exception {
         if(!this.file_list.iterator().hasNext()){
             throw new Exception("Please import a data file first first");
         }else{
            return (this.file_list.iterator().next().getKey());
         }        
     }
+
+	/**
+	 * Verifies if the chart to be made contains the correct ColumnTypes!
+	 * 
+	 * @param chart_type The ChartType object that defines the type of chart that will be made.
+	 * @param p The GraphPair object containing the X Axis and Y Axis column indexes.
+	 * @return True if the ColumnTypes of each column are of the proper types for their ChartType; else, False.
+	 */
+	public boolean hasValidGraphTypes (ChartType chart_type, GraphPair p) {	
+		
+		if (!this.isEmpty ()) {
+			
+			return (chart_type.hasProperColumns (this, p));
+			
+		} else {
+			
+			return (false);
+			
+		}
+	}
 }

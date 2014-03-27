@@ -292,9 +292,9 @@ public class HeaderDataTest {
 			// Test
 			assertEquals (p.getGroupName (), 
 					ds.get (0).getColumnName ());
-			assertEquals (hd.get (p.getIndex1 ()).getKey (), 
+			assertEquals (hd.get (p.getXIndex ()).getKey (), 
 					ds.get (1).getColumnName ());
-			assertEquals (hd.get (p.getIndex2 ()).getKey (), 
+			assertEquals (hd.get (p.getYIndex ()).getKey (), 
 					ds.get (2).getColumnName ());
 
 		} catch (Exception e) {

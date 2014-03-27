@@ -2,8 +2,10 @@ package org.pvg.plasmagraph.utils.data;
 
 import java.util.HashSet;
 import java.util.Set;
+
 import javax.swing.event.ChangeEvent;
 import javax.swing.event.ChangeListener;
+
 import org.apache.commons.math3.util.Pair;
 import org.pvg.plasmagraph.utils.types.ColumnType;
 
@@ -33,16 +35,12 @@ public class DataReference {
 	 * Adds the Pair object components provided to it and responds if the process succeeded or not.
 	 * 
 	 * @param p GraphPair to add to this object.
-	 * 
-	 * @return A boolean specifying method success (true) or failure (false).
 	 */
-	public boolean add (GraphPair p) {
+	public void add (GraphPair p) {
 
 		pair = new GraphPair (p.getGroup (), p.getGroupName (),
-				p.getIndex1 (), p.getIndex1Name (),
-				p.getIndex2 (), p.getIndex2Name ());
-		
-		return true;
+				p.getXIndex (), p.getXIndexName (),
+				p.getYIndex (), p.getYIndexName ());
 	}
 	
 	/**
@@ -54,17 +52,13 @@ public class DataReference {
 	 * @param p1i Index position of the first half of the pair object.
 	 * @param p2 Pair containing the second columns.
 	 * @param p2i Index position of the second half of the pair object.
-	 * 
-	 * @return A boolean specifying method success (true) or failure (false).
 	 */
-	public boolean add (Pair<String, ColumnType> pg, int pgi,
+	public void add (Pair<String, ColumnType> pg, int pgi,
 			Pair<String, ColumnType> p1, int p1i,
 			Pair<String, ColumnType> p2, int p2i) {
 
 		pair = new GraphPair (pgi, pg.getKey (), 
 				p1i, p1.getKey (), p2i, p2.getKey ());
-		
-		return true;
 	}
 	
 	/**
@@ -74,16 +68,67 @@ public class DataReference {
 	 * @param p1i Index position of the first half of the pair object.
 	 * @param p2 Pair containing the second columns.
 	 * @param p2i Index position of the second half of the pair object.
-	 * 
-	 * @return A boolean specifying method success (true) or failure (false).
 	 */
-	public boolean add (Pair<String, ColumnType> p1, int p1i,
+	public void add (Pair<String, ColumnType> p1, int p1i,
 			Pair<String, ColumnType> p2, int p2i) {
 
 		pair = new GraphPair (-1, "", 
 				p1i, p1.getKey (), p2i, p2.getKey ());
+	}
+	
+	/**
+	 * Creates a new GraphPair based on the parameters.
+	 * 
+	 * @param group Group column index.
+	 * @param group_name Group column name.
+	 * @param column1 X Axis column index.
+	 * @param column1_name X Axis column name.
+	 * @param column2 Y Axis column index.
+	 * @param column2_name Y Axis column name.
+	 */
+	public void add (int group, String group_name, 
+			int column1, String column1_name, 
+			int column2, String column2_name) {
 		
-		return true;
+		pair = new GraphPair (group, group_name,
+				column1, column1_name,
+				column2, column2_name);
+	}
+	
+	/**
+	 * Changes only the Group By column name and index for the GraphPair.
+	 * 
+	 * @param group Group column index.
+	 * @param group_name Group column name.
+	 */
+	public void changeGroup (int group, String group_name) {
+		
+		this.pair.changeGroup (group, group_name);
+		//System.out.println (this.pair.toString ());
+	}
+	
+	/**
+	 * Changes only the X Axis name and index for the GraphPair.
+	 * 
+	 * @param x X Axis column index.
+	 * @param x_name X Axis column name.
+	 */
+	public void changeX (int x, String x_name) {
+		
+		this.pair.changeX (x, x_name);
+		//System.out.println (this.pair.toString ());
+	}
+
+	/**
+	 * Changes only the Y Axis name and index for the GraphPair.
+	 * 
+	 * @param y Y Axis column index.
+	 * @param y_name Y Axis column name.
+	 */
+	public void changeY (int y, String y_name) {
+	
+		this.pair.changeY (y, y_name);
+		//System.out.println (this.pair.toString ());
 	}
 	
 

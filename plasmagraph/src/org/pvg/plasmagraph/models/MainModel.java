@@ -13,6 +13,7 @@ import org.pvg.plasmagraph.utils.data.DataReference;
 import org.pvg.plasmagraph.utils.data.HeaderData;
 import org.pvg.plasmagraph.utils.data.readers.CSVProcessor;
 import org.pvg.plasmagraph.utils.data.readers.MatlabProcessor;
+import org.pvg.plasmagraph.utils.types.ExceptionType;
 import org.pvg.plasmagraph.utils.template.Template;
 import org.pvg.plasmagraph.views.DatasetLogView;
 
@@ -87,46 +88,54 @@ public class MainModel {
         
         // Check to see what the user selected, and act on it!
         if (return_value == JFileChooser.APPROVE_OPTION) {
-            File f = open_file.getSelectedFile ();
-            
-            if (FileUtilities.getExtension (f).equals (
-                    mat_filter.getExtensions ()[0])) {
-                
-                 MatlabProcessor mat = new MatlabProcessor (f);
-                 try {
-                	 mat.read ();
-                	 if (mat.getHeaders (hd)) {
-                		 // TODO: Change message to "Data Columns extracted successfully." ?
-            		 	JOptionPane.showMessageDialog (null, "Data Column names extracted successfully.");
-                	 }
-                 } catch (Exception ex) {
-                	 ExceptionHandler.createMalformedDataFileException ("Matlab File Reader");
-                 }
+        	try {
+        		
+        		 File f = open_file.getSelectedFile ();
                  
-                
-            } else if (FileUtilities.getExtension (f).equals (
-                    csv_filter.getExtensions ()[0])) {
-                
-                CSVProcessor csv = new CSVProcessor (f);
-                try {
-	                if (csv.getHeaders (hd)) {
-	                	JOptionPane.showMessageDialog (null,
-	                			"Data Column names extracted successfully.");
-	                	hd.notifyListeners ();
-	                	// TODO: Allow for multiple data files to be used.
-	                	// TODO: Only reset if a data file with a different set of headers is imported.
-	                	dr.reset ();
-	                }
-                } catch (Exception ex) {
-                	ExceptionHandler.createMalformedDataFileException ("CSV File Reader");
-                }
-                
-            } else {
-                ExceptionHandler
-                        .createFunctionNotImplementedException ("Other File Readers");
-            }
+                 if (FileUtilities.getExtension (f).equals (
+                         mat_filter.getExtensions ()[0])) {
+                     
+                      MatlabProcessor mat = new MatlabProcessor (f);
+                      try {
+                     	 mat.read ();
+                     	 if (mat.getHeaders (hd)) {
+                     		 // TODO: Change message to "Data Columns extracted successfully." ?
+                 		 	JOptionPane.showMessageDialog (null, "Data Column names extracted successfully.");
+                     	 }
+                      } catch (Exception ex) {
+                     	 ExceptionHandler.handleMalformedDataFileException ("Matlab File Reader");
+                      }
+                      
+                     
+                 } else if (FileUtilities.getExtension (f).equals (
+                         csv_filter.getExtensions ()[0])) {
+                     
+                     CSVProcessor csv = new CSVProcessor (f);
+                     try {
+     	                if (csv.getHeaders (hd)) {
+     	                	JOptionPane.showMessageDialog (null,
+     	                			"Data Column names extracted successfully.");
+     	                	hd.notifyListeners ();
+     	                	// TODO: Allow for multiple data files to be used.
+     	                	// TODO: Only reset if a data file with a different set of headers is imported.
+     	                	dr.reset ();
+     	                }
+                     } catch (Exception ex) {
+                     	ExceptionHandler.handleMalformedDataFileException ("CSV File Reader");
+                     }
+                     
+                 } else {
+                     ExceptionHandler
+                             .handleFunctionNotImplementedException ("Other File Readers");
+                 }
+        		
+        	} catch (NullPointerException ex) {
+        		
+        		ExceptionHandler.handleNullPointerException (ExceptionType.JFILECHOOSER_SELECTION);
+        		
+        	}
         } else if (return_value == JFileChooser.ERROR_OPTION) {
-            ExceptionHandler.createFileSelectionException ("Importing Data");
+            ExceptionHandler.handleNullPointerException (ExceptionType.JFILECHOOSER_SELECTION);
             
         }
         // "return_value == JFileChooser.CANCEL_OPTION" has no response.
@@ -175,7 +184,7 @@ public class MainModel {
                         JOptionPane.PLAIN_MESSAGE);
             }
         } else if (return_value == JFileChooser.ERROR_OPTION) {
-            ExceptionHandler.createFileSelectionException ("Importing Template");
+            ExceptionHandler.handleNullPointerException (ExceptionType.JFILECHOOSER_SELECTION);
         }
         // "return_value == JFileChooser.CANCEL_OPTION" has no response.
     }
@@ -210,7 +219,7 @@ public class MainModel {
             t.saveTemplate (save_file);
 
         } else if (return_value == JFileChooser.ERROR_OPTION) {
-            ExceptionHandler.createFileSelectionException ("Saving Template");
+            ExceptionHandler.handleNullPointerException (ExceptionType.JFILECHOOSER_SELECTION);
         }
         // "return_value == JFileChooser.CANCEL_OPTION" has no response.
     }

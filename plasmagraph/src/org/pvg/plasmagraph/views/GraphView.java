@@ -1,10 +1,13 @@
 package org.pvg.plasmagraph.views;
 
+import java.awt.Color;
+
 import javax.swing.JFrame;
 
 import org.jfree.chart.JFreeChart;
 import org.pvg.plasmagraph.models.GraphModel;
 import org.pvg.plasmagraph.utils.graphs.XYGraph;
+import org.pvg.plasmagraph.utils.types.ChartType;
 
 /**
  * TODO
@@ -15,7 +18,7 @@ import org.pvg.plasmagraph.utils.graphs.XYGraph;
 public class GraphView extends JFrame {
 	
 	/** Reference to model related to this controller. */
-	GraphModel graph_model;
+	private GraphModel graph_model;
 	/** Chart displayed in this view. */
 	private JFreeChart chart;
 	
@@ -29,33 +32,12 @@ public class GraphView extends JFrame {
 		
 		this.initComponents ();
 	}
-	
-
-	/**
-	 *  Triggers on changes to the Template. 
-	 *  Creates a new JFreeChart via the graph method.
-	 */
-	public void templateUpdate () {
-		
-		JFreeChart c = this.graph_model.graph ();
-		
-		if (c != null) {
-			
-			this.chart = c;
-			
-		}
-		
-		// Display the chart!
-		setContentPane (new org.jfree.chart.ChartPanel (chart, false, true, false, false, true));
-		this.pack ();
-		this.setVisible (true);
-	}
 
 	/**
 	 * Triggers on changes to the HeaderData. 
 	 * Resets the chart, but not its template details, to its default form.
 	 */
-	public void headerUpdate () {
+	public void graphUpdate () {
 		
 		// If the HeaderData was reset, reset the DataReference.
 		// Otherwise, it was just the user adding another file, and the graph
@@ -65,7 +47,6 @@ public class GraphView extends JFrame {
 			this.graph_model.getDataReference ().reset ();
 		
 		} else {
-			//log ("Right way");
 			
 			// Create the graph.
 			JFreeChart c = this.graph_model.graph ();
@@ -73,9 +54,11 @@ public class GraphView extends JFrame {
 			if (c != null) {
 				
 				this.chart = c;
+				System.out.println ("Derp!");
 				
 				// Display the chart!
 				setContentPane (new org.jfree.chart.ChartPanel (chart, false, true, false, false, true));
+				this.setLocation (260, 120);
 				this.pack ();
 				this.setVisible (true);
 				
@@ -85,41 +68,29 @@ public class GraphView extends JFrame {
 		}
 	}
 
-	/**
-	 * Triggers on changes to the DataReference. Automatically graphs the 
-	 * data pair selected. (As for now, the selected data pair is always in
-	 * "dr.get (0)".
-	 */
-	public void referenceUpdate () {
-		
-		// If the DataReference was reset, do not graph.
-		// Otherwise, it is safe to graph.
-		if (!this.graph_model.getDataReference ().isEmpty ()) {
-			
-			// Create the graph.
-			JFreeChart c = this.graph_model.graph ();
-			
-			if (c != null) {
-				
-				this.chart = c;
-				
-			}
-			
-			// Display the chart!
-			setContentPane (new org.jfree.chart.ChartPanel (chart, false, true, false, false, true));
-			this.pack ();
-			this.setVisible (true);
-			
-		}
-
-	}
-
 	private void initComponents () {
 		// Set default operation responses.
 		setDefaultCloseOperation (javax.swing.WindowConstants.EXIT_ON_CLOSE);
 		
 		// Create the chart and make it visible!
 		chart = new XYGraph (this.graph_model.getTemplate ()).getChart ();
+		//this.graphUpdate ();
+		
+		// Change background color.
+		chart.getPlot ().setBackgroundPaint (Color.WHITE);
+		
+		if (ChartType.XY_GRAPH.equals (
+				this.graph_model.getTemplate ().getChartType ())) {
+			
+			chart.getXYPlot ().setRangeGridlinePaint (Color.BLACK);
+			chart.getXYPlot ().setDomainGridlinePaint (Color.BLACK);
+			
+		} else {
+			
+			chart.getCategoryPlot ().setRangeGridlinePaint (Color.BLACK);
+			chart.getCategoryPlot ().setDomainGridlinePaint (Color.BLACK);
+			
+		}
 		
 		setContentPane (new org.jfree.chart.ChartPanel (chart, false, true, false, false, true));
 		this.setLocation (260, 120);

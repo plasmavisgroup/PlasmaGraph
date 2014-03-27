@@ -49,6 +49,8 @@ public class TestColumnsView extends javax.swing.JPanel {
         jSeparator3 = new javax.swing.JSeparator();
         group_by_column_label = new javax.swing.JLabel();
         group_by_column_combo_box = new javax.swing.JComboBox();
+        graph_button = new javax.swing.JButton();
+        jSeparator4 = new javax.swing.JSeparator();
 
         x_column_label.setText("X Column");
 
@@ -102,6 +104,8 @@ public class TestColumnsView extends javax.swing.JPanel {
 
         group_by_column_combo_box.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "None" }));
 
+        graph_button.setText("Graph");
+
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(this);
         this.setLayout(layout);
         layout.setHorizontalGroup(
@@ -109,44 +113,37 @@ public class TestColumnsView extends javax.swing.JPanel {
             .addComponent(jSeparator1)
             .addComponent(jSeparator2)
             .addComponent(jSeparator3)
+            .addComponent(jSeparator4)
             .addGroup(layout.createSequentialGroup()
                 .addContainerGap()
-                .addComponent(chart_title_label)
-                .addGap(0, 0, Short.MAX_VALUE))
-            .addGroup(layout.createSequentialGroup()
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(layout.createSequentialGroup()
-                        .addContainerGap()
+                        .addComponent(chart_title_label)
+                        .addGap(0, 0, Short.MAX_VALUE))
+                    .addGroup(layout.createSequentialGroup()
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addComponent(x_axis_name_text_field, javax.swing.GroupLayout.Alignment.TRAILING)
                             .addComponent(x_axis_type_combo_box, javax.swing.GroupLayout.Alignment.TRAILING, 0, 220, Short.MAX_VALUE)
                             .addComponent(x_column_combo_box, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                             .addComponent(y_axis_name_text_field, javax.swing.GroupLayout.Alignment.TRAILING)
                             .addComponent(y_axis_type_combo_box, javax.swing.GroupLayout.Alignment.TRAILING, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                            .addComponent(y_column_combo_box, javax.swing.GroupLayout.Alignment.TRAILING, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
-                    .addGroup(layout.createSequentialGroup()
-                        .addContainerGap()
-                        .addComponent(group_by_column_combo_box, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-                    .addGroup(layout.createSequentialGroup()
-                        .addContainerGap()
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(y_column_combo_box, javax.swing.GroupLayout.Alignment.TRAILING, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                            .addComponent(group_by_column_combo_box, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                             .addComponent(chart_title_text_field)
                             .addComponent(chart_type_combo_box, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                             .addGroup(layout.createSequentialGroup()
-                                .addComponent(chart_type_label)
-                                .addGap(0, 0, Short.MAX_VALUE))))
-                    .addGroup(layout.createSequentialGroup()
-                        .addContainerGap()
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(x_column_label)
-                            .addComponent(x_axis_name_label)
-                            .addComponent(x_axis_type_label)
-                            .addComponent(y_column_label)
-                            .addComponent(y_axis_name_label)
-                            .addComponent(y_axis_type_label)
-                            .addComponent(group_by_column_label))
-                        .addGap(0, 0, Short.MAX_VALUE)))
-                .addContainerGap())
+                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                    .addComponent(chart_type_label)
+                                    .addComponent(x_column_label)
+                                    .addComponent(x_axis_name_label)
+                                    .addComponent(x_axis_type_label)
+                                    .addComponent(y_column_label)
+                                    .addComponent(y_axis_name_label)
+                                    .addComponent(y_axis_type_label)
+                                    .addComponent(group_by_column_label))
+                                .addGap(0, 0, Short.MAX_VALUE))
+                            .addComponent(graph_button, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                        .addContainerGap())))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -193,6 +190,10 @@ public class TestColumnsView extends javax.swing.JPanel {
                 .addComponent(group_by_column_label)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(group_by_column_combo_box, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(jSeparator4, javax.swing.GroupLayout.PREFERRED_SIZE, 10, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(graph_button)
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
     }// </editor-fold>//GEN-END:initComponents
@@ -219,11 +220,13 @@ public class TestColumnsView extends javax.swing.JPanel {
     private javax.swing.JTextField chart_title_text_field;
     private javax.swing.JComboBox chart_type_combo_box;
     private javax.swing.JLabel chart_type_label;
+    private javax.swing.JButton graph_button;
     private javax.swing.JComboBox group_by_column_combo_box;
     private javax.swing.JLabel group_by_column_label;
     private javax.swing.JSeparator jSeparator1;
     private javax.swing.JSeparator jSeparator2;
     private javax.swing.JSeparator jSeparator3;
+    private javax.swing.JSeparator jSeparator4;
     private javax.swing.JLabel x_axis_name_label;
     private javax.swing.JTextField x_axis_name_text_field;
     private javax.swing.JComboBox x_axis_type_combo_box;

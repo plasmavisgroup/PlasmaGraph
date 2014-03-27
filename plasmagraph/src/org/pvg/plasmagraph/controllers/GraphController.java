@@ -1,8 +1,5 @@
 package org.pvg.plasmagraph.controllers;
 
-import javax.swing.SwingWorker;
-import javax.swing.event.ChangeEvent;
-import javax.swing.event.ChangeListener;
 import org.pvg.plasmagraph.models.GraphModel;
 import org.pvg.plasmagraph.views.GraphView;
 
@@ -28,98 +25,15 @@ public class GraphController {
 		this.graph_view = graph_view;
 		
 		// Automatically add listeners via view methods.
-		// Update View Listener
-        graph_model.addTemplateChangeListener (new GraphViewTemplateListener ());
-        graph_model.addHeaderDataChangeListener (new GraphViewHeaderDataListener ());
-        graph_model.addDataReferenceChangeListener (new GraphViewReferenceListener ());
+		// None
 	}
-	
+
+    // Other methods.
+    
 	/**
-     * Listener for the Template that contains all settings for the program.
-     * Relies on ChangeListener in order to know that a change has occurred
-     * in the Template. 
-     * 
-     * @author Gerardo A. Navas Morales
-     */
-    class GraphViewTemplateListener implements ChangeListener {
-
-        /**
-         * Updates the DataSetView's current Template-based state.
-         */
-        @Override
-        public void stateChanged (ChangeEvent e) {
-            SwingWorker <Void, Void> template_worker = new SwingWorker <Void, Void> () {
-
-                @Override
-                protected Void doInBackground () throws Exception {
-                    graph_view.templateUpdate ();
-                    return null;
-                }
-                
-            };
-            
-            template_worker.run ();
-        }
-        
-    }
-    
-    /**
-     * Listener for the DataSet that contains all settings for the program.
-     * Relies on ChangeListener in order to know that a change has occurred
-     * in the DataSet. 
-     * 
-     * @author Gerardo A. Navas Morales
-     */
-    class GraphViewHeaderDataListener implements ChangeListener {
-
-        /**
-         * Updates the AestheticView's current Template-based state.
-         */
-        @Override
-        public void stateChanged (ChangeEvent e) {
-            SwingWorker <Void, Void> data_worker = new SwingWorker <Void, Void> () {
-
-                @Override
-                protected Void doInBackground () throws Exception {
-                    graph_view.headerUpdate ();
-                    return null;
-                }
-                
-            };
-            
-            data_worker.run ();
-        }
-        
-    }
-    
-    /**
-     * Listener for the DataReference that contains all settings for the program.
-     * Relies on ChangeListener in order to know that a change has occurred
-     * in the DataReference. 
-     * 
-     * @author Gerardo A. Navas Morales
-     */
-    
-    class GraphViewReferenceListener implements ChangeListener {
-
-        /**
-         * Updates the AestheticView's current Template-based state.
-         */
-        @Override
-        public void stateChanged (ChangeEvent e) {
-            SwingWorker <Void, Void> reference_worker = new SwingWorker <Void, Void> () {
-
-                @Override
-                protected Void doInBackground () throws Exception {
-                    graph_view.referenceUpdate ();
-                    return null;
-                }
-                
-            };
-            
-            reference_worker.run ();
-        }
-        
-    }
-
+	 * Forces the program to graph the chart immediately by calling the actual chart method.
+	 */
+	public void graph () {
+		graph_view.graphUpdate ();
+	}
 }

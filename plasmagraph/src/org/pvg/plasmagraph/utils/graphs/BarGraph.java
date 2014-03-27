@@ -179,7 +179,7 @@ public class BarGraph implements Graph {
 			
 			if (t.isDefaultYAxisLabel ()) {
 				
-				ValueAxis range = new NumberAxis (p.getIndex2Name ());
+				ValueAxis range = new NumberAxis (p.getYIndexName ());
 				//range.setLabel (s[1].trim ());
 				range.setLabelFont (new Font ("Arial", Font.BOLD, 16));
 				plot.setRangeAxis (range);
@@ -196,7 +196,7 @@ public class BarGraph implements Graph {
 			
 			if (t.isDefaultYAxisLabel ()) {
 				
-				ValueAxis range = new LogAxis (p.getIndex2Name ());
+				ValueAxis range = new LogAxis (p.getYIndexName ());
 				//range.setLabel (s[1].trim ());
 				range.setLabelFont (new Font ("Arial", Font.BOLD, 16));
 				plot.setRangeAxis (range);
@@ -217,7 +217,7 @@ public class BarGraph implements Graph {
 		
 		// Set Chart name.
 		if (t.isDefaultChartName ()) {
-			c.setTitle (p.getIndex1Name () + " vs. " + p.getIndex2Name ());
+			c.setTitle (p.getXIndexName () + " vs. " + p.getYIndexName ());
 		}
 		
 		// Change background color.

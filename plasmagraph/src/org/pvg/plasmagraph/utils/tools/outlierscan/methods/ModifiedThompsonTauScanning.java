@@ -25,7 +25,7 @@ public class ModifiedThompsonTauScanning implements ScanMethod {
 	@Override
 	public DataSet scan (HeaderData hd, Template t, GraphPair dr) throws FunctionNotImplementedException {
 		// TODO Auto-generated method stub
-		throw (new FunctionNotImplementedException ());
+		throw (new FunctionNotImplementedException ("1-Dimensional Outlier Scanning"));
 	}
 	
 	private void populate (ArrayList<Double> outlier_array, HeaderData ds, 

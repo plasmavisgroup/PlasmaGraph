@@ -84,7 +84,7 @@ public class XYGraph implements Graph {
 	 * @param p GraphPair that contains the columns to graph.
 	 */
 	public XYGraph (Template t, DataSet ds, GraphPair p) {
-		chart = createChart (createDataset(t, ds, p), t, p);
+		chart = createChart (createDataset (t, ds, p), t, p);
 	}
 
 	/**
@@ -96,9 +96,9 @@ public class XYGraph implements Graph {
 	 */
 	public XYGraph (Template t, HeaderData hd, GraphPair p) {
 		if (p.isGrouped ()) {
-			chart = createChart (createDataset(t, hd.populateGroupedData (p, t), p), t, p);
+			chart = createChart (createDataset (t, hd.populateGroupedData (p, t), p), t, p);
 		} else {
-			chart = createChart (createDataset(t, hd.populateData (p), p), t, p);
+			chart = createChart (createDataset (t, hd.populateData (p), p), t, p);
 		}
 	}
 	
@@ -129,10 +129,19 @@ public class XYGraph implements Graph {
 	 */
 	@Override
 	public XYDataset createDataset (Template t, DataSet ds, GraphPair p) {
+		// Create the Dataset
 		DefaultXYDataset set = new DefaultXYDataset ();
 		XYSeries s = ds.toXYGraphDataset (p);
 		set.addSeries (s.getKey (), s.toArray ());
-
+		
+		// Test the data inside this Dataset
+		/*
+		for (int i = 0; (i < set.getItemCount (0)); ++i) {
+			System.out.println ("Row " + (i + 1) + ": <" + set.getXValue (0, i) + ", " + set.getYValue (0, i) + ".\n");
+		}
+		*/
+		
+		// Return the Dataset
 		return (set);
 	}
 
@@ -166,13 +175,14 @@ public class XYGraph implements Graph {
 			ValueAxis domain = new NumberAxis (t.getXAxisLabel ());
 			domain.setLabelFont (new Font ("Arial", Font.BOLD, 16));
 			domain.setRange (-10.0, 10.0);
-			((XYPlot) c.getPlot ()).setDomainAxis (domain);
+			c.getXYPlot ().setDomainAxis (domain);
 		
 		} else {//if (AxisType.LOG.equals (t.getXAxisType ())) {
 			
+			System.out.println ("Does it even get here? Default X Log");
 			ValueAxis domain = new LogAxis (t.getXAxisLabel ());
 			domain.setLabelFont (new Font ("Arial", Font.BOLD, 16));
-			((XYPlot) c.getPlot ()).setDomainAxis (domain);
+			c.getXYPlot ().setDomainAxis (domain);
 
 		}
 		
@@ -182,13 +192,15 @@ public class XYGraph implements Graph {
 			ValueAxis range = new NumberAxis (t.getYAxisLabel ());
 			range.setRange (-10.0, 10.0);
 			range.setLabelFont (new Font ("Arial", Font.BOLD, 16));
-			((XYPlot) c.getPlot ()).setRangeAxis (range);
+			c.getXYPlot ().setRangeAxis (range);
 		
 		} else {//if (AxisType.LOG.equals (t.getYAxisType ())) {
 			
+			System.out.println ("Does it even get here? Default Y Log");
+			
 			ValueAxis range = new LogAxis (t.getYAxisLabel ());
 			range.setLabelFont (new Font ("Arial", Font.BOLD, 16));
-			((XYPlot) c.getPlot ()).setRangeAxis (range);
+			c.getXYPlot ().setRangeAxis (range);
 
 		}
 	}
@@ -202,7 +214,7 @@ public class XYGraph implements Graph {
 			
 			if (t.isDefaultXAxisLabel ()) {
 				
-				ValueAxis domain = new NumberAxis (p.getIndex1Name ());
+				ValueAxis domain = new NumberAxis (p.getXIndexName ());
 				domain.setLabelFont (new Font ("Arial", Font.BOLD, 16));
 				plot.setDomainAxis (domain);
 				
@@ -214,25 +226,25 @@ public class XYGraph implements Graph {
 				
 			}
 			
-		} else if (AxisType.LOG.equals (t.getXAxisType ())) {
+		} else {//if (AxisType.LOG.equals (t.getXAxisType ())) {
 			
 			if (t.isDefaultXAxisLabel ()) {
 				
-				ValueAxis domain = new LogAxis (p.getIndex1Name ());//NumberAxis ();
+				System.out.println ("Does it even get here? Default X Log");
+				
+				ValueAxis domain = new LogAxis (p.getXIndexName ());//NumberAxis ();
 				domain.setLabelFont (new Font ("Arial", Font.BOLD, 16));
 				plot.setDomainAxis (domain);
 				
 			} else {
+				
+				System.out.println ("Does it even get here? Custom X Log");
 				
 				ValueAxis domain = new LogAxis (t.getXAxisLabel ());
 				domain.setLabelFont (new Font ("Arial", Font.BOLD, 16));
 				plot.setDomainAxis (domain);
 				
 			}
-			
-		} else {
-			
-			// TODO
 			
 		}
 		
@@ -241,8 +253,7 @@ public class XYGraph implements Graph {
 			
 			if (t.isDefaultYAxisLabel ()) {
 				
-				ValueAxis range = new NumberAxis (p.getIndex2Name ());
-				//range.setLabel (s[1].trim ());
+				ValueAxis range = new NumberAxis (p.getYIndexName ());
 				range.setLabelFont (new Font ("Arial", Font.BOLD, 16));
 				plot.setRangeAxis (range);
 				
@@ -254,16 +265,19 @@ public class XYGraph implements Graph {
 				
 			}
 			
-		} else if (AxisType.LOG.equals (t.getYAxisType ())) {
+		} else {// if (AxisType.LOG.equals (t.getYAxisType ())) {
 			
 			if (t.isDefaultYAxisLabel ()) {
 				
-				ValueAxis range = new LogAxis (p.getIndex2Name ());
-				//range.setLabel (s[1].trim ());
+				System.out.println ("Does it even get here? Default Y Log");
+				
+				ValueAxis range = new LogAxis (p.getYIndexName ());
 				range.setLabelFont (new Font ("Arial", Font.BOLD, 16));
 				plot.setRangeAxis (range);
 				
 			} else {
+				
+				System.out.println ("Does it even get here? Custom Y Log");
 				
 				ValueAxis range = new LogAxis (t.getYAxisLabel ());
 				range.setLabelFont (new Font ("Arial", Font.BOLD, 16));
@@ -271,15 +285,11 @@ public class XYGraph implements Graph {
 				
 			}
 			
-		} else {
-			
-			// TODO
-			
 		}
 		
 		// Set Chart name.
 		if (t.isDefaultChartName ()) {
-			c.setTitle (p.getIndex1Name () + " vs. " + p.getIndex2Name ());
+			c.setTitle (p.getXIndexName () + " vs. " + p.getYIndexName ());
 		}
 		
 		// Change background color.
