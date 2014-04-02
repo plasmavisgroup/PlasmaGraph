@@ -1,0 +1,13 @@
+<?xml version='1.0' encoding='ISO-8859-1' ?>
+<!DOCTYPE toc PUBLIC "-//Sun Microsystems Inc.//DTD JavaHelp TOC Version 1.0//EN" "http://java.sun.com/products/javahelp/toc_1_0.dtd">
+<toc version="1.0">
+  <tocitem text="Welcome" target="welcome_htm" />
+  <tocitem text="Item A">
+    <tocitem text="Subitem A.1" target="subitemA1_htm" />
+    <tocitem text="Subitem A.2" target="subitemA2_htm" />
+  </tocitem>
+  <tocitem text="Item B">
+    <tocitem text="Subitem B.1" target="subitemB1_htm" />
+    <tocitem text="Subitem B.2" target="subitemB2_htm" />
+  </tocitem>
+</toc>

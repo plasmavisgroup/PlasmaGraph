@@ -44,6 +44,7 @@ public class MainView extends javax.swing.JFrame {
         reset_data_option = new javax.swing.JMenuItem ();
         matfile_log = new javax.swing.JMenuItem();
         template_menu = new javax.swing.JMenu ();
+        help_menu = new javax.swing.JMenu ();
         import_template_option = new javax.swing.JMenuItem ();
         save_template_option = new javax.swing.JMenuItem ();
         options_menu = new javax.swing.JMenu ();
@@ -77,6 +78,11 @@ public class MainView extends javax.swing.JFrame {
         // Template Menu
         template_menu.setText ("Templates"); //$NON-NLS-1$
         template_menu.setToolTipText ("Manages all Template-related operations."); //$NON-NLS-1$
+        
+        // Help Menu
+        help_menu.setText ("Help"); //$NON-NLS-1$
+        help_menu.setToolTipText ("Shows information about PlasmaGraph."); //$NON-NLS-1$
+        menu_bar.add (help_menu);
         
         // Import Template
         import_template_option.setAccelerator (javax.swing.KeyStroke
@@ -129,6 +135,7 @@ public class MainView extends javax.swing.JFrame {
     private javax.swing.JMenuItem matfile_log;
 
     private javax.swing.JMenu template_menu;
+    private javax.swing.JMenu help_menu;
     private javax.swing.JMenuItem import_template_option;
     private javax.swing.JMenuItem save_template_option;
     
