@@ -1,8 +1,8 @@
 package org.pvg.plasmagraph.views;
 
+import HelpManual.HelpManual;
 import java.awt.event.ActionListener;
 import javax.swing.JTabbedPane;
-
 import org.pvg.plasmagraph.models.MainModel;
 
 /**
@@ -45,6 +45,8 @@ public class MainView extends javax.swing.JFrame {
         matfile_log = new javax.swing.JMenuItem();
         template_menu = new javax.swing.JMenu ();
         help_menu = new javax.swing.JMenu ();
+        help_menu_about = new javax.swing.JMenuItem();
+        help_menu_manual = new javax.swing.JMenuItem();
         import_template_option = new javax.swing.JMenuItem ();
         save_template_option = new javax.swing.JMenuItem ();
         options_menu = new javax.swing.JMenu ();
@@ -82,6 +84,8 @@ public class MainView extends javax.swing.JFrame {
         // Help Menu
         help_menu.setText ("Help"); //$NON-NLS-1$
         help_menu.setToolTipText ("Shows information about PlasmaGraph."); //$NON-NLS-1$
+        help_menu_manual.setText("User Guide");
+        help_menu.add(help_menu_manual);
         menu_bar.add (help_menu);
         
         // Import Template
@@ -135,9 +139,12 @@ public class MainView extends javax.swing.JFrame {
     private javax.swing.JMenuItem matfile_log;
 
     private javax.swing.JMenu template_menu;
-    private javax.swing.JMenu help_menu;
     private javax.swing.JMenuItem import_template_option;
     private javax.swing.JMenuItem save_template_option;
+    
+    private javax.swing.JMenu help_menu;
+    private javax.swing.JMenuItem help_menu_about;
+    private javax.swing.JMenuItem help_menu_manual;    
     
     private javax.swing.JMenu options_menu;
     private javax.swing.JMenuItem exit_menu_option;
@@ -152,6 +159,23 @@ public class MainView extends javax.swing.JFrame {
     public JTabbedPane getTabPane () {
         return (this.tab_pane);
     }
+    
+    /**
+     * Getter Method. Provides this class' "menu_bar" JMenuBar object.
+     * @return JMenuBar "menu_bar"
+     */
+    public javax.swing.JMenuBar pvgGetMenuBar(){
+        return this.menu_bar;
+    }
+   
+    /**
+     * Getter Method. Provides this class' "help_menu" JMenu object.
+     * @return JMenu "help_menu"
+     */
+    public javax.swing.JMenu getHelpMenu(){
+        return this.help_menu;
+    }
+    
     
     // Data Listener Methods
     /**

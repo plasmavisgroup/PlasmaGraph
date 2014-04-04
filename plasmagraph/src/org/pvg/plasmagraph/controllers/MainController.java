@@ -1,5 +1,6 @@
 package org.pvg.plasmagraph.controllers;
 
+import HelpManual.HelpManual;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.WindowAdapter;
@@ -60,9 +61,10 @@ public class MainController {
 		main_view.addDataImportMenuListener (new DataImportMenuListener ());
 		main_view.addDataResetMenuListener (new DataResetMenuListener ());
 		main_view.addViewDataMenuListener (new ViewDataMenuListener ());
+                // Help
+                this.addHelpMenuListener();
 		// Template
-		main_view
-				.addTemplateImportMenuListener (new TemplateImportMenuListener ());
+		main_view.addTemplateImportMenuListener (new TemplateImportMenuListener ());
 		main_view.addTemplateSaveMenuListener (new TemplateSaveMenuListener ());
 		// Graph
 		// TODO
@@ -87,6 +89,14 @@ public class MainController {
 		main_view.getTabPane ().setTabLayoutPolicy (
 				JTabbedPane.SCROLL_TAB_LAYOUT);
 	}
+        
+        /**
+         * Displays a help manual when the main menu option "Help >> User Guide" is clicked on.
+         */
+        public void addHelpMenuListener(){
+            HelpManual help = new HelpManual();
+            help.enableOnClick(main_view.getHelpMenu().getItem(0));
+        }
 
 	// Data Action Listener Inner Classes
 	class DataImportMenuListener implements ActionListener {
