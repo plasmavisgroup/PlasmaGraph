@@ -82,6 +82,8 @@ public class GraphPair {
 		
 		this.group_index = group;
 		this.group_name = group_name;
+		
+		System.out.println (this.toString ());
 	}
 	
 	/**
@@ -94,6 +96,8 @@ public class GraphPair {
 		
 		this.x_index = x;
 		this.x_name = x_name;
+
+		System.out.println (this.toString ());
 	}
 
 	/**
@@ -106,6 +110,8 @@ public class GraphPair {
 	
 		this.y_index = y;
 		this.y_name = y_name;
+
+		System.out.println (this.toString ());
 	}
 
 	/**
@@ -195,7 +201,16 @@ public class GraphPair {
 	 * @return A String containing the combination of both column names.
 	 */
 	public String getName () {
-		return (this.x_name + " vs. " + this.y_name);
+		StringBuilder sb = new StringBuilder ();
+		if (!this.isGrouped ()) {
+			sb.append (this.x_name).append (" vs. ").append (this.y_name);
+		}
+		
+		else {
+			sb.append (this.getGroupName ()).append (" Group ");
+		}
+		
+		return (sb.toString ());
 	}
 
 	/**

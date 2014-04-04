@@ -2,6 +2,7 @@ package org.pvg.plasmagraph.models;
 
 //Class Import Block
 import java.io.File;
+import java.util.Map.Entry;
 
 import javax.swing.JFileChooser;
 import javax.swing.JOptionPane;
@@ -14,6 +15,7 @@ import org.pvg.plasmagraph.utils.data.HeaderData;
 import org.pvg.plasmagraph.utils.data.readers.CSVProcessor;
 import org.pvg.plasmagraph.utils.data.readers.MatlabProcessor;
 import org.pvg.plasmagraph.utils.types.ExceptionType;
+import org.pvg.plasmagraph.utils.types.FileType;
 import org.pvg.plasmagraph.utils.template.Template;
 import org.pvg.plasmagraph.views.DatasetLogView;
 
@@ -97,10 +99,10 @@ public class MainModel {
                      
                       MatlabProcessor mat = new MatlabProcessor (f);
                       try {
-                     	 mat.read ();
                      	 if (mat.getHeaders (hd)) {
-                     		 // TODO: Change message to "Data Columns extracted successfully." ?
-                 		 	JOptionPane.showMessageDialog (null, "Data Column names extracted successfully.");
+                 		 	JOptionPane.showMessageDialog (null, "Data extracted successfully.");
+                 		 	hd.notifyListeners ();
+                 		 	dr.reset ();
                      	 }
                       } catch (Exception ex) {
                      	 ExceptionHandler.handleMalformedDataFileException ("Matlab File Reader");
@@ -113,8 +115,7 @@ public class MainModel {
                      CSVProcessor csv = new CSVProcessor (f);
                      try {
      	                if (csv.getHeaders (hd)) {
-     	                	JOptionPane.showMessageDialog (null,
-     	                			"Data Column names extracted successfully.");
+     	                	JOptionPane.showMessageDialog (null, "Data extracted successfully.");
      	                	hd.notifyListeners ();
      	                	// TODO: Allow for multiple data files to be used.
      	                	// TODO: Only reset if a data file with a different set of headers is imported.
@@ -309,14 +310,34 @@ public class MainModel {
     /**
      * Opens the DataLogView in order to present a visual representation of the
      * data currently being accounted for.
-     * 
-     * @throws Exception
      */
-    public void prepareDataLog() throws Exception {
-    	// TODO: Make it account for all the possible types of files.
-        MatlabProcessor mat_reader = new MatlabProcessor (hd.getFile(0));
-        DatasetLogView dsview = new DatasetLogView(mat_reader.toString());
-        dsview.pack();
-        dsview.setVisible(true);
+    public void prepareDataLog () {
+    	StringBuilder sb = new StringBuilder ();
+    	
+    	for (Entry <File, FileType> e : this.hd.getFiles ().entrySet ()) {
+    		
+    		sb.append ("File: ");
+    		
+    		if (FileType.MAT.equals (e.getValue ())) {
+    			
+    			MatlabProcessor mat_reader = new MatlabProcessor (e.getKey ());
+    			
+    			sb.append (e.getKey ().getName ());
+    			sb.append (mat_reader.toString ());
+    			
+    		} else { //if (FileType.CSV.equals (e.getValue ())) {
+    			
+    			CSVProcessor csv_reader = new CSVProcessor (e.getKey ());
+    			
+    			sb.append (e.getKey ().getName ());
+    			sb.append (csv_reader.toString ());
+    			
+    		}
+    		
+    	}
+    	
+        DatasetLogView dsview = new DatasetLogView (sb.toString ());
+        dsview.pack ();
+        dsview.setVisible (true);
     }
 }

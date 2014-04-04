@@ -41,7 +41,7 @@ public class MainView extends javax.swing.JFrame {
         menu_bar = new javax.swing.JMenuBar ();
         data_menu = new javax.swing.JMenu ();
         import_data_option = new javax.swing.JMenuItem ();
-        reset_data_option = new javax.swing.JMenuItem ();
+        //reset_data_option = new javax.swing.JMenuItem ();
         matfile_log = new javax.swing.JMenuItem();
         template_menu = new javax.swing.JMenu ();
         import_template_option = new javax.swing.JMenuItem ();
@@ -65,8 +65,8 @@ public class MainView extends javax.swing.JFrame {
         data_menu.add (import_data_option);
         
         // Reset Data
-        reset_data_option.setText ("Reset Data");
-        data_menu.add (reset_data_option);
+        //reset_data_option.setText ("Reset Data");
+        // data_menu.add (reset_data_option);
         
         // Display dataset from MATLAB in a log
         matfile_log.setText ("View data");
@@ -125,7 +125,7 @@ public class MainView extends javax.swing.JFrame {
     
     private javax.swing.JMenu data_menu;
     private javax.swing.JMenuItem import_data_option;
-    private javax.swing.JMenuItem reset_data_option;
+    //private javax.swing.JMenuItem reset_data_option;
     private javax.swing.JMenuItem matfile_log;
 
     private javax.swing.JMenu template_menu;
@@ -164,9 +164,9 @@ public class MainView extends javax.swing.JFrame {
      * @param dataResetMenuListener
      *            Action Listener for the Reset Data menu function.
      */
-    public void addDataResetMenuListener (ActionListener dataResetMenuListener) {
-		this.reset_data_option.addActionListener (dataResetMenuListener);
-	}
+    //public void addDataResetMenuListener (ActionListener dataResetMenuListener) {
+	//	this.reset_data_option.addActionListener (dataResetMenuListener);
+	//}
     
     /**
      * Creates a new ActionListener for the View Data menu function.

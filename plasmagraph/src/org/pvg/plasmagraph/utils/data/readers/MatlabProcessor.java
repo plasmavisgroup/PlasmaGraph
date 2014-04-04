@@ -7,6 +7,7 @@ import com.jmatio.types.*;
 
 import java.util.ArrayList;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
 import java.util.Set;
@@ -150,7 +151,9 @@ public class MatlabProcessor implements FileProcessor {
 		}
 
 		// Is it empty? Are the columns and rows the same size?
-		if (hd.isEmpty ()) {
+		//if (hd.isEmpty ()) {
+		// Clear out what's in the old HeaderData before putting in new data.
+			hd.clear ();
 			if (this.checkColumnSizes ()) {
 				// For each non-cell object...
 
@@ -172,7 +175,7 @@ public class MatlabProcessor implements FileProcessor {
 				throw (new Exception (
 						"Incorrect Header sizes! This is a malformed data file!"));
 			}
-		} else {
+		/*} else {
 			// Check if the headers in the new file are the same as those
 			// already in the DataSet.
 			boolean b = true;
@@ -193,7 +196,7 @@ public class MatlabProcessor implements FileProcessor {
 			}
 
 			return (b);
-		}
+		}*/
 	}
 
 	/**
@@ -298,7 +301,8 @@ public class MatlabProcessor implements FileProcessor {
 		for (Entry <String, MLArray> e : this.mat_data.entrySet ()) {
 			
 			/** create and add the data column to the result set **/
-			if (e.getKey ().equals (hd.get (p.getXIndex ()).getKey ())
+			if (e.getKey ().equals (hd.get (p.getGroup ()).getKey ())
+					|| e.getKey ().equals (hd.get (p.getXIndex ()).getKey ())
 					|| e.getKey ().equals (hd.get (p.getYIndex ()).getKey ())) {
 				
 				//System.out.println ("Log!");
@@ -309,8 +313,29 @@ public class MatlabProcessor implements FileProcessor {
 			}
 		}
 		
+		// Now, verify the integrity of the data before saying it's all right!
+		try {
+			
+			this.verifyDataIntegrity (columns, ds);
+			
+		} catch (FunctionNotImplementedException ex) {
+			
+			ex.showMessage ();
+			ds = new DataSet (ds.isGrouped ());
+			
+		} catch (InvalidDataSizeException ex) {
+			
+			ex.showMessage ();
+			ds = new DataSet (ds.isGrouped ());
+			
+		}
+
+	}
+	
+	private void verifyDataIntegrity (List <MLArray> columns, DataSet ds) 
+			throws FunctionNotImplementedException, InvalidDataSizeException {
 		// Test the arrays for valid data before insterting them into the DataSet.
-		if (columns.size () == 2) {
+		if (columns.size () == 2 || columns.size () == 3) {
 			
 			// In each rows, check the value for all MLArrays, and make sure the values are acceptable..
 			for (int row = 0; (row < columns.get (0).getM ()); ++row) {
@@ -377,7 +402,6 @@ public class MatlabProcessor implements FileProcessor {
 		} else {
 			throw (new InvalidDataSizeException ("MatlabProcessor"));
 		}
-
 	}
 
 

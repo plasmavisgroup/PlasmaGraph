@@ -154,7 +154,7 @@ public class CSVProcessor implements FileProcessor {
 		}
 		
 		// Now, prepare the columns of the DataSet.
-		this.prepareColumns (ds, p, hd, column_index);
+		this.prepareColumns (ds, p, hd);
 		
 		// Once the columns are ready, populate the columns with the correct data!
 		this.populateColumns (ds, p, column_index);
@@ -169,6 +169,29 @@ public class CSVProcessor implements FileProcessor {
 	 * @param hd HeaderData object containing the Column names and types.
 	 */
 	private void prepareColumns (DataSet ds, GraphPair p, HeaderData hd) {
+		
+		// Check to see if there's a group by column!
+		if (p.isGrouped ()) {
+			// Add the GroupBy Column first!
+			if (hd.get (p.getGroup ()).getValue () == ColumnType.DATETIME) {
+				
+				ds.add (new DataColumn <java.util.Date> (hd.get (p.getGroup ()).getKey (), 
+						hd.get (p.getGroup ()).getValue ()));
+				
+			} else if (hd.get (p.getGroup ()).getValue () == ColumnType.DOUBLE) {
+				
+				ds.add (new DataColumn <Double> (hd.get (p.getGroup ()).getKey (), 
+						hd.get (p.getGroup ()).getValue ()));
+				
+			} else {
+				
+				ds.add (new DataColumn <String> (hd.get (p.getGroup ()).getKey (), 
+						hd.get (p.getGroup ()).getValue ()));
+				
+			}
+		}
+		
+		// Regardless...
 		// Take the first index of the GraphPair, find it in the List we have here,
 		/// and create the column it needs in the DataSet.
 		
@@ -208,73 +231,6 @@ public class CSVProcessor implements FileProcessor {
 		}
 	}
 	
-	/**
-	 * Helper method. Prepares the DataColumn variables that are contained in
-	 * the DataSet, with help from the HeaderData and a GraphPair.
-	 * 
-	 * @param ds DataSet container already provided.
-	 * @param p GraphPair object containing the index values of the DataSet's columns.
-	 * @param hd HeaderData object containing the Column names and types.
-	 * @param group_column_index Integer containing the column index of the group_by column.
-	 */
-	private void prepareColumns (DataSet ds, GraphPair p, HeaderData hd, int group_column_index) {
-		// First, Add the data regarding the group_by column.
-		Pair <String, ColumnType> c = hd.get (hd.find (this.csv_data.get (0)
-				[group_column_index].trim ()));
-		
-		if (c.getValue () == ColumnType.DATETIME) {
-			
-			ds.add (new DataColumn <java.util.Date> (c.getKey (), c.getValue ()));
-			
-		} else if (c.getValue () == ColumnType.DOUBLE) {
-			
-			ds.add (new DataColumn <Double> (c.getKey (), c.getValue ()));
-			
-		} else {
-			
-			ds.add (new DataColumn <String> (c.getKey (), c.getValue ()));
-			
-		}
-		
-		// Now, take the first index of the GraphPair, find it in the List we have here,
-		/// and create the column it needs in the DataSet.
-		
-		if (hd.get (p.getXIndex ()).getValue () == ColumnType.DATETIME) {
-			
-			ds.add (new DataColumn <java.util.Date> (hd.get (p.getXIndex ()).getKey (), 
-					hd.get (p.getXIndex ()).getValue ()));
-			
-		} else if (hd.get (p.getXIndex ()).getValue () == ColumnType.DOUBLE) {
-			
-			ds.add (new DataColumn <Double> (hd.get (p.getXIndex ()).getKey (), 
-					hd.get (p.getXIndex ()).getValue ()));
-			
-		} else {
-			
-			ds.add (new DataColumn <String> (hd.get (p.getXIndex ()).getKey (), 
-					hd.get (p.getXIndex ()).getValue ()));
-			
-		}
-		
-		// Now do that for the other GraphPair index.
-		if (hd.get (p.getYIndex ()).getValue () == ColumnType.DATETIME) {
-			
-			ds.add (new DataColumn <Double> (hd.get (p.getYIndex ()).getKey (), 
-					hd.get (p.getYIndex ()).getValue ()));
-			
-		} else if (hd.get (p.getYIndex ()).getValue () == ColumnType.DOUBLE) {
-			
-			ds.add (new DataColumn <Double> (hd.get (p.getYIndex ()).getKey (), 
-					hd.get (p.getYIndex ()).getValue ()));
-			
-		} else {
-			
-			ds.add (new DataColumn <Double> (hd.get (p.getYIndex ()).getKey (), 
-					hd.get (p.getYIndex ()).getValue ()));
-			
-		}
-	}
-
 	/**
 	 * Helper method. Populates the provided DataSet with data from this object's
 	 * List of String arrays, csv_data, based on the index values of the GraphPair p.
@@ -344,7 +300,7 @@ public class CSVProcessor implements FileProcessor {
 		for (int i = 1; (i < this.csv_data.size ()); ++i) {
 			
 			// If the data is valid...
-			if (this.isValidRow (this.csv_data.get (i), p, group_column_index)) {
+			if (this.isValidRow (this.csv_data.get (i), p)) {
 				// Take only the values of the two index values of the GraphPair p and put them
 				// into the DataSet ds.
 				for (int j = 0; (j < ds.size ()); ++j) {
@@ -559,28 +515,24 @@ public class CSVProcessor implements FileProcessor {
 	 * Checks to see if the string provided is a null value, contains the word 
 	 * NaN, or is empty.
 	 * 
-	 * @param s String value containing a potential term for a data set.
-	 * @param p GraphPair object containing the two columns to validate.
-	 * @return A boolean describing if the value is valid or not.
+	 * @param string String value containing a potential term for a data set.
+	 * @param p GraphPair object containing the columns to validate.
+	 * @return A boolean describing if the row is valid or not.
 	 */
 	private boolean isValidRow (String [] s, GraphPair p) {
-		return (this.isValidItem (s[p.getXIndex ()]) &&
-				this.isValidItem (s[p.getYIndex ()]));
-	}
-	
-	/**
-	 * Checks to see if the string provided is a null value, contains the word 
-	 * NaN, or is empty.
-	 * 
-	 * @param string String value containing a potential term for a data set.
-	 * @param p GraphPair object containing the two columns to validate.
-	 * @param grouping_column Int value of the column index of the group_by column.
-	 * @return A boolean describing if the value is valid or not.
-	 */
-	private boolean isValidRow (String [] s, GraphPair p, int grouping_column) {
-		return (this.isValidItem (s [p.getXIndex ()]) &&
-				this.isValidItem (s [p.getYIndex ()]) &&
-				this.isValidItem (s [grouping_column]));
+		
+		if (p.isGrouped ()) {
+			
+			return (this.isValidItem (s [p.getXIndex ()]) &&
+					this.isValidItem (s [p.getYIndex ()]) &&
+					this.isValidItem (s [p.getGroup ()]));
+			
+		} else {
+			
+			return (this.isValidItem (s[p.getXIndex ()]) &&
+					this.isValidItem (s[p.getYIndex ()]));
+			
+		}
 	}
 	
 	private boolean isValidItem (String s) {

@@ -321,47 +321,41 @@ public class DataSet implements Iterable<DataColumn> {
 	 * Given a group of index values and a name, provides a JFree XYSeriesCollection
 	 * Dataset for the purpose of graphing XY Graphs.
 	 * 
-	 * @param series_name The name of the series being created.
-	 * @param dr DataReference object used to obtain the name of the Grouping column.
+	 * @param p GraphPair object used to determine various graph-related data.
 	 * @return An XYSeries containing the desired data.
-	 * @throws InvalidParametersException Thrown when the columns provided are invalid due to type (not doubles) or existance (not found).
 	 */
-	public XYSeriesCollection toGroupedXYGraphDataset (String series_name, DataReference dr) throws InvalidParametersException {
-		XYSeriesCollection grouped_series = new XYSeriesCollection ();
+	public XYSeriesCollection toGroupedXYGraphDataset (GraphPair p) {
 		
-		// Find the group_by column index.
-		int grouped_column = this.find (dr.get ().getGroupName ());
+		XYSeriesCollection grouped_series = new XYSeriesCollection ();
 		
 		HashMap <Object, XYSeries> sets = new HashMap <> ();
 		
-		// For each row
-		// Check the type of the group.
-		boolean valid = true;
-		for (DataColumn dc : this.values) {
-			valid = valid && (dc.containsDoubles () || (this.find (dc) == grouped_column));
+		for (int i = 0; (i < this.getColumnLength ()); ++i) {
+			
+			// If the type is new (I.E. does not exist yet in the collection)
+			// Add it into the collection as a new XYSeries.
+			Object key = this.values.get (p.getGroup ()).get (i);
+			
+			if (sets.containsKey (key)) {
+				sets.get (key).add (new org.jfree.data.xy.XYDataItem (
+						(double) this.values.get (1).get (i),
+						(double) this.values.get (2).get (i)));
+			} else  {
+				XYSeries s = new XYSeries (p.getName () + key.toString ());
+				
+				s.add (new org.jfree.data.xy.XYDataItem (
+						(double) this.values.get (1).get (i),
+						(double) this.values.get (2).get (i)));
+				
+				sets.put (key, s);
+			}
 		}
 		
-		if (valid) {
-			for (int i = 0; (i < this.getColumnLength ()); ++i) {
-				
-				// If the type is new (I.E. does not exist yet in the collection)
-				// Add it into the collection as a new XYSeries.
-				Object key = this.values.get (grouped_column).get (i);
-				if (sets.containsKey (key)) {
-					sets.get (key).add (new org.jfree.data.xy.XYDataItem (
-							(double) this.values.get (1).get (i),
-							(double) this.values.get (2).get (i)));
-				}
-			}
-			
-			for (XYSeries xy : sets.values ()) {
-				grouped_series.addSeries (xy);
-			}
-			
-			return (grouped_series);
-		} else {
-			throw (new InvalidParametersException ("Grouping Data"));
+		for (XYSeries xy : sets.values ()) {
+			grouped_series.addSeries (xy);
 		}
+		
+		return (grouped_series);
 		
 	}
 	
@@ -464,9 +458,6 @@ public class DataSet implements Iterable<DataColumn> {
 		// Create the data column map.
 		final Map<Double, Double> map = new HashMap <Double, Double> ();
 		
-		// Test
-		//System.out.println (this.toString ());
-		
 		// Populate the map.
 		for (int i = 0; (i < this.getColumnLength ()); ++i) {
 			map.put ((Double) this.getX ().get (i), (Double) this.getY ().get (i));
@@ -495,5 +486,61 @@ public class DataSet implements Iterable<DataColumn> {
 			y_column [i] = row.getValue ();
 	    }
 	    
+	}
+	
+	public double getXMax () {
+		if (!this.getX ().containsDoubles ()) {
+			return (0.0);
+		} else {
+			double max = (double) this.getX ().get (0);
+			
+			for (Object e : this.getX ()) {
+				max = (max < (double) e) ? (double) e : max;
+			}
+			
+			return (max);
+		}
+	}
+	
+	public double getXMin () {
+		if (!this.getX ().containsDoubles ()) {
+			return (0.0);
+		} else {
+			double min = (double) this.getX ().get (0);
+			
+			for (Object e : this.getX ()) {
+				min = (min > (double) e) ? (double) e : min;
+			}
+			
+			return (min);
+		}
+	}
+	
+	public double getYMax () {
+		if (!this.getY ().containsDoubles ()) {
+			return (0.0);
+		} else {
+			double max = (double) this.getY ().get (0);
+			
+			for (Object e : this.getY ()) {
+				max = (max < (double) e) ? (double) e : max;
+			}
+			
+			return (max);
+		}
+	}
+	
+	public double getYMin () {
+		if (!this.getY ().containsDoubles ()) {
+			return (0.0);
+		} else {
+			double min = (double) this.getY ().get (0);
+			
+			for (Object e : this.getY ()) {
+				min = (min > (double) e) ? (double) e : min;
+			}
+			
+			return (min);
+		}
 	}
 }

@@ -102,7 +102,7 @@ public class Template {
 		this.default_outlier_reaction 		= OutlierResponse.NONE;
 		this.interpolation_lower_range 		= 0.0;
 		this.interpolation_upper_range		= 10.0;
-		this.interpolation_point_amount		= 1000;
+		this.interpolation_point_amount		= 5000;
 		
 	}
 	

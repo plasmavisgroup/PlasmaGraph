@@ -62,6 +62,13 @@ public class GraphView extends JFrame {
 				this.pack ();
 				this.setVisible (true);
 				
+				// Display any extra information!
+				if (this.graph_model.getInterpolation () != null) {
+					
+					this.graph_model.getInterpolation ().showInterpolationValidity ();
+					
+				}
+				
 			}
 			// Otherwise, don't change anything at all.
 			

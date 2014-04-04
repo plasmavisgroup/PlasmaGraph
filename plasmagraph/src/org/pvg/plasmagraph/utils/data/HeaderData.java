@@ -3,9 +3,11 @@ package org.pvg.plasmagraph.utils.data;
 import java.io.File;
 import java.util.AbstractMap;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Iterator;
 import java.util.ListIterator;
+import java.util.Map;
 import java.util.Map.Entry;
 import java.util.Set;
 
@@ -37,7 +39,7 @@ public class HeaderData implements Iterable<Pair <String, ColumnType>> {
 	/** Container for Pair <String, ColumnType>s. */
 	private ArrayList <Pair<String, ColumnType>> columns;
 	/** Container for Files containing data for this object. */
-	private Set <Entry <File, FileType>> file_list;
+	private Map <File, FileType> file_list;
 
 	/**
 	 * Constructor. Creates a new ArrayList of Pair <String, ColumnType>s for this object.
@@ -46,7 +48,7 @@ public class HeaderData implements Iterable<Pair <String, ColumnType>> {
 	public HeaderData () {
 		this.columns = new ArrayList <> ();
 		this.listeners = new HashSet <> ();
-		this.file_list = new HashSet <> ();
+		this.file_list = new HashMap <> ();
 	}
 
 	/**
@@ -222,7 +224,43 @@ public class HeaderData implements Iterable<Pair <String, ColumnType>> {
 		// Try to pull the data out of every file and append it into the current DataSet.
 		try {
 			
-			for (Entry <File, FileType> e : this.file_list) {
+			for (Map.Entry <File, FileType> e : this.file_list.entrySet ()) {
+				
+				rds.append (this.getData (e, p));
+				
+				//System.out.println ("Successfully (?) appended a new set of data!");
+				//System.out.println ("Contents of the data are: " + rds.toString ());
+				
+			}
+			
+		} catch (Exception ex) {
+			
+			// Trying to grab two data sets when there's only one?
+			System.out.println ("Error in HeaderData!\n" + ex.toString ());
+			
+		}
+		
+		// Regardless, return the DataSet.
+		return (rds);
+	}
+	
+	/**
+	 * Populates a list of DataSets based on the GraphPair provided and the files this object
+	 * maintains.
+	 * 
+	 * @param p GraphPair object containing the columns to be graphed.
+	 * @param t Template object containing the GroupBy column to group data by.
+	 * 
+	 * @return A new DataSet containing a full set of data, ready for graphing.
+	 */
+	public DataSet populateGroupedData (GraphPair p, Template t) {
+		
+		DataSet rds = new DataSet (true);
+		
+		// Try to pull the data out of every file and append it into the current DataSet.
+		try {
+			
+			for (Map.Entry <File, FileType> e : this.file_list.entrySet ()) {
 				
 				rds.append (this.getData (e, p));
 				
@@ -245,91 +283,61 @@ public class HeaderData implements Iterable<Pair <String, ColumnType>> {
 	private DataSet getData (Entry<File, FileType> e, GraphPair p) 
 			throws FunctionNotImplementedException, InvalidDataSizeException {
 		
-		DataSet ds = new DataSet (false);
+		DataSet ds;
 		
-		if (e.getValue ().equals (FileType.CSV)) {
+		if (p.isGrouped ()) {
 			
-			CSVProcessor csv_reader = new CSVProcessor (e.getKey ());
+			ds = new DataSet (true);
 			
-			csv_reader.toDataSet (ds, p, this);
-			
-		} else if (e.getValue ().equals (FileType.MAT)) {
-			
-			MatlabProcessor mat_reader = new MatlabProcessor (e.getKey ());
-			
-			mat_reader.toDataSet (ds, p, this);
-			
-			//System.out.println ("Derp: " + ds.toString ());
+			if (e.getValue ().equals (FileType.CSV)) {
+				
+				CSVProcessor csv_reader = new CSVProcessor (e.getKey ());
+				
+				csv_reader.toDataSet (ds, p, this);
+				
+			} else if (e.getValue ().equals (FileType.MAT)) {
+				
+				MatlabProcessor mat_reader = new MatlabProcessor (e.getKey ());
+				
+				mat_reader.toDataSet (ds, p, this);
+				
+				//System.out.println ("Derp: " + ds.toString ());
+				
+			} else {
+				
+				throw (new FunctionNotImplementedException 
+						("Extracting data from non-CSV / MAT files."));
+				
+			}
 			
 		} else {
 			
-			throw (new FunctionNotImplementedException 
-					("Extracting data from non-CSV / MAT files."));
+			ds = new DataSet (false);
+			
+			if (e.getValue ().equals (FileType.CSV)) {
+				
+				CSVProcessor csv_reader = new CSVProcessor (e.getKey ());
+				
+				csv_reader.toDataSet (ds, p, this);
+				
+			} else if (e.getValue ().equals (FileType.MAT)) {
+				
+				MatlabProcessor mat_reader = new MatlabProcessor (e.getKey ());
+				
+				mat_reader.toDataSet (ds, p, this);
+				
+				//System.out.println ("Derp: " + ds.toString ());
+				
+			} else {
+				
+				throw (new FunctionNotImplementedException 
+						("Extracting data from non-CSV / MAT files."));
+				
+			}
 			
 		}
 		
 		return (ds);
-	}
-	
-	/**
-	 * Populates a list of DataSets based on the GraphPair provided and the files this object
-	 * maintains.
-	 * 
-	 * @param p GraphPair object containing the columns to be graphed.
-	 * @param t Template object containing the GroupBy column to group data by.
-	 * 
-	 * @return A new DataSet containing a full set of data, ready for graphing.
-	 */
-	public DataSet populateGroupedData (GraphPair p, Template t) {
-		ArrayList<DataSet> ads = new ArrayList <> ();
-		
-		try {
-		
-			for (Entry<File, FileType> e : this.file_list) {
-				
-				DataSet ds = new DataSet (true);
-				
-				if (e.getValue ().equals (FileType.CSV)) {
-					
-					CSVProcessor csv_reader = new CSVProcessor (e.getKey ());
-					
-					csv_reader.toDataSet (ds, p, this, t);
-					ads.add (ds);
-					
-				} else if (e.getValue ().equals (FileType.MAT)) {
-					
-					// TODO: get a working version of MatlabReader.
-					// TODO: rename MatlabReader to MatlabProcessor.
-					// TODO: Fit MatlabReader to FileProcessor interface.
-					//MatlabProcessor mat_reader = new MatlabProcessor (e.getKey ());
-					
-					// TODO: edit the function in the original to fit this new style.
-					//mat_reader.toDataSet (ds, p, this);
-					ExceptionHandler.handleFunctionNotImplementedException 
-							("Extracting data from MAT files.");
-					
-				} else {
-					ExceptionHandler.handleFunctionNotImplementedException 
-							("Extracting data from non-CSV / MAT files.");
-				}
-			}
-			
-			// If there's more than one DataSet, condense the DataSets into one!
-			if (ads.size () > 1) {
-				// Take the other DataSets, take that same column from each, and
-				// append them to the return one!
-				for (int set_index = 1; (set_index < ads.size ()); ++set_index) {
-					if (!ads.get (0).append (ads.get (set_index))) {
-						throw (new UnsuccessfulInsertOperationException ());
-					}
-				}
-			}
-			
-		} catch (Exception ex) {
-			System.out.println (ex.getMessage ());
-		}
-		
-		return (ads.get (0));
 	}
 	
 	// Iterator / Iterable methods.
@@ -386,8 +394,7 @@ public class HeaderData implements Iterable<Pair <String, ColumnType>> {
 	 * @return Boolean describinb the success or failure of the operation.
 	 */
 	public boolean addFile (File file, FileType type) {
-		return (this.file_list.add (
-				new AbstractMap.SimpleEntry<> (file, type)));
+		return (this.file_list.put (file, type) != null);
 	}
 	
 	/**
@@ -397,9 +404,9 @@ public class HeaderData implements Iterable<Pair <String, ColumnType>> {
 	 * @return Boolean describinb the success or failure of the operation.
 	 */
 	public boolean removeFile (File file) {
-		for (Entry <File, FileType> e : this.file_list) {
+		for (Entry <File, FileType> e : this.file_list.entrySet ()) {
 			if (e.getKey ().equals (file)) {
-				return (this.file_list.remove (e));
+				return (this.file_list.remove (e) != null);
 			}
 		}
 		
@@ -425,16 +432,11 @@ public class HeaderData implements Iterable<Pair <String, ColumnType>> {
 	}
 
     /**
-     * @param i
-     * @return
+     * @return The entire list.
      * @throws Exception
      */
-    public File getFile (int i) throws Exception {
-        if(!this.file_list.iterator().hasNext()){
-            throw new Exception("Please import a data file first first");
-        }else{
-           return (this.file_list.iterator().next().getKey());
-        }        
+    public Map <File, FileType> getFiles () {
+    	return (this.file_list);
     }
 
 	/**

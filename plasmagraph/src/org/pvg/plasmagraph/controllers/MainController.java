@@ -58,7 +58,7 @@ public class MainController {
 		// Automatically add listeners to Main Panel via view.
 		// Data
 		main_view.addDataImportMenuListener (new DataImportMenuListener ());
-		main_view.addDataResetMenuListener (new DataResetMenuListener ());
+		//main_view.addDataResetMenuListener (new DataResetMenuListener ());
 		main_view.addViewDataMenuListener (new ViewDataMenuListener ());
 		// Template
 		main_view

@@ -190,6 +190,9 @@ public class ClusterScanning implements ScanMethod {
 	 * Assumes largest concentration of points is the line/curve, and all other
 	 * clusters are outliers.
 	 * 
+	 * TODO: Post-mortem this method, and figure out why there's only one cluster being
+	 * produced.
+	 * 
 	 * @param dbl_cluster The collection of clusters created by the DBSCAN procedure.
 	 * @return A list of points that are outliers from the "dbl_cluster" input.
 	 */

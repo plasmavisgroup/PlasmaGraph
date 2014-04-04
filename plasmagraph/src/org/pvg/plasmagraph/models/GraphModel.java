@@ -29,6 +29,8 @@ public class GraphModel {
 	DataReference dr;
 	/** Reference to Template object. */
 	Template t;
+	/** Reference to Interpolator object. */
+	Interpolator interpolator;
 
 	/**
 	 * Constructor for GraphModels. Used only by the PlasmaGraph class, and only
@@ -55,6 +57,9 @@ public class GraphModel {
 	 * @return A JFreeChart object containing an XYGraph or a BarGraph to display.
 	 */
 	public JFreeChart graph () {
+		
+		//this.interpolator = null;
+		
 		if (t.isSearching ()) {
 
 			return scannedGraphing (t.isInterpolating ()).getChart ();
@@ -101,7 +106,8 @@ public class GraphModel {
 
 			if (interpolation_switch) {
 
-				return (Interpolator.interpolate (hd, t, dr.get ()));
+				this.interpolator = new Interpolator (hd, t, dr);
+				return (interpolator.interpolate ());
 
 			} else {
 
@@ -155,7 +161,8 @@ public class GraphModel {
 
 				if (interpolation_switch) {
 
-					return (Interpolator.interpolate (ds, t, dr.get ()));
+					this.interpolator = new Interpolator (ds, t, dr);
+					return (interpolator.interpolate ());
 
 				} else {
 
@@ -262,5 +269,15 @@ public class GraphModel {
 	 */
 	public DataReference getDataReference () {
 		return (this.dr);
+	}
+
+	/**
+	 * Getter method. Provides external access to the Interpolator object.
+	 * 
+	 * @return The Interpolator object being used.
+	 */
+	public Interpolator getInterpolation () {
+		// TODO Auto-generated method stub
+		return (this.interpolator);
 	}
 }
