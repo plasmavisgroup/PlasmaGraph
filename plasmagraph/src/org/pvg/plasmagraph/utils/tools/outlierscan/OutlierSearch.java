@@ -38,7 +38,7 @@ public class OutlierSearch {
     		
     	}
     	else {
-    		throw (new FunctionNotImplementedException ());
+    		throw (new FunctionNotImplementedException ("Non-Existant Outlier Search Method"));
     	}
     	
     }

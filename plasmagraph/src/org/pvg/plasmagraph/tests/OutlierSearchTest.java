@@ -11,12 +11,10 @@ import javax.swing.JOptionPane;
 import org.apache.commons.math3.ml.clustering.DoublePoint;
 import org.jfree.chart.plot.PlotOrientation;
 import org.junit.Test;
-import org.pvg.plasmagraph.utils.data.DataReference;
-import org.pvg.plasmagraph.utils.data.DataSet;
 import org.pvg.plasmagraph.utils.data.GraphPair;
 import org.pvg.plasmagraph.utils.data.HeaderData;
 import org.pvg.plasmagraph.utils.data.readers.CSVProcessor;
-import org.pvg.plasmagraph.utils.graphs.GraphViewer;
+import org.pvg.plasmagraph.utils.graphs.XYGraph;
 import org.pvg.plasmagraph.utils.template.Template;
 import org.pvg.plasmagraph.utils.tools.outlierscan.OutlierSearch;
 import org.pvg.plasmagraph.utils.tools.outlierscan.distances.MahalanobisDistance;
@@ -31,12 +29,10 @@ import org.pvg.plasmagraph.utils.types.OutlierResponse;
 public class OutlierSearchTest {
 
 	private String default_file_path = 
-			"C:/Users/tako/Documents/GitHub/PlasmaGraph/plasmagraph/test/csv/Parameter2013-06-11.csv"; //$NON-NLS-1$
+			"C:/Users/tako/Documents/GitHub/PlasmaGraph/plasmagraph/test/csv/csv_outlier_test.csv"; //$NON-NLS-1$
 	
 	@Test
 	public void testClusterScanning () throws Exception {
-		// Prepare helper tools
-		StringBuilder sb = new StringBuilder ();
 		
 		// Prepare the data.
 		CSVProcessor csv = new CSVProcessor (new File (default_file_path));
@@ -51,17 +47,12 @@ public class OutlierSearchTest {
 		t.setOrientation (PlotOrientation.VERTICAL);
 		
 		// Prepare the GraphPair
-		sb.append (hd.get (1).getKey ())
-		  .append (" vs. ") //$NON-NLS-1$
-		  .append (hd.get (3).getKey ());
-		
-		GraphPair p = new GraphPair (6, 7, sb.toString ());
-		
-		// Clean the StringBuilder. It gets clogged sometimes.
-		sb.delete (0, sb.length () - 1);
+		GraphPair p = new GraphPair (0, hd.get (0).getKey (), 
+				1, hd.get (1).getKey ());
 		
 		// Perform the procedure.
-		GraphViewer.createXYGraph (t, OutlierSearch.scanForOutliers (hd, t, p), p);
+		XYGraph g = new XYGraph (t, OutlierSearch.scanForOutliers (hd, t, p), p);
+		g.testGraph ();
 		
 		// Check if it worked.
 		assertTrue ("Proper Outlier Removal Test", JOptionPane.showConfirmDialog

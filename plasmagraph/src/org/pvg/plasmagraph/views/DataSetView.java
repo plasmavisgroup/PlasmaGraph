@@ -1,312 +1,578 @@
 package org.pvg.plasmagraph.views;
 
+import java.awt.event.FocusAdapter;
 import java.awt.event.ActionListener;
-import java.util.ArrayList;
 
 import javax.swing.DefaultComboBoxModel;
-
 import org.pvg.plasmagraph.models.DataSetModel;
 import org.pvg.plasmagraph.utils.exceptions.TemplateGroupByColumnNotFoundException;
+import org.pvg.plasmagraph.utils.types.AxisType;
 import org.pvg.plasmagraph.utils.types.ChartType;
 
 /**
- * View for the data set modification pane.
- * Defines the visual organization of a JPanel embedded
- * into MainView's JTabbedPane, and communicates changes
- * done to the View to the Model via the Controller's Listeners.
  * 
  * @author Gerardo A. Navas Morales
  */
 @SuppressWarnings ("serial")
 public class DataSetView extends javax.swing.JPanel {
-    // Externally-contained variables.
-    /** Reference to model related to this controller. */
+
+	/** Reference to model related to this controller. */
     private DataSetModel data_model;
     
     /**
-     * Creates a new DataSetView form, containing references to its model and the underlying settings container.
-     * @param data_model Model reference provided by PlasmaGraph.
+     * Creates a new OptionsView form, containing references to its model and the underlying settings container.
+     * @param dm DataSetModel reference provided by PlasmaGraph.
      */
-    public DataSetView (DataSetModel dm) {
-        data_model = dm;
-        
-        // Prepare visual components.
-        this.initComponents ();
-    }
-    
-    // Created by Gerardo A. Navas Morales.
-    /**
-     * Updates DataSetView's everything, ComboBoxes, jLists, CheckBoxes, and all.
+	public DataSetView (DataSetModel dm) {
+		initComponents ();
+		
+		this.data_model = dm;
+	}
+	
+	/**
+     * Updates DataSetView's available options and selected options as available <p>
+     * in the ChartType, XAxis, YAxis, and GroupBy settings.
+     * 
      * @throws TemplateGroupByColumnNotFoundException 
      */
     public void updateView () throws TemplateGroupByColumnNotFoundException {
-    	this.updateTemplateView ();
-    	this.updateAvailableList ();
-    	this.updateSelectedList ();
-    	this.updateGroupByComboBox ();
+    	if (ChartType.XY_GRAPH.equals (data_model.getTemplate ().getChartType ())) {
+    		
+    		this.updateXYView ();
+    		
+    	} else {//if (ChartType.BAR_GRAPH.equals (data_model.getTemplate ().getChartType ())) {
+    		
+    		this.updateBarView ();
+    		
+    	}
+    }
+    
+    private void updateXYView () {
+    	// Enable the X Axis Type.
+    	this.x_axis_type_combo_box.setEnabled (true);
+    	
+    	// Update view.
+    	this.updateChartTitle ();
+    	this.updateChartType ();
+    	this.updateAxesTypes ();
+    	this.updateAxesNames ();
+	}
+	
+    private void updateBarView () {
+		// Disable the X Axis Type.
+    	this.x_axis_type_combo_box.setEnabled (false);
+    	
+    	// Update view.
+    	this.updateChartTitle ();
+    	this.updateChartType ();
+    	this.updateAxesTypes ();
+    	this.updateAxesNames ();
+	}
+    
+    /**
+     * Updates the ChartTitle's selected option.
+     * Called by a Template change.
+     */
+    public void updateChartTitle () {
+
+    	// Update selected option.
+        this.chart_title_text_field.setText (this.data_model.getTemplate ()
+        		.getChartName ());
     }
     
     /**
-     * Updates DataSetView's ComboBox and JLists based on the current state of the
-     * Template.
+     * Updates the ChartType options available options and the selected option.
      */
-    public void updateTemplateView () {
+    public void updateChartType () {
+    	// Update available options.
+    	this.chart_type_combo_box.setModel (
+    			new DefaultComboBoxModel <> (ChartType.getOptions ()));
+    	
+    	// Update selected option.
         this.chart_type_combo_box.setSelectedItem (this.data_model
                 .getTemplate ().getChartType ().toString ());
     }
     
     /**
-     * Updates DataSetView's Group By ComboBox based on the current state of the
-     * Template. If the value being put in doesn't exist yet, then it will revert
-     * to the default value, "None".
-     * @throws TemplateGroupByColumnNotFoundException 
+     * Update the XAxisType and YAxisType combo boxes with their proper selections
+     * as per the Template.
      */
-    public void updateGroupByComboBox () throws TemplateGroupByColumnNotFoundException {
-    	this.group_by_combo_box.setModel (this.data_model.resetGroupByBox ());
-    	
-    	updateGroupByComboBoxSelection ();
-    }
-    
-    /**
-     * Updates DataSetView's Group By ComboBox based on the current state of the
-     * Template. If the value being put in doesn't exist yet, then it will revert
-     * to the default value, "None".
-     * @throws TemplateGroupByColumnNotFoundException 
-     */
-    public void updateGroupByComboBoxSelection () throws TemplateGroupByColumnNotFoundException {
-    	// Check to see if the template's column currently exists!
-    	int group_by_index = ((DefaultComboBoxModel <String>) group_by_combo_box.getModel ()).getIndexOf (
-    			this.data_model.getTemplate ().getGroupByColumn ());
-    	
-    	if (group_by_index != -1) {
+    public void updateAxesTypes () {
+    	if (ChartType.XY_GRAPH.equals (data_model.getTemplate ().getChartType ())) {
     		
-    		// It exists! Sync them up.
-    		group_by_combo_box.setSelectedItem (
-    				this.data_model.getTemplate ().getGroupByColumn ());
+    		// Update available options.
+    		x_axis_type_combo_box.setModel (
+    				new javax.swing.DefaultComboBoxModel <String> (
+    				AxisType.getXYOptions ()));
     		
-    	} else {
+    		y_axis_type_combo_box.setModel (
+    				new javax.swing.DefaultComboBoxModel <String> (
+					AxisType.getXYOptions ()));
+
     		
-    		// It doesn't exist. Set it equal to the basic option, sync them up,
-    		// and throw an exception.
-    		group_by_combo_box.setSelectedIndex (0);
-    		this.data_model.getTemplate ().setGroupByColumnn (
-    				(String) group_by_combo_box.getSelectedItem ());
-    		throw (new TemplateGroupByColumnNotFoundException ());
+    		// Update selected option.
+    		this.x_axis_type_combo_box.setSelectedItem (
+        			this.data_model.getTemplate ().getXAxisType ().toString ());
+        	
+        	this.y_axis_type_combo_box.setSelectedItem (
+        			this.data_model.getTemplate ().getYAxisType ().toString ());
+    		
+    	} else {//if (ChartType.BAR_GRAPH.equals (data_model.getTemplate ().getChartType ())) {
+    		
+    		// Update available options.
+    		x_axis_type_combo_box.setModel (
+    				new javax.swing.DefaultComboBoxModel <String> (
+    				AxisType.getBarOptions ()));
+    		
+    		y_axis_type_combo_box.setModel (
+    				new javax.swing.DefaultComboBoxModel <String> (
+					AxisType.getXYOptions ()));
+    		
+    		// Update selected option.
+    		this.x_axis_type_combo_box.setSelectedItem (AxisType.CATEGORY.toString ());
+        			//this.data_model.getTemplate ().getXAxisType ().toString ());
+        	
+        	this.y_axis_type_combo_box.setSelectedItem (
+        			this.data_model.getTemplate ().getYAxisType ().toString ());
     		
     	}
     }
     
     /**
-     * Updates DataSetView's JLists based on the current state of the DataSet.
+     * Update the X and Y Axis Name Text Boxes with their proper names as per
+     * the Template.
      */
-	public void updateAvailableList () {
-		this.available_datasets_list.setModel (this.data_model.resetAvailableList ());
-	}
-	
+    public void updateAxesNames () {
+    	this.x_axis_name_label.setText (
+    			this.data_model.getTemplate ().getXAxisLabel ());
+    	
+    	this.y_axis_name_label.setText (
+    			this.data_model.getTemplate ().getYAxisLabel ());
+    }
+    
+    /**
+     * Updates the model for the X Column combo box.
+     */
+    public void updateXAxisColumn () {
+    	// Reset model for this combo box.
+    	this.x_column_combo_box.setModel (this.data_model.resetXAxisColumn ());
+    	
+    	// Try to find the column specified in the Template.
+    	this.x_column_combo_box.setSelectedIndex (0);
+    }
+    
+    /**
+     * Updates the model for the Y Column combo box.
+     */
+    public void updateYAxisColumn () {
+    	// Reset model for this combo box.
+    	this.y_column_combo_box.setModel (this.data_model.resetYAxisColumn ());
+    	
+    	// Try to find the column specified in the Template.
+    	this.y_column_combo_box.setSelectedIndex (0);
+    }
+    
+    /**
+     * Updates DataSetView's Group By ComboBox based on the current state of the
+     * Template. If the value being put in doesn't exist yet, then it will revert
+     * to the default value, "None".
+     * @throws TemplateGroupByColumnNotFoundException 
+     */
+    public void updateGroupBy () throws TemplateGroupByColumnNotFoundException {
+    	this.group_by_column_combo_box.setModel (this.data_model.resetGroupByBox ());
+    }
+    
+   /* *//**
+     * Updates DataSetView's Group By ComboBox based on the current state of the
+     * Template. If the value being put in doesn't exist yet, then it will revert
+     * to the default value, "None".
+     * @throws TemplateGroupByColumnNotFoundException 
+     *//*
+    public void updateGroupBySelection () throws TemplateGroupByColumnNotFoundException {
+    	// Check to see if the template's column currently exists!
+    	int group_by_index = ((DefaultComboBoxModel <String>) group_by_column_combo_box.getModel ()).getIndexOf (
+    			this.data_model.getReference ().get ().getGroupName ());
+    	
+    	if (group_by_index != -1) {
+    		
+    		// It exists! Sync them up.
+    		group_by_column_combo_box.setSelectedItem (
+    				this.data_model.getReference ().get ().getGroupName ());
+    		
+    	} else {
+    		
+    		// It doesn't exist. Set it equal to the basic option, sync them up,
+    		// and throw an exception.
+    		group_by_column_combo_box.setSelectedIndex (0);
+    		this.data_model.getReference ().
+    		throw (new TemplateGroupByColumnNotFoundException ());
+    		
+    	}
+    }*/
+
 	/**
-     * Updates DataSetView's JLists based on the current state of the Datareference.
-     */
-	public void updateSelectedList () {
-		this.selected_datasets_list.setModel (this.data_model.resetSelectedList ());
-	}
+	 * This method is called from within the constructor to initialize the form.
+	 * WARNING: Do NOT modify this code. The content of this method is always
+	 * regenerated by the Form Editor.
+	 */
+	private void initComponents () {
+		this.setName ("Data View");
 
-	/**
-     * Getter Method. Provides this object's "chart_type_combo_box"'s value as one of the options provided by the ChartType class.
-     * @return A ChartType object based on the representation in the "chart_type_combo_box" JComboBox object.
-     * @throws Exception 
-     */
-    public ChartType getSelectedChartType () throws Exception {
-        String c_type = (String) this.chart_type_combo_box.getSelectedItem ();
+		x_column_label = new javax.swing.JLabel ();
+		x_axis_name_label = new javax.swing.JLabel ();
+		x_axis_type_label = new javax.swing.JLabel ();
+		y_column_label = new javax.swing.JLabel ();
+		y_axis_name_label = new javax.swing.JLabel ();
+		y_axis_type_label = new javax.swing.JLabel ();
+		x_column_combo_box = new javax.swing.JComboBox <String> ();
+		x_axis_name_text_field = new javax.swing.JTextField ();
+		x_axis_type_combo_box = new javax.swing.JComboBox <String> ();
+		y_column_combo_box = new javax.swing.JComboBox <String> ();
+		y_axis_name_text_field = new javax.swing.JTextField ();
+		y_axis_type_combo_box = new javax.swing.JComboBox <String> ();
+		jSeparator1 = new javax.swing.JSeparator ();
+		jSeparator2 = new javax.swing.JSeparator ();
+		chart_type_label = new javax.swing.JLabel ();
+		chart_type_combo_box = new javax.swing.JComboBox <String> ();
+		chart_title_label = new javax.swing.JLabel ();
+		chart_title_text_field = new javax.swing.JTextField ();
+		jSeparator3 = new javax.swing.JSeparator ();
+		group_by_column_label = new javax.swing.JLabel ();
+		group_by_column_combo_box = new javax.swing.JComboBox <String> ();
+		graph_button = new javax.swing.JButton();
+        jSeparator4 = new javax.swing.JSeparator();
 
-        if (c_type.equals (ChartType.XY_GRAPH.toString ())) {
-            return (ChartType.XY_GRAPH);
-        } else if (c_type.equals (ChartType.BAR_GRAPH.toString ())) {
-            return (ChartType.BAR_GRAPH);
-        } else {
-        	throw (new Exception ("No such graph type"));
-        }
-    }
-    
-    /**
-     * Getter Method. Provides this object's "group_by_combo_box"'s value.
-     * @return A String object selected by the user from the list of available data columns.
-     */
-    public boolean isGrouped () {
-    	//return (this.group_by_check_box.isSelected ());
-    	return (this.group_by_combo_box.getSelectedIndex () != -1);
-    }
-    
-    /**
-     * Getter Method. Provides this object's "group_by_combo_box"'s value.
-     * @return A String object selected by the user from the list of available data columns.
-     */
-    public String getGroupingByElement () {
-    	//return (this.group_by_check_box.isSelected ());
-    	return (String) (this.group_by_combo_box.getSelectedItem ());
-    }
-    
-    /**
-     * Getter method. Provides all datasets selected in the
-     * "available_datasets_list"
-     * JList object.
-     * 
-     * @return An ArrayList<String> object containing all selected datasets.
-     */
-    public ArrayList <String> getSelectedDatasetsToAdd () {
-        return ((ArrayList <String>) this.available_datasets_list
-                .getSelectedValuesList ());
-    }
-    
-    /**
-     * Getter method. Provides all datasets selected in the
-     * "selected_datasets_list"
-     * JList object.
-     * 
-     * @return An ArrayList<String> object containing all selected datasets.
-     */
-    public ArrayList <String> getSelectedDatasetsToRemove () {
-        return ((ArrayList <String>) this.selected_datasets_list
-                .getSelectedValuesList ());
-    }
-    
-    // Created by NetBeans IDE.
-    /**
-     * Initializes the visual components of this view form.
-     */
-    private void initComponents () {
-        this.setName ("Data Set View");
+		x_column_label.setText ("X Column");
+		x_axis_name_label.setText ("X Axis Name");
+		x_axis_type_label.setText ("X Axis Type");
 
-        add_button = new javax.swing.JButton();
-        remove_button = new javax.swing.JButton();
-        chart_type_label = new javax.swing.JLabel();
-        chart_type_combo_box = new javax.swing.JComboBox <> (ChartType.getOptions ());
-        group_by_label = new javax.swing.JLabel();
-        group_by_combo_box = new javax.swing.JComboBox <> (this.data_model.resetGroupByBox ());
-        
-        available_datasets_pane = new javax.swing.JScrollPane();
-        available_datasets_list = new javax.swing.JList <> (this.data_model.resetAvailableList ());
-        
-        selected_datasets_pane = new javax.swing.JScrollPane();
-        selected_datasets_list = new javax.swing.JList <> (this.data_model.resetSelectedList ());
+		y_column_label.setText ("Y Column");
+		y_axis_name_label.setText ("Y Axis Name");
+		y_axis_type_label.setText ("Y Axis Type");
 
-        setMaximumSize(new java.awt.Dimension(460, 300));
-        setMinimumSize(new java.awt.Dimension(460, 300));
-        setPreferredSize(new java.awt.Dimension(460, 300));
+		x_axis_type_combo_box
+				.setModel (new javax.swing.DefaultComboBoxModel <String> (AxisType.getXYOptions ()));
+		y_axis_type_combo_box
+				.setModel (new javax.swing.DefaultComboBoxModel <String> (AxisType.getXYOptions ()));
 
-        available_datasets_pane.setViewportView (available_datasets_list);
-        selected_datasets_pane.setViewportView (selected_datasets_list);
+		chart_type_label.setText ("Chart Type");
+		chart_type_combo_box
+				.setModel (new javax.swing.DefaultComboBoxModel <String> (ChartType.getOptions ()));
 
-        add_button.setText ("Add Available Pair");
-        remove_button.setText ("Remove Selected Pair");
+		chart_title_label.setText ("Chart Title");
+		group_by_column_label.setText ("Group By Column");
+		group_by_column_combo_box
+				.setModel (new javax.swing.DefaultComboBoxModel <String> (
+						new String [] { "None" }));
 
-        chart_type_label.setText ("Chart Type:");
-        group_by_label.setText ("Group By:");
+		graph_button.setText("Graph");
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(this);
         this.setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addComponent(jSeparator1)
+            .addComponent(jSeparator2)
+            .addComponent(jSeparator3)
+            .addComponent(jSeparator4)
             .addGroup(layout.createSequentialGroup()
                 .addContainerGap()
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(layout.createSequentialGroup()
-                        .addComponent(chart_type_label)
-                        .addGap(18, 18, 18)
-                        .addComponent(chart_type_combo_box, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-                    .addComponent(available_datasets_pane, javax.swing.GroupLayout.PREFERRED_SIZE, 0, Short.MAX_VALUE)
-                    .addComponent(add_button, javax.swing.GroupLayout.DEFAULT_SIZE, 206, Short.MAX_VALUE))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                        .addComponent(chart_title_label)
+                        .addGap(0, 0, Short.MAX_VALUE))
                     .addGroup(layout.createSequentialGroup()
-                        .addComponent(group_by_label, javax.swing.GroupLayout.PREFERRED_SIZE, 56, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                        .addComponent(group_by_combo_box, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-                    .addComponent(remove_button, javax.swing.GroupLayout.DEFAULT_SIZE, 224, Short.MAX_VALUE)
-                    .addComponent(selected_datasets_pane, javax.swing.GroupLayout.PREFERRED_SIZE, 0, Short.MAX_VALUE))
-                .addContainerGap())
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(x_axis_name_text_field, javax.swing.GroupLayout.Alignment.TRAILING)
+                            .addComponent(x_axis_type_combo_box, javax.swing.GroupLayout.Alignment.TRAILING, 0, 220, Short.MAX_VALUE)
+                            .addComponent(x_column_combo_box, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                            .addComponent(y_axis_name_text_field, javax.swing.GroupLayout.Alignment.TRAILING)
+                            .addComponent(y_axis_type_combo_box, javax.swing.GroupLayout.Alignment.TRAILING, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                            .addComponent(y_column_combo_box, javax.swing.GroupLayout.Alignment.TRAILING, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                            .addComponent(group_by_column_combo_box, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                            .addComponent(chart_title_text_field)
+                            .addComponent(chart_type_combo_box, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                            .addGroup(layout.createSequentialGroup()
+                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                    .addComponent(chart_type_label)
+                                    .addComponent(x_column_label)
+                                    .addComponent(x_axis_name_label)
+                                    .addComponent(x_axis_type_label)
+                                    .addComponent(y_column_label)
+                                    .addComponent(y_axis_name_label)
+                                    .addComponent(y_axis_type_label)
+                                    .addComponent(group_by_column_label))
+                                .addGap(0, 0, Short.MAX_VALUE))
+                            .addComponent(graph_button, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                        .addContainerGap())))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(layout.createSequentialGroup()
-                        .addContainerGap()
-                        .addComponent(group_by_combo_box, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                    .addGroup(layout.createSequentialGroup()
-                        .addContainerGap()
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                            .addComponent(chart_type_label)
-                            .addComponent(chart_type_combo_box, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(group_by_label))))
+                .addContainerGap()
+                .addComponent(chart_title_label)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(available_datasets_pane, javax.swing.GroupLayout.DEFAULT_SIZE, 218, Short.MAX_VALUE)
-                    .addComponent(selected_datasets_pane))
+                .addComponent(chart_title_text_field, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(remove_button)
-                    .addComponent(add_button))
-                .addContainerGap())
+                .addComponent(chart_type_label)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(chart_type_combo_box, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addComponent(jSeparator2, javax.swing.GroupLayout.PREFERRED_SIZE, 10, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addComponent(x_column_label)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(x_column_combo_box, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addComponent(x_axis_name_label)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(x_axis_name_text_field, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addComponent(x_axis_type_label)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(x_axis_type_combo_box, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addComponent(jSeparator1, javax.swing.GroupLayout.PREFERRED_SIZE, 10, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addComponent(y_column_label)
+                .addGap(4, 4, 4)
+                .addComponent(y_column_combo_box, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addComponent(y_axis_name_label)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(y_axis_name_text_field, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addComponent(y_axis_type_label)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(y_axis_type_combo_box, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addComponent(jSeparator3, javax.swing.GroupLayout.PREFERRED_SIZE, 10, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addComponent(group_by_column_label)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(group_by_column_combo_box, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(jSeparator4, javax.swing.GroupLayout.PREFERRED_SIZE, 10, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(graph_button)
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
-    }// </editor-fold>                        
+	}
 
-
-    // Variables declaration - do not modify
-    private javax.swing.JLabel group_by_label;
-    private javax.swing.JComboBox <String> group_by_combo_box;
-    private javax.swing.JButton add_button;
-    private javax.swing.JList <String> available_datasets_list;
-    private javax.swing.JScrollPane available_datasets_pane;
-    private javax.swing.JComboBox <String> chart_type_combo_box;
-    private javax.swing.JLabel chart_type_label;
-    private javax.swing.JButton remove_button;
-    private javax.swing.JList <String> selected_datasets_list;
-    private javax.swing.JScrollPane selected_datasets_pane;
-    // End of variables declaration     
-    
-    // Created by Gerardo A. Navas Morales.
-    /**
-     * Registers the "chart_type" JComboBox as an object that should be
-     * listened upon a new selection being made.
-     * 
-     * @param changeChartTypeListener
-     *            ActionListener object provided by its Controller.
-     */
-    public void addChartTypeListener (ActionListener changeChartTypeListener) {
-        this.chart_type_combo_box.addActionListener (changeChartTypeListener);
-    }
-    
-    /**
-     * Registers the "add_button" JButton as an object that should be listened
-     * upon being pressed by the user.
-     * 
-     * @param addButtonListener
-     *            ActionListener object provided by its Controller.
-     */
-    public void addAddButtonListener (ActionListener addButtonListener) {
-        this.add_button.addActionListener (addButtonListener);
-    }
-    
-    /**
-     * Registers the "remove_button" JButton as an object that should be
-     * listened
-     * upon being pressed by the user.
-     * 
-     * @param removeButtonListener
-     *            ActionListener object provided by its Controller.
-     */
-    public void addRemoveButtonListener (ActionListener removeButtonListener) {
-        this.remove_button.addActionListener (removeButtonListener);
-    }
-
-    /**
+	// Variables declaration - do not modify
+	private javax.swing.JLabel chart_title_label;
+	private javax.swing.JTextField chart_title_text_field;
+	private javax.swing.JComboBox <String> chart_type_combo_box;
+	private javax.swing.JLabel chart_type_label;
+	private javax.swing.JSeparator jSeparator1;
+	private javax.swing.JSeparator jSeparator2;
+	private javax.swing.JSeparator jSeparator3;
+	private javax.swing.JLabel x_axis_name_label;
+	private javax.swing.JTextField x_axis_name_text_field;
+	private javax.swing.JComboBox <String> x_axis_type_combo_box;
+	private javax.swing.JLabel x_axis_type_label;
+	private javax.swing.JComboBox <String> x_column_combo_box;
+	private javax.swing.JLabel x_column_label;
+	private javax.swing.JLabel y_axis_name_label;
+	private javax.swing.JTextField y_axis_name_text_field;
+	private javax.swing.JComboBox <String> y_axis_type_combo_box;
+	private javax.swing.JLabel y_axis_type_label;
+	private javax.swing.JComboBox <String> y_column_combo_box;
+	private javax.swing.JLabel y_column_label;
+	private javax.swing.JComboBox <String> group_by_column_combo_box;
+	private javax.swing.JLabel group_by_column_label;
+	private javax.swing.JSeparator jSeparator4;
+	private javax.swing.JButton graph_button;
+	// End of variables declaration
+	
+	// Listener Methods.	
+	/**
      * Registers the "group_by" JComboBox as an object that should be
-     * listened upon a new selection being made.
+     * listened upon a new option being chosen.
      * 
      * @param groupByColumnListener
      *            ActionListener object provided by its Controller.
      */
 	public void addGroupByColumnListener (ActionListener groupByColumnListener) {
-		 this.group_by_combo_box.addActionListener (groupByColumnListener);
+		 this.group_by_column_combo_box.addActionListener (groupByColumnListener);
 	}
+
+	/**
+	 * Registers the "chart_title" JTextField as an object that should be
+	 * listened upon deselecting the box.
+	 * 
+	 * @param chartTitleListener ActionListener object provided by its Controller.
+	 */
+	public void addChartTitleListener (FocusAdapter chartTitleListener) {
+		this.chart_title_text_field.addFocusListener (chartTitleListener);
+	}
+	
+	/**
+     * Registers the "chart_type" JComboBox as an object that should be
+     * listened upon a new option being chosen.
+     * 
+     * @param chartTypeListener
+     *            ActionListener object provided by its Controller.
+     */
+    public void addChartTypeListener (ActionListener chartTypeListener) {
+        this.chart_type_combo_box.addActionListener (chartTypeListener);
+    }
+    
+    /**
+	 * Registers the "x_column" JComboBox as an object that should be
+	 * listened upon a new option being chosen.
+	 * 
+	 * @param xColumnListener ActionListener object provided by its Controller.
+	 */
+	public void addXColumnListener (ActionListener xColumnListener) {
+		this.x_column_combo_box.addActionListener (xColumnListener);
+	}
+
+	/**
+	 * Registers the "y_column" JComboBox as an object that should be
+	 * listened upon a new option being chosen.
+	 * 
+	 * @param yColumnListener ActionListener object provided by its Controller.
+	 */
+	public void addYColumnListener (ActionListener yColumnListener) {
+		this.y_column_combo_box.addActionListener (yColumnListener);
+	}
+
+	/**
+	 * Registers the "x_axis_name" JTextField as an object that should be
+	 * listened upon deselecting the box.
+	 * 
+	 * @param xAxisNameListener ActionListener object provided by its Controller.
+	 */
+	public void addXAxisNameListener (FocusAdapter xAxisNameListener) {
+		this.x_axis_name_text_field.addFocusListener (xAxisNameListener);
+	}
+
+	/**
+	 * Registers the "y_axis_name" JTextField as an object that should be
+	 * listened upon deselecting the box.
+	 * 
+	 * @param yAxisNameListener ActionListener object provided by its Controller.
+	 */
+	public void addYAxisNameListener (FocusAdapter yAxisNameListener) {
+		this.y_axis_name_text_field.addFocusListener (yAxisNameListener);
+	}
+
+	/**
+	 * Registers the "x_axis_type" JComboBox as an object that should be
+	 * listened upon a new option being chosen.
+	 * 
+	 * @param xAxisTypeListener ActionListener object provided by its Controller.
+	 */
+	public void addXAxisTypeListener (ActionListener xAxisTypeListener) {
+		this.x_axis_type_combo_box.addActionListener (xAxisTypeListener);
+	}
+
+	/**
+	 * Registers the "y_axis_type" JComboBox as an object that should be
+	 * listened upon a new option being chosen.
+	 * 
+	 * @param yAxisTypeListener ActionListener object provided by its Controller.
+	 */
+	public void addYAxisTypeListener (ActionListener yAxisTypeListener) {
+		this.y_axis_type_combo_box.addActionListener (yAxisTypeListener);
+	}
+	
+	/**
+	 * Registers the "graph_button" JButton as an object that should be
+	 * listened upon being selected.
+	 * 
+	 * @param graphListener ActionListener object provided by its Controller.
+	 */
+	public void addGraphListener (ActionListener graphListener) {
+		this.graph_button.addActionListener (graphListener);
+	}
+	
+	// Getter Methods
+	
+	/**
+	 * Getter method. Provides the value selected in the "chart_title" JTextField as a String object.
+	 * 
+	 * @return The String of the currently-selected option in the "chart_title" JTextField.
+	 */
+	public String getChartName () {
+		return (this.chart_title_text_field.getText ());
+	}
+	
+	/**
+     * Getter Method. Provides this object's "chart_type_combo_box"'s value as one of the options provided by the ChartType class.
+     * @return A ChartType object based on the representation in the "chart_type_combo_box" JComboBox object.
+     */
+    public ChartType getChartType () {
+        String c_type = (String) this.chart_type_combo_box.getSelectedItem ();
+
+        if (c_type.equals (ChartType.XY_GRAPH.toString ())) {
+            return (ChartType.XY_GRAPH);
+        } else { //if (c_type.equals (ChartType.BAR_GRAPH.toString ())) {
+            return (ChartType.BAR_GRAPH);
+        } 
+    }
+	
+	/**
+	 * Getter method. Provides the value selected in the "x_column" JComboBox as a String object.
+	 * 
+	 * @return The String of the currently-selected option in the "x_column" JComboBox.
+	 */
+	public String getXColumn () {
+		return ((String) this.x_column_combo_box.getSelectedItem ());
+	}
+	
+	/**
+	 * Getter method. Provides the value selected in the "y_column" JComboBox as a String object.
+	 * 
+	 * @return The String of the currently-selected option in the "y_column" JComboBox.
+	 */
+	public String getYColumn () {
+		return ((String) this.y_column_combo_box.getSelectedItem ());
+	}
+	
+	/**
+	 * Getter method. Provides the value selected in the "x_axis_name" JTextField as a String object.
+	 * 
+	 * @return The String of the currently-selected option in the "x_axis_name" JTextField.
+	 */
+	public String getXAxisName () {
+		return (this.x_axis_name_text_field.getText ());
+	}
+
+	/**
+	 * Getter method. Provides the value selected in the "y_axis_name" JTextField as a String object.
+	 * 
+	 * @return The String of the currently-selected option in the "y_axis_name" JTextField.
+	 */
+	public String getYAxisName () {
+		return (this.y_axis_name_text_field.getText ());
+	}
+
+	/**
+	 * Getter method. Provides the value selected in the "x_axis_type" JComboBox as a String object.
+	 * 
+	 * @return The String of the currently-selected option in the "x_axis_type" JComboBox.
+	 */
+	public String getXAxisType () {
+		return ((String) this.x_axis_type_combo_box.getSelectedItem ());
+	}
+
+	/**
+	 * Getter method. Provides the value selected in the "y_axis_type" JComboBox as a String object.
+	 * 
+	 * @return The String of the currently-selected option in the "y_axis_type" JComboBox.
+	 */
+	public String getYAxisType () {
+		return ((String) this.y_axis_type_combo_box.getSelectedItem ());
+	}
+    
+    /**
+     * Getter Method. Provides this object's "group_by_combo_box"'s value.
+     * 
+     * @return A String object selected by the user from the list of available data columns.
+     */
+    public String getGroupingByElement () {
+    	return (String) (this.group_by_column_combo_box.getSelectedItem ());
+    }
 }

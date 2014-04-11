@@ -1,9 +1,5 @@
 package org.pvg.plasmagraph.utils.graphs;
 
-import java.util.ArrayList;
-
-import javax.swing.JPanel;
-
 import org.jfree.chart.JFreeChart;
 import org.jfree.data.general.Dataset;
 import org.pvg.plasmagraph.utils.data.DataSet;
@@ -16,17 +12,6 @@ import org.pvg.plasmagraph.utils.template.Template;
  * @author Gerardo A. Navas Morales
  */
 public interface Graph {
-	
-	/**
-	 * Creates a JPanel containing the chart. Sets the availability of graph-saving.
-	 * 
-	 * @param t Template reference used in the formation of various parts 
-	 * of the graph.
-	 * @param ds DataSet reference used in the creation of the graph.
-	 * @param p 
-	 * @return A JPanel containing the graph.
-	 */
-	JPanel createJPanel (Template t, DataSet ds, GraphPair p);
 	
 	/**
 	 * Creates a Dataset specifically for the purposes of graphing the data 
@@ -52,29 +37,16 @@ public interface Graph {
 	 * @return A JFreeChart containing the visual representation of the graph.
 	 */
 	JFreeChart createChart (Dataset set, Template t, GraphPair p);
+
+	/**
+	 * Getter method. Provides the internal JFreeChart object that contains the graph.
+	 * 
+	 * @return A JFreeChart created by the object.
+	 */
+	JFreeChart getChart ();
 	
 	/**
-	 * Creates a JPanel containing the chart. Sets the availability of graph-saving.
-	 * 
-	 * @param t Template reference used in the formation of various parts 
-	 * of the graph.
-	 * @param ds DataSet reference used in the creation of the graph.
-	 * @param p 
-	 * @return A JPanel containing the graph.
+	 * Testing method. Opens up a JFrame containing the graph!
 	 */
-	@SuppressWarnings ("rawtypes")
-	JPanel createJPanel (Template t, ArrayList ds, GraphPair p);
-	
-	/**
-	 * Creates a Dataset specifically for the purposes of graphing the data 
-	 * using the DataSet's provided values.
-	 * 
-	 * @param t Template reference used in the formation of various parts 
-	 * of the graph.
-	 * @param ds DataSet reference used in the creation of the graph.
-	 * @param p 
-	 * @return A Dataset containing the DataSet's data values
-	 */
-	@SuppressWarnings ("rawtypes")
-	Dataset createDataset (Template t, ArrayList ds, GraphPair p);
+	void testGraph ();
 }

@@ -24,7 +24,7 @@ public class GraphTest {
 	public void testXYGraphs () {
 		// Generate data.
 		DataSet ds = xyDataTest ();
-		GraphPair p = new GraphPair (0, 1, "XY Graph Test");
+		GraphPair p = new GraphPair (0, "Time", 1, "Position");
 		
 		// Generate Template.
 		Template t = new Template ();
@@ -32,12 +32,11 @@ public class GraphTest {
 		
 		// Graph data via the XYGraph class!
 		XYGraph chart = new XYGraph (t, ds, p);
-		chart.pack ();
-		chart.setVisible (true);
+		chart.testGraph ();
 		
 		// Test
 		assertTrue ("Correctly Displayed?: ", JOptionPane.showConfirmDialog
-				(chart, "Does the graph look like an XY Graph?",
+				(null, "Does the graph look like an XY Graph?",
 						"Proper XY Graph?",
 						JOptionPane.YES_NO_OPTION) == JOptionPane.YES_OPTION);
 	}
@@ -46,7 +45,7 @@ public class GraphTest {
 	public void testBarGraph () {
 		// Generate data.
 		DataSet ds = BarGraphDataSet ();
-		GraphPair p = new GraphPair (0, 1, "Bar Graph Test");
+		GraphPair p = new GraphPair (0, "Pie Flavors", 1, "Pie Quantity");
 		
 		// Generate Template.
 		Template t = new Template ();
@@ -55,12 +54,11 @@ public class GraphTest {
 		
 		// Graph data via the XYGraph class!
 		BarGraph chart = new BarGraph (t, ds, p);
-		chart.pack ();
-		chart.setVisible (true);
+		chart.testGraph ();
 		
 		// Test
 		assertTrue ("Correctly Displayed?: ", JOptionPane.showConfirmDialog
-				(chart, "Does the graph look like an BarGraph?",
+				(null, "Does the graph look like an BarGraph?",
 						"Proper BarGraph?",
 						JOptionPane.YES_NO_OPTION) == JOptionPane.YES_OPTION);
 	}

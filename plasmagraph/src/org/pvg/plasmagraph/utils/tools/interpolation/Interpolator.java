@@ -1,6 +1,7 @@
 package org.pvg.plasmagraph.utils.tools.interpolation;
 
-import java.util.ArrayList;
+import java.math.BigDecimal;
+import java.text.DecimalFormat;
 
 import javax.swing.JOptionPane;
 
@@ -18,9 +19,11 @@ import org.pvg.plasmagraph.utils.data.DataReference;
 import org.pvg.plasmagraph.utils.data.DataSet;
 import org.pvg.plasmagraph.utils.data.GraphPair;
 import org.pvg.plasmagraph.utils.data.HeaderData;
+import org.pvg.plasmagraph.utils.graphs.Graph;
 import org.pvg.plasmagraph.utils.graphs.XYGraph;
 import org.pvg.plasmagraph.utils.template.Template;
 import org.pvg.plasmagraph.utils.tools.DataConfidence;
+import org.pvg.plasmagraph.utils.types.ColumnType;
 import org.pvg.plasmagraph.utils.types.InterpolationType;
 
 /**
@@ -36,28 +39,11 @@ public class Interpolator {
 	 * @param hd The Headers to use for the interpolation.
 	 * @param t The settings the DataSet is based upon.
 	 * @param dr The DataReference object containing all the pairs to interpolate.
-	 */
-	public static void interpolate (HeaderData hd, Template t, DataReference dr) {
-		// For all of the DataReference pairs in dr...
-		for (GraphPair p : dr) {
-			interpolate (hd, t, p);
-		}
-	}
-	
-	/**
-	 * External path to interpolate data and graph said data.
 	 * 
-	 * @param ads The de-outliered ArrayList of DataSets to interpolate.
-	 * @param t The settings the DataSet is based upon.
-	 * @param dr The DataReference object containing all the pairs to interpolate.
+	 * @return 
 	 */
-	public static void interpolate (ArrayList <DataSet> ads, Template t, DataReference dr) {
-		// For all of the DataReference pairs in dr...
-		// Assumption: "dr" is the same size as "ads".
-		// Proven by: ads is created in a for-loop.
-		for (int counter = 0; (counter < dr.size ()); ++counter) {
-			interpolate (ads.get (counter), t, dr.get (counter));
-		}
+	public static Graph interpolate (HeaderData hd, Template t, DataReference dr) {
+		return (interpolate (hd, t, dr.get ()));
 	}
 	
 	/**
@@ -66,20 +52,31 @@ public class Interpolator {
 	 * @param hd The Headers to use for the interpolation.
 	 * @param t The settings the DataSet is based upon.
 	 * @param p The DataReference pair to interpolate from the DataSet provided.
+	 * 
+	 * @return An XYGraph object containing an interpolated chart.
 	 */
-    public static void interpolate (HeaderData hd, Template t, GraphPair p) {
+    public static Graph interpolate (HeaderData hd, Template t, GraphPair p) {
     	
-    	// Create a DataSet for this interpolation.
-    	DataSet ds = hd.populateData (p);
+    	if (!hd.hasValidGraphTypes (t.getChartType (), p)) {
+    		
+    		// TODO Better reporting than this, please!
+    		JOptionPane.showMessageDialog (null, 
+    				"Error: Incorrect column types for interpolation.");
+    		
+    		return (null);
+    		
+    	} else {
+    		// Create a DataSet for this interpolation.
+        	DataSet ds = hd.populateData (p);
 
-        // Check which of the different regressions you'll be doing.
-        XYSeries interpolated_dataset = getInterpolation (ds, t, p);
-        
-        //System.out.println (printXYSeries (interpolated_dataset));
-        
-        // Graph it!
-        graphInterpolation (ds.toXYGraphDataset (p), interpolated_dataset, t, p);
-        
+            // Check which of the different regressions you'll be doing.
+            XYSeries interpolated_dataset = getInterpolation (ds, t, p);
+            
+            // Graph it!
+            return (graphInterpolation (ds.toXYGraphDataset (p), 
+            		interpolated_dataset, t, p));
+            
+    	}
     }
     
     /**
@@ -88,19 +85,28 @@ public class Interpolator {
 	 * @param ds The DataSet to use for the interpolation.
 	 * @param t The settings the DataSet is based upon.
 	 * @param p The DataReference pair to interpolate from the DataSet provided.
+	 * 
+     * @return An XYGraph object containing an interpolated chart.
 	 */
-    public static void interpolate (DataSet ds, Template t, GraphPair p) {
+    public static Graph interpolate (DataSet ds, Template t, GraphPair p) {
     	
-    	// Create a DataSet for this interpolation.
-
-        // Check which of the different regressions you'll be doing.
-        XYSeries interpolated_dataset = getInterpolation (ds, t, p);
-        
-        //System.out.println (printXYSeries (interpolated_dataset));
-        
-        // Graph it!
-        graphInterpolation (ds.toXYGraphDataset (p), interpolated_dataset, t, p);
-        
+    	if (!(ColumnType.DOUBLE.toString ().equals (ds.getX ().getType ()) &&
+    			(ColumnType.DOUBLE.toString ().equals (ds.getY ().getType ())))) {
+    		
+    		// TODO Better reporting than this, please!
+    		JOptionPane.showMessageDialog (null, 
+    				"Error: Incorrect column types for interpolation.");
+    		
+    		return (null);
+    		
+    	} else {
+	        // Check which of the different regressions you'll be doing.
+	        XYSeries interpolated_dataset = getInterpolation (ds, t, p);
+	        
+	        // Graph it!
+	        return (graphInterpolation (ds.toXYGraphDataset (p), 
+	        		interpolated_dataset, t, p));
+    	}
     }
 
     /**
@@ -120,9 +126,6 @@ public class Interpolator {
 		double [] regression_params;
 		// Pearsons Correlation calculator for most functions.
     	PearsonsCorrelation p_correlation = new PearsonsCorrelation ();
-    	// XYDataset container for some JFree operations.
-    	XYSeriesCollection regression_set = 
-    			new XYSeriesCollection (ds.toXYGraphDataset (p));
 
     	//======================================================================================//
     	// Perform the regression and get the dataset out of it, depending on the type
@@ -153,6 +156,9 @@ public class Interpolator {
         	
         } //======================================================================================//
     	else if (t.getInterpolationType ().equals (InterpolationType.QUADRATIC)) {
+    		// XYDataset container for some JFree operations.
+        	XYSeriesCollection regression_set = 
+        			new XYSeriesCollection (ds.toXYGraphDataset (p));
         	
     		regression_params = org.jfree.data.statistics.Regression.
         			getPolynomialRegression (regression_set, 0, 2);
@@ -169,6 +175,9 @@ public class Interpolator {
         	
         }  //======================================================================================//
         else if (t.getInterpolationType ().equals (InterpolationType.CUBIC)) {
+        	// XYDataset container for some JFree operations.
+        	XYSeriesCollection regression_set = 
+        			new XYSeriesCollection (ds.toXYGraphDataset (p));
         	
         	regression_params = org.jfree.data.statistics.Regression.
         			getPolynomialRegression (regression_set, 0, 3);
@@ -185,6 +194,9 @@ public class Interpolator {
         	
         }  //======================================================================================// 
         else if (t.getInterpolationType ().equals (InterpolationType.QUARTIC)) {
+        	// XYDataset container for some JFree operations.
+        	XYSeriesCollection regression_set = 
+        			new XYSeriesCollection (ds.toXYGraphDataset (p));
         	
         	regression_params = org.jfree.data.statistics.Regression.
         			getPolynomialRegression (regression_set, 0, 4);
@@ -202,15 +214,32 @@ public class Interpolator {
         	
         } //======================================================================================//
     	else { // if (t.getInterpolationType ().equals (InterpolationType.SPLINE))
+    		// Prepare data.
+    		double [] x_column = new double [ds.getColumnLength ()];
+    		double [] y_column = new double [ds.getColumnLength ()];
+    		ds.orderData (x_column, y_column);
+    		
+    		// Test: Show what the hell the columns contain.
+    		for (int i = 0; (i < x_column.length); ++i) {
+    			System.out.println ("(" + x_column[i] + ", " + y_column[i] + ")");
+    		}
+    		
         	// Get Function to create data.
-        	
         	SplineInterpolator spline = new SplineInterpolator ();
-        	PolynomialSplineFunction func = spline.interpolate
-        			 (ds.get (p.getIndex1 ()).toDoubleArray (), 
-        			  ds.get (p.getIndex2 ()).toDoubleArray ());
+        	PolynomialSplineFunction func = spline.interpolate (x_column, y_column);
+        	
+        	// Prepare template for minimum and maximum bounds.
+        	t.setLowerInterval (func.getKnots ()[0]);
+        	t.setUpperInterval (func.getKnots ()[func.getKnots ().length - 1]);
         	 
         	// Create data from function.
         	regression_dataset = createSeries (func, t);
+        	
+        	for (int i = 0; (i < regression_dataset.getItemCount ()); ++i) {
+        		System.out.println ("(" + regression_dataset.getX (i) + ", " + 
+        							regression_dataset.getY (i) + ")");
+        	}
+        	
         	
         	// Obtain and show the R-squared value.
         	showRSquaredValidity (ds, func);
@@ -227,17 +256,29 @@ public class Interpolator {
 	 * @param func PolynomialSplineFunction which will generate y values.
 	 * @param t Template object that contains interval bounds and interval.
 	 * @return An XYSeries provided by the PolynomialSplineFunction.
+	 * 
+	 * TODO: Should include ArithmeticException checking due to BigDecimal calculations.
 	 */
 	private static XYSeries createSeries (PolynomialSplineFunction func, Template t) {
 		XYSeries s = new XYSeries ("Interpolation");
-		double x_value;
 		
+		BigDecimal lower = new BigDecimal (t.getLowerInterval ());
+		BigDecimal x = new BigDecimal (t.getLowerInterval ()); 
+		BigDecimal delta = new BigDecimal (t.getUpperInterval ()).subtract (x);
+		BigDecimal interval = BigDecimal.ONE.divide (new BigDecimal (t.getInterpolationInterval ()));
+		
+		//System.out.println (interval.toString ());
+		
+		// Insert the lowest value and its result.
+		// Insert every value that isn't the lowest or highest values and their results.
 		for (int i = 0; (i < t.getInterpolationInterval ()); ++i) {
-			x_value = (t.getUpperInterval () * (i * (1.0 / t.getInterpolationInterval ()))) + t.getLowerInterval ();
 			
-			s.add (x_value, func.value (x_value));
+			x = lower.add (delta.multiply (interval.multiply (new BigDecimal (i))));
+			
+			s.add (x.doubleValue (), func.value (x.doubleValue ()));
 		}
 		
+		// Return the series.
 		return (s);
 	}
 	
@@ -274,7 +315,7 @@ public class Interpolator {
 	 * @param t
 	 * @param p 
 	 */
-	private static void graphInterpolation (XYSeries interpolation_dataset,
+	private static XYGraph graphInterpolation (XYSeries interpolation_dataset,
 			XYSeries interpolated_dataset, Template t, GraphPair p) {
 		// Combine the two datasets into an XYSeriesCollection
 		XYSeriesCollection graph_data = new XYSeriesCollection ();
@@ -282,9 +323,7 @@ public class Interpolator {
 		graph_data.addSeries (interpolated_dataset);
 		
 		// Graph Interpolation and its original data.
-		XYGraph graph = new XYGraph (t, graph_data, p);
-		graph.pack ();
-		graph.setVisible (true);
+		return (new XYGraph (t, graph_data, p));
 	}
     
 	/**

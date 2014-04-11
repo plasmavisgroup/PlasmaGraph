@@ -6,9 +6,10 @@ true
 true
 false
 PlotOrientation.VERTICAL
-None
+Number Axis
+Number Axis
 Spline
 Remove
 0.0
 10.0
-100
+1000

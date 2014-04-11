@@ -41,7 +41,8 @@ public class MATTest {
 			mlr.getHeaders (hd);
 			
 			// Prepare GraphPair
-			GraphPair p = new GraphPair (1, 2, "Empty vs. Variable");
+			GraphPair p = new GraphPair (1, hd.get (1).getKey (), 
+					2, hd.get (2).getKey ());
 			
 			// Obtain DataSet
 			mlr.toDataSet (tstDataSet, p, hd);
@@ -117,13 +118,15 @@ public class MATTest {
 		File dummy = new File ("./plasmagraph/test/matlab/Parameter2013-06-11.mat");
 		MatlabProcessor mlr = new MatlabProcessor (dummy);
 		
-		// Prepare GraphPair
-		GraphPair p = new GraphPair (1, 2, "Empty vs. Variable");
 		try {
 			
 			// Prepare HeaderData
 			HeaderData hd = new HeaderData ();
 			mlr.getHeaders (hd);
+			
+			// Prepare GraphPair
+			GraphPair p = new GraphPair (1, hd.get (1).getKey (), 
+					2, hd.get (2).getKey ());
 			
 			// Test
 			mlr.toDataSet (data, p, hd);

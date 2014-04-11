@@ -8,7 +8,6 @@ import org.junit.runners.Suite;
 	MATTest.class,
 	DataSetTest.class,
 	TemplateTest.class,
-	ReferenceTest.class,
 	GraphTest.class,
 	InterpolatorTest.class,
 	OutlierSearchTest.class,

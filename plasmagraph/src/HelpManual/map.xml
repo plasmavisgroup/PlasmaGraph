@@ -1,0 +1,17 @@
+<?xml version='1.0' encoding='ISO-8859-1' ?>
+<!DOCTYPE map PUBLIC "-//Sun Microsystems Inc.//DTD JavaHelp Map Version 1.0//EN" "http://java.sun.com/products/javahelp/map_1_0.dtd">
+
+<map version="1.0">
+  <mapID target="Help" url="html/index.htm" />
+  <mapID target="graph_window" url="html/graph_window.htm" />
+  <mapID target="tools_window" url="html/toolswindow.htm" />
+  <mapID target="csvfile_specs" url="html/csvfile_specs.htm" />
+  <mapID target="import_data" url="html/import_data.htm" />
+  <mapID target="import_template" url="html/import_template.htm" />
+  <mapID target="matfile_specs" url="html/matfile_specs.htm" />
+  <!-- <mapID target="reset_data" url="html/reset_data.htm" /> -->
+  <mapID target="save_template" url="html/save_template.htm" />
+  <mapID target="tabbed_menu_data" url="html/tabbed_menu_data.htm" />
+  <mapID target="tabbed_menu_options" url="html/tabbed_menu_options.htm" />
+  <mapID target="view_data" url="html/view_data.htm" />
+</map>

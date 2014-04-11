@@ -1,9 +1,5 @@
 package org.pvg.plasmagraph.utils.types;
 
-import org.apache.commons.lang3.math.NumberUtils;
-
-import com.jmatio.types.MLArray;
-
 /**
  * Setting container object for the possible types of Columns available in 
  * the PlasmaGraph program.

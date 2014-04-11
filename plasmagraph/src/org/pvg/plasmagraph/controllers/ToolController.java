@@ -4,12 +4,13 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.FocusEvent;
 import java.awt.event.FocusListener;
+import java.awt.event.ItemEvent;
+import java.awt.event.ItemListener;
 
 import javax.swing.SwingWorker;
 import javax.swing.event.ChangeEvent;
 import javax.swing.event.ChangeListener;
 
-import org.pvg.plasmagraph.controllers.DataSetController.DataViewReferenceListener;
 import org.pvg.plasmagraph.models.ToolModel;
 import org.pvg.plasmagraph.views.ToolView;
 
@@ -40,9 +41,6 @@ public class ToolController {
         // Update Template Listeners
         tool_view.addInterpolationTypeListener (new InterpolationTypeListener ());
         tool_view.addOutlierResponseListener (new OutlierResponseListener ());
-        tool_view.addLowerBoundListener (new LowerBoundListener ());
-        tool_view.addUpperBoundListener (new UpperBoundListener ());
-        tool_view.addIntervalListener (new IntervalListener ());
         // Update View Listeners
         tool_model.addTemplateChangeListener (new ToolViewTemplateListener ());
     }
@@ -55,17 +53,23 @@ public class ToolController {
      * 
      * @author Gerardo A. Navas Morales
      */
-    class InterpolationTypeListener implements ActionListener {
+    class InterpolationTypeListener implements ItemListener {
         
         /**
          * Bridge between ToolView and ToolModel; changes Template's
          * Interpolation Type value.
          */
-        @Override
-        public void actionPerformed (ActionEvent e) {
-            tool_model.getTemplate ().setInterpolationType
-            (tool_view.getInterpolationType ());
-        }
+		@Override
+		public void itemStateChanged (ItemEvent e) {
+			// TODO Auto-generated method stub
+			if (e.getStateChange () == ItemEvent.SELECTED) {
+				tool_model.getTemplate ().setInterpolationType
+	            (tool_view.getInterpolationType ());
+	            
+	            // Notify relevant listeners.
+	            tool_model.getTemplate ().notifyListeners ();
+			}
+		}
         
     }
     
@@ -77,91 +81,20 @@ public class ToolController {
      * 
      * @author Gerardo A. Navas Morales
      */
-    class OutlierResponseListener implements ActionListener {
+    class OutlierResponseListener implements ItemListener {
         
         /**
          * Updates the Template's Outlier Response value.
          */
-        @Override
-        public void actionPerformed (ActionEvent e) {
-            tool_model.getTemplate ().setOutlierResponse
-            (tool_view.getOutlierResponseType ());
-        }
-        
-    }
-    
-    /**
-     * Listener for the Template that contains all settings for the program.
-     * Relies on FocusListener in order to know that a change has occurred
-     * in the Template. 
-     * 
-     * @author Gerardo A. Navas Morales
-     */
-    class LowerBoundListener implements FocusListener {
-        
-
 		@Override
-		public void focusGained (FocusEvent e) {
-			// Empty
-		}
-
-		/**
-		 * Updates the Template with the value in the view.
-		 */
-		@Override
-		public void focusLost (FocusEvent e) {
-            tool_model.getTemplate ().setLowerInterval
-    		(tool_view.getLowerInterval ());
-		}
-        
-    }
-    
-    /**
-     * Listener for the Template that contains all settings for the program.
-     * Relies on FocusListener in order to know that a change has occurred
-     * in the Template. 
-     * 
-     * @author Gerardo A. Navas Morales
-     */
-    class UpperBoundListener implements FocusListener {
-        
-		@Override
-		public void focusGained (FocusEvent e) {
-			// Empty
-		}
-
-		/**
-		 * Updates the Template with the value in the view.
-		 */
-		@Override
-		public void focusLost (FocusEvent e) {
-            tool_model.getTemplate ().setUpperInterval
-    				(tool_view.getUpperInterval ());
-		}
-        
-    }
-    
-    /**
-     * Listener for the Template that contains all settings for the program.
-     * Relies on FocusListener in order to know that a change has occurred
-     * in the Template. 
-     * 
-     * @author Gerardo A. Navas Morales
-     */
-    class IntervalListener implements FocusListener {
-        
-		@Override
-		public void focusGained (FocusEvent e) {
-			// Empty
-		}
-
-		/**
-		 * Updates the Template with the value in the view.
-		 */
-		@Override
-		public void focusLost (FocusEvent e) {
-			tool_model.getTemplate ().setInterpolationInterval
-    			(tool_view.getInterval ());
+		public void itemStateChanged (ItemEvent e) {
+			if (e.getStateChange () == ItemEvent.SELECTED) {
+				 tool_model.getTemplate ().setOutlierResponse
+		            (tool_view.getOutlierResponseType ());
+		            
+		         // Notify relevant listeners.
+		            tool_model.getTemplate ().notifyListeners ();
+			}
 		}
         
     }
@@ -184,7 +117,7 @@ public class ToolController {
 
                 @Override
                 protected Void doInBackground () throws Exception {
-                    tool_view.updateTemplateView ();
+                    tool_view.updateView ();
                     return null;
                 }
                 

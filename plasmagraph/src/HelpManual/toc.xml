@@ -1,0 +1,20 @@
+<?xml version='1.0' encoding='ISO-8859-1' ?>
+<!DOCTYPE toc PUBLIC "-//Sun Microsystems Inc.//DTD JavaHelp TOC Version 1.0//EN" "http://java.sun.com/products/javahelp/toc_1_0.dtd">
+<toc version="1.0">
+  <tocitem text="PlasmaGraph Help" target="Help" >
+      <tocitem text="Matlab File Specs" target="matfile_specs" />
+      <tocitem text="CSV File Specs" target="csvfile_specs" />
+  </tocitem>
+  <tocitem text="Tools window" target="tools_window">
+    <tocitem text="Import Data" target="import_data" />
+    <tocitem text="Inspect Data" target="view_data" />
+    <!-- <tocitem text="Reset Data" target="reset_data" /> -->
+    <tocitem text="Save Template" target="save_template" />
+    <tocitem text="Import Template" target="import_template" />
+    <tocitem text="Tabbed Menu (Data)" target="tabbed_menu_data" />
+    <tocitem text="Tabbed Menu (Options)" target="tabbed_menu_options" />
+  </tocitem>
+  <tocitem text="Graph Window" target="graph_window" >
+    <tocitem text="Exporting Graphs" target="graph_window" />
+  </tocitem>
+</toc>

@@ -1,15 +1,13 @@
 package org.pvg.plasmagraph.utils.data;
 
-import java.util.ArrayList;
 import java.util.HashSet;
-import java.util.Iterator;
 import java.util.Set;
 
 import javax.swing.event.ChangeEvent;
 import javax.swing.event.ChangeListener;
 
-import org.jfree.data.category.DefaultCategoryDataset;
-import org.jfree.data.xy.XYSeries;
+import org.apache.commons.math3.util.Pair;
+import org.pvg.plasmagraph.utils.types.ColumnType;
 
 /**
  * A reference-holding object, to be used parallel to DataSet, that maintains 
@@ -19,77 +17,127 @@ import org.jfree.data.xy.XYSeries;
  * 
  * @author Gerardo A. Navas Morales
  */
-public class DataReference implements Iterable<GraphPair> {
+public class DataReference {
 	/** Collection of listeners for any change that occurs in this DataReference. */
     private Set <ChangeListener> listeners;
 	/** Container for Reference Pairs. */
-	private ArrayList<GraphPair> table;
+	private GraphPair pair;
 	
 	/**
 	 * Constructor; initializes the ArrayList container.
 	 */
 	public DataReference () {
 		this.listeners = new HashSet <> ();
-		table = new ArrayList <> ();
+		pair = new GraphPair ();
 	}
 	
 	/**
-	 * Interfacing method between the exterior and the table contained in this object.
-	 * Adds the Pair object provided to it and responds if the process succeeded or not.
-	 * 
-	 * @param p Pair to add to the ArrayList.
-	 * @return A boolean specifying method success (true) or failure (false).
-	 */
-	public boolean add (GraphPair p) {
-	    // Check to see if the indices are even possible.
-	    // Also check to see if the name of the Pair is even useful.
-	    if ((p.getIndex1 () >= 0) && (p.getIndex2 () >= 0) &&
-	            (p.getName ().contains ("vs."))) {
-	    	boolean b = table.add(p);
-	    	this.notifyListeners ();
-	        return (b);
-	    } else {
-	        return (false);
-	    }
-	}
-	
-	/**
-	 * Interfacing method between the exterior and the table contained in this object.
 	 * Adds the Pair object components provided to it and responds if the process succeeded or not.
 	 * 
-	 * @param p1 Index position of the first half of the pair object.
-	 * @param p2 Index position of the second half of the pair object.
-	 * @param name Name of the Pair.
-	 * @return A boolean specifying method success (true) or failure (false).
+	 * @param p GraphPair to add to this object.
 	 */
-	public boolean add (int p1, int p2, String name) {
-	    return (this.add (new GraphPair (p1, p2, name)));
+	public void add (GraphPair p) {
+
+		pair = new GraphPair (p.getGroup (), p.getGroupName (),
+				p.getXIndex (), p.getXIndexName (),
+				p.getYIndex (), p.getYIndexName ());
+	}
+	
+	/**
+	 * Adds the Pair object components provided to it and responds if the process succeeded or not.
+	 * 
+	 * @param pg Pair containing the group column, if it exists.
+	 * @param pgi Index position of the group column, if it exists.
+	 * @param p1 Pair containing the first column.
+	 * @param p1i Index position of the first half of the pair object.
+	 * @param p2 Pair containing the second columns.
+	 * @param p2i Index position of the second half of the pair object.
+	 */
+	public void add (Pair<String, ColumnType> pg, int pgi,
+			Pair<String, ColumnType> p1, int p1i,
+			Pair<String, ColumnType> p2, int p2i) {
+
+		pair = new GraphPair (pgi, pg.getKey (), 
+				p1i, p1.getKey (), p2i, p2.getKey ());
+	}
+	
+	/**
+	 * Adds the Pair object components provided to it and responds if the process succeeded or not.
+	 * 
+	 * @param p1 Pair containing the first column.
+	 * @param p1i Index position of the first half of the pair object.
+	 * @param p2 Pair containing the second columns.
+	 * @param p2i Index position of the second half of the pair object.
+	 */
+	public void add (Pair<String, ColumnType> p1, int p1i,
+			Pair<String, ColumnType> p2, int p2i) {
+
+		pair = new GraphPair (-1, "", 
+				p1i, p1.getKey (), p2i, p2.getKey ());
+	}
+	
+	/**
+	 * Creates a new GraphPair based on the parameters.
+	 * 
+	 * @param group Group column index.
+	 * @param group_name Group column name.
+	 * @param column1 X Axis column index.
+	 * @param column1_name X Axis column name.
+	 * @param column2 Y Axis column index.
+	 * @param column2_name Y Axis column name.
+	 */
+	public void add (int group, String group_name, 
+			int column1, String column1_name, 
+			int column2, String column2_name) {
+		
+		pair = new GraphPair (group, group_name,
+				column1, column1_name,
+				column2, column2_name);
+	}
+	
+	/**
+	 * Changes only the Group By column name and index for the GraphPair.
+	 * 
+	 * @param group Group column index.
+	 * @param group_name Group column name.
+	 */
+	public void changeGroup (int group, String group_name) {
+		
+		this.pair.changeGroup (group, group_name);
+		//System.out.println (this.pair.toString ());
+	}
+	
+	/**
+	 * Changes only the X Axis name and index for the GraphPair.
+	 * 
+	 * @param x X Axis column index.
+	 * @param x_name X Axis column name.
+	 */
+	public void changeX (int x, String x_name) {
+		
+		this.pair.changeX (x, x_name);
+		//System.out.println (this.pair.toString ());
 	}
 
 	/**
-	 * Interfacing method between the exterior and the table contained in this object.
-	 * Removes the Pair object at the index and returns it. 
+	 * Changes only the Y Axis name and index for the GraphPair.
 	 * 
-	 * @param index Location on the ArrayList where the object to be removed is located.
-	 * @return A Pair that was removed from the ArrayList.
+	 * @param y Y Axis column index.
+	 * @param y_name Y Axis column name.
 	 */
-	public GraphPair remove (int index) {
-		GraphPair p = table.remove (index);
-		this.notifyListeners ();
-	    return (p);
-    }
+	public void changeY (int y, String y_name) {
 	
+		this.pair.changeY (y, y_name);
+		//System.out.println (this.pair.toString ());
+	}
+	
+
 	/**
-	 * Interfacing method between the exterior and the table contained in this object.
-	 * Removes the Pair object provided and responds if the process succeeded or not.
-	 * 
-	 * @param p Pair to remove from the ArrayList.
-	 * @return A boolean specifying method success (true) or failure (false).
+	 * Removes the Pair object provided and sets it to its default GraphPair form.
 	 */
-	public boolean remove (GraphPair p) {
-		boolean b = table.remove (p);
+	public void remove () {
+		this.pair = new GraphPair ();
 		this.notifyListeners ();
-		return (b);
 	}
 	
 	/**
@@ -97,125 +145,26 @@ public class DataReference implements Iterable<GraphPair> {
 	 * Only used to reset the Pairs when an incompatible Data file is imported.
 	 */
 	public void reset () {
-		this.table.clear ();
+		this.pair = new GraphPair ();
 		this.notifyListeners ();
 	}
-
-	/**
-	 * Interfacing method between the exterior and the table contained in this object.
-	 * Finds the Pair object provided and provides its index location in the ArrayList.
-	 * 
-	 * @param p Pair to find in the ArrayList.
-	 * @return Index location of the object in the ArrayList.
-	 */
-	public int findIndex (GraphPair p) {
-		return (table.indexOf(p));
-	}
-	
-	/**
-	 * Interfacing method between the exterior and the table contained in this object.
-	 * Finds the Pair object via the name provided and provides its index location
-	 * in the ArrayList.
-	 * 
-	 * @param s Sting name of the Pair in the ArrayList.
-	 * @return Index location of the object in the ArrayList.
-	 */
-	public int findIndex (String s) {
-		int j = -1; boolean found = false;
-		for (int i = 0; (i < table.size()) && !found; ++i) {
-			if (table.get(i).getName().equals(s)) {
-				j = i; found = true;
-			}
-		}
-		return (j);
-	}
-	
-	/**
-     * Interfacing method between the exterior and the table contained in this object.
-     * Finds the Pair object provided and provides its index location in the ArrayList.
-     * 
-     * @param p Pair to find in the ArrayList.
-     * @return Index location of the object in the ArrayList.
-     */
-    public GraphPair findPair (int index) {
-        return (table.get (index));
-    }
-    
-    /**
-     * Interfacing method between the exterior and the table contained in this object.
-     * Finds the Pair object via the name provided and provides its index location
-     * in the ArrayList.
-     * 
-     * @param s Sting name of the Pair in the ArrayList.
-     * @return Index location of the object in the ArrayList.
-     */
-    public GraphPair findPair (String s) {
-        int j = 0; boolean found = false;
-        for (int i = 0; (i < table.size()) && !found; ++i) {
-            if (table.get(i).getName().equals(s)) {
-                j = i; found = true;
-            }
-        }
-        return (this.table.get (j));
-    }
 	
 	/**
 	 * Returns a pair as specified by an index.
 	 * 
-	 * @param index Location of Pair.
 	 * @return The desired Pair at the provided index.
 	 */
-	public GraphPair get (int index) {
-	    return (table.get (index));
-	}
-	
-	/**
-     * Provides an ArrayList of names for each of the Pairs in the table ArrayList.
-     * @return ArrayList containing Pair names.
-     */
-    public String [] getNames () {
-        String [] names = new String [table.size ()];
-        ArrayList <String> pair_names = new ArrayList <> ();
-        for (GraphPair p : this.table) {
-            pair_names.add (p.getName ());
-        }
-        pair_names.toArray (names);
-        return (names);
-    }
-	
-	/**
-	 * Interfacing method between the exterior and the table contained in this object.
-	 * States if an object with the name provided exists in the ArrayList.
-	 * 
-	 * @param s Sting name of the Pair in the ArrayList.
-	 * @return Index location of the object in the ArrayList.
-	 */
-	public boolean contains (String s) {
-		return (findIndex(s) != -1);
-	}
-	
-	public boolean isEmpty () {
-	    return (table.isEmpty ());
+	public GraphPair get () {
+	    return (pair);
 	}
 	
 	@Override
 	public String toString () {
 	    String s = "";
 	    
-	    for (GraphPair p : this.table) {
-	        s += p.toString () + "\n";
-	    }
+	    s += this.pair.toString () + "\n";
 	    
 	    return (s);
-	}
-
-	@Override
-	public Iterator<GraphPair> iterator () {
-		return (this.table.iterator ());
-	}
-
-	public int size () {
-		return (this.table.size ());
 	}
 	
 	// Event Methods
@@ -245,6 +194,15 @@ public class DataReference implements Iterable<GraphPair> {
 	    for (ChangeListener c : listeners) {
 	        c.stateChanged (new ChangeEvent (this));
 	    }
+	}
+
+	/**
+	 * Getter method. States the status of the data within this object.
+	 * 
+	 * @return True if a not-default GraphPair is in this object; else, False.
+	 */
+	public boolean isEmpty () {
+		return (pair.isEmpty ());
 	}
 	
 }

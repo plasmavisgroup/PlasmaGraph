@@ -19,7 +19,7 @@ public class ToolModel {
     /** Reference to MainModel's Template, passed via constructor reference. */
     private Template t;
     /** Reference to MainModel's DataSet, passed via constructor reference. */
-    private HeaderData ds;
+    private HeaderData hd;
     /** Reference to MainModel's DataReference, passed via constructor reference. */
     private DataReference dr;
     
@@ -28,13 +28,14 @@ public class ToolModel {
      * objects, as well as creates and updates its respective view.
      * 
      * @param t_reference Template reference provided by PlasmaGraph.
-     * @param dr_reference DataReference reference provided by PlasmaGraph
+     * @param hd_reference HeaderData reference provided by PlasmaGraph.
+     * @param dr_reference DataReference reference provided by PlasmaGraph.
      */
-    public ToolModel (Template t_reference, HeaderData ds_reference,
+    public ToolModel (Template t_reference, HeaderData hd_reference,
             DataReference dr_reference) {
         // Update currently-used Template and Data Sources.
         t = t_reference;
-        ds = ds_reference;
+        hd = hd_reference;
         dr = dr_reference;
     }
     
@@ -59,9 +60,7 @@ public class ToolModel {
     			new javax.swing.DefaultComboBoxModel <> ();
     	
     	// Populate the ListModel
-    	for (org.pvg.plasmagraph.utils.data.GraphPair p : dr) {
-    		target_list.addElement (p.getName ());
-    	}
+    	target_list.addElement (dr.get ().getName ());
     	
     	return (target_list);
     }
