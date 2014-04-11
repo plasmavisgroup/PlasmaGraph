@@ -81,13 +81,6 @@ public class MainView extends javax.swing.JFrame {
         template_menu.setText ("Templates"); //$NON-NLS-1$
         template_menu.setToolTipText ("Manages all Template-related operations."); //$NON-NLS-1$
         
-        // Help Menu
-        help_menu.setText ("Help"); //$NON-NLS-1$
-        help_menu.setToolTipText ("Shows information about PlasmaGraph."); //$NON-NLS-1$
-        help_menu_manual.setText("User Guide");
-        help_menu.add(help_menu_manual);
-        menu_bar.add (help_menu);
-        
         // Import Template
         import_template_option.setAccelerator (javax.swing.KeyStroke
                 .getKeyStroke (java.awt.event.KeyEvent.VK_T,
@@ -104,11 +97,20 @@ public class MainView extends javax.swing.JFrame {
         
         menu_bar.add (template_menu);
         
+        // Help Menu
+        help_menu.setText ("Help"); //$NON-NLS-1$
+        help_menu.setToolTipText ("Shows information about PlasmaGraph."); //$NON-NLS-1$
+        help_menu_manual.setText("User Guide");
+        help_menu.add(help_menu_manual);
+        menu_bar.add (help_menu);
+        
         // Exit Program
         exit_menu_option.setText ("Close");
         options_menu.add (exit_menu_option);
         
         menu_bar.add (options_menu);
+        
+        
         
         // Prepare JMenuBar
         setJMenuBar (menu_bar);

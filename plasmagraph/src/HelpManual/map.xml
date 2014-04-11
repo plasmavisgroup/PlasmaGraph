@@ -9,7 +9,7 @@
   <mapID target="import_data" url="html/import_data.htm" />
   <mapID target="import_template" url="html/import_template.htm" />
   <mapID target="matfile_specs" url="html/matfile_specs.htm" />
-  <mapID target="reset_data" url="html/reset_data.htm" />
+  <!-- <mapID target="reset_data" url="html/reset_data.htm" /> -->
   <mapID target="save_template" url="html/save_template.htm" />
   <mapID target="tabbed_menu_data" url="html/tabbed_menu_data.htm" />
   <mapID target="tabbed_menu_options" url="html/tabbed_menu_options.htm" />

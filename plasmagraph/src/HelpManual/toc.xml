@@ -8,7 +8,7 @@
   <tocitem text="Tools window" target="tools_window">
     <tocitem text="Import Data" target="import_data" />
     <tocitem text="Inspect Data" target="view_data" />
-    <tocitem text="Reset Data" target="reset_data" />
+    <!-- <tocitem text="Reset Data" target="reset_data" /> -->
     <tocitem text="Save Template" target="save_template" />
     <tocitem text="Import Template" target="import_template" />
     <tocitem text="Tabbed Menu (Data)" target="tabbed_menu_data" />
