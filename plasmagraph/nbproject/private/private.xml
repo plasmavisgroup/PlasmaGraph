@@ -5,7 +5,9 @@
         <group>
             <file>file:/C:/wamp/www/github/PlasmaGraph/plasmagraph/src/org/pvg/plasmagraph/utils/data/readers/MatlabProcessor.java</file>
             <file>file:/C:/wamp/www/github/PlasmaGraph/plasmagraph/src/HelpManual/HelpManual.java</file>
+            <file>file:/C:/wamp/www/github/PlasmaGraph/plasmagraph/src/org/pvg/plasmagraph/tests/TemplateTest.java</file>
             <file>file:/C:/wamp/www/github/PlasmaGraph/plasmagraph/src/HelpManual/map.xml</file>
+            <file>file:/C:/wamp/www/github/PlasmaGraph/plasmagraph/src/org/pvg/plasmagraph/tests/OutlierSearchTest.java</file>
             <file>file:/C:/wamp/www/github/PlasmaGraph/plasmagraph/src/org/pvg/plasmagraph/tests/CSVTest.java</file>
             <file>file:/C:/wamp/www/github/PlasmaGraph/plasmagraph/src/org/pvg/plasmagraph/controllers/MainController.java</file>
             <file>file:/C:/wamp/www/github/PlasmaGraph/plasmagraph/src/org/pvg/plasmagraph/tests/FeatureTestSuite.java</file>
