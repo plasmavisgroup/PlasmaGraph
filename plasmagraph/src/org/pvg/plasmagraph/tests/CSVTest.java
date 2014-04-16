@@ -18,6 +18,21 @@ public class CSVTest {
 	String default_csv_path = 
 			"C:/Users/tako/Documents/GitHub/PlasmaGraph/plasmagraph/test/csv/csv_test.csv";
     
+    @Test
+    public void testMaxFileSize(){
+        
+        /* this file has 100 columns, 86400 rows and aproximate size ~63,000KB *
+        String testfileURI = "./test/csv/csv_file_limit_test.csv";
+        
+        *//** read file in less than 30 seconds **//*
+        long startTime = System.nanoTime();
+        CSVProcessor csv = new CSVProcessor (new File (testfileURI));
+        long endTime = System.nanoTime();
+        boolean flag_read = (((double) (endTime-startTime)) / 1000000000.0) < 30;
+        
+        assertTrue("Reading ~63,000KB *.csv file in less than 30 seconds: ", flag_read);
+    }
+    
 	@Test
 	public void testread () {
 		CSVProcessor csv = new CSVProcessor (new File (default_csv_path));
@@ -157,4 +172,4 @@ public class CSVTest {
 	}
 
 }
-*/
+*/*/
