@@ -1,10 +1,13 @@
 # With help by: https://github.com/github/gitignore
+#  Lib ---------------------------------------------------
+plasmagraph/test/matlab/mat_file_limit_test.mat
+plasmagraph/lib/JARs/
+
 #  Git ---------------------------------------------------
 .git/
 
 #  Java---------------------------------------------------
 *.class
-mat_file_limit_test.mat
 
 # virtual machine crash logs, see http://www.java.com/en/download/help/error_hotspot.xml
 hs_err_pid*
