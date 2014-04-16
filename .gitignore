@@ -1,4 +1,6 @@
 # With help by: https://github.com/github/gitignore
+#  Git ---------------------------------------------------
+.git/
 #  Java---------------------------------------------------
 *.class
 mat_file_limit_test.mat
@@ -7,7 +9,7 @@ mat_file_limit_test.mat
 hs_err_pid*
 
 #  Eclipse---------------------------------------------------
-.metadata
+.metadata/
 plasmagraph/bin
 *.bak
 *.swp
