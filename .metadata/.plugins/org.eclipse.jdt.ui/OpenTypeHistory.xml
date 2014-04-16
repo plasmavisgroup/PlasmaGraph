@@ -1,7 +1,4 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
 <typeInfoHistroy>
-<typeInfo handle="=plasmagraph/src&lt;org.pvg.plasmagraph.utils.data.readers{CSVProcessor.java[CSVProcessor" modifiers="1" timestamp="1394334530658"/>
-<typeInfo handle="=plasmagraph/lib\/JARs\/jmatio.jar&lt;com.jmatio.io(MatlabIOException.class[MatlabIOException" modifiers="33" timestamp="1354640565026"/>
-<typeInfo handle="=plasmagraph/src&lt;org.pvg.plasmagraph.utils.data.readers{MatlabReader.java[MatlabReader" modifiers="1" timestamp="1393602541023"/>
-<typeInfo handle="=plasmagraph/src&lt;org.pvg.plasmagraph.utils.data{HeaderData.java[HeaderData" modifiers="1" timestamp="1394421684825"/>
+<typeInfo handle="=plasmagraph/src&lt;org.pvg.plasmagraph.utils.tools.outlierscan{OutlierDistance.java[OutlierDistance" modifiers="513" timestamp="1397506778976"/>
 </typeInfoHistroy>
