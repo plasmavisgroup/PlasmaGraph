@@ -33,6 +33,7 @@ import org.jfree.data.xy.XYSeriesCollection;
 import org.pvg.plasmagraph.utils.data.DataSet;
 import org.pvg.plasmagraph.utils.data.GraphPair;
 import org.pvg.plasmagraph.utils.data.HeaderData;
+import org.pvg.plasmagraph.utils.exceptions.InvalidParametersException;
 import org.pvg.plasmagraph.utils.template.Template;
 import org.pvg.plasmagraph.utils.types.AxisType;
 import org.pvg.plasmagraph.utils.types.InterpolationType;
@@ -71,9 +72,35 @@ public class XYGraph implements Graph {
 	 */
 	private JFreeChart createChart (XYDataset series, Template t) {
 		// Make the chart.
-		JFreeChart c = ChartFactory.createScatterPlot (t.getChartName (),
-				t.getXAxisLabel (), t.getYAxisLabel (), series);
+		ParamChecks.nullNotPermitted (t.getOrientation (), "orientation");
+		NumberAxis xAxis = new NumberAxis (t.getXAxisLabel ());
+		xAxis.setAutoRangeIncludesZero (false);
+		
+		NumberAxis yAxis = new NumberAxis (t.getYAxisLabel ());
+		yAxis.setAutoRangeIncludesZero (false);
 
+		XYPlot plot = new XYPlot (series, xAxis, yAxis, null);
+
+		XYToolTipGenerator toolTipGenerator = null;
+		if (t.generatesTooltips ()) {
+			toolTipGenerator = new StandardXYToolTipGenerator ();
+		}
+
+		XYURLGenerator urlGenerator = null;
+		if (t.generatesURLs ()) {
+			urlGenerator = new StandardXYURLGenerator ();
+		}
+		
+		XYItemRenderer renderer = new XYLineAndShapeRenderer (false, true);
+		renderer.setBaseToolTipGenerator (toolTipGenerator);
+		renderer.setURLGenerator (urlGenerator);
+		plot.setRenderer (renderer);
+		plot.setOrientation (t.getOrientation ());
+
+		JFreeChart c = new JFreeChart (t.getChartName (), 
+				JFreeChart.DEFAULT_TITLE_FONT, plot, t.generatesLegend ());
+		currentTheme.apply (c);
+		
 		// Edit the axes.
 		this.modifyPlot (t, c);
 
@@ -99,7 +126,7 @@ public class XYGraph implements Graph {
 	//====================================================//
 	
 	/**
-	 * Constructor. Does not manage grouped data.
+	 * Basic constructor.
 	 * 
 	 * @param t
 	 *            Template reference used in the formation of various parts of
@@ -108,13 +135,14 @@ public class XYGraph implements Graph {
 	 *            DataSet reference used in the creation of the graph.
 	 * @param p
 	 *            GraphPair that contains the columns to graph.
+	 * @throws InvalidParametersException Whenever an invalid column is found in this process.
 	 */
-	public XYGraph (Template t, DataSet ds, GraphPair p) {
+	public XYGraph (Template t, DataSet ds, GraphPair p) throws InvalidParametersException {
 		chart = createChart (createDataset (t, ds, p), t, p);
 	}
 
 	/**
-	 * Constructor. Can switch between managing grouped data and not.
+	 * Constructor using HeaderData.
 	 * 
 	 * @param t
 	 *            Template reference used in the formation of various parts of
@@ -123,15 +151,10 @@ public class XYGraph implements Graph {
 	 *            HeaderData reference used in the creation of the graph.
 	 * @param p
 	 *            GraphPair that contains the columns to graph.
+	 * @throws InvalidParametersException Whenever an invalid column is found in this process.
 	 */
-	public XYGraph (Template t, HeaderData hd, GraphPair p) {
-		if (p.isGrouped ()) {
-			chart = createChart (
-					createDataset (t, hd.populateGroupedData (p, t), p), t, p);
-		} else {
-			chart = createChart (createDataset (t, hd.populateData (p), p), t,
-					p);
-		}
+	public XYGraph (Template t, HeaderData hd, GraphPair p) throws InvalidParametersException {
+		this (t, hd.populateData (p), p);
 	}
 
 	/**
@@ -162,20 +185,24 @@ public class XYGraph implements Graph {
 	 * @param ds
 	 *            DataSet reference used in the creation of the graph.
 	 * @return An XYDataset containing the DataSet's data values
+	 * @throws InvalidParametersException Whenever a non-numeric column is found in this process.
 	 */
 	@Override
-	public XYDataset createDataset (Template t, DataSet ds, GraphPair p) {
+	public XYDataset createDataset (Template t, DataSet ds, GraphPair p) throws InvalidParametersException {
 		// Create the Dataset
 		XYSeriesCollection set = new XYSeriesCollection ();
 		
-		XYSeries s;
+		System.out.println (p.isGrouped ());
 		
 		if (p.isGrouped ()) {
-			System.out.println ("It's grouped!");
+			
+			//System.out.println ("It's grouped!");
 			set = ds.toGroupedXYGraphDataset (p);
+			
 		} else {
-			s = ds.toXYGraphDataset (p);
-			set.addSeries (s);
+			
+			set.addSeries (ds.toXYGraphDataset (p));
+			
 		}
 
 		// Return the Dataset
@@ -199,6 +226,7 @@ public class XYGraph implements Graph {
 		ParamChecks.nullNotPermitted (t.getOrientation (), "orientation");
 		NumberAxis xAxis = new NumberAxis (t.getXAxisLabel ());
 		xAxis.setAutoRangeIncludesZero (false);
+		
 		NumberAxis yAxis = new NumberAxis (t.getYAxisLabel ());
 		yAxis.setAutoRangeIncludesZero (false);
 
@@ -265,6 +293,14 @@ public class XYGraph implements Graph {
 			c.getXYPlot ().setRangeAxis (range);
 
 		}
+		
+		// Create XYPlot
+		XYPlot plot = (XYPlot) c.getXYPlot ();
+		
+		// Change background color.
+		plot.setBackgroundPaint (Color.WHITE);
+		plot.setRangeGridlinePaint (Color.BLACK);
+		plot.setDomainGridlinePaint (Color.BLACK);
 	}
 
 	private void modifyPlot (Template t, GraphPair p, JFreeChart c) {

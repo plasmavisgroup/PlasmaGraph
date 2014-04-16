@@ -11,8 +11,9 @@ public class InvalidDataSizeException extends Exception {
 	}
 	
 	public void showMessage () {
-		JOptionPane.showMessageDialog (null, "This data file contains data with uneven parameters and, thus, cannot be completely validated."
-				+ "Please correct the data mismatch before trying again.");
+		JOptionPane.showMessageDialog (null, "This data file contains data with uneven column sizes"
+				+ "\nand, thus, cannot be completely validated."
+				+ "\nPlease correct the data mismatch before trying again.");
 	}
 
 }

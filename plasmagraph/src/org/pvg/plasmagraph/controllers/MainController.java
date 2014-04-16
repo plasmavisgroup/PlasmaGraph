@@ -108,7 +108,7 @@ public class MainController {
 		}
 
 	}
-
+/*
 	class DataResetMenuListener implements ActionListener {
 
 		@Override
@@ -130,7 +130,7 @@ public class MainController {
 
 		}
 
-	}
+	}*/
 
 	class ViewDataMenuListener implements ActionListener {
 

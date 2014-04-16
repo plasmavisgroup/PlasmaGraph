@@ -5,7 +5,7 @@ import javax.swing.ComboBoxModel;
 import javax.swing.DefaultComboBoxModel;
 
 import org.apache.commons.math3.util.Pair;
-import org.pvg.plasmagraph.utils.data.DataReference;
+import org.pvg.plasmagraph.utils.data.GraphPair;
 import org.pvg.plasmagraph.utils.data.HeaderData;
 import org.pvg.plasmagraph.utils.template.Template;
 import org.pvg.plasmagraph.utils.types.ColumnType;
@@ -23,8 +23,8 @@ public class DataSetModel {
     private Template t;
     /** Reference to MainModel's HeaderData, passed via constructor reference. */
     private HeaderData hd;
-    /** Reference to MainModel's DataReference, passed via constructor reference. */
-    private DataReference dr;
+    /** Reference to MainModel's GraphPair, passed via constructor reference. */
+    private GraphPair p;
     
     /**
      * Creates a new HeaderDataModel with references to the data and settings,
@@ -33,21 +33,21 @@ public class DataSetModel {
      * @param t_reference
      *            Settings - Template reference provided by PlasmaGraph.
      * @param hd_reference Data - HeaderData reference provided by PlasmaGraph.
-     * @param dr_reference Pairs - DataReference reference provided by PlasmaGraph.
+     * @param p_reference Pairs - GraphPair reference provided by PlasmaGraph.
      */
     public DataSetModel (Template t_reference, HeaderData hd_reference,
-            DataReference dr_reference) {
+            GraphPair p_reference) {
         // Update currently-used Template and Data Sources.
         t = t_reference;
         hd = hd_reference;
-        dr = dr_reference;
+        p = p_reference;
     }
     
     /**
-     * Takes the current DataReference and inserts the pair names into a new
+     * Takes the current GraphPair and inserts the pair names into a new
      * ListModel<String>.
      * 
-     * @return A ListModel of Strings containing the pair names of DataReference.
+     * @return A ListModel of Strings containing the pair names of GraphPair.
      */
     public ComboBoxModel <String> resetGroupByBox () {	
     	// This int's value must not change.
@@ -63,7 +63,6 @@ public class DataSetModel {
         	}
     	}
     	
-        
         return (new DefaultComboBoxModel <> (group_array));
     }
     
@@ -77,9 +76,11 @@ public class DataSetModel {
 	 */
 	public ComboBoxModel <String> resetXAxisColumn () {
 		DefaultComboBoxModel <String> x_column = new DefaultComboBoxModel <String> ();
-		
+
 		for (Pair <String, ColumnType> p : this.hd) {
-			x_column.addElement (p.getKey ());
+			if (ColumnType.DOUBLE.equals (p.getValue ())) {
+				x_column.addElement (p.getKey ());
+			}
 		}
 		
 		return (x_column);
@@ -95,47 +96,44 @@ public class DataSetModel {
 	 */
 	public ComboBoxModel <String> resetYAxisColumn () {
 		DefaultComboBoxModel <String> y_column = new DefaultComboBoxModel <String> ();
-		
+
 		for (Pair <String, ColumnType> p : this.hd) {
-			y_column.addElement (p.getKey ());
+			if (ColumnType.DOUBLE.equals (p.getValue ())) {
+				y_column.addElement (p.getKey ());
+			}
 		}
 		
 		return (y_column);
-	}
-
-	/**
-	 * Changes the GraphPair in the DataReference object.
-	 * 
-	 * @param gColumn Name of the grouping Column.
-	 * @param xColumn Name of the Column to assign to the X Axis.
-	 * @param yColumn Name of the Column to assign to the Y Axis.
-	 */
-	public void setGraphPair (String gColumn, String xColumn, String yColumn) {
-		
-		this.dr.add (hd.get (hd.find (gColumn)), hd.find (gColumn),
-				hd.get (hd.find (xColumn)), hd.find (xColumn),
-				hd.get (hd.find (yColumn)), hd.find (yColumn));
 	}
 	
 	/**
 	 * @param groupingByElement
 	 */
 	public void changeGroup (String groupingByElement) {
-		this.dr.changeGroup (hd.find (groupingByElement), groupingByElement);
+		if ("None".equals (groupingByElement) ||
+				"".equals (groupingByElement)) {
+			
+			this.p.changeGroup (0, groupingByElement);
+			
+		} else {
+			
+			this.p.changeGroup (hd.find (groupingByElement), groupingByElement);
+			
+		}
 	}
 
 	/**
 	 * @param xColumn
 	 */
 	public void changeXColumn (String xColumn) {
-		this.dr.changeX (hd.find (xColumn), xColumn);
+		this.p.changeX (hd.find (xColumn), xColumn);
 	}
 
 	/**
 	 * @param yColumn
 	 */
 	public void changeYColumn (String yColumn) {
-		this.dr.changeY (hd.find (yColumn), yColumn);
+		this.p.changeY (hd.find (yColumn), yColumn);
 	}
     
     /**
@@ -148,12 +146,13 @@ public class DataSetModel {
     }
     
     /**
-	 * Getter method. Returns data reference.
+     * Getter method. Returns GraphPair.
      * 
-     * @return dr, a reference to the DataReference object.
-	 */
-	public DataReference getReference () {
-		return (dr);
+     * @return t, a reference to the GraphPair object.
+     */
+    public GraphPair getGraphPair () {
+		// TODO Auto-generated method stub
+		return (p);
 	}
     
     /**
@@ -175,11 +174,11 @@ public class DataSetModel {
     }
 
     /**
-     * Support method to add listeners to the DataReference.
+     * Support method to add listeners to the GraphPair.
      * 
-     * @param c Listener to add to DataReference Notifier.
+     * @param c Listener to add to GraphPair Notifier.
      */
-	public void addDataReferenceChangeListener (javax.swing.event.ChangeListener c) {
-		dr.addChangeListener (c);
+	public void addGraphPairChangeListener (javax.swing.event.ChangeListener c) {
+		p.addChangeListener (c);
 	}
 }

@@ -10,6 +10,7 @@ import org.pvg.plasmagraph.utils.data.DataSet;
 import org.pvg.plasmagraph.utils.data.GraphPair;
 import org.pvg.plasmagraph.utils.data.HeaderData;
 import org.pvg.plasmagraph.utils.data.readers.CSVProcessor;
+import org.pvg.plasmagraph.utils.data.readers.MatlabProcessor;
 import org.pvg.plasmagraph.utils.template.Template;
 import org.pvg.plasmagraph.utils.types.ColumnType;
 
@@ -242,60 +243,34 @@ public class HeaderDataTest {
 		
 	}
 
+	// TODO: Group this test's data vy Experiment Number!
 	@Test
 	public void testPopulateData () {
 		
-		String linear_data = "C:/Users/tako/Documents/GitHub/PlasmaGraph"
-				+ "/plasmagraph/test/interpolation/lindata.csv";
-		
-		try {
-			// Prepare Data
-			CSVProcessor csv = new CSVProcessor (new File (linear_data));
-			HeaderData hd = new HeaderData ();
-			csv.getHeaders (hd);
-			GraphPair p = new GraphPair (0, "Time (s)", 1, "Distance (m)");
-			
-			DataSet ds = hd.populateData (p);
-			
-			// Test
-			for (int i = 0; (i < ds.size ()); ++i) {
-				assertEquals (hd.get (i).getKey (), ds.get (i).getColumnName ());
-			}
-
-		} catch (Exception e) {
-			System.out.println (e.getMessage ());
-		}
-	}
-
-	// TODO: Group this test's data vy Experiment Number!
-	@Test
-	public void testPopulateGroupedData () {
-		
-		String linear_data = "C:/Users/tako/Documents/GitHub/PlasmaGraph"
-				+ "/plasmagraph/test/csv/Parameter2013-06-11.csv";
+		String data = "C:/Users/tako/Documents/GitHub/PlasmaGraph"
+				+ "/plasmagraph/test/matlab/Parameter2013-06-11.mat";
 		
 		try {
 			// Prepare Template
 			Template t = new Template ();
 			
 			// Prepare Data
-			CSVProcessor csv = new CSVProcessor (new File (linear_data));
+			MatlabProcessor csv = new MatlabProcessor (new File (data));
 			HeaderData hd = new HeaderData ();
 			csv.getHeaders (hd);
 			
 			// Prepare Pair.
-			GraphPair p = new GraphPair (0, "Experiment Number", 6, 
-					"Temperature_1 (eV)", 7, "Plasma Potential_1 (V)");
+			GraphPair p = new GraphPair ();
+			p.changeGroup (0, hd.get (0).getKey ());
+			p.changeX (6, hd.get (6).getKey ());
+			p.changeY (7, hd.get (7).getKey ());
 			
-			DataSet ds = hd.populateGroupedData (p, t);
+			DataSet ds = hd.populateData (p);
 			
 			// Test
-			assertEquals (p.getGroupName (), 
-					ds.get (0).getColumnName ());
-			assertEquals (hd.get (p.getXIndex ()).getKey (), 
-					ds.get (1).getColumnName ());
-			assertEquals (hd.get (p.getYIndex ()).getKey (), 
-					ds.get (2).getColumnName ());
+			assertEquals (hd.get (p.getXColumnIndex ()).getKey (), ds.getXName ());
+			assertEquals (hd.get (p.getYColumnIndex ()).getKey (), ds.getYName ());
+			//assertEquals (p.getGroupName (), ds.getGroupName ());
 
 		} catch (Exception e) {
 			System.out.println (e.getMessage ());
@@ -303,40 +278,42 @@ public class HeaderDataTest {
 	}
 	
 	// TODO: -
-		@Test
-		public void testMultipleFilePopulateData () {
+	/*@Test
+	public void testMultipleFilePopulateData () {
+		
+		String file1 = "C:/Users/tako/Documents/GitHub/PlasmaGraph"
+				+ "/plasmagraph/test/csv/test2-2.csv";
+		String file2 = "C:/Users/tako/Documents/GitHub/PlasmaGraph"
+				+ "/plasmagraph/test/csv/test2-3.csv";
+		
+		try {
+			// Prepare Data
+			// Set 1
+			CSVProcessor csv = new CSVProcessor (new File (file1));
+			HeaderData hd = new HeaderData ();
+			csv.getHeaders (hd);
 			
-			String file1 = "C:/Users/tako/Documents/GitHub/PlasmaGraph"
-					+ "/plasmagraph/test/csv/test2-2.csv";
-			String file2 = "C:/Users/tako/Documents/GitHub/PlasmaGraph"
-					+ "/plasmagraph/test/csv/test2-3.csv";
+			// Set 2
+			csv = new CSVProcessor (new File (file2));
+			csv.getHeaders (hd);
 			
-			try {
-				// Prepare Data
-				// Set 1
-				CSVProcessor csv = new CSVProcessor (new File (file1));
-				HeaderData hd = new HeaderData ();
-				csv.getHeaders (hd);
-				
-				// Set 2
-				csv = new CSVProcessor (new File (file2));
-				csv.getHeaders (hd);
-				
-				// Prepare Pair.
-				GraphPair p = new GraphPair (0, "Time (s)", 1, "Distance (m)");
-				
-				DataSet ds = hd.populateData (p);
-				
-				// Test
-				for (int i = 0; (i < ds.size ()); ++i) {
-					assertEquals (hd.get (i).getKey (), ds.get (i).getColumnName ());
-				}
-				
-				//System.out.println (ds.toString ());
-				assertEquals ("Number of Rows test: ", 22, ds.getColumnLength ());
-
-			} catch (Exception e) {
-				System.out.println (e.getMessage ());
+			// Prepare Pair.
+			GraphPair p = new GraphPair ();
+			p.changeX (0, "Time (s)");
+			p.changeY (1, "Distance (m)");
+			
+			DataSet ds = hd.populateData (p);
+			
+			// Test
+			for (int i = 0; (i < ds.size ()); ++i) {
+				assertEquals (hd.get (i).getKey (), ds.get (i).getColumnName ());
 			}
+			
+			//System.out.println (ds.toString ());
+			assertEquals ("Number of Rows test: ", 22, ds.getColumnLength ());
+
+		} catch (Exception e) {
+			System.out.println (e.getMessage ());
 		}
+	}*/
 }

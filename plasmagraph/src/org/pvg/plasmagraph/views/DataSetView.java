@@ -143,10 +143,10 @@ public class DataSetView extends javax.swing.JPanel {
      * the Template.
      */
     public void updateAxesNames () {
-    	this.x_axis_name_label.setText (
+    	this.x_axis_name_text_field.setText (
     			this.data_model.getTemplate ().getXAxisLabel ());
     	
-    	this.y_axis_name_label.setText (
+    	this.y_axis_name_text_field.setText (
     			this.data_model.getTemplate ().getYAxisLabel ());
     }
     
@@ -156,9 +156,6 @@ public class DataSetView extends javax.swing.JPanel {
     public void updateXAxisColumn () {
     	// Reset model for this combo box.
     	this.x_column_combo_box.setModel (this.data_model.resetXAxisColumn ());
-    	
-    	// Try to find the column specified in the Template.
-    	this.x_column_combo_box.setSelectedIndex (0);
     }
     
     /**
@@ -167,48 +164,17 @@ public class DataSetView extends javax.swing.JPanel {
     public void updateYAxisColumn () {
     	// Reset model for this combo box.
     	this.y_column_combo_box.setModel (this.data_model.resetYAxisColumn ());
-    	
-    	// Try to find the column specified in the Template.
-    	this.y_column_combo_box.setSelectedIndex (0);
     }
     
     /**
      * Updates DataSetView's Group By ComboBox based on the current state of the
      * Template. If the value being put in doesn't exist yet, then it will revert
      * to the default value, "None".
-     * @throws TemplateGroupByColumnNotFoundException 
      */
-    public void updateGroupBy () throws TemplateGroupByColumnNotFoundException {
+    public void updateGroupBy () {
+    	// Reset model for this combo box.
     	this.group_by_column_combo_box.setModel (this.data_model.resetGroupByBox ());
     }
-    
-   /* *//**
-     * Updates DataSetView's Group By ComboBox based on the current state of the
-     * Template. If the value being put in doesn't exist yet, then it will revert
-     * to the default value, "None".
-     * @throws TemplateGroupByColumnNotFoundException 
-     *//*
-    public void updateGroupBySelection () throws TemplateGroupByColumnNotFoundException {
-    	// Check to see if the template's column currently exists!
-    	int group_by_index = ((DefaultComboBoxModel <String>) group_by_column_combo_box.getModel ()).getIndexOf (
-    			this.data_model.getReference ().get ().getGroupName ());
-    	
-    	if (group_by_index != -1) {
-    		
-    		// It exists! Sync them up.
-    		group_by_column_combo_box.setSelectedItem (
-    				this.data_model.getReference ().get ().getGroupName ());
-    		
-    	} else {
-    		
-    		// It doesn't exist. Set it equal to the basic option, sync them up,
-    		// and throw an exception.
-    		group_by_column_combo_box.setSelectedIndex (0);
-    		this.data_model.getReference ().
-    		throw (new TemplateGroupByColumnNotFoundException ());
-    		
-    	}
-    }*/
 
 	/**
 	 * This method is called from within the constructor to initialize the form.
@@ -251,13 +217,16 @@ public class DataSetView extends javax.swing.JPanel {
 		y_axis_type_label.setText ("Y Axis Type");
 
 		x_axis_type_combo_box
-				.setModel (new javax.swing.DefaultComboBoxModel <String> (AxisType.getXYOptions ()));
+				.setModel (new javax.swing.DefaultComboBoxModel <String> (
+						AxisType.getXYOptions ()));
 		y_axis_type_combo_box
-				.setModel (new javax.swing.DefaultComboBoxModel <String> (AxisType.getXYOptions ()));
+				.setModel (new javax.swing.DefaultComboBoxModel <String> (
+						AxisType.getXYOptions ()));
 
 		chart_type_label.setText ("Chart Type");
 		chart_type_combo_box
-				.setModel (new javax.swing.DefaultComboBoxModel <String> (ChartType.getOptions ()));
+				.setModel (new javax.swing.DefaultComboBoxModel <String> (
+						ChartType.getOptions ()));
 
 		chart_title_label.setText ("Chart Title");
 		group_by_column_label.setText ("Group By Column");
@@ -385,18 +354,7 @@ public class DataSetView extends javax.swing.JPanel {
 	private javax.swing.JButton graph_button;
 	// End of variables declaration
 	
-	// Listener Methods.	
-	/**
-     * Registers the "group_by" JComboBox as an object that should be
-     * listened upon a new option being chosen.
-     * 
-     * @param groupByColumnListener
-     *            ActionListener object provided by its Controller.
-     */
-	public void addGroupByColumnListener (ActionListener groupByColumnListener) {
-		 this.group_by_column_combo_box.addActionListener (groupByColumnListener);
-	}
-
+	// Listener Methods.
 	/**
 	 * Registers the "chart_title" JTextField as an object that should be
 	 * listened upon deselecting the box.
@@ -436,6 +394,17 @@ public class DataSetView extends javax.swing.JPanel {
 	 */
 	public void addYColumnListener (ActionListener yColumnListener) {
 		this.y_column_combo_box.addActionListener (yColumnListener);
+	}
+	
+	/**
+     * Registers the "group_by" JComboBox as an object that should be
+     * listened upon a new option being chosen.
+     * 
+     * @param groupByColumnListener
+     *            ActionListener object provided by its Controller.
+     */
+	public void addGroupByColumnListener (ActionListener groupByColumnListener) {
+		 this.group_by_column_combo_box.addActionListener (groupByColumnListener);
 	}
 
 	/**
@@ -532,6 +501,15 @@ public class DataSetView extends javax.swing.JPanel {
 	}
 	
 	/**
+     * Getter Method. Provides this object's "group_by_combo_box"'s value.
+     * 
+     * @return A String object selected by the user from the list of available data columns.
+     */
+    public String getGroupingByElement () {
+    	return (String) (this.group_by_column_combo_box.getSelectedItem ());
+    }
+	
+	/**
 	 * Getter method. Provides the value selected in the "x_axis_name" JTextField as a String object.
 	 * 
 	 * @return The String of the currently-selected option in the "x_axis_name" JTextField.
@@ -566,13 +544,4 @@ public class DataSetView extends javax.swing.JPanel {
 	public String getYAxisType () {
 		return ((String) this.y_axis_type_combo_box.getSelectedItem ());
 	}
-    
-    /**
-     * Getter Method. Provides this object's "group_by_combo_box"'s value.
-     * 
-     * @return A String object selected by the user from the list of available data columns.
-     */
-    public String getGroupingByElement () {
-    	return (String) (this.group_by_column_combo_box.getSelectedItem ());
-    }
 }

@@ -66,7 +66,7 @@ public class MainView extends javax.swing.JFrame {
         
         // Reset Data
         //reset_data_option.setText ("Reset Data");
-        // data_menu.add (reset_data_option);
+        //data_menu.add (reset_data_option);
         
         // Display dataset from MATLAB in a log
         matfile_log.setText ("View data");
@@ -75,21 +75,21 @@ public class MainView extends javax.swing.JFrame {
         menu_bar.add (data_menu);
         
         // Template Menu
-        template_menu.setText ("Templates"); //$NON-NLS-1$
-        template_menu.setToolTipText ("Manages all Template-related operations."); //$NON-NLS-1$
+        template_menu.setText ("Templates"); 
+        template_menu.setToolTipText ("Manages all Template-related operations."); 
         
         // Import Template
         import_template_option.setAccelerator (javax.swing.KeyStroke
                 .getKeyStroke (java.awt.event.KeyEvent.VK_T,
                         java.awt.event.InputEvent.CTRL_MASK));
-        import_template_option.setText ("Import Template"); //$NON-NLS-1$
+        import_template_option.setText ("Import Template"); 
         template_menu.add (import_template_option);
         
         // Save Template
         save_template_option.setAccelerator (javax.swing.KeyStroke
                 .getKeyStroke (java.awt.event.KeyEvent.VK_S,
                         java.awt.event.InputEvent.CTRL_MASK));
-        save_template_option.setText ("Save Template"); //$NON-NLS-1$
+        save_template_option.setText ("Save Template"); 
         template_menu.add (save_template_option);
         
         menu_bar.add (template_menu);
@@ -109,7 +109,7 @@ public class MainView extends javax.swing.JFrame {
         getContentPane ().setLayout (layout);
         layout.setHorizontalGroup (layout.createParallelGroup (
                 javax.swing.GroupLayout.Alignment.LEADING).addComponent (
-                tab_pane, javax.swing.GroupLayout.DEFAULT_SIZE, 240,
+                tab_pane, javax.swing.GroupLayout.DEFAULT_SIZE, 270,
                 Short.MAX_VALUE));
         layout.setVerticalGroup (layout.createParallelGroup (
                 javax.swing.GroupLayout.Alignment.LEADING).addComponent (
@@ -164,10 +164,10 @@ public class MainView extends javax.swing.JFrame {
      * @param dataResetMenuListener
      *            Action Listener for the Reset Data menu function.
      */
-    //public void addDataResetMenuListener (ActionListener dataResetMenuListener) {
-	//	this.reset_data_option.addActionListener (dataResetMenuListener);
-	//}
-    
+    /*public void addDataResetMenuListener (ActionListener dataResetMenuListener) {
+		this.reset_data_option.addActionListener (dataResetMenuListener);
+	}
+    */
     /**
      * Creates a new ActionListener for the View Data menu function.
      * 

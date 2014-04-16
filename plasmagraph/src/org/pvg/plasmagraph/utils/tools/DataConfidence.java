@@ -2,20 +2,38 @@ package org.pvg.plasmagraph.utils.tools;
 
 import org.pvg.plasmagraph.utils.types.AlphaType;
 
+/**
+ * Compares the Pearson Coefficient R values provided by the Interpolator Class
+ * to values provided by the standardized Pearson critical value table. (Example
+ * found in {@link http
+ * ://www.gifted.uconn.edu/siegle/research/correlation/corrchrt.htm}, but
+ * <b>MANY</b> others exist!)
+ * 
+ * A note should be made for negative values provided by the Interpolator Class;
+ * as stated in {@link http
+ * ://www.gifted.uconn.edu/siegle/research/correlation/alphaleve.htm}, the
+ * negative component of an R-value does not detract from an interpolation's
+ * validity; the negative component signifies its direction (upwards tendencies
+ * yield positive R values, whereas downward tendencies yield negative values.),
+ * whereas its magnitude is what determines the confidence the user should have
+ * with said interpolation.
+ * 
+ * @author Gerardo A. Navas Morales
+ */
 public class DataConfidence {
 
 	/**
-	 * Provides a Confidence Interval value that can be then used to assume
-	 * a correlation between two columns of data or not.
+	 * Provides a Confidence Interval value that can be then used to assume a
+	 * correlation between two columns of data or not.
 	 * 
 	 * @param number_of_data_points
 	 * @param alpha
 	 * @return
 	 * @throws Exception
 	 */
-	private static double getConfidenceInterval 
-			(int number_of_data_points, AlphaType alpha) throws Exception {
-		
+	private static double getConfidenceInterval (int number_of_data_points,
+			AlphaType alpha) throws Exception {
+
 		int df = number_of_data_points - 2;
 		double ci = 0.0;
 
@@ -451,8 +469,7 @@ public class DataConfidence {
 				} else if (alpha.getValue () == .10) {
 					ci = .164;
 				} else {
-					throw (new Exception (
-							"Alpha of non-default values."));
+					throw (new Exception ("Alpha of non-default values."));
 				}
 			} else if (df >= 90) {
 				if (alpha.getValue () == .01) {
@@ -464,8 +481,7 @@ public class DataConfidence {
 				} else if (alpha.getValue () == .10) {
 					ci = .173;
 				} else {
-					throw (new Exception (
-							"Alpha of non-default values."));
+					throw (new Exception ("Alpha of non-default values."));
 				}
 			} else if (df >= 80) {
 				if (alpha.getValue () == .01) {
@@ -477,8 +493,7 @@ public class DataConfidence {
 				} else if (alpha.getValue () == .10) {
 					ci = .183;
 				} else {
-					throw (new Exception (
-							"Alpha of non-default values."));
+					throw (new Exception ("Alpha of non-default values."));
 				}
 			} else if (df >= 70) {
 				if (alpha.getValue () == .01) {
@@ -490,8 +505,7 @@ public class DataConfidence {
 				} else if (alpha.getValue () == .10) {
 					ci = .195;
 				} else {
-					throw (new Exception (
-							"Alpha of non-default values."));
+					throw (new Exception ("Alpha of non-default values."));
 				}
 			} else if (df >= 60) {
 				if (alpha.getValue () == .01) {
@@ -503,8 +517,7 @@ public class DataConfidence {
 				} else if (alpha.getValue () == .10) {
 					ci = .211;
 				} else {
-					throw (new Exception (
-							"Alpha of non-default values."));
+					throw (new Exception ("Alpha of non-default values."));
 				}
 			} else if (df >= 50) {
 				if (alpha.getValue () == .01) {
@@ -516,8 +529,7 @@ public class DataConfidence {
 				} else if (alpha.getValue () == .10) {
 					ci = .231;
 				} else {
-					throw (new Exception (
-							"Alpha of non-default values."));
+					throw (new Exception ("Alpha of non-default values."));
 				}
 			} else if (df >= 45) {
 				if (alpha.getValue () == .01) {
@@ -529,8 +541,7 @@ public class DataConfidence {
 				} else if (alpha.getValue () == .10) {
 					ci = .243;
 				} else {
-					throw (new Exception (
-							"Alpha of non-default values."));
+					throw (new Exception ("Alpha of non-default values."));
 				}
 			} else if (df >= 40) {
 				if (alpha.getValue () == .01) {
@@ -542,8 +553,7 @@ public class DataConfidence {
 				} else if (alpha.getValue () == .10) {
 					ci = .257;
 				} else {
-					throw (new Exception (
-							"Alpha of non-default values."));
+					throw (new Exception ("Alpha of non-default values."));
 				}
 			} else if (df >= 35) {
 				if (alpha.getValue () == .01) {
@@ -555,8 +565,7 @@ public class DataConfidence {
 				} else if (alpha.getValue () == .10) {
 					ci = .275;
 				} else {
-					throw (new Exception (
-							"Alpha of non-default values."));
+					throw (new Exception ("Alpha of non-default values."));
 				}
 			} else { // if (df >= 30)
 				if (alpha.getValue () == .01) {
@@ -568,27 +577,29 @@ public class DataConfidence {
 				} else if (alpha.getValue () == .10) {
 					ci = .296;
 				} else {
-					throw (new Exception (
-							"Alpha of non-default values."));
+					throw (new Exception ("Alpha of non-default values."));
 				}
 			}
 		}
 
 		return (ci);
 	}
-	
+
 	/**
 	 * Comparing method. Checks if the CI is less than or equal to the Pearson
 	 * Coefficient.
 	 * 
-	 * @param ci 
+	 * @param ci
+	 *            Confidence Interval value obtained from the
+	 *            "getConfidenceInterval" method in this class.
 	 * @param r
+	 *            The R value provided by the interpolation.
 	 * @return Boolean stating whether the Coefficient is valid or not.
 	 */
 	private static boolean isValid (double ci, double r) {
-		return (ci <= r);
+		return (Math.abs (r) > ci);
 	}
-	
+
 	private static AlphaType getHighestCI (double r, int n) throws Exception {
 		if (isValid (getConfidenceInterval (n, AlphaType.CI99), r)) {
 			return (AlphaType.CI99);
@@ -602,25 +613,25 @@ public class DataConfidence {
 			return (AlphaType.INVALID);
 		}
 	}
-	
+
 	public static String provideCIValidity (double r, int n) {
 		AlphaType ci;
 		try {
 			ci = getHighestCI (r, n);
 			if (AlphaType.CI99.equals (ci)) {
-				return ("Satisfies 99% Confidence Interval and below.");
+				return ("There exists a correlation between both variables with a 99% Confidence.");
 			} else if (AlphaType.CI98.equals (ci)) {
-				return ("Satisfies 98% Confidence Interval and below.");
+				return ("There exists a correlation between both variables with a 98% Confidence.");
 			} else if (AlphaType.CI95.equals (ci)) {
-				return ("Satisfies 95% Confidence Interval and below.");
+				return ("There exists a correlation between both variables with a 95% Confidence.");
 			} else if (AlphaType.CI90.equals (ci)) {
-				return ("Satisfies 90% Confidence Interval and below.");
+				return ("There exists a correlation between both variables with a 90% Confidence.");
 			} else {
-				return ("Does not satisfy any useful Confidence Interval.");
+				return ("A useful correlation between both variables does not exist.");
 			}
 		} catch (Exception e) {
 			// TODO Auto-generated catch block
-			e.printStackTrace();
+			e.printStackTrace ();
 			return (e.toString ());
 		}
 	}

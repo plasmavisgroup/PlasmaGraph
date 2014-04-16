@@ -5,7 +5,6 @@ package org.pvg.plasmagraph.views;
  * @author Daniel Quintini
  */
 @SuppressWarnings ("serial")
-// TODO: Manage closing this View without closing the entire program.
 public class DatasetLogView extends javax.swing.JFrame {
 
 	/**
@@ -35,6 +34,9 @@ public class DatasetLogView extends javax.swing.JFrame {
 		jTextArea1.setColumns (20);
 		jTextArea1.setRows (5);
 		jScrollPane1.setViewportView (jTextArea1);
+		
+		jTextArea1.setLineWrap (true);
+		jTextArea1.setWrapStyleWord (true);
 
 		javax.swing.GroupLayout layout = new javax.swing.GroupLayout (
 				getContentPane ());

@@ -14,6 +14,7 @@ import org.junit.Test;
 import org.pvg.plasmagraph.utils.data.GraphPair;
 import org.pvg.plasmagraph.utils.data.HeaderData;
 import org.pvg.plasmagraph.utils.data.readers.CSVProcessor;
+import org.pvg.plasmagraph.utils.data.readers.MatlabProcessor;
 import org.pvg.plasmagraph.utils.graphs.XYGraph;
 import org.pvg.plasmagraph.utils.template.Template;
 import org.pvg.plasmagraph.utils.tools.outlierscan.OutlierSearch;
@@ -28,17 +29,17 @@ import org.pvg.plasmagraph.utils.types.OutlierResponse;
 @SuppressWarnings ("javadoc")
 public class OutlierSearchTest {
 
-	private String default_file_path = 
-			"C:/Users/tako/Documents/GitHub/PlasmaGraph/plasmagraph/test/csv/csv_outlier_test.csv"; //$NON-NLS-1$
+	private String default_file_path = "C:/Users/tako/Documents/GitHub/PlasmaGraph"
+			+ "/plasmagraph/test/matlab/Parameter2013-06-13.mat";
 	
 	@Test
 	public void testClusterScanning () throws Exception {
 		
 		// Prepare the data.
-		CSVProcessor csv = new CSVProcessor (new File (default_file_path));
+		MatlabProcessor mat = new MatlabProcessor (new File (default_file_path));
 		//System.out.println (csv.toString ());
 		HeaderData hd = new HeaderData ();
-		csv.getHeaders (hd);
+		mat.getHeaders (hd);
 		
 		// Prepare the template.
 		Template t = new Template ();
@@ -47,8 +48,9 @@ public class OutlierSearchTest {
 		t.setOrientation (PlotOrientation.VERTICAL);
 		
 		// Prepare the GraphPair
-		GraphPair p = new GraphPair (0, hd.get (0).getKey (), 
-				1, hd.get (1).getKey ());
+		GraphPair p = new GraphPair ();
+		p.changeX (6, hd.get (6).getKey ());
+		p.changeY (7, hd.get (7).getKey ());
 		
 		// Perform the procedure.
 		XYGraph g = new XYGraph (t, OutlierSearch.scanForOutliers (hd, t, p), p);

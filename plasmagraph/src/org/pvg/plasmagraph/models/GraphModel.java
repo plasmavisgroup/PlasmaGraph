@@ -4,10 +4,11 @@ import javax.swing.JOptionPane;
 import javax.swing.event.ChangeListener;
 
 import org.jfree.chart.JFreeChart;
-import org.pvg.plasmagraph.utils.data.DataReference;
+import org.pvg.plasmagraph.utils.data.GraphPair;
 import org.pvg.plasmagraph.utils.data.DataSet;
 import org.pvg.plasmagraph.utils.data.HeaderData;
 import org.pvg.plasmagraph.utils.exceptions.FunctionNotImplementedException;
+import org.pvg.plasmagraph.utils.exceptions.InvalidParametersException;
 import org.pvg.plasmagraph.utils.graphs.BarGraph;
 import org.pvg.plasmagraph.utils.graphs.Graph;
 import org.pvg.plasmagraph.utils.graphs.XYGraph;
@@ -24,13 +25,13 @@ import org.pvg.plasmagraph.utils.types.ChartType;
 public class GraphModel {
 
 	/** Reference to Header Data object. */
-	HeaderData hd;
-	/** Reference to DataReference object. */
-	DataReference dr;
+	private HeaderData hd;
+	/** Reference to GraphPair object. */
+	private GraphPair p;
 	/** Reference to Template object. */
-	Template t;
+	private Template t;
 	/** Reference to Interpolator object. */
-	Interpolator interpolator;
+	private Interpolator interpolator;
 
 	/**
 	 * Constructor for GraphModels. Used only by the PlasmaGraph class, and only
@@ -38,19 +39,19 @@ public class GraphModel {
 	 * 
 	 * @param hd
 	 *            Reference to HeaderData object.
-	 * @param dr
-	 *            Reference to DataReference object.
+	 * @param p
+	 *            Reference to GraphPair object.
 	 * @param t
 	 *            Reference to Template object.
 	 */
-	public GraphModel (HeaderData hd, DataReference dr, Template t) {
+	public GraphModel (HeaderData hd, GraphPair p, Template t) {
 		this.hd = hd;
-		this.dr = dr;
+		this.p = p;
 		this.t = t;
 	}
 
 	/**
-	 * Graphs the columns specified in DataReference dr with data in DataSet ds
+	 * Graphs the columns specified in GraphPair p with data in DataSet ds
 	 * according to the settings in Template t. Uses JFreeChart to create the
 	 * appropriate graph!
 	 * 
@@ -58,7 +59,7 @@ public class GraphModel {
 	 */
 	public JFreeChart graph () {
 		
-		//this.interpolator = null;
+		this.interpolator = null;
 		
 		if (t.isSearching ()) {
 
@@ -72,119 +73,94 @@ public class GraphModel {
 	}
 
 	/**
-	 * Graphs the columns specified in DataReference dr with data in DataSet ds
+	 * Graphs the columns specified in GraphPair p with data in DataSet ds
 	 * according to the settings in Template t. Uses JFreeChart to create the
 	 * appropriate graph! Does not scan the data for outliers before other
 	 * functions.
 	 * 
 	 * @param interpolation_switch
 	 */
-	private Graph unscannedGraphing (boolean interpolation_switch) {
+	public Graph unscannedGraphing (boolean interpolation_switch) {
 		
-		// Verify if data exists in the HeaderData object.
-		if (!this.hd.hasValidGraphTypes (this.t.getChartType (), this.dr.get ())) {
-			
-			JOptionPane.showMessageDialog (
-					null, "Error: This graph does not have the correct column types for the selected chart type.\n"
-					+ "Please try again with the proper column types for a " + this.t.getChartType ().toString () + ".");
-			return (this.graphEmptyChart ());
-			
-		}
-		
-		// Verify if there is a GraphPair ready to be graphed.
-		else if (!this.dr.get ().isReady ()) {
-			
-			JOptionPane.showMessageDialog (
-					null, "Error: This graph requires both an X Axis and Y Axis "
-					+ "column selected before it can be graphed.\n");
-			return (this.graphEmptyChart ());
-			
-		} 
-		
-		// If both of these requirements are satisfied, graph away!
-		else {
+		//System.out.println ("Ready status: " + p.isReady ());
+		//System.out.println ("Grouped status: " + p.isGrouped ());
+		//System.out.println (p.toString ());
+		//System.out.println (p.getIndexes ());
 
+		try {
+	
 			if (interpolation_switch) {
 
-				this.interpolator = new Interpolator (hd, t, dr);
-				return (interpolator.interpolate ());
+					this.interpolator = new Interpolator (hd, t, p);
+					return (interpolator.interpolate ());
 
 			} else {
 
 				if (ChartType.XY_GRAPH.equals (t.getChartType ())) {
 					
 					// Create the graph
-					return (new XYGraph (t, hd, dr.get ()));
+					return (new XYGraph (t, hd, p));
 
 				} else {// if (t.getChartType ().equals (ChartType.BAR_GRAPH)) {
 
 					// Create the graph
-					return (new BarGraph (t, hd, dr.get ()));
+					return (new BarGraph (t, hd, p));
 
 				}
 			}
+		
+		} catch (InvalidParametersException e) {
+
+			e.showMessage ();
+			return (this.graphEmptyChart ());
 		}
 	}
 
 	/**
-	 * Graphs the columns specified in DataReference dr with data in DataSet ds
+	 * Graphs the columns specified in GraphPair p with data in DataSet ds
 	 * according to the settings in Template t. Uses JFreeChart to create the
 	 * appropriate graph! Scans the data for outliers before other functions.
 	 * 
 	 * @param interpolation_switch
 	 */
-	private Graph scannedGraphing (boolean interpolation_switch) {
-		
-		// Verify if data exists in the HeaderData object.
-		if (!this.hd.hasValidGraphTypes (this.t.getChartType (), this.dr.get ())) {
+	public Graph scannedGraphing (boolean interpolation_switch) {
+		try {
 			
-			JOptionPane.showMessageDialog (
-					null, "Error: This graph does not have the correct column types for the selected chart type.\n"
-					+ "Please try again with the proper column types for a " + this.t.getChartType ().toString () + ".");
-			return (this.graphEmptyChart ());
-			
-		}
-		
-		// Verify if there is a GraphPair ready to be graphed.
-		else if (!this.dr.get ().isReady ()) {
-			
-			JOptionPane.showMessageDialog (
-					null, "Error: This graph requires both an X Axis and Y Axis "
-					+ "column selected before it can be graphed.\n");
-			return (this.graphEmptyChart ());
-			
-		} 
-		// If both of these requirements are satisfied, graph away!
-		else {
-			try {
-				DataSet ds = OutlierSearch.scanForOutliers (hd, t, dr.get ());
+			// Now, scan and show the graph after scanning, if requested.
+			DataSet ds = OutlierSearch.scanForOutliers (hd, t, p);
 
-				if (interpolation_switch) {
+			if (interpolation_switch) {
 
-					this.interpolator = new Interpolator (ds, t, dr);
-					return (interpolator.interpolate ());
+				this.interpolator = new Interpolator (ds, t, p);
+				return (interpolator.interpolate ());
 
-				} else {
+			} else {
 
-					if (ChartType.XY_GRAPH.equals (t.getChartType ())) {
-						// Create the graph
-						return (new XYGraph (t, ds, dr.get ()));
+				if (ChartType.XY_GRAPH.equals (t.getChartType ())) {
+					// Create the graph
+					return (new XYGraph (t, ds, p));
 
-					} else {// if (t.getChartType ().equals (ChartType.BAR_GRAPH)) {
+				} else {// if (t.getChartType ().equals (ChartType.BAR_GRAPH)) {
 
-						// Create the graph
-						return (new BarGraph (t, ds, dr.get ()));
+					// Create the graph
+					return (new BarGraph (t, ds, p));
 
-					}
 				}
-			} catch (FunctionNotImplementedException ex) {
-				ex.showMessage ();
-				return (this.graphEmptyChart ());
 			}
+		} catch (FunctionNotImplementedException ex) {
+			
+			ex.showMessage ();
+			return (this.graphEmptyChart ());
+			
+		} catch (InvalidParametersException e) {
+			
+			e.showMessage ();
+			return (this.graphEmptyChart ());
+			
 		}
 	}
 	
-	private Graph graphEmptyChart () {
+	public Graph graphEmptyChart () {
 		// Create a dummy graph, instead.
 		if (ChartType.XY_GRAPH.equals (t.getChartType ())) {
 
@@ -222,14 +198,14 @@ public class GraphModel {
 	}
 
 	/**
-	 * Adds a ChangeListener connected to the DataReference.
+	 * Adds a ChangeListener connected to the GraphPair.
 	 * 
 	 * @param graphViewReferenceListener
 	 *            The ChangeListener connected to the desired object.
 	 */
-	public void addDataReferenceChangeListener (
+	public void addGraphPairChangeListener (
 			ChangeListener graphViewReferenceListener) {
-		this.dr.addChangeListener (graphViewReferenceListener);
+		this.p.addChangeListener (graphViewReferenceListener);
 	}
 
 	/**
@@ -263,12 +239,12 @@ public class GraphModel {
 	}
 
 	/**
-	 * Getter method. Provides external access to the DataReference object.
+	 * Getter method. Provides external access to the GraphPair object.
 	 * 
-	 * @return The DataReference object being used.
+	 * @return The GraphPair object being used.
 	 */
-	public DataReference getDataReference () {
-		return (this.dr);
+	public GraphPair getGraphPair () {
+		return (this.p);
 	}
 
 	/**
@@ -277,7 +253,6 @@ public class GraphModel {
 	 * @return The Interpolator object being used.
 	 */
 	public Interpolator getInterpolation () {
-		// TODO Auto-generated method stub
 		return (this.interpolator);
 	}
 }

@@ -1,382 +1,657 @@
 package org.pvg.plasmagraph.utils.data;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Comparator;
 import java.util.HashMap;
 import java.util.Iterator;
+import java.util.List;
 import java.util.ListIterator;
 import java.util.Map;
-import java.util.Map.Entry;
 import java.util.TreeMap;
 
 import org.apache.commons.math3.linear.Array2DRowRealMatrix;
 import org.jfree.data.category.DefaultCategoryDataset;
+import org.jfree.data.xy.XYDataItem;
 import org.jfree.data.xy.XYSeries;
 import org.jfree.data.xy.XYSeriesCollection;
 import org.pvg.plasmagraph.utils.exceptions.InvalidParametersException;
+import org.pvg.plasmagraph.utils.exceptions.InvalidTypeException;
+import org.pvg.plasmagraph.utils.types.ColumnType;
+
+import com.jmatio.types.MLChar;
 
 /**
- * Container of DataColumns. Provides methods to create JFree Datasets.
+ * Container of the data in a graph before conversion into a JFreeChart Dataset type.
+ * <p> Provides methods to create JFree Datasets.
  * 
  * @author Gerardo A. Navas Morales
  */
-@SuppressWarnings ("rawtypes")
-public class DataSet implements Iterable<DataColumn> {
-	/** Container for DataColumns. */
-	private ArrayList <DataColumn> values;
-	/***/
-	private boolean grouped;
-
+public class DataSet {
+	
+	/** X Column variables. */
+	String x_column_name;
+	ArrayList <Double> x_column;
+	
+	/** Y Column variables. */
+	String y_column_name;
+	ArrayList <Double> y_column;
+	
+	/** Group Column variables.*/
+	String group_column_name;
+	ColumnType group_type;
+	ArrayList <Double> group_column_double;
+	ArrayList <String> group_column_string;
+	
 	/**
-	 * Constructor. Creates a new ArrayList of DataColumns for this object.
-	 * There should only exist one DataSet for any given time.
+	 * Basic constructor. Creates an ungrouped DataSet.
 	 * 
-	 * @param grouped Boolean flag stating whether the DataSet includes a group by column or not.
+	 * @param p GraphPair object used to provide the Column names.
 	 */
-	public DataSet (boolean grouped) {
-		this.values = new ArrayList <> ();
-		this.grouped = grouped;
-	}
-
-	/**
-	 * Allows a new DataColumn into the DataSet if and only if its length
-	 * is the same as every other column. (Read: The first one is checked.)
-	 * 
-	 * @param o DataColumn to add to the DataSet.
-	 * @return Boolean describing the success or failure of the action.
-	 */
-	public boolean add (DataColumn o) {
-		if (this.size () == 0) {
-			return (this.values.add (o));
-		} else {
-			if (this.values.get (0).size () == o.size ()) {
-				return (this.values.add (o));
-			} else {
-				return (false);
-			}
-		}
-	}
-
-	/**
-	 * Appends all the columns of a DataSet into this DataSet
-	 * 
-	 * @param ds The DataSet to add to this DataSet.
-	 * @return A boolean describing the success or failure of the entire operation.
-	 */
-	public boolean append (DataSet ds) {
-		boolean success = true;
+	public DataSet () {
+		// Set names
+		this.x_column_name = "";
+		this.y_column_name = "";
+		this.group_column_name = "None";
 		
-		if (this.size () == 0) {
-			
-			for (DataColumn dc : ds) {
-				this.add (dc);
-			}
-			
+		// Set X / Y Column data.
+		x_column = new ArrayList <> ();
+		y_column = new ArrayList <> ();
+		
+		// Set Group Column data.
+		this.group_type = ColumnType.NONE;
+		group_column_double = null;
+		group_column_string = null;
+	}
+	
+	/**
+	 * Basic constructor. Creates an ungrouped DataSet.
+	 * 
+	 * @param p GraphPair object used to provide the Column names.
+	 */
+	public DataSet (GraphPair p) {
+		// Set names
+		this.x_column_name = p.getXIndexName ();
+		this.y_column_name = p.getYIndexName ();
+		this.group_column_name = "None";
+		
+		// Set X / Y Column data.
+		x_column = new ArrayList <> ();
+		y_column = new ArrayList <> ();
+		
+		// Set Group Column data.
+		
+		/*if (m.isDouble ()) {
+
+			return (ColumnType.DOUBLE);
+
+		} else if (m.isCell () || m.isChar ()) {
+
+			return (ColumnType.STRING);
+
 		} else {
 			
-			for (int i = 0; (i < ds.size () && success); ++i) {
-				success = values.get (i).append (ds.get (i));
-			}
+			return (ColumnType.NONE);
 			
+		}*/
+		
+		this.group_type = ColumnType.NONE; // TODO: THIS NEEDS TO BE A TYPE THAT ISN'T NONE.
+		group_column_double = null;
+		group_column_string = null;
+	}
+	
+	/**
+	 * Basic constructor. Creates an ungrouped DataSet.
+	 * 
+	 * @param group_type The ColumnType of the Group Column.
+	 * @param p GraphPair object used to provide the Column names.
+	 */
+	public DataSet (ColumnType group_type, GraphPair p) {
+		// Set names
+		this.x_column_name = p.getXIndexName ();
+		this.y_column_name = p.getYIndexName ();
+		this.group_column_name = p.getGroupName ();
+		
+		// Set X / Y Column data.
+		x_column = new ArrayList <> ();
+		y_column = new ArrayList <> ();
+		
+		// Set Group Column data.
+		this.group_type = group_type;
+		
+		if (ColumnType.DOUBLE.equals (group_type)) {
+			
+			group_column_double = new ArrayList <> ();
+			group_column_string = null;
+			
+		} else if (ColumnType.STRING.equals (group_type)) {
+			
+			group_column_double = null;
+			group_column_string = new ArrayList <> ();
+			
+		} else { // if (ColumnType.NONE.equals (group_type)) {
+			
+			group_column_double = null;
+			group_column_string = null;
+			
+		}
+	}
+	
+	// Add methods.
+	
+	// Assumption: It is assumed that any method putting values into this object
+	// will make sure that each column has the same number of objects.
+	/**
+	 * @param d
+	 * @return 
+	 */
+	public boolean addToX (double d) {
+		return (x_column.add (d));
+	}
+
+	/**
+	 * @param d
+	 * @return
+	 */
+	public boolean addToX (double [] d) {
+		ArrayList <Double> doubles_collection = new ArrayList <Double> (d.length);
+		
+		for (int i = 0; i < d.length; ++i) {
+			doubles_collection.add (d[i]);
 		}
 		
-		return (success);
+		return (x_column.addAll (doubles_collection));
 	}
 	
 	/**
-	 * Searches for a specific DataColumn. Responds if it found it or not.
-	 * 
-	 * @param o Column being searched for.
-	 * @return A boolean stating if the column was found or not.
+	 * @param d
+	 * @return 
 	 */
-	public boolean contains (DataColumn o) {
-		return (this.values.contains (o));
+	public boolean addToY (double d) {
+		return (y_column.add (d));
 	}
 	
 	/**
-	 * Searches all DataColumns for the column provided.
-	 * 
-	 * @param o The column being searched.
-	 * @return The integer index of the DataColumn being searched for.
+	 * @param d
+	 * @return
 	 */
-	public int find (DataColumn o) {
-		return (this.values.indexOf (o));
-	}
-
-	/**
-	 * Searches all DataColumns for the column name provided.
-	 * 
-	 * @param o The name being searched for.
-	 * @return The integer index of the DataColumn being searched for.
-	 */
-	public int find (String o) {
-		int index = -1;
+	public boolean addToY (double [] d) {
+		ArrayList <Double> doubles_collection = new ArrayList <Double> (d.length);
 		
-		for (int i = 0; (i < values.size ()) && (index == -1); ++i) {
-			if (values.get (i).getColumnName ().equals (o)) {
-				index = i;
-			}
+		for (int i = 0; i < d.length; ++i) {
+			doubles_collection.add (d[i]);
 		}
 		
-		return (index);
-	}
-
-	/**
-	 * Getter method. Provides access to a DataColumn at an index's location.
-	 * 
-	 * @param i The index where the desired DataColumn is located.
-	 * @return The DataColumn at the index location.
-	 */
-	public DataColumn get (int i) {
-		return (this.values.get (i));
+		return (y_column.addAll (doubles_collection));
 	}
 	
 	/**
-	 * Getter method. Provides the column length for the first column, the representative for all other columns.
-	 * 
-	 * @return An integer length of the columns.
+	 * @param d
+	 * @return 
 	 */
-	public int getColumnLength () {
-		if (this.values.size () > 0) {
-			return (this.values.get (0).size ());
+	public boolean addToGroup (double d) {
+		if (ColumnType.DOUBLE.equals (group_type)) {
+			return (group_column_double.add (d));
 		} else {
-			return (0);
+			return (false);
 		}
 	}
 	
 	/**
-	 * Getter method. Provides the column length for a given column.
-	 * 
-	 * @param index The column whose length will be checked.
-	 * @return An integer length of the selected column.
+	 * @param d
+	 * @return
 	 */
-	public int getColumnLength (int index) {
-		return (this.values.get (index).size ());
-	}
-	
-	/**
-	 * Provides the Group By column, if it exists.
-	 * 
-	 * @return The Group By DataColumn if it exists, or null if it does not exist.
-	 */
-	public DataColumn getGroup () {
-		if (!this.isGrouped ()) {
-			return (null);
-		} else {
-			return (this.values.get (0));
-		}
-	}
-	
-	/**
-	 * Provides the DataColumn that contains the X values of the DataSet.
-	 * 
-	 * @return The X value DataColumn, depending on the size of the DataSet.
-	 */
-	public DataColumn getX () {
-		if (!this.isGrouped ()) {
-			return (this.values.get (0));
-		} else {
-			return (this.values.get (1));
-		}
-	}
-
-	/**
-	 * Provides the DataColumn that contains the Y values of the DataSet.
-	 * 
-	 * @return The Y value DataColumn, depending on the size of the DataSet.
-	 */
-	public DataColumn getY () {
-		if (!this.isGrouped ()) {
-			return (this.values.get (1));
-		} else {
-			return (this.values.get (2));
-		}
-	}
-
-	/**
-	 * Getter method. Provides whether the entire DataSet is populated by DoubleColumns.
-	 * 
-	 * @return Boolean stating if all the columns are of type Double.
-	 */
-	public boolean isDouble () {
-		for (DataColumn c : this.values) {
-			if (!c.containsDoubles ()) {
-				return (false);
+	public boolean addToGroup (double [] d) {
+		if (ColumnType.DOUBLE.equals (group_type)) {
+			ArrayList <Double> doubles_collection = new ArrayList <Double> (d.length);
+			
+			for (int i = 0; i < d.length; ++i) {
+				doubles_collection.add (d[i]);
 			}
+			
+			return (group_column_double.addAll (doubles_collection));
+		} else {
+			return (false);
 		}
-		return (true);
 	}
 	
 	/**
-	 * Getter method. Provides whether the one DataColumn is a DoubleColumn.
-	 * 
-	 * @param index Integer value specifying the target column.
-	 * @return Boolean stating if the column if of type Double.
+	 * @param s
+	 * @return 
 	 */
-	public boolean isDouble (int index) {
-		return (this.values.get (index).containsDoubles ());
+	public boolean addToGroup (String s) {
+		if (ColumnType.STRING.equals (group_type)) {
+			return (group_column_string.add (s));
+		} else {
+			return (false);
+		}
 	}
 	
 	/**
-	 * Getter method. Provides whether the entire DataSet is populated by StringColumns.
-	 * 
-	 * @return Boolean stating if all the columns are of type String.
+	 * @param s
+	 * @return
 	 */
-	public boolean isString () {
-		for (DataColumn c : this.values) {
-			if (!c.containsStrings ()) {
-				return (false);
+	public boolean addToGroup (String [] s) {
+		if (ColumnType.STRING.equals (group_type)) {
+			ArrayList <String> Strings_collection = new ArrayList <String> (s.length);
+			
+			for (int i = 0; i < s.length; ++i) {
+				Strings_collection.add (s[i]);
 			}
+			
+			return (group_column_string.addAll (Strings_collection));
+		} else {
+			return (false);
 		}
-		return (true);
-	}
-
-	/**
-	 * Getter method. Provides whether the one DataColumn is a StringColumn.
-	 * 
-	 * @param index Integer value specifying the target column.
-	 * @return Boolean stating if the column if of type String.
-	 */
-	public boolean isString (int index) {
-		return (this.values.get (index).containsStrings ());
 	}
 	
-	public Iterator<DataColumn> iterator () {
-		return (this.values.iterator ());
+	// Remove methods.
+	/**
+	 * @param d
+	 * @return 
+	 */
+	public boolean removFromeX (double d) {
+		return (x_column.remove (d));
 	}
 	
 	/**
-	 * Removes a DataColumn from the DataSet.
-	 * 
-	 * @param o The DataColumn to remove.
-	 * @return Boolean describing the success or failure of the action.
+	 * @param i
+	 * @return
 	 */
-	public boolean remove (DataColumn o) {
-		return (this.values.remove (o));
+	public boolean removFromeX (int i) {
+		return (x_column.remove (i) != null);
 	}
-
+	
+	/**
+	 * @param d
+	 * @return 
+	 */
+	public boolean removeFromY (double d) {
+		return (y_column.remove (d));
+	}
+	
+	/**
+	 * @param i
+	 * @return
+	 */
+	public boolean removFromeY (int i) {
+		return (y_column.remove (i) != null);
+	}
+	
+	/**
+	 * @param d
+	 * @return 
+	 */
+	public boolean removeFromGroup (double d) {
+		if (ColumnType.DOUBLE.equals (group_type)) {
+			return (group_column_double.remove (d));
+		} else {
+			return (false);
+		}
+	}
+	
+	/**
+	 * @param s
+	 * @return 
+	 */
+	public boolean removeFromGroup (String s) {
+		if (ColumnType.STRING.equals (group_type)) {
+			return (group_column_string.remove (s));
+		} else {
+			return (false);
+		}
+	}
+	
+	/**
+	 * @param i
+	 * @return
+	 */
+	public boolean removFromeGroup (int i) {
+		if (ColumnType.DOUBLE.equals (group_type)) {
+			
+			return (group_column_double.remove (i) != null);
+			
+		} else if (ColumnType.STRING.equals (group_type)) {
+			
+			return (group_column_string.remove (i) != null);
+			
+		} else {
+			
+			return (false);
+		}
+	}
+	
+	// Get methods.
+	public double getXValue (int i) {
+		return (this.x_column.get (i));
+	}
+	
+	public double getYValue (int i) {
+		return (this.y_column.get (i));
+	}
+	
+	public double getGroupDoubleValue (int i) {
+		if (ColumnType.DOUBLE.equals (group_type)) {
+			return (this.group_column_double.get (i));
+		} else {
+			return (Double.NaN);
+			//throw (new InvalidTypeException ("Group Column"));
+		}
+	}
+	
+	public String getGroupStringValue (int i) {
+		if (ColumnType.STRING.equals (group_type)) {
+			return (this.group_column_string.get (i));
+		} else {
+			return ("NaN");
+			//throw (new InvalidTypeException ("Group Column"));
+		}
+	}
+	
+	/**
+	 * Getter method. Provides the X Column's name.
+	 * 
+	 * @return The value in "x_column_name".
+	 */
+	public String getXName () {
+		return (this.x_column_name);
+	}
+	
+	/**
+	 * Getter method. Provides the Y Column's name.
+	 * 
+	 * @return The value in "y_column_name".
+	 */
+	public String getYName () {
+		return (this.y_column_name);
+	}
+	
+	/**
+	 * Getter method. Provides the Group Column's name.
+	 * 
+	 * @return The value in "group_column_name".
+	 */
+	public String getGroupName () {
+		return (this.group_column_name);
+	}
+	
+	/**
+	 * Getter method. Provides the Group Column's ColumnType.
+	 * 
+	 * @return The value in "group_type".
+	 */
+	public ColumnType getGroupType () {
+		return (this.group_type);
+	}
+	
 	/**
 	 * Getter method. Provides the size of the ArrayList contained.
 	 * 
-	 * @return Integer value of the current size of the ArrayList.
+	 * @return Integer value of the current size of the ArrayLists.
 	 */
 	public int size () {
-		return (this.values.size ());
+		return (this.x_column.size ());
 	}
 	
-
-	/**
-	 * Creates a double [][] containing all the values in this DataSet.
-	 * TODO: Currently can only be used for 2-column data sets.
-	 * TODO: Currently assumes all values are doubles. Check first..
-	 * 
-	 * @return A 2-columned DataSet converted to a double [][].
-	 */
-	public double[][] toArray () {
-		// Prepare vehicle for double 2DArray creation.
-		Array2DRowRealMatrix matrix = new Array2DRowRealMatrix (this.getColumnLength (), 2);
-		
-		// Get both row and col indexes and start transferring data to the matrix.
-		for (int i = 0; (i < matrix.getRowDimension ()); ++i) {
-			for (int j = 0; (j < matrix.getColumnDimension ()); ++j) {
-				matrix.setEntry (i, j, (double) this.values.get (j).get (i));
-			}
-		}
-		
-		// Return a double 2DArray.
-		return (matrix.getData ());
+	public List <Double> getX () {
+		return (this.x_column);
+	}
+	
+	public List <Double> getY () {
+		return (this.y_column);
 	}
 	
 	/**
-	 * Given a group of index values and a name, provides a JFree CategoryDataset
-	 * for the purpose of graphing Bar Graphs.
-	 * TODO: Make the method more robust. Add flexibility for varying combinations of double and string!
-	 * 
-	 * @param p Pair of index values with a pre-defined name.
-	 * @return A DefaultCategoryDataset containing the desired data.
+	 * @return
 	 */
-	public DefaultCategoryDataset toBarGraphDataset (GraphPair p) {
-		DefaultCategoryDataset dataset = new DefaultCategoryDataset ();
-		
-		// Assume the X column (Column 0) has the category data.
-		// Assume the Y column (Column 1) has the quantity data. (Cannot be a string)
-		
-		// We need to know what are the column types for each of them.
-		if (this.isDouble (p.getXIndex ())) {
-			for (int row = 0; (row < this.getColumnLength ()); ++row) {
-				dataset.addValue ((Number) (double) this.values.get (p.getYIndex ()).get (row),
-						p.getXIndexName (), (double) this.values.get (p.getXIndex ()).get (row));
+	public double getXMax () {
+			double max = this.getXValue (0);
+			
+			for (double d : this.x_column) {
+				max = (max < d) ? d : max;
 			}
+			
+			return (max);
+	}
+	
+	/**
+	 * @return
+	 */
+	public double getXMin () {
+			double min = this.getXValue (0);
+			
+			for (double d : this.x_column) {
+				min = (min > d) ? d : min;
+			}
+			
+			return (min);
+	}
+	
+	/**
+	 * @return
+	 */
+	public double getYMax () {
+			double max = this.getYValue (0);
+			
+			for (double d : this.y_column) {
+				max = (max < d) ? d : max;
+			}
+			
+			return (max);
+	}
+	
+	/**
+	 * @return
+	 */
+	public double getYMin () {
+			double min = this.getYValue (0);
+			
+			for (double d : this.y_column) {
+				min = (min > d) ? d : min;
+			}
+			
+			return (min);
+	}
+	
+	// Find and contains methods.
+	/**
+	 * @param d
+	 * @return 
+	 */
+	public boolean containsX (double d) {
+		return (x_column.contains (d));
+	}
+	
+	/**
+	 * @param d
+	 * @return 
+	 */
+	public boolean containsY (double d) {
+		return (y_column.contains (d));
+	}
+	
+	/**
+	 * @param d
+	 * @return 
+	 */
+	public boolean containsGroup (double d) {
+		if (ColumnType.DOUBLE.equals (group_type)) {
+			return (group_column_double.contains (d));
 		} else {
-			for (int row = 0; (row < this.getColumnLength ()); ++row) {
-				dataset.addValue ((Number) (double) this.values.get (p.getYIndex ()).get (row),
-						p.getName (), (String) this.values.get (p.getXIndex ()).get (row));
-			}
+			return (false);
 		}
-		
-		return (dataset);
 	}
 	
 	/**
-	 * Given a group of index values and a name, provides a JFree XYSeriesCollection
-	 * Dataset for the purpose of graphing XY Graphs.
-	 * 
-	 * @param p GraphPair object used to determine various graph-related data.
-	 * @return An XYSeries containing the desired data.
+	 * @param s
+	 * @return 
 	 */
-	public XYSeriesCollection toGroupedXYGraphDataset (GraphPair p) {
-		
-		XYSeriesCollection grouped_series = new XYSeriesCollection ();
-		
-		HashMap <Object, XYSeries> sets = new HashMap <> ();
-		
-		for (int i = 0; (i < this.getColumnLength ()); ++i) {
-			
-			// If the type is new (I.E. does not exist yet in the collection)
-			// Add it into the collection as a new XYSeries.
-			Object key = this.values.get (p.getGroup ()).get (i);
-			
-			if (sets.containsKey (key)) {
-				sets.get (key).add (new org.jfree.data.xy.XYDataItem (
-						(double) this.values.get (1).get (i),
-						(double) this.values.get (2).get (i)));
-			} else  {
-				XYSeries s = new XYSeries (p.getName () + key.toString ());
-				
-				s.add (new org.jfree.data.xy.XYDataItem (
-						(double) this.values.get (1).get (i),
-						(double) this.values.get (2).get (i)));
-				
-				sets.put (key, s);
+	public boolean containsGroup (String s) {
+		if (ColumnType.STRING.equals (group_type)) {
+			return (group_column_string.contains (s));
+		} else {
+			return (false);
+		}
+	}
+	
+	public int findX (double o) {
+		for (int i = 0; (i < this.x_column.size ()); ++i) {
+			if (this.x_column.get (i) == o) {
+				return (i);
 			}
 		}
 		
-		for (XYSeries xy : sets.values ()) {
-			grouped_series.addSeries (xy);
+		return (-1);
+	}
+	
+	public int findY (double o) {
+		for (int i = 0; (i < this.y_column.size ()); ++i) {
+			if (this.y_column.get (i) == o) {
+				return (i);
+			}
 		}
 		
-		return (grouped_series);
+		return (-1);
+	}
+	
+	public int findGroup (double x, double y) {
+		for (int i = 0; (i < this.x_column.size ()) && 
+				(i < this.y_column.size ()); ++i) {
+			
+			if ((this.x_column.get (i) == x) && (this.y_column.get (i) == y)) {
+				return (i);
+			}
+		}
 		
+		return (-1);
+	}
+	
+	// Set methods.
+	/**
+	 * @param d
+	 * @return 
+	 */
+	public boolean setToX (double [] d) {
+		ArrayList <Double> x = new ArrayList <> (d.length);
+		
+		for (int i = 0; i < d.length; ++i) {
+			x.add (d[i]);
+		}
+		
+		return (setToX (x));
 	}
 	
 	/**
-	 * Getter method. Provides a string representation of the ArrayList.
-	 * 
-	 * @return A String representation of the entire ArrayList.
+	 * @param d
+	 * @return 
 	 */
-	@Override
-	public String toString () {		
-        StringBuilder str = new StringBuilder();	
-        for (DataColumn column : this.values) {
-            str.append("-- Column --");
-            str.append(System.getProperty("line.separator"));
-            str.append(column.toString());
-            str.append(System.getProperty("line.separator"));	
-            str.append(System.getProperty("line.separator"));
-        }
+	public boolean setToX (ArrayList <Double> d) {
+		x_column.clear ();
+		return (x_column.addAll (d));
+	}
+	
+	/**
+	 * @param d
+	 * @return 
+	 */
+	public boolean setToY (double [] d) {
 
-        return str.toString();
+		ArrayList <Double> y = new ArrayList <> (d.length);
+		
+		for (int i = 0; i < d.length; ++i) {
+			y.add (d[i]);
+		}
+		
+		return (setToY (y));
 	}
+	
+	/**
+	 * @param d
+	 * @return 
+	 */
+	public boolean setToY (ArrayList <Double> d) {
+		x_column.clear ();
+		return (y_column.addAll (d));
+	}
+	
+	/**
+	 * @param d
+	 * @return 
+	 */
+	public boolean setToGroup (double [] d) {
+		if (ColumnType.DOUBLE.equals (group_type)) {
+			group_column_double.clear ();
+			
+			boolean completion = false;
+			for (int i = 0; i < d.length; ++i) {
+				completion = group_column_double.add (d[i]);
+			}
+			
+			return (completion);
+		} else {
+			return (false);
+		}
+	}
+	
+	/**
+	 * @param s
+	 * @return 
+	 */
+	public boolean setToGroup (String [] s) {
+		if (ColumnType.STRING.equals (group_type)) {
+			group_column_string.clear ();
+			
+			boolean completion = false;
+			for (int i = 0; i < s.length; ++i) {
+				completion = group_column_string.add (s[i]);
+			}
+			
+			return (completion);
+		} else {
+			return (false);
+		}
+	}
+	
+	/**
+	 * 
+	 * @param c
+	 */
+	public void setGroupType (ColumnType c) {
+		this.group_type = c;
+		
+		if (ColumnType.DOUBLE.equals (this.group_type)) {
+			
+			this.group_column_double = new ArrayList <> ();
+			this.group_column_string = null;
+			
+		} else { //if (ColumnType.STRING.equals (this.group_type)) {
+			
+			this.group_column_string = new ArrayList <> ();
+			this.group_column_double = null;
+			
+		}
+	}
+	
+	// Checking methods.
+	/**
+	 * Getter method. Provides whether the group column is of the type Double.
+	 * 
+	 * @return Boolean stating if the group column is of the type Double.
+	 */
+	public boolean isGroupDouble () {
+		return (ColumnType.DOUBLE.equals (group_type));
+	}
+	
+	/**
+	 * Getter method. Provides whether the group column is of the type String.
+	 * 
+	 * @return Boolean stating if the group column is of the type Double.
+	 */
+	public boolean isGroupString () {
+		return (ColumnType.STRING.equals (group_type));
+	}
+	
+	// Conversion methods.
 	
 	/**
 	 * Given a group of index values and a name, provides a JFree XYSeries Dataset
@@ -388,16 +663,321 @@ public class DataSet implements Iterable<DataColumn> {
 	public XYSeries toXYGraphDataset (GraphPair p) {
 		XYSeries series = new XYSeries (p.getName ());
 
-		if (this.isDouble ()) {
-			for (int row = 0; row < this.getColumnLength (); ++row) {
-				series.add ((double) this.getX ().get (row),
-						((double) this.getY ().get (row)));
-			}
+		for (int row = 0; row < this.size (); ++row) {
+			series.add (this.getXValue (row), (this.getYValue (row)));
 		}
 		
 		return (series);
 	}
+	
+	/**
+	 * Given a group of index values and a name, provides a JFree XYSeriesCollection
+	 * Dataset for the purpose of graphing XY Graphs.
+	 * 
+	 * @param p GraphPair object used to determine various graph-related data.
+	 * @return An XYSeries containing the desired data.
+	 * @throws InvalidParametersException Whenever a non-numeric column is found in this process.
+	 */
+	public XYSeriesCollection toGroupedXYGraphDataset (GraphPair p) throws InvalidParametersException {
+		
+		// Create each individual Series.
+		HashMap <Object, XYSeries> sets = new HashMap <> ();
+		
+		for (int i = 0; (i < this.size ()); ++i) {
+			
+			// If the type is new (IE. does not exist yet in the collection)
+			// Add it into the collection as a new XYSeries.
+			if (ColumnType.DOUBLE.equals (this.group_type)) {
+				double key = this.getGroupDoubleValue (i);
+				
+				if (sets.containsKey (key)) {
+					sets.get (key).add (new org.jfree.data.xy.XYDataItem (
+							this.getXValue (i),
+							this.getYValue (i)));
+				} else  {
+					XYSeries s = new XYSeries (p.getName () + Double.toString (key));
+					
+					s.add (new org.jfree.data.xy.XYDataItem (
+							this.getXValue (i),
+							this.getYValue (i)));
+					
+					sets.put (key, s);
+				}
+			} else { // if (ColumnType.STRING.equals (this.group_type)) {
+				String key = this.getGroupStringValue (i);
+				
+				if (sets.containsKey (key)) {
+					sets.get (key).add (new org.jfree.data.xy.XYDataItem (
+							this.getXValue (i),
+							this.getYValue (i)));
+				} else  {
+					XYSeries s = new XYSeries (p.getName () + key);
+					
+					s.add (new org.jfree.data.xy.XYDataItem (
+							this.getXValue (i),
+							this.getYValue (i)));
+					
+					sets.put (key, s);
+				}
+			}
+		}
+		
+		// Put all the series into a collection and ship it!
+		XYSeriesCollection grouped_series = new XYSeriesCollection ();
+		
+		for (XYSeries xy : sets.values ()) {
+			grouped_series.addSeries (xy);
+		}
+		
+		return (grouped_series);
+	}
+	
+	/**
+	 * Given a group of index values and a name, provides a JFree CategoryDataset
+	 * for the purpose of graphing Bar Graphs.
+	 * TODO: Make the method more robust. Add flexibility for varying combinations of double and string!
+	 * 
+	 * @param p Pair of index values with a pre-defined name.
+	 * @return A DefaultCategoryDataset containing the desired data.
+	 */
+	/*public DefaultCategoryDataset toBarGraphDataset (GraphPair p) {
+		DefaultCategoryDataset dataset = new DefaultCategoryDataset ();
+		
+		// Assume the X column (Column 0) has the category data.
+		// Assume the Y column (Column 1) has the quantity data. (Cannot be a string)
+		
+		// We need to know what are the column types for each of them.
+		if (this.isDouble (p.getXColumnIndex ())) {
+			for (int row = 0; (row < this.getColumnLength ()); ++row) {
+				dataset.addValue ((Number) (double) this.values.get (p.getYColumnIndex ()).get (row),
+						p.getXIndexName (), (double) this.values.get (p.getXColumnIndex ()).get (row));
+			}
+		} else {
+			for (int row = 0; (row < this.getColumnLength ()); ++row) {
+				dataset.addValue ((Number) (double) this.values.get (p.getYColumnIndex ()).get (row),
+						p.getName (), (String) this.values.get (p.getXColumnIndex ()).get (row));
+			}
+		}
+		
+		return (dataset);
+	}*/
+	
+	/**
+	 * Creates a double [][] containing all the values in this DataSet.
+	 * TODO: Currently can only be used for 2-column data sets.
+	 * TODO: Currently assumes all values are doubles. Check first..
+	 * 
+	 * @return A 2-columned DataSet converted to a double [][].
+	 */
+	public double[][] toArray () {
+		// Prepare vehicle for double 2DArray creation.
+		Array2DRowRealMatrix matrix = new Array2DRowRealMatrix (this.size (), 2);
+		
+		// Get both row and col indexes and start transferring data to the matrix.
+		for (int i = 0; (i < matrix.getRowDimension ()); ++i) {
+			matrix.setEntry (i, 0, this.getXValue (i));
+			matrix.setEntry (i, 1, this.getYValue (i));
+		}
+		
+		// Return a double 2DArray.
+		return (matrix.getData ());
+	}
+	
+	/**
+	 * @param i The column to select. 0 signals the X column, whereas 1 signals the Y column.
+	 * 
+	 * @return
+	 */
+	public double [] getColumnArray (int i) {
+		if (i == 0) {
+			double [] column = new double [this.x_column.size ()];
+			
+			for (int index = 0; index < this.x_column.size (); ++index) {
+				column[index] = this.x_column.get (index);
+			}
+			
+			return (column);
+		} else if (i == 1) {
+			double [] column = new double [this.y_column.size ()];
+			
+			for (int index = 0; index < this.y_column.size (); ++index) {
+				column[index] = this.y_column.get (index);
+			}
+			
+			return (column);
+		} else {
+			return (new double [] {0.0});
+		}
+	}
+	
+	/**
+	 * @return
+	 */
+	public double [] getDoubleGroupColumnArray () {
+		if (ColumnType.DOUBLE.equals (group_type)) {
+			double [] column = new double [this.group_column_double.size ()];
+			
+			for (int i = 0; i < this.group_column_double.size (); ++i) {
+				column[i] = this.group_column_double.get (i);
+			}
+			
+			return (column);
+		} else { // if (ColumnType.STRING.equals (group_type)) {
+			return (new double [] {0.0});
+		}
+	}
+	
+	/**
+	 * @return
+	 */
+	public String [] getStringGroupColumnArray () {
+		if (ColumnType.DOUBLE.equals (group_type)) {
+			String [] column = new String [this.group_column_string.size ()];
+			
+			for (int i = 0; i < this.group_column_string.size (); ++i) {
+				column[i] = this.group_column_string.get (i);
+			}
+			
+			return (column);
+			
+		} else { // if (ColumnType.STRING.equals (group_type)) {
+			return (new String [] {"Empty"});
+		}
+	}
+	
+	/**
+	 * Getter method. Provides a String representation of the ArrayList.
+	 * 
+	 * @return A String representation of the entire ArrayList.
+	 */
+	@Override
+	public String toString () {		
+        StringBuilder sb = new StringBuilder();
+        
+        sb.append("-- X Column --");
+        sb.append(System.getProperty("line.separator"));
+        sb.append(this.getColumnString (0));
+        sb.append(System.getProperty("line.separator"));
+        
+        sb.append("-- Y Column --");
+        sb.append(System.getProperty("line.separator"));
+        sb.append(this.getColumnString (1));	
+        sb.append(System.getProperty("line.separator"));
+        
+        if (this.isGrouped ()) {
+        	sb.append("-- Group Column --");
+            sb.append(System.getProperty("line.separator"));
+            sb.append(this.getColumnString (2));	
+            sb.append(System.getProperty("line.separator"));
+        }
 
+        return sb.toString();
+	}
+	
+	private String getColumnString (int i) {
+		if (i == 0) {
+			return (this.getXColumnString ());
+		} else if (i == 1) {
+			return (this.getYColumnString ());
+		} else if (i == 2) {
+			return (this.getGroupColumnString ());
+		} else {
+			return ("");
+		}
+	}
+	
+	private String getXColumnString () {
+		StringBuilder sb = new StringBuilder();	
+
+        sb.append("Name: ");
+        sb.append(this.getXName());
+        sb.append(System.getProperty("line.separator"));
+
+        sb.append("Type: ");
+        sb.append(ColumnType.DOUBLE.toString ());
+        sb.append(System.getProperty("line.separator"));
+
+        sb.append("Size: ");
+        sb.append(this.x_column.size());
+        sb.append(System.getProperty("line.separator"));
+
+        sb.append("Values: [");
+
+        for (Double d : this.x_column) {
+    		sb.append (d).append (", ");
+    	}
+
+        sb.append("]");
+
+        return sb.toString();
+	}
+	
+	private String getYColumnString () {
+		StringBuilder sb = new StringBuilder();	
+
+        sb.append("Name: ");
+        sb.append(this.getYName());
+        sb.append(System.getProperty("line.separator"));
+
+        sb.append("Type: ");
+        sb.append(ColumnType.DOUBLE.toString ());
+        sb.append(System.getProperty("line.separator"));
+
+        sb.append("Size: ");
+        sb.append(this.y_column.size());
+        sb.append(System.getProperty("line.separator"));
+
+        sb.append("Values: [");
+
+        for (Double d : this.y_column) {
+    		sb.append (d).append (", ");
+    	}
+
+        sb.append("]");
+
+        return sb.toString();
+	}
+	
+	private String getGroupColumnString () {
+		StringBuilder sb = new StringBuilder();	
+
+        sb.append("Name: ");
+        sb.append(this.getGroupName());
+        sb.append(System.getProperty("line.separator"));
+
+        sb.append("Type: ");
+        sb.append(this.group_type.toString ());
+        sb.append(System.getProperty("line.separator"));
+
+        sb.append("Size: ");
+        if (ColumnType.DOUBLE.equals (group_type)) {
+        	sb.append(this.group_column_double.size ());
+        } else {// if (ColumnType.STRING.equals (group_type)) {
+        	sb.append(this.group_column_string.size ());
+        }
+        sb.append(System.getProperty("line.separator"));
+
+        sb.append("Values: [");
+
+        if (ColumnType.DOUBLE.equals (group_type)) {
+        	
+        	for (Double d : this.group_column_double) {
+        		sb.append (d).append (", ");
+        	}
+        	
+        } else {// if (ColumnType.STRING.equals (group_type)) {
+        	
+        	for (String s : this.group_column_string) {
+        		sb.append (s).append (", ");
+        	}
+        	
+        }
+        
+        sb.append("]");
+
+        return (sb.toString ());
+	}
+	
 	/**
 	 * Provides the number of parameters that exist in this DataSet.
 	 * This is also known as the K in some statistical functions.
@@ -405,10 +985,10 @@ public class DataSet implements Iterable<DataColumn> {
 	 * @return The number of parameters that this DataSet contains.
 	 */
 	public int getNumParameters () {
-		if (this.grouped) {
-			return (this.size () - 1);
+		if (this.isGrouped ()) {
+			return (2);
 		} else {
-			return (this.size ());
+			return (3);
 		}
 	}
 	
@@ -418,7 +998,7 @@ public class DataSet implements Iterable<DataColumn> {
 	 * @return A boolean stating whether this DataSet contains a Group By column or not.
 	 */
 	public boolean isGrouped () {
-		return (this.grouped);
+		return (!ColumnType.NONE.equals (this.group_type));
 	}
         
     /**
@@ -429,18 +1009,48 @@ public class DataSet implements Iterable<DataColumn> {
     @Override
     public boolean equals (Object o) {
         boolean rval = false;
+        // Type Comparison
         if (o instanceof DataSet) {
-            DataSet ds = (DataSet) o;
+        	DataSet ds = (DataSet) o;
             rval = true;
             
-            if(this.size() != ds.size()){
-            	
+            // Size comparison
+            if (this.size() != ds.size()) {
                 rval = false;
             }
             
-            for(int i = 0; i < this.values.size() && rval; i++){
-                if(!this.values.get(i).equals(ds.get(i))){
+            // Column comparison
+            if (this.isGrouped () ^ ds.isGrouped ()) {
+            	rval = false;
+            }
+            
+            // Group type comparison, if they're grouped.
+            if (this.isGrouped () && ds.isGrouped ()) {
+            	if (!(this.getGroupType ().equals (ds.getGroupType ()))) {
+            		rval = false;
+            	}
+            }
+            
+            for (int i = 0; i < this.size () && rval; i++){
+                if (this.getXValue (i) != ds.getXValue (i)){
                     rval = false;
+                }
+                
+                if (this.getYValue (i) != ds.getYValue (i)){
+                    rval = false;
+                }
+                
+                if (this.isGrouped () && ds.isGrouped ()) {
+                	if (ColumnType.DOUBLE.equals (this.getGroupType ())) {
+                		if (this.getGroupDoubleValue (i) != ds.getGroupDoubleValue (i)){
+                            rval = false;
+                        }
+                	} else {// if (ColumnType.DOUBLE.equals (this.getGroupType ())) {
+                		if (this.getGroupStringValue (i) != ds.getGroupStringValue (i)){
+                            rval = false;
+                        }
+                	}
+                	
                 }
             }               
         }
@@ -455,92 +1065,46 @@ public class DataSet implements Iterable<DataColumn> {
      * @param y_column 
      */
 	public void orderData (double [] x_column, double [] y_column) {
-		// Create the data column map.
-		final Map<Double, Double> map = new HashMap <Double, Double> ();
+
+		// Create the sorting container.
+		Object [] xy_array = new Object [this.x_column.size ()];
 		
-		// Populate the map.
-		for (int i = 0; (i < this.getColumnLength ()); ++i) {
-			map.put ((Double) this.getX ().get (i), (Double) this.getY ().get (i));
+		// Populate the sorting container.
+		for (int i = 0; (i < this.x_column.size ()); ++i) {
+			XYDataItem xy = new XYDataItem (this.x_column.get (i), this.y_column.get (i));
+			
+			xy_array[i] = xy;
 		}
 		
-		// Create the sorting map.
-		Map <Double, Double> sorted_map = new TreeMap <Double, Double> (
-				new Comparator <Double> () {
-	        public int compare (Double o1, Double o2) {
-	            return o1.compareTo (o2);
-	        }
-	    });
+		// Sort the data in the "xy_column" based on the x column values.
+		Arrays.sort (xy_array, new Comparator <Object> () {
+			
+			@Override
+			public int compare (Object o1, Object o2) {
+				return (Double.compare (((XYDataItem) o1).getXValue (), 
+						((XYDataItem) o2).getXValue ()));
+			}
+		});
 		
-		// Include the data column map into the sorting map and let it sort automatically.
-		sorted_map.putAll(map);
-	    
-	    // Now, pull the data out into the arrays.
-		Iterator <Map.Entry <Double, Double>> row_iterator = sorted_map.entrySet ().iterator ();
-		Map.Entry <Double, Double> row;
+		// Split the sorted data into two double arrays.
+		for (int i = 0; (i < xy_array.length); ++i) {
+			XYDataItem xy = (XYDataItem) xy_array[i];
+			
+			x_column[i] = xy.getXValue ();
+			y_column[i] = xy.getYValue ();
+		}
 		
-		// For each value in the sorted map, put them in their respective arrays.
-		for (int i = 0; (i < sorted_map.size ()); ++i) {
-			row = row_iterator.next ();
-			
-			x_column [i] = row.getKey ();
-			y_column [i] = row.getValue ();
-	    }
-	    
 	}
-	
-	public double getXMax () {
-		if (!this.getX ().containsDoubles ()) {
-			return (0.0);
-		} else {
-			double max = (double) this.getX ().get (0);
-			
-			for (Object e : this.getX ()) {
-				max = (max < (double) e) ? (double) e : max;
-			}
-			
-			return (max);
-		}
-	}
-	
-	public double getXMin () {
-		if (!this.getX ().containsDoubles ()) {
-			return (0.0);
-		} else {
-			double min = (double) this.getX ().get (0);
-			
-			for (Object e : this.getX ()) {
-				min = (min > (double) e) ? (double) e : min;
-			}
-			
-			return (min);
-		}
-	}
-	
-	public double getYMax () {
-		if (!this.getY ().containsDoubles ()) {
-			return (0.0);
-		} else {
-			double max = (double) this.getY ().get (0);
-			
-			for (Object e : this.getY ()) {
-				max = (max < (double) e) ? (double) e : max;
-			}
-			
-			return (max);
-		}
-	}
-	
-	public double getYMin () {
-		if (!this.getY ().containsDoubles ()) {
-			return (0.0);
-		} else {
-			double min = (double) this.getY ().get (0);
-			
-			for (Object e : this.getY ()) {
-				min = (min > (double) e) ? (double) e : min;
-			}
-			
-			return (min);
-		}
+
+	/**
+	 * 
+	 * @return
+	 */
+	public int getItemCount () {
+		//if (this.getX ().size () == this.getY ().size ()) {
+			return (this.getX ().size ());
+		//} else {
+		//	return (0);
+		//}
 	}
 }

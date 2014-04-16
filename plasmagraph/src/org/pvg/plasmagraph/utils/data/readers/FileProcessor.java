@@ -17,7 +17,7 @@ public interface FileProcessor {
 	public boolean getHeaders (HeaderData hd) throws Exception;
 	
 	public void toDataSet (DataSet ds, GraphPair p, HeaderData hd) throws Exception;
-	public void toDataSet (DataSet ds, GraphPair p, HeaderData hd, Template t) throws Exception;
+	//public void toDataSet (DataSet ds, GraphPair p, HeaderData hd, Template t) throws Exception;
 	//public void fromDataSet (DataSet ds) throws Exception;
 	
 	public File getFile ();

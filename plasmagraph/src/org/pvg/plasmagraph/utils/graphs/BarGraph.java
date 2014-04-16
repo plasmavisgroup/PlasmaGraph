@@ -22,12 +22,16 @@ import org.pvg.plasmagraph.utils.template.Template;
 import org.pvg.plasmagraph.utils.types.AxisType;
 
 /**
- * Graph class.
- * Contains all the methods required to take in data of any kind that the
- * rest of the system may provide it and shape it into a proper graph
- * according to the settings in the Template.
+ * Graph class. <p>
+ * Contains all the methods required to take in data of any kind that the<p>
+ * rest of the system may provide it and shape it into a proper graph<p>
+ * according to the settings in the Template.<p><p>
  * 
- * Manages the graphing of any and all Bar Charts.
+ * Manages the graphing of any and all Bar Charts.<p>
+ * 
+ * It is important to note that this class, as of 4/15/2014, DOES NOT WORK.<p>
+ * The class is currently non-functional due to changes in the DataSet and lack of<p>
+ * support in the tools available.
  * 
  * @author Gerardo A. Navas Morales
  */
@@ -94,14 +98,11 @@ public class BarGraph implements Graph {
 	 * @param p GraphPair that contains the columns to graph.
 	 */
 	public BarGraph (Template t, HeaderData hd, GraphPair p) {
-		if (p.isGrouped ()) {
-			chart = createChart (createDataset(t, hd.populateGroupedData (p, t), p), t, p);
-		} else {
-			chart = createChart (createDataset(t, hd.populateData (p), p), t, p);
-		}
+		this (t, hd.populateData (p), p);
 	}
 	
 	/**
+	 * WARNING: WILL NOT WORK. THIS IS A SHELVED FEATURE.
 	 * Creates a DefaultCategoryDataset specifically for the purposes of
 	 * graphing the data using the DataSet's provided values.
 	 * 
@@ -113,7 +114,8 @@ public class BarGraph implements Graph {
 	@Override
 	public DefaultCategoryDataset createDataset (Template t, DataSet ds, GraphPair p) {
 		
-		return (ds.toBarGraphDataset (p));
+		//return (ds.toBarGraphDataset (p));
+		return (null);
 		
 	}
 	
