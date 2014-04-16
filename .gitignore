@@ -1,6 +1,7 @@
 # With help by: https://github.com/github/gitignore
 #  Git ---------------------------------------------------
 .git/
+
 #  Java---------------------------------------------------
 *.class
 mat_file_limit_test.mat
