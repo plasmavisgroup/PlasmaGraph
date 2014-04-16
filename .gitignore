@@ -1,7 +1,7 @@
 # With help by: https://github.com/github/gitignore
 #  Lib ---------------------------------------------------
 plasmagraph/test/matlab/mat_file_limit_test.mat
-plasmagraph/lib/JARs/
+# plasmagraph/lib/JARs/
 
 #  Git ---------------------------------------------------
 .git/
