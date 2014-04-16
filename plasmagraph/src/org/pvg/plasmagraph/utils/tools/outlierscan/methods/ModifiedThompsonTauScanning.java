@@ -6,7 +6,7 @@ import org.apache.commons.math3.stat.descriptive.moment.Mean;
 import org.apache.commons.math3.stat.descriptive.moment.StandardDeviation;
 import org.apache.commons.math3.stat.inference.TTest;
 import org.pvg.plasmagraph.utils.ExceptionHandler;
-import org.pvg.plasmagraph.utils.data.DataReference;
+import org.pvg.plasmagraph.utils.data.GraphPair;
 import org.pvg.plasmagraph.utils.data.DataSet;
 import org.pvg.plasmagraph.utils.data.HeaderData;
 import org.pvg.plasmagraph.utils.data.GraphPair;
@@ -35,7 +35,7 @@ public class ModifiedThompsonTauScanning implements ScanMethod {
 	}
 
 	private boolean search (ArrayList<Double> outlier_array, Template t,
-			DataReference dr) {
+			GraphPair p) {
 		// TODO Auto-generated method stub
 		return false;
 	}

@@ -1,4 +1,4 @@
-package org.pvg.plasmagraph.utils.data.readers;
+/*package org.pvg.plasmagraph.utils.data.readers;
 
 import java.io.BufferedReader;
 import java.io.BufferedWriter;
@@ -23,32 +23,37 @@ import org.pvg.plasmagraph.utils.types.FileType;
 import au.com.bytecode.opencsv.CSVReader;
 import au.com.bytecode.opencsv.CSVWriter;
 
-/**
+*//**
+ * TODO: OVERHAUL OF THIS CLASS.
  * Data processor class. Manages the reading of CSV files and creates DataSets
  * for this project's usage.
  * 
+ * It is important to note that this class, as of 4/15/2014, DOES NOT WORK.<p>
+ * The class is currently non-functional due to changes in the DataSet and lack of<p>
+ * support in the tools available.
+ * 
  * @author Gerardo A. Navas Morales
- */
+ *//*
 public class CSVProcessor implements FileProcessor {
-	/**	Data container for values to and from the CSVReader / Writer classes. */
+	*//**	Data container for values to and from the CSVReader / Writer classes. *//*
 	private List<String[]> csv_data;
-	/** CSV file location. */
+	*//** CSV file location. *//*
 	private File csv_file;
 	
-	/**
+	*//**
 	 * Constructor. Creates a new CSVProcessor with a default File location as
 	 * specified by the method call.
 	 * 
 	 * @param f A File object, containing the default file location for the CSV processes.
-	 */
+	 *//*
 	public CSVProcessor (File f) {
 		csv_file = f;
 		this.read ();
 	}
 	
-	/**
+	*//**
 	 * Default, full-batch way to read a CSV. Reads from the original file location.
-	 */
+	 *//*
 	@Override
 	public void read () {
 		// Open CSV file "f".
@@ -69,21 +74,21 @@ public class CSVProcessor implements FileProcessor {
 		}
 	}
 	
-	/**
+	*//**
 	 * Default, full-batch way to write a CSV. 
 	 * Writes to the original file location.
-	 */
+	 *//*
 	//@Override
 	public void write () {
 		this.write (csv_file);
 	}
 	
-	/**
+	*//**
 	 * Default, full-batch way to write a CSV.
 	 * Writes to a new location as specified by the method call.
 	 * 
 	 * @param f The file object whose location will be used instead of the default.
-	 */
+	 *//*
 	//@Override
 	public void write (File f) {
 		// Open CSV file "f".
@@ -104,12 +109,12 @@ public class CSVProcessor implements FileProcessor {
 		}
 	}
 	
-	/**
+	*//**
 	 * Transforms the List<String[]> data object that CSVReader dumps out
 	 * into a proper DataSet for the purposes of PlasmaGraph.
 	 * 
 	 * @param ds A DataSet object with its DataGroups being of the DataRow type.
-	 */
+	 *//*
 	@Override
 	public void toDataSet (DataSet ds, GraphPair p, HeaderData hd) {
 		// First, check to see if the file's been even read.
@@ -125,13 +130,13 @@ public class CSVProcessor implements FileProcessor {
 		this.populateColumns (ds, p);
 	}
 	
-	/**
+	*//**
 	 * Transforms the List<String[]> data object that CSVReader dumps out
 	 * into a proper DataSet for the purposes of PlasmaGraph.
 	 * 
 	 * @return A DataSet object with its DataGroups being of the DataRow type.
 	 * @throws Exception Malformed data set; columns are of different sizes.
-	 */
+	 *//*
 	@Override
 	public void toDataSet (DataSet ds, GraphPair p, HeaderData hd, Template t) throws Exception {
 		// First, check to see if the file's been even read.
@@ -154,134 +159,90 @@ public class CSVProcessor implements FileProcessor {
 		}
 		
 		// Now, prepare the columns of the DataSet.
-		this.prepareColumns (ds, p, hd, column_index);
+		this.prepareColumns (ds, p, hd);
 		
 		// Once the columns are ready, populate the columns with the correct data!
 		this.populateColumns (ds, p, column_index);
 	}
 
-	/**
+	*//**
 	 * Helper method. Prepares the DataColumn variables that are contained in
 	 * the DataSet, with help from the HeaderData and a GraphPair.
 	 * 
 	 * @param ds DataSet container already provided.
 	 * @param p GraphPair object containing the index values of the DataSet's columns.
 	 * @param hd HeaderData object containing the Column names and types.
-	 */
+	 *//*
 	private void prepareColumns (DataSet ds, GraphPair p, HeaderData hd) {
+		
+		// Check to see if there's a group by column!
+		if (p.isGrouped ()) {
+			// Add the GroupBy Column first!
+			if (hd.get (p.getGroup ()).getValue () == ColumnType.DATETIME) {
+				
+				ds.add (new DataColumn <java.util.Date> (hd.get (p.getGroup ()).getKey (), 
+						hd.get (p.getGroup ()).getValue ()));
+				
+			} else if (hd.get (p.getGroup ()).getValue () == ColumnType.DOUBLE) {
+				
+				ds.add (new DataColumn <Double> (hd.get (p.getGroup ()).getKey (), 
+						hd.get (p.getGroup ()).getValue ()));
+				
+			} else {
+				
+				ds.add (new DataColumn <String> (hd.get (p.getGroup ()).getKey (), 
+						hd.get (p.getGroup ()).getValue ()));
+				
+			}
+		}
+		
+		// Regardless...
 		// Take the first index of the GraphPair, find it in the List we have here,
 		/// and create the column it needs in the DataSet.
 		
-		if (hd.get (p.getXIndex ()).getValue () == ColumnType.DATETIME) {
+		if (hd.get (p.getXColumnIndex ()).getValue () == ColumnType.DATETIME) {
 			
-			ds.add (new DataColumn <java.util.Date> (hd.get (p.getXIndex ()).getKey (), 
-					hd.get (p.getXIndex ()).getValue ()));
+			ds.add (new DataColumn <java.util.Date> (hd.get (p.getXColumnIndex ()).getKey (), 
+					hd.get (p.getXColumnIndex ()).getValue ()));
 			
-		} else if (hd.get (p.getXIndex ()).getValue () == ColumnType.DOUBLE) {
+		} else if (hd.get (p.getXColumnIndex ()).getValue () == ColumnType.DOUBLE) {
 			
-			ds.add (new DataColumn <Double> (hd.get (p.getXIndex ()).getKey (), 
-					hd.get (p.getXIndex ()).getValue ()));
+			ds.add (new DataColumn <Double> (hd.get (p.getXColumnIndex ()).getKey (), 
+					hd.get (p.getXColumnIndex ()).getValue ()));
 			
 		} else {
 			
-			ds.add (new DataColumn <String> (hd.get (p.getXIndex ()).getKey (), 
-					hd.get (p.getXIndex ()).getValue ()));
+			ds.add (new DataColumn <String> (hd.get (p.getXColumnIndex ()).getKey (), 
+					hd.get (p.getXColumnIndex ()).getValue ()));
 			
 		}
 		
 		// Now do that for the other GraphPair index.
-		if (hd.get (p.getYIndex ()).getValue () == ColumnType.DATETIME) {
+		if (hd.get (p.getYColumnIndex ()).getValue () == ColumnType.DATETIME) {
 			
-			ds.add (new DataColumn <Double> (hd.get (p.getYIndex ()).getKey (), 
-					hd.get (p.getYIndex ()).getValue ()));
+			ds.add (new DataColumn <Double> (hd.get (p.getYColumnIndex ()).getKey (), 
+					hd.get (p.getYColumnIndex ()).getValue ()));
 			
-		} else if (hd.get (p.getYIndex ()).getValue () == ColumnType.DOUBLE) {
+		} else if (hd.get (p.getYColumnIndex ()).getValue () == ColumnType.DOUBLE) {
 			
-			ds.add (new DataColumn <Double> (hd.get (p.getYIndex ()).getKey (), 
-					hd.get (p.getYIndex ()).getValue ()));
+			ds.add (new DataColumn <Double> (hd.get (p.getYColumnIndex ()).getKey (), 
+					hd.get (p.getYColumnIndex ()).getValue ()));
 			
 		} else {
 			
-			ds.add (new DataColumn <Double> (hd.get (p.getYIndex ()).getKey (), 
-					hd.get (p.getYIndex ()).getValue ()));
+			ds.add (new DataColumn <Double> (hd.get (p.getYColumnIndex ()).getKey (), 
+					hd.get (p.getYColumnIndex ()).getValue ()));
 			
 		}
 	}
 	
-	/**
-	 * Helper method. Prepares the DataColumn variables that are contained in
-	 * the DataSet, with help from the HeaderData and a GraphPair.
-	 * 
-	 * @param ds DataSet container already provided.
-	 * @param p GraphPair object containing the index values of the DataSet's columns.
-	 * @param hd HeaderData object containing the Column names and types.
-	 * @param group_column_index Integer containing the column index of the group_by column.
-	 */
-	private void prepareColumns (DataSet ds, GraphPair p, HeaderData hd, int group_column_index) {
-		// First, Add the data regarding the group_by column.
-		Pair <String, ColumnType> c = hd.get (hd.find (this.csv_data.get (0)
-				[group_column_index].trim ()));
-		
-		if (c.getValue () == ColumnType.DATETIME) {
-			
-			ds.add (new DataColumn <java.util.Date> (c.getKey (), c.getValue ()));
-			
-		} else if (c.getValue () == ColumnType.DOUBLE) {
-			
-			ds.add (new DataColumn <Double> (c.getKey (), c.getValue ()));
-			
-		} else {
-			
-			ds.add (new DataColumn <String> (c.getKey (), c.getValue ()));
-			
-		}
-		
-		// Now, take the first index of the GraphPair, find it in the List we have here,
-		/// and create the column it needs in the DataSet.
-		
-		if (hd.get (p.getXIndex ()).getValue () == ColumnType.DATETIME) {
-			
-			ds.add (new DataColumn <java.util.Date> (hd.get (p.getXIndex ()).getKey (), 
-					hd.get (p.getXIndex ()).getValue ()));
-			
-		} else if (hd.get (p.getXIndex ()).getValue () == ColumnType.DOUBLE) {
-			
-			ds.add (new DataColumn <Double> (hd.get (p.getXIndex ()).getKey (), 
-					hd.get (p.getXIndex ()).getValue ()));
-			
-		} else {
-			
-			ds.add (new DataColumn <String> (hd.get (p.getXIndex ()).getKey (), 
-					hd.get (p.getXIndex ()).getValue ()));
-			
-		}
-		
-		// Now do that for the other GraphPair index.
-		if (hd.get (p.getYIndex ()).getValue () == ColumnType.DATETIME) {
-			
-			ds.add (new DataColumn <Double> (hd.get (p.getYIndex ()).getKey (), 
-					hd.get (p.getYIndex ()).getValue ()));
-			
-		} else if (hd.get (p.getYIndex ()).getValue () == ColumnType.DOUBLE) {
-			
-			ds.add (new DataColumn <Double> (hd.get (p.getYIndex ()).getKey (), 
-					hd.get (p.getYIndex ()).getValue ()));
-			
-		} else {
-			
-			ds.add (new DataColumn <Double> (hd.get (p.getYIndex ()).getKey (), 
-					hd.get (p.getYIndex ()).getValue ()));
-			
-		}
-	}
-
-	/**
+	*//**
 	 * Helper method. Populates the provided DataSet with data from this object's
 	 * List of String arrays, csv_data, based on the index values of the GraphPair p.
 	 * 
 	 * @param ds DataSet container already provided.
 	 * @param p GraphPair object containing the index values of the DataSet's columns.
-	 */
+	 *//*
 	private void populateColumns (DataSet ds, GraphPair p) {
 		
 		DateValidator dv = new DateValidator ();
@@ -299,7 +260,7 @@ public class CSVProcessor implements FileProcessor {
 					if (ds.get (j).getType ().equals (ColumnType.DATETIME.toString ())) {
 						
 						// Get the column index to use.
-						int pair_index = (j == 0) ? p.getXIndex () : p.getYIndex ();
+						int pair_index = (j == 0) ? p.getXColumnIndex () : p.getYColumnIndex ();
 						
 						// Populating the column in ds.
 						ds.get (j).add (dv.validate (this.csv_data.get (i) [pair_index].trim ()));
@@ -307,7 +268,7 @@ public class CSVProcessor implements FileProcessor {
 					} else if (ds.get (j).getType ().equals (ColumnType.DOUBLE.toString ())) {
 						
 						// Get the column index to use.
-						int pair_index = (j == 0) ? p.getXIndex () : p.getYIndex ();
+						int pair_index = (j == 0) ? p.getXColumnIndex () : p.getYColumnIndex ();
 						
 						// Populating the column in ds.
 						ds.get (j).add (
@@ -317,7 +278,7 @@ public class CSVProcessor implements FileProcessor {
 					} else { // String!
 						
 						// Get the column index to use.
-						int pair_index = (j == 0) ? p.getXIndex () : p.getYIndex ();
+						int pair_index = (j == 0) ? p.getXColumnIndex () : p.getYColumnIndex ();
 						
 						// Populating the column in ds.
 						ds.get (j).add (this.csv_data.get (i) [pair_index].trim ());
@@ -328,14 +289,14 @@ public class CSVProcessor implements FileProcessor {
 		}
 	}
 	
-	/**
+	*//**
 	 * Helper method. Populates the provided DataSet with data from this object's
 	 * List of String arrays, csv_data, based on the index values of the GraphPair p.
 	 * 
 	 * @param ds DataSet container already provided.
 	 * @param p GraphPair object containing the index values of the DataSet's columns.
 	 * @param column_index Template object containing the group_by column string.
-	 */
+	 *//*
 	private void populateColumns (DataSet ds, GraphPair p, int group_column_index) {
 		
 		DateValidator dv = new DateValidator ();
@@ -344,7 +305,7 @@ public class CSVProcessor implements FileProcessor {
 		for (int i = 1; (i < this.csv_data.size ()); ++i) {
 			
 			// If the data is valid...
-			if (this.isValidRow (this.csv_data.get (i), p, group_column_index)) {
+			if (this.isValidRow (this.csv_data.get (i), p)) {
 				// Take only the values of the two index values of the GraphPair p and put them
 				// into the DataSet ds.
 				for (int j = 0; (j < ds.size ()); ++j) {
@@ -357,9 +318,9 @@ public class CSVProcessor implements FileProcessor {
 						if (j == 0) {
 							pair_index = group_column_index;
 						} else if (j == 1) {
-							pair_index = p.getXIndex ();
+							pair_index = p.getXColumnIndex ();
 						} else { // j == 2
-							pair_index = p.getYIndex ();
+							pair_index = p.getYColumnIndex ();
 						}
 						
 						// Populating the column in ds.
@@ -372,9 +333,9 @@ public class CSVProcessor implements FileProcessor {
 						if (j == 0) {
 							pair_index = group_column_index;
 						} else if (j == 1) {
-							pair_index = p.getXIndex ();
+							pair_index = p.getXColumnIndex ();
 						} else { // j == 2
-							pair_index = p.getYIndex ();
+							pair_index = p.getYColumnIndex ();
 						}
 						
 						// Populating the column in ds.
@@ -389,9 +350,9 @@ public class CSVProcessor implements FileProcessor {
 						if (j == 0) {
 							pair_index = group_column_index;
 						} else if (j == 1) {
-							pair_index = p.getXIndex ();
+							pair_index = p.getXColumnIndex ();
 						} else { // j == 2
-							pair_index = p.getYIndex ();
+							pair_index = p.getYColumnIndex ();
 						}
 						
 						// Populating the column in ds.
@@ -403,51 +364,51 @@ public class CSVProcessor implements FileProcessor {
 		}
 	}
 	
-	/**
+	*//**
 	 * Getter method. Provides the entire contents of the CSV file object.
 	 * 
 	 * @return A List of String array object, containing the data for this object.
-	 */
+	 *//*
 	public List<String[]> getCSVData () {
 		return csv_data;
 	}
 
-	/**
+	*//**
 	 * Setter method. Changes the entire contents of the CSV file object.
 	 * 
 	 * @param new_file A new List of String array object, containing the data for this object.
-	 */
+	 *//*
 	public void setCSVData (ArrayList<String[]> csv_data) {
 		this.csv_data = csv_data;
 	}
 	
-	/**
+	*//**
 	 * Getter method. Provides the default File object for this class.
 	 * 
 	 * @return A File object, containing the default file location for this object.
-	 */
+	 *//*
 	@Override
 	public File getFile () {
 		return (csv_file);
 	}
 	
-	/**
+	*//**
 	 * Setter method. Changes the default File object to a method call-specified one.
 	 * 
 	 * @param new_file A new File object, containing the new default file location for this object.
-	 */
+	 *//*
 	@Override
 	public void setFile (File new_file) {
 		csv_file = new_file;
 	}
 
-	/**
+	*//**
 	 * Getter Method; creates a set of columns with the correct names based on the 
 	 * data in the CSV file. Does not fill them in, however.
 	 * 
 	 * @param ds DataSet to fill out with Columns, but not with data.
 	 * @return A boolean describing the success or failure of this operation.
-	 */
+	 *//*
 	@Override
 	public boolean getHeaders (HeaderData hd) throws Exception {
 		// First, check to see if the file's been even read.
@@ -471,7 +432,7 @@ public class CSVProcessor implements FileProcessor {
 				}
 				
 				// Then add that new file to the DataSet's list of files to import.
-				hd.addFile (this.csv_file, FileType.CSV);
+				//hd.addFile (this.csv_file, FileType.CSV);
 				
 				return (true);
 			} else {
@@ -486,7 +447,7 @@ public class CSVProcessor implements FileProcessor {
 			
 			// If they are, then add that new file to the DataSet's list of files to import.
 			if (b) { 
-				hd.addFile (this.csv_file, FileType.CSV);
+				//hd.addFile (this.csv_file, FileType.CSV);
 			}
 			
 			return (b);
@@ -527,11 +488,11 @@ public class CSVProcessor implements FileProcessor {
 		}
 	}
 
-	/**
+	*//**
 	 * Checks the column sizes of the csv_data to see if they are all of equal size.
 	 * 
 	 * @return A boolean describing the success or failure of this operation.
-	 */
+	 *//*
 	private boolean checkColumnSizes () {
 		boolean equal = true;
 		int [] row_length = new int [csv_data.size ()];
@@ -555,32 +516,28 @@ public class CSVProcessor implements FileProcessor {
 		return (equal);
 	}
 	
-	/**
-	 * Checks to see if the string provided is a null value, contains the word 
-	 * NaN, or is empty.
-	 * 
-	 * @param s String value containing a potential term for a data set.
-	 * @param p GraphPair object containing the two columns to validate.
-	 * @return A boolean describing if the value is valid or not.
-	 */
-	private boolean isValidRow (String [] s, GraphPair p) {
-		return (this.isValidItem (s[p.getXIndex ()]) &&
-				this.isValidItem (s[p.getYIndex ()]));
-	}
-	
-	/**
+	*//**
 	 * Checks to see if the string provided is a null value, contains the word 
 	 * NaN, or is empty.
 	 * 
 	 * @param string String value containing a potential term for a data set.
-	 * @param p GraphPair object containing the two columns to validate.
-	 * @param grouping_column Int value of the column index of the group_by column.
-	 * @return A boolean describing if the value is valid or not.
-	 */
-	private boolean isValidRow (String [] s, GraphPair p, int grouping_column) {
-		return (this.isValidItem (s [p.getXIndex ()]) &&
-				this.isValidItem (s [p.getYIndex ()]) &&
-				this.isValidItem (s [grouping_column]));
+	 * @param p GraphPair object containing the columns to validate.
+	 * @return A boolean describing if the row is valid or not.
+	 *//*
+	private boolean isValidRow (String [] s, GraphPair p) {
+		
+		if (p.isGrouped ()) {
+			
+			return (this.isValidItem (s [p.getXColumnIndex ()]) &&
+					this.isValidItem (s [p.getYColumnIndex ()]) &&
+					this.isValidItem (s [p.getGroup ()]));
+			
+		} else {
+			
+			return (this.isValidItem (s[p.getXColumnIndex ()]) &&
+					this.isValidItem (s[p.getYColumnIndex ()]));
+			
+		}
 	}
 	
 	private boolean isValidItem (String s) {
@@ -607,4 +564,4 @@ public class CSVProcessor implements FileProcessor {
 		return (sb.toString ());
 	}
 	
-}
+}*/

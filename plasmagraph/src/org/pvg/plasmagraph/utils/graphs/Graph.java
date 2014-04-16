@@ -4,6 +4,7 @@ import org.jfree.chart.JFreeChart;
 import org.jfree.data.general.Dataset;
 import org.pvg.plasmagraph.utils.data.DataSet;
 import org.pvg.plasmagraph.utils.data.GraphPair;
+import org.pvg.plasmagraph.utils.exceptions.InvalidParametersException;
 import org.pvg.plasmagraph.utils.template.Template;
 
 /**
@@ -22,8 +23,9 @@ public interface Graph {
 	 * @param ds DataSet reference used in the creation of the graph.
 	 * @param p 
 	 * @return A Dataset containing the DataSet's data values
+	 * @throws InvalidParametersException Whenever an invalid column is found in this process.
 	 */
-	Dataset createDataset (Template t, DataSet ds, GraphPair p);
+	Dataset createDataset (Template t, DataSet ds, GraphPair p) throws InvalidParametersException;
 	
 	/**
 	 * Creates a JFreeChart, an object containing the visual representation

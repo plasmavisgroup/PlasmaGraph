@@ -9,6 +9,7 @@ import org.apache.commons.math3.linear.RealMatrix;
 import org.apache.commons.math3.ml.clustering.DoublePoint;
 import org.apache.commons.math3.stat.correlation.Covariance;
 import org.pvg.plasmagraph.utils.tools.outlierscan.OutlierDistance;
+import org.pvg.plasmagraph.utils.types.OutlierDistanceType;
 
 public class MahalanobisDistance implements OutlierDistance {
 
@@ -78,9 +79,12 @@ public class MahalanobisDistance implements OutlierDistance {
         return (Math.sqrt(distSquared.getEntry(0, 0)));
     }  
 
+    /**
+     * Helper method. Provides the string representation of the type of distance being calculated.
+     */
 	@Override
 	public String getDistanceType () {
-		return "Mahalanobis Distance";
+		return (OutlierDistanceType.MAHALANOBIS.toString ());
 	}
 	
 	private void printArrayContents (ArrayList <DoublePoint> p_array) {

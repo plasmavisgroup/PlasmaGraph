@@ -50,7 +50,9 @@ public final class ChartType {
 	 */
 	public static String [] getOptions () {
     	return (new String []
-    			{ChartType.XY_GRAPH.toString (), ChartType.BAR_GRAPH.toString ()});
+    			{ChartType.XY_GRAPH.toString ()//, 
+    			//ChartType.BAR_GRAPH.toString ()
+    			});
     }
 
 	/**
@@ -66,17 +68,17 @@ public final class ChartType {
 			
 			// Correct pairings: (Double / Double).
 			// In that order.
-			return (ColumnType.DOUBLE.equals (hd.get (p.getXIndex ()).getValue ()) &&
-					ColumnType.DOUBLE.equals (hd.get (p.getYIndex ()).getValue ()));
+			return (ColumnType.DOUBLE.equals (hd.get (p.getXColumnIndex ()).getValue ()) &&
+					ColumnType.DOUBLE.equals (hd.get (p.getYColumnIndex ()).getValue ()));
 			
 		} else { // if (ChartType.XY_GRAPH.toString ().equals (this.name)) {
 			
 			// Correct pairings: (String / Double) or (DateTime / Double).
 			// In that order.
-			return ((ColumnType.STRING.equals (hd.get (p.getXIndex ()).getValue ()) &&
-					ColumnType.DOUBLE.equals (hd.get (p.getYIndex ()).getValue ())) ||
-					(ColumnType.DATETIME.equals (hd.get (p.getXIndex ()).getValue ()) &&
-					ColumnType.DOUBLE.equals (hd.get (p.getYIndex ()).getValue ())));
+			return ((ColumnType.STRING.equals (hd.get (p.getXColumnIndex ()).getValue ()) &&
+					ColumnType.DOUBLE.equals (hd.get (p.getYColumnIndex ()).getValue ())) ||
+					(ColumnType.DATETIME.equals (hd.get (p.getXColumnIndex ()).getValue ()) &&
+					ColumnType.DOUBLE.equals (hd.get (p.getYColumnIndex ()).getValue ())));
 			
 		}
 	}

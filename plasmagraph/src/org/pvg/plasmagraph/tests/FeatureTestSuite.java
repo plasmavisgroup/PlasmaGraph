@@ -4,9 +4,9 @@ import org.junit.runners.Suite;
 
 @RunWith(Suite.class)
 @Suite.SuiteClasses({
-	CSVTest.class,
+	//CSVTest.class,
 	MATTest.class,
-	DataSetTest.class,
+	//DataSetTest.class,
 	TemplateTest.class,
 	GraphTest.class,
 	InterpolatorTest.class,

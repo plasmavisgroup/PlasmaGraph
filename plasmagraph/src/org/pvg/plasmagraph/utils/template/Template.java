@@ -18,6 +18,7 @@ import org.jfree.chart.plot.PlotOrientation;
 import org.pvg.plasmagraph.utils.types.AxisType;
 import org.pvg.plasmagraph.utils.types.ChartType;
 import org.pvg.plasmagraph.utils.types.InterpolationType;
+import org.pvg.plasmagraph.utils.types.OutlierDistanceType;
 import org.pvg.plasmagraph.utils.types.OutlierResponse;
 
 /**
@@ -79,6 +80,10 @@ public class Template {
 	private double interpolation_upper_range;
 	/** Number of interpolation points in regression. */
 	private int interpolation_point_amount;
+	/** Maximum cartesian distance allowed in Outlier Scanning. */
+	private double outlier_distance;
+	/** Type of distance that will be used in the Outlier Scanning procedure. */
+	private OutlierDistanceType outlier_distance_type;
 	
 	// Constructors
 	/**
@@ -102,8 +107,9 @@ public class Template {
 		this.default_outlier_reaction 		= OutlierResponse.NONE;
 		this.interpolation_lower_range 		= 0.0;
 		this.interpolation_upper_range		= 10.0;
-		this.interpolation_point_amount		= 1000;
-		
+		this.interpolation_point_amount		= 5000;
+		this.outlier_distance_type 			= OutlierDistanceType.MAHALANOBIS;
+		this.outlier_distance				= 0.0;
 	}
 	
 	/**
@@ -145,6 +151,8 @@ public class Template {
 		this.interpolation_lower_range 		= lower;
 		this.interpolation_upper_range		= upper;
 		this.interpolation_point_amount		= n;
+		this.outlier_distance_type 			= OutlierDistanceType.MAHALANOBIS;
+		this.outlier_distance				= 0.0;
 	}
 	
 	// Event Methods
@@ -295,6 +303,26 @@ public class Template {
 	 */
 	public AxisType getYAxisType () {
 		return (this.y_axis_type);
+	}
+	
+	/**
+	 * Getter Method. Provides the current OutlierDistancetype for outlier scanning.
+	 * 
+	 * @return An OutlierDistancetype object specifying the distance calculation
+	 * mechanism for Outlier Scanning.
+	 */
+	public OutlierDistanceType getOutlierDistanceType () {
+		return (outlier_distance_type);
+	}
+	
+	/**
+	 * Getter Method. Provides the current distance for outlier scanning.
+	 * 
+	 * @return A double object specifying the maximum acceptable distance
+	 * between points.
+	 */
+	public double getOutlierDistance () {
+		return outlier_distance;
 	}
 
 	/**
@@ -714,6 +742,27 @@ public class Template {
 			this.y_axis_type = AxisType.LOG;
 			
 		}
+	}
+	
+	/**
+	 * Setter Method. Sets the current distance calulcation mechanism for 
+	 * Outlier Scanning.
+	 * 
+	 * @param t An OutlierDistanceType specifying the Outlier Scanning distance
+	 * calculation mechanism that will be used.
+	 */
+	public void setOutlierDistanceType (OutlierDistanceType t) {
+		this.outlier_distance_type = t;
+	}
+	
+	/**
+	 * Setter Method. Sets the current distance for outlier scanning.
+	 * 
+	 * @param outlier_distance A double specifying the maximum acceptable 
+	 * distance between points.
+	 */
+	public void setOutlierDistance (double outlier_distance) {
+		this.outlier_distance = outlier_distance;
 	}
 
 	/**

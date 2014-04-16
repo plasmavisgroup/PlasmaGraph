@@ -2,6 +2,7 @@ package org.pvg.plasmagraph.controllers;
 
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.FocusAdapter;
 import java.awt.event.FocusEvent;
 import java.awt.event.FocusListener;
 import java.awt.event.ItemEvent;
@@ -11,6 +12,7 @@ import javax.swing.SwingWorker;
 import javax.swing.event.ChangeEvent;
 import javax.swing.event.ChangeListener;
 
+import org.pvg.plasmagraph.controllers.DataSetController.GraphListener;
 import org.pvg.plasmagraph.models.ToolModel;
 import org.pvg.plasmagraph.views.ToolView;
 
@@ -26,21 +28,33 @@ public class ToolController {
     private ToolModel tool_model;
     /** Reference to view related to this controller. */
     private ToolView tool_view;
+    /** Reference to graphing MVC related to this controller. */
+	GraphController graph_controller;
     
     /**
+     * Constructor for the ToolController class. Manages the creation of connectors between
+     * the ToolView and ToolModel.
      * 
-     * @param tool_model
-     * @param tool_view
+     * @param tool_model ToolModel reference.
+     * @param tool_view ToolView reference.
      */
-    public ToolController (ToolModel tool_model, ToolView tool_view) {
+    public ToolController (ToolModel tool_model, ToolView tool_view, GraphController graph_controller) {
         // Set related objects into proper positions in object.
         this.tool_model = tool_model;
         this.tool_view = tool_view;
+        this.graph_controller = graph_controller;
         
         // Automatically add listeners to Tools Tab via view
         // Update Template Listeners
         tool_view.addInterpolationTypeListener (new InterpolationTypeListener ());
         tool_view.addOutlierResponseListener (new OutlierResponseListener ());
+        tool_view.addOutlierDistanceTypeListener (new OutlierDistanceTypeListener ());
+        tool_view.addOutlierDistanceListener (new OutlierDistanceListener ());
+        //tool_view.addLowerBoundListener (new InterpolationLowerBoundListener ());
+        //tool_view.addUpperBoundListener (new InterpolationUpperBoundListener ());
+        // Graph Trigger
+        tool_view.addGraphListener (new GraphListener ());
+     		
         // Update View Listeners
         tool_model.addTemplateChangeListener (new ToolViewTemplateListener ());
     }
@@ -74,6 +88,56 @@ public class ToolController {
     }
     
     /**
+     * Listener for the Interpolation optional tool that is a part of the
+     * ToolView pane.
+     * Relies on ActionListener in order to know that a change in selected item
+     * occured.
+     * 
+     * @author Gerardo A. Navas Morales
+     */
+ /*   class InterpolationLowerBoundListener extends FocusAdapter {
+        
+        *//**
+         * Bridge between ToolView and ToolModel; changes Template's
+         * Interpolation Lower Bound value.
+         *//*
+		@Override
+		public void focusLost (FocusEvent e) {
+			
+			tool_model.getTemplate ().setLowerInterval (tool_view.getLowerInterval ());
+			
+			// Notify relevant listeners.
+			tool_model.getTemplate ().notifyListeners ();
+		}
+        
+    }*/
+    
+    /**
+     * Listener for the Interpolation optional tool that is a part of the
+     * ToolView pane.
+     * Relies on ActionListener in order to know that a change in selected item
+     * occured.
+     * 
+     * @author Gerardo A. Navas Morales
+     */
+/*    class InterpolationUpperBoundListener extends FocusAdapter {
+        
+        *//**
+         * Bridge between ToolView and ToolModel; changes Template's
+         * Interpolation Upper Bound value.
+         *//*
+    	@Override
+		public void focusLost (FocusEvent e) {
+    		
+    		tool_model.getTemplate ().setUpperInterval (tool_view.getUpperInterval ());
+			
+			// Notify relevant listeners.
+			tool_model.getTemplate ().notifyListeners ();
+		}
+        
+    }*/
+    
+    /**
      * Listener for the Outlier Search optional tool that is a part of the
      * ToolView pane.
      * Relies on ActionListener in order to know that a change in selected item
@@ -98,6 +162,71 @@ public class ToolController {
 		}
         
     }
+    
+    /**
+     * Listener for the Outlier Search optional tool that is a part of the
+     * ToolView pane.
+     * Relies on ActionListener in order to know that a change in selected item
+     * occured.
+     * 
+     * @author Gerardo A. Navas Morales
+     */
+    class OutlierDistanceTypeListener implements ItemListener {
+        
+        /**
+         * Updates the Template's Outlier Response value.
+         */
+		@Override
+		public void itemStateChanged (ItemEvent e) {
+			if (e.getStateChange () == ItemEvent.SELECTED) {
+				 tool_model.getTemplate ().setOutlierDistanceType
+		            (tool_view.getOutlierDistanceType ());
+		            
+		         // Notify relevant listeners.
+		            tool_model.getTemplate ().notifyListeners ();
+			}
+		}
+        
+    }
+    
+    /**
+     * Listener for the Outlier Search optional tool that is a part of the
+     * ToolView pane.
+     * Relies on ActionListener in order to know that a change in selected item
+     * occured.
+     * 
+     * @author Gerardo A. Navas Morales
+     */
+    class OutlierDistanceListener extends FocusAdapter {
+        
+        /**
+         * Updates the Template's Outlier Response value.
+         */
+		@Override
+		public void focusLost (FocusEvent e) {
+			tool_model.getTemplate ().setOutlierDistance
+		    		(tool_view.getMaximumDistance ());
+		    
+			// Notify relevant listeners.
+			tool_model.getTemplate ().notifyListeners ();
+		}
+        
+    }
+    
+    /**
+	 * Listener for the "graph" JButton part of the DataSetView. Relies
+	 * on ActionListener to manage messages.
+	 * 
+	 * @author Gerardo A. Navas Morales
+	 */
+	class GraphListener implements ActionListener {
+
+		@Override
+		public void actionPerformed (ActionEvent arg0) {
+			graph_controller.graph ();
+		}
+		
+	}
     
     /**
      * Listener for the Template that contains all settings for the program.

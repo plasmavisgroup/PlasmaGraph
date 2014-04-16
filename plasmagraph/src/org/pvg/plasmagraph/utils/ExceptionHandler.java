@@ -1,9 +1,14 @@
 package org.pvg.plasmagraph.utils;
 
+import java.util.ArrayList;
+import java.util.Map.Entry;
+
 import javax.swing.JDialog;
 import javax.swing.JOptionPane;
 
 import org.pvg.plasmagraph.utils.types.ExceptionType;
+
+import com.jmatio.types.MLArray;
 
 /**
  * JFrame handler for all Exceptions. Contains all error-handling code that would be 
@@ -20,8 +25,8 @@ public class ExceptionHandler {
 	 * @param function_name
 	 */
 	public static void handleFunctionNotImplementedException (String function_name) {
-		String message = "Error: The functionality requested from the program does not exist.\n"
-				+ "Please try another option.";
+		String message = "Error: The functionality requested from the program\n"
+				+ "does not exist. Please try another option.";
 		JOptionPane error_window = new JOptionPane (message, JOptionPane.ERROR_MESSAGE);
 		
 		JDialog dialog = error_window.createDialog("Error");
@@ -45,8 +50,8 @@ public class ExceptionHandler {
 	 * @param string
 	 */
 	public static void handleMalformedDataFileException (String string) {
-		String message = "File Error: " + string + " has found that this file "
-				+ "contains columns with varying sizes. Please check the data file "
+		String message = "File Error: " + string + " has found that this file\n"
+				+ "contains columns with varying sizes. Please check the data file\n"
 				+ "provided and correct appropriately.";
 		JOptionPane error_window = new JOptionPane (message, JOptionPane.ERROR_MESSAGE);
 		
@@ -69,6 +74,21 @@ public class ExceptionHandler {
 			
 			dialog.setVisible(true);
 		}
+	}
+
+	public static void showRemovedColumnDialog (
+			ArrayList <Entry <String, MLArray>> remove_array) {
+		
+		StringBuilder sb = new StringBuilder ();
+		
+		sb.append ("The following columns cannot be graphed due to lack of data: ").append ("\n");
+		
+		for (Entry <String, MLArray> e : remove_array) {
+			sb.append (e.getKey ()).append ("\n");
+		}
+		
+		JOptionPane.showMessageDialog (null, sb.toString ());
+		
 	}
 
 }

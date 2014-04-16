@@ -2,6 +2,7 @@ package org.pvg.plasmagraph.models;
 
 //Class Import Block
 import java.io.File;
+import java.util.Map.Entry;
 
 import javax.swing.JFileChooser;
 import javax.swing.JOptionPane;
@@ -9,11 +10,11 @@ import javax.swing.filechooser.FileNameExtensionFilter;
 
 import org.pvg.plasmagraph.utils.ExceptionHandler;
 import org.pvg.plasmagraph.utils.FileUtilities;
-import org.pvg.plasmagraph.utils.data.DataReference;
+import org.pvg.plasmagraph.utils.data.GraphPair;
 import org.pvg.plasmagraph.utils.data.HeaderData;
-import org.pvg.plasmagraph.utils.data.readers.CSVProcessor;
 import org.pvg.plasmagraph.utils.data.readers.MatlabProcessor;
 import org.pvg.plasmagraph.utils.types.ExceptionType;
+import org.pvg.plasmagraph.utils.types.FileType;
 import org.pvg.plasmagraph.utils.template.Template;
 import org.pvg.plasmagraph.views.DatasetLogView;
 
@@ -29,11 +30,11 @@ import org.pvg.plasmagraph.views.DatasetLogView;
 public class MainModel {
     // Externally-controlled variables
     /** Reference to PlasmaGraph's Template, passed via constructor reference. */
-    Template t;
+	private Template t;
     /** Reference to PlasmaGraph's DataSet, passed via constructor reference. */
-    HeaderData hd;
-    /** Reference to PlasmaGraph's DataReference, passed via constructor reference. */
-    DataReference dr;
+	private HeaderData hd;
+    /** Reference to PlasmaGraph's GraphPair, passed via constructor reference. */
+	private GraphPair p;
     
     // Constants
     // TODO: Change to NIO 2.0 Path class!
@@ -50,14 +51,14 @@ public class MainModel {
      * @param t_reference
      *            Settings - Template reference provided by PlasmaGraph.
      * @param hd_reference Header - HeaderData reference provided by PlasmaGraph.
-     * @param dr_reference Graphing Pairs - DataReference reference provided by PlasmaGraph.
+     * @param p_reference Graphing Pairs - GraphPair reference provided by PlasmaGraph.
      */
     public MainModel (Template t_reference, HeaderData hd_reference,
-            DataReference dr_reference) {
+            GraphPair p_reference) {
         // Update currently-used Template, Data, and Data Filter Sources.
         t = t_reference;
         hd = hd_reference;
-        dr = dr_reference;
+        p = p_reference;
     }
     
     /**
@@ -72,11 +73,11 @@ public class MainModel {
         // Prepare the FileFilter
         FileNameExtensionFilter mat_filter = new FileNameExtensionFilter (
                 "Matlab Files", "mat");
-        FileNameExtensionFilter csv_filter = new FileNameExtensionFilter (
-                "Comma-Separated Value Files", "csv");
+        //FileNameExtensionFilter csv_filter = new FileNameExtensionFilter (
+        //        "Comma-Separated Value Files", "csv");
         
         // Insert the FileFilter into the JFileChooser
-        open_file.addChoosableFileFilter (csv_filter);
+        //open_file.addChoosableFileFilter (csv_filter);
         open_file.addChoosableFileFilter (mat_filter);
         // Set the default file filter.
         open_file.setFileFilter (mat_filter);
@@ -97,34 +98,37 @@ public class MainModel {
                      
                       MatlabProcessor mat = new MatlabProcessor (f);
                       try {
-                     	 mat.read ();
                      	 if (mat.getHeaders (hd)) {
-                     		 // TODO: Change message to "Data Columns extracted successfully." ?
-                 		 	JOptionPane.showMessageDialog (null, "Data Column names extracted successfully.");
+                 		 	JOptionPane.showMessageDialog (null, "Data extracted successfully.");
+                 		 	
+                 		 	// Notify anyone interested in the HeaderData.
+                 		 	hd.notifyListeners ();
+                 		 	
+                 		 	// Update the selected data pair.
+                 		 	p.reset ();
                      	 }
                       } catch (Exception ex) {
                      	 ExceptionHandler.handleMalformedDataFileException ("Matlab File Reader");
                       }
                       
                      
-                 } else if (FileUtilities.getExtension (f).equals (
+                 }/* else if (FileUtilities.getExtension (f).equals (
                          csv_filter.getExtensions ()[0])) {
                      
                      CSVProcessor csv = new CSVProcessor (f);
                      try {
      	                if (csv.getHeaders (hd)) {
-     	                	JOptionPane.showMessageDialog (null,
-     	                			"Data Column names extracted successfully.");
+     	                	JOptionPane.showMessageDialog (null, "Data extracted successfully.");
      	                	hd.notifyListeners ();
      	                	// TODO: Allow for multiple data files to be used.
      	                	// TODO: Only reset if a data file with a different set of headers is imported.
-     	                	dr.reset ();
+     	                	p.reset ();
      	                }
                      } catch (Exception ex) {
                      	ExceptionHandler.handleMalformedDataFileException ("CSV File Reader");
                      }
                      
-                 } else {
+                 }*/ else {
                      ExceptionHandler
                              .handleFunctionNotImplementedException ("Other File Readers");
                  }
@@ -295,7 +299,7 @@ public class MainModel {
 	 * @param txt Text to print in console.
 	 */
 	@SuppressWarnings ("unused")
-	private void log (String txt){
+	private void log (String txt) {
         System.out.println (txt);
     }
 
@@ -303,20 +307,39 @@ public class MainModel {
 	 * Resets the HeaderData object.
 	 */
 	public void resetData () {
-		this.hd.clear ();
+		this.hd.reset ();
+		this.p.reset ();
 	}
 
     /**
      * Opens the DataLogView in order to present a visual representation of the
      * data currently being accounted for.
-     * 
-     * @throws Exception
      */
-    public void prepareDataLog() throws Exception {
-    	// TODO: Make it account for all the possible types of files.
-        MatlabProcessor mat_reader = new MatlabProcessor (hd.getFile(0));
-        DatasetLogView dsview = new DatasetLogView(mat_reader.toString());
-        dsview.pack();
-        dsview.setVisible(true);
+    public void prepareDataLog () {
+    	StringBuilder sb = new StringBuilder ();
+    
+		sb.append ("File: ");
+		
+		org.apache.commons.math3.util.Pair <File, FileType> e = hd.getFile ();
+		
+		if (FileType.MAT.equals (e.getValue ())) {
+			
+			MatlabProcessor mat_reader = new MatlabProcessor (e.getKey ());
+			
+			sb.append (e.getKey ().getName ()).append ("\n\n");
+			sb.append (mat_reader.toString ());
+			
+		}/* else { //if (FileType.CSV.equals (e.getValue ())) {
+			
+			CSVProcessor csv_reader = new CSVProcessor (e.getKey ());
+			
+			sb.append (e.getKey ().getName ());
+			sb.append (csv_reader.toString ());
+			
+		}*/
+    	
+        DatasetLogView dsview = new DatasetLogView (sb.toString ());
+        dsview.pack ();
+        dsview.setVisible (true);
     }
 }

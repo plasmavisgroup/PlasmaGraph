@@ -133,10 +133,10 @@ public class DataSetController {
 
 		@Override
 		public void actionPerformed (ActionEvent e) {
-				data_model.changeGroup (data_view.getGroupingByElement ());
+			data_model.changeGroup (data_view.getGroupingByElement ());
 
-				// Notify relevant listeners.
-				data_model.getReference ().notifyListeners ();
+			// Notify relevant listeners.
+			data_model.getGraphPair ().notifyListeners ();
 		}
 
 	}
@@ -154,10 +154,10 @@ public class DataSetController {
 		 */
 		@Override
 		public void actionPerformed (ActionEvent e) {
-				data_model.changeXColumn (data_view.getXColumn ());
-				
-				// Notify relevant listeners.
-				data_model.getReference ().notifyListeners ();
+			data_model.changeXColumn (data_view.getXColumn ());
+			
+			// Notify relevant listeners.
+			data_model.getGraphPair ().notifyListeners ();
 		}
 
 	}
@@ -178,7 +178,7 @@ public class DataSetController {
 			data_model.changeYColumn (data_view.getYColumn ());
 
 			// Notify relevant listeners.
-			data_model.getReference ().notifyListeners ();
+			data_model.getGraphPair ().notifyListeners ();
 		}
 
 	}

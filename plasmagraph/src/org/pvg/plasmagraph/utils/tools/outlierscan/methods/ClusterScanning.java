@@ -8,15 +8,17 @@ import javax.swing.JOptionPane;
 import org.apache.commons.math3.ml.clustering.Cluster;
 import org.apache.commons.math3.ml.clustering.DBSCANClusterer;
 import org.apache.commons.math3.ml.clustering.DoublePoint;
-import org.pvg.plasmagraph.utils.data.DataColumn;
 import org.pvg.plasmagraph.utils.data.DataSet;
 import org.pvg.plasmagraph.utils.data.GraphPair;
 import org.pvg.plasmagraph.utils.data.HeaderData;
 import org.pvg.plasmagraph.utils.exceptions.FunctionNotImplementedException;
+import org.pvg.plasmagraph.utils.graphs.XYGraph;
 import org.pvg.plasmagraph.utils.template.Template;
 import org.pvg.plasmagraph.utils.tools.outlierscan.OutlierDistance;
+import org.pvg.plasmagraph.utils.tools.outlierscan.distances.CartesianDistance;
 import org.pvg.plasmagraph.utils.tools.outlierscan.distances.MahalanobisDistance;
 import org.pvg.plasmagraph.utils.types.ColumnType;
+import org.pvg.plasmagraph.utils.types.OutlierDistanceType;
 import org.pvg.plasmagraph.utils.types.OutlierResponse;
 
 /**
@@ -34,30 +36,25 @@ public class ClusterScanning implements ScanMethod {
     	List <Cluster<DoublePoint>> dbl_cluster = new ArrayList <> ();
     	
     	// ds will always contain the original data.
-    	DataSet ds;
-    	
-		ds = hd.populateData (p);
+    	DataSet original = hd.populateData (p);
 		
 		// Populate the outlier_array with the correct values.
-		populate (data_array, ds, p);
+		populate (data_array, original, p);
 		
 		// Separate the main values from the outliers, and ask if they'll be removed.
 		search (dbl_cluster, data_array, t);
 			
-		// Add the core data to the ArrayList.
-		ds = toDataSet (data_array, hd.get (p.getXIndex ()).getKey (),
-				hd.get (p.getYIndex ()).getKey ());
-    	
-		return (ds);
+		// Add the core data to the returning DataSet!
+		return (this.toDataSet (data_array, original, p));
 	}
 
 	private void populate (List<DoublePoint> outlier_array, DataSet ds, GraphPair p) {
 
 		// For each line in the DataSet, add the Pair's values to the outlier_array.
-		for (int i = 0; (i < ds.getColumnLength ()); ++i) {
+		for (int i = 0; (i < ds.size ()); ++i) {
 			outlier_array.add (new DoublePoint (new double [] {
-					(double) ds.get (0).get (i),
-					(double) ds.get (1).get (i)
+					ds.getXValue (i),
+					ds.getYValue (i)
 				}));
 		}
 	}
@@ -73,14 +70,21 @@ public class ClusterScanning implements ScanMethod {
 	private static void search (List <Cluster<DoublePoint>> dbl_cluster, 
 			ArrayList<DoublePoint> data_array, Template t) {
 		
-		// Determine the clusters of the data with a maximum distance provided by MahalanobisDistance!
-		OutlierDistance d = new MahalanobisDistance ();
+		// Determine the clusters of the data with a maximum distance
+		// provided by whatever the user chose!
+		OutlierDistance d;
+		if (OutlierDistanceType.MAHALANOBIS.equals (t.getOutlierDistanceType ())) {
+			d = new MahalanobisDistance ();
+		} else {
+			d = new CartesianDistance (t.getOutlierDistance ());
+		}
+		
 		DBSCANClusterer <DoublePoint> outlier_clustering = 
 				new DBSCANClusterer <> (d.distance (data_array), 1);
 		dbl_cluster = outlier_clustering.cluster (data_array);
 		
 		// View data.
-		System.out.println ("Mahalanobis Distance is: " + outlier_clustering.getEps ());
+		System.out.println ("Distance is: " + outlier_clustering.getEps ());
 		for (Cluster <DoublePoint> c : dbl_cluster) {
 			System.out.println ("New Cluster\nPoints in this cluster: " + c.getPoints ().size ());
 			
@@ -88,7 +92,6 @@ public class ClusterScanning implements ScanMethod {
 				System.out.println (p.toString ());
 			}
 		}
-		
 		
 		// Determine if the user wants to be told of the outliers.
 		if (t.getOutlierResponse () == OutlierResponse.WARN) {
@@ -145,14 +148,19 @@ public class ClusterScanning implements ScanMethod {
 				"Outlier Scan: Results", JOptionPane.INFORMATION_MESSAGE);
 		
 		// Determine if User Validation will be performed, and return that.
-		if (ask) {
-			String message = "Do you want to graph this data?"; String title = "Graph?";
-			if (JOptionPane.showConfirmDialog (null, message, title, JOptionPane.YES_NO_OPTION)
-					== JOptionPane.YES_OPTION) {
+		if (outliers.size () != 0) { // If there are things to remove...
+			if (ask) {
+				String message = "Do you want to remove those points from the data?"; String title = "Graph?";
+				if (JOptionPane.showConfirmDialog (null, message, title, JOptionPane.YES_NO_OPTION)
+						== JOptionPane.YES_OPTION) {
+					remove (outliers, data_array);
+				}
+			} else {
 				remove (outliers, data_array);
 			}
 		} else {
-			remove (outliers, data_array);
+			JOptionPane.showMessageDialog (null, "No outliers found.\n"
+					+ "Continuing with Graphing.");
 		}
 	}
 	
@@ -189,6 +197,9 @@ public class ClusterScanning implements ScanMethod {
 	 * Provides a list of outliers from the total group of clustered data.
 	 * Assumes largest concentration of points is the line/curve, and all other
 	 * clusters are outliers.
+	 * 
+	 * TODO: Post-mortem this method, and figure out why there's only one cluster being
+	 * produced.
 	 * 
 	 * @param dbl_cluster The collection of clusters created by the DBSCAN procedure.
 	 * @return A list of points that are outliers from the "dbl_cluster" input.
@@ -239,27 +250,52 @@ public class ClusterScanning implements ScanMethod {
 	/**
 	 * Turns an ArrayList of DoublePoints into a DataSet.
 	 * 
-	 * @param outlier_array ArrayList of data obtained.
+	 * @param outlier_array De-outliered ArrayList.
+	 * @param original Original DataSet. Used in the case of a Grouped column, to add the missing data from said column.
+	 * @param p Used to define important information for the new DataSet.
 	 * @return A DataSet containing said data.
 	 */
 	private DataSet toDataSet (ArrayList <DoublePoint> outlier_array,
-			String column_name1, String column_name2) {
+			 DataSet original, GraphPair p) {
 
 		// Prepare DataSet and DataColumns.
-		DataSet ds = new DataSet (false);
-		DataColumn<Double> dc1 = new DataColumn<> (column_name1, ColumnType.DOUBLE);
-		DataColumn<Double> dc2 = new DataColumn<> (column_name2, ColumnType.DOUBLE);
+		DataSet ds = new DataSet (p);
+		ds.setGroupType (original.getGroupType ());
 		
 		// Populate DataColumns
-		for (DoublePoint dp : outlier_array) {
+		if (p.isGrouped ()) {
 			
-			dc1.add (new Double (dp.getPoint ()[0]));
-			dc2.add (new Double (dp.getPoint ()[1]));
+			for (DoublePoint dp : outlier_array) {
+				
+				ds.addToX (new Double (dp.getPoint ()[0]));
+				ds.addToY (new Double (dp.getPoint ()[1]));
+				
+				if (ColumnType.DOUBLE.equals (original.getGroupType ())) {
+					
+					int group_value_row = original.findGroup (
+							dp.getPoint ()[0], dp.getPoint ()[1]);
+					
+					ds.addToGroup (original.getGroupDoubleValue (group_value_row));
+					
+				} else { //if (ColumnType.STRING.equals (original.getGroupType ())) {
+					
+					int group_value_row = original.findGroup (
+							dp.getPoint ()[0], dp.getPoint ()[1]);
+					
+					ds.addToGroup (original.getGroupStringValue (group_value_row));
+					
+				}
+				
+			}
 			
+		} else {
+			for (DoublePoint dp : outlier_array) {
+				
+				ds.addToX (new Double (dp.getPoint ()[0]));
+				ds.addToY (new Double (dp.getPoint ()[1]));
+				
+			}
 		}
-		
-		// Add DataColumns to DataSet.
-		ds.add (dc1); ds.add (dc2);
 		
 		// Return DataSet
 		return (ds);

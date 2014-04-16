@@ -5,7 +5,7 @@ import javax.swing.SwingUtilities;
 
 import org.pvg.plasmagraph.controllers.*;
 import org.pvg.plasmagraph.models.*;
-import org.pvg.plasmagraph.utils.data.DataReference;
+import org.pvg.plasmagraph.utils.data.GraphPair;
 import org.pvg.plasmagraph.utils.data.HeaderData;
 import org.pvg.plasmagraph.utils.template.*;
 import org.pvg.plasmagraph.views.*;
@@ -29,25 +29,25 @@ public class PlasmaGraph {
                 // Create all necessary objects.
                 Template t = new Template ();
                 HeaderData hd = new HeaderData ();
-                DataReference dr = new DataReference ();
+                GraphPair p = new GraphPair ();
                 
                 // Graph MVC
-                GraphModel graph_model = new GraphModel (hd, dr, t);
+                GraphModel graph_model = new GraphModel (hd, p, t);
                 GraphView graph_view = new GraphView (graph_model);
 				GraphController graph_controller = new GraphController (graph_model, graph_view);
                       
                 // Data Set MVC
-                DataSetModel data_model = new DataSetModel (t, hd, dr);
+                DataSetModel data_model = new DataSetModel (t, hd, p);
                 DataSetView data_view = new DataSetView (data_model);
                 DataSetController data_controller = new DataSetController (data_model, data_view, graph_controller);
                 
                 // Tool MVC
-                ToolModel tool_model = new ToolModel (t, hd, dr);
+                ToolModel tool_model = new ToolModel (t, hd, p);
                 ToolView tool_view = new ToolView (tool_model);
-                ToolController tool_controller = new ToolController (tool_model, tool_view);
+                ToolController tool_controller = new ToolController (tool_model, tool_view, graph_controller);
                 
                 // Main MVC
-                MainModel main_model = new MainModel (t, hd, dr);
+                MainModel main_model = new MainModel (t, hd, p);
                 MainView main_view = new MainView (main_model);
                 MainController main_controller = new MainController (main_model, main_view, data_view, tool_view); // aesthetic_view, data_view, tool_view);
             
