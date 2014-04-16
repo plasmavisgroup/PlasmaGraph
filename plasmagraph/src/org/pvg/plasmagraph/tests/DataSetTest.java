@@ -9,6 +9,7 @@ import org.junit.Test;
 import org.pvg.plasmagraph.utils.data.DataColumn;
 import org.pvg.plasmagraph.utils.data.DataSet;
 import org.pvg.plasmagraph.utils.data.GraphPair;
+import org.pvg.plasmagraph.utils.exceptions.InvalidParametersException;
 import org.pvg.plasmagraph.utils.graphs.BarGraph;
 import org.pvg.plasmagraph.utils.graphs.XYGraph;
 import org.pvg.plasmagraph.utils.template.Template;
@@ -178,12 +179,15 @@ public class DataSetTest {
 	}
 
 	@Test
-	public void testToXYGraphDataset () {
+	public void testToXYGraphDataset () throws InvalidParametersException {
 		// Generate DataSet
 		DataSet ds = new DataSet (false);
 		DataColumn <Double> dc1 = new DataColumn <> ("Time", "double");
 		DataColumn <Double> dc2 = new DataColumn <> ("Distance", "double");
-		GraphPair p = new GraphPair (0, 1, "To XY Graph Dataset Test");
+		
+		GraphPair p = new GraphPair ();
+		p.changeX (0, "Time");
+		p.changeY (1, "Distance");
 		
 		dc1.add (0.0); dc2.add (0.0);
 		dc1.add (1.0); dc2.add (5.0);
@@ -200,10 +204,9 @@ public class DataSetTest {
 		
 		// Graph data via the XYGraph class!
 		XYGraph chart = new XYGraph (t, ds, p);
-		chart.pack ();
-		chart.setVisible (true);
+		chart.testGraph ();
 		assertTrue ("Correctly Displayed?: ", JOptionPane.showConfirmDialog
-				(chart, "Does the graph look like an XY Graph?",
+				(null, "Does the graph look like an XY Graph?",
 						"Proper XY Graph?",
 						JOptionPane.YES_NO_OPTION) == JOptionPane.YES_OPTION);
 	}
@@ -211,7 +214,9 @@ public class DataSetTest {
 	@Test
 	public void testToBarGraphDataset () {
 		DataSet ds = prepareDataset ();
-		GraphPair p = new GraphPair (0, 1, "To Bar Graph Dataset Test");
+		GraphPair p = new GraphPair ();
+		p.changeX (0, "Pie Flavors");
+		p.changeY (1, "Pie Quantity");
 		
 		// Generate Template.
 		Template t = new Template ();
@@ -220,10 +225,9 @@ public class DataSetTest {
 		
 		// Graph data via the XYGraph class!
 		BarGraph chart = new BarGraph (t, ds, p);
-		chart.pack ();
-		chart.setVisible (true);
+		chart.testGraph ();
 		assertTrue ("Correctly Displayed?: ", JOptionPane.showConfirmDialog
-				(chart, "Does the graph look like a Bar Graph?",
+				(null, "Does the graph look like a Bar Graph?",
 						"Proper Bar Graph?",
 						JOptionPane.YES_NO_OPTION) == JOptionPane.YES_OPTION);
 	}
@@ -236,16 +240,6 @@ public class DataSetTest {
 		assertTrue ("Checking column length.", ds.getColumnLength () == 3);
 		assertTrue ("Checking col. len. of empty col.: ", empty.getColumnLength () == 0);
 		assertTrue ("Checking index columnLength:", ds.getColumnLength () == ds.getColumnLength (1));
-	}
-	
-	@Test
-	public void testAppendDataSet () {
-		DataSet ds1 = prepareDataset ();
-		DataSet ds2 = prepareDataset ();
-		
-		assertTrue ("Testing append success.", ds1.append (ds2));
-		assertEquals ("Testing resulting DataSet size.", 2, ds1.size ());
-		assertEquals ("Testing resulting DataSet column size.", 6, ds1.getColumnLength ());
 	}
 	
 	// Support methods.

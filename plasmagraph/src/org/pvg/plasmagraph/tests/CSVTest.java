@@ -1,4 +1,4 @@
-package org.pvg.plasmagraph.tests;
+/*package org.pvg.plasmagraph.tests;
 
 import static org.junit.Assert.*;
 
@@ -97,13 +97,17 @@ public class CSVTest {
 		// Open tested method file.
 		Template t = new Template ();
 		
+		GraphPair p = new GraphPair ();
+		p.changeX (0, "Column 1");
+		p.changeY (1, "Column 2");
+		
 		DataSet ds1 = new DataSet (false);
 		HeaderData hd = new HeaderData ();
 		csv.getHeaders (hd);
 		
 		System.out.println (hd.toString ());
 		
-		csv.toDataSet (ds1, new GraphPair (0, 1, ""), hd);
+		csv.toDataSet (ds1, p, hd);
 		
 		// Create simulated comparison file.
 		DataSet ds2 = new DataSet (false);
@@ -153,3 +157,4 @@ public class CSVTest {
 	}
 
 }
+*/

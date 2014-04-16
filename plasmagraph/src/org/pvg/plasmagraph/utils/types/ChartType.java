@@ -1,5 +1,8 @@
 package org.pvg.plasmagraph.utils.types;
 
+import org.pvg.plasmagraph.utils.data.GraphPair;
+import org.pvg.plasmagraph.utils.data.HeaderData;
+
 /**
  * Setting container object for the possible types of Graphs available in 
  * the PlasmaGraph program.
@@ -47,6 +50,36 @@ public final class ChartType {
 	 */
 	public static String [] getOptions () {
     	return (new String []
-    			{ChartType.XY_GRAPH.toString (), ChartType.BAR_GRAPH.toString ()});
+    			{ChartType.XY_GRAPH.toString ()//, 
+    			//ChartType.BAR_GRAPH.toString ()
+    			});
     }
+
+	/**
+	 * Allows for easy verification of column types based on the GraphPair provided.
+	 * 
+	 * @param hd The HeaderData object containing all the metadata regarding columns.
+	 * @param p The GraphPair object containing the X Axis and Y Axis column indexes.
+	 * @return True if the ColumnTypes of each column are of the proper types for their ChartType; else, False.
+	 */
+	public boolean hasProperColumns (HeaderData hd, GraphPair p) {
+		
+		if (ChartType.XY_GRAPH.toString ().equals (this.name)) {
+			
+			// Correct pairings: (Double / Double).
+			// In that order.
+			return (ColumnType.DOUBLE.equals (hd.get (p.getXColumnIndex ()).getValue ()) &&
+					ColumnType.DOUBLE.equals (hd.get (p.getYColumnIndex ()).getValue ()));
+			
+		} else { // if (ChartType.XY_GRAPH.toString ().equals (this.name)) {
+			
+			// Correct pairings: (String / Double) or (DateTime / Double).
+			// In that order.
+			return ((ColumnType.STRING.equals (hd.get (p.getXColumnIndex ()).getValue ()) &&
+					ColumnType.DOUBLE.equals (hd.get (p.getYColumnIndex ()).getValue ())) ||
+					(ColumnType.DATETIME.equals (hd.get (p.getXColumnIndex ()).getValue ()) &&
+					ColumnType.DOUBLE.equals (hd.get (p.getYColumnIndex ()).getValue ())));
+			
+		}
+	}
 }

@@ -7,6 +7,8 @@ package org.pvg.plasmagraph.utils.types;
  * @author Gerardo A. Navas Morales
  */
 public final class OutlierResponse {
+	/** Reference for no Outlier Scanning. */
+    public static final OutlierResponse NONE = new OutlierResponse ("No Scanning");
     /** Reference for a "Warn" Response. */
     public static final OutlierResponse WARN = new OutlierResponse ("Warn");
     /** Reference for a "Remove" Response. */
@@ -48,6 +50,8 @@ public final class OutlierResponse {
 	 */
     public static String [] getOptions () {
     	return (new String []
-    			{OutlierResponse.WARN.toString (), OutlierResponse.REMOVE.toString ()});
+    			{OutlierResponse.NONE.toString (),
+    			OutlierResponse.WARN.toString (), 
+    			OutlierResponse.REMOVE.toString ()});
     }
 }

@@ -2,7 +2,7 @@ package org.pvg.plasmagraph.models;
 
 // Class Import Block
 
-import org.pvg.plasmagraph.utils.data.DataReference;
+import org.pvg.plasmagraph.utils.data.GraphPair;
 import org.pvg.plasmagraph.utils.data.HeaderData;
 import org.pvg.plasmagraph.utils.template.Template;
 
@@ -19,23 +19,24 @@ public class ToolModel {
     /** Reference to MainModel's Template, passed via constructor reference. */
     private Template t;
     /** Reference to MainModel's DataSet, passed via constructor reference. */
-    private HeaderData ds;
-    /** Reference to MainModel's DataReference, passed via constructor reference. */
-    private DataReference dr;
+    private HeaderData hd;
+    /** Reference to MainModel's GraphPair, passed via constructor reference. */
+    private GraphPair p;
     
     /**
      * Creates a new ToolModel with references to MainModel's graph-manipulation
      * objects, as well as creates and updates its respective view.
      * 
      * @param t_reference Template reference provided by PlasmaGraph.
-     * @param dr_reference DataReference reference provided by PlasmaGraph
+     * @param hd_reference HeaderData reference provided by PlasmaGraph.
+     * @param p_reference GraphPair reference provided by PlasmaGraph.
      */
-    public ToolModel (Template t_reference, HeaderData ds_reference,
-            DataReference dr_reference) {
+    public ToolModel (Template t_reference, HeaderData hd_reference,
+            GraphPair p_reference) {
         // Update currently-used Template and Data Sources.
         t = t_reference;
-        ds = ds_reference;
-        dr = dr_reference;
+        hd = hd_reference;
+        p = p_reference;
     }
     
     /**
@@ -48,25 +49,6 @@ public class ToolModel {
     }
     
     /**
-     * Provides the names of each Data Pair in the DataReference variable in a
-     * String array format, specifically for its DefaultComboBoxModel class.
-     * 
-     * @return A String array of all the DataReference pair names.
-     */
-    public javax.swing.ComboBoxModel <String> getDataReferenceNames () {
-    	// Reset the old lists.
-    	javax.swing.DefaultComboBoxModel <String> target_list = 
-    			new javax.swing.DefaultComboBoxModel <> ();
-    	
-    	// Populate the ListModel
-    	for (org.pvg.plasmagraph.utils.data.GraphPair p : dr) {
-    		target_list.addElement (p.getName ());
-    	}
-    	
-    	return (target_list);
-    }
-    
-    /**
      * Support method to add listeners to the Template.
      * 
      * @param c Listener to add to Template Notifier.
@@ -76,11 +58,11 @@ public class ToolModel {
     }
     
     /**
-     * Support method to add listeners to the DataReference.
+     * Support method to add listeners to the GraphPair.
      * 
-     * @param c Listener to add to DataReference Notifier.
+     * @param c Listener to add to GraphPair Notifier.
      */
-    public void addDataReferenceChangeListener (javax.swing.event.ChangeListener c) {
-        dr.addChangeListener (c);
+    public void addGraphPairChangeListener (javax.swing.event.ChangeListener c) {
+        p.addChangeListener (c);
     }
 }

@@ -1,7 +1,16 @@
 package org.pvg.plasmagraph.views;
 
+import java.awt.event.ActionListener;
+import java.awt.event.FocusAdapter;
+import java.awt.event.FocusListener;
+import java.awt.event.ItemListener;
+
+import javax.swing.JOptionPane;
+
 import org.pvg.plasmagraph.models.ToolModel;
+import org.pvg.plasmagraph.utils.types.ChartType;
 import org.pvg.plasmagraph.utils.types.InterpolationType;
+import org.pvg.plasmagraph.utils.types.OutlierDistanceType;
 import org.pvg.plasmagraph.utils.types.OutlierResponse;
 
 /**
@@ -35,21 +44,65 @@ public class ToolView extends javax.swing.JPanel {
 	* Updates ToolView's Components based on the current state of the Template.
 	*/
     public void updateView () {
-        this.updateTemplateView ();
+    	if (ChartType.XY_GRAPH.equals (tool_model.getTemplate ().getChartType ())) {
+    		
+    		this.updateXYView ();
+    		
+    	} else {//if (ChartType.BAR_GRAPH.equals (tool_model.getTemplate ().getChartType ())) {
+    		
+    		this.updateBarView ();
+    		
+    	}
     }
     
-    /**
-	* Updates ToolView's Template-based Components based on the current 
-	* state of the Template.
-	*/
-	public void updateTemplateView () {
-		this.interpolation_type_combo_box.setSelectedItem (this.tool_model.getTemplate ().getInterpolationType ().toString ());
-        this.outlier_action_combo_box.setSelectedItem (this.tool_model.getTemplate ().getOutlierResponse ().toString ());
-        this.lower_bound_text_field.setText (String.valueOf (this.tool_model.getTemplate ().getLowerInterval ()));
-        this.upper_bound_text_field.setText (String.valueOf (this.tool_model.getTemplate ().getUpperInterval ()));
-        this.interval_text_field.setText (String.valueOf (this.tool_model.getTemplate ().getInterpolationInterval ()));
+    private void updateXYView () {
+
+    	// Enable everything.
+    	this.interpolation_type_combo_box.setEnabled (true);
+    	this.outlier_response_combo_box.setEnabled (true);
+    	this.outlier_distance_type_combo_box.setEnabled (true);
+    	this.maximum_distance_text_box.setEnabled (true);
+    	
+    	// If the Interpolation Type is currently set to Spline, do not allow the user to change the interpolation bounds.
+    	// This is due to the Spline interpolation's inability to predict beyond its bounds.
+    	// See Apache Commons Math 3.2's JavaDocs for more information.
+    	/*if (InterpolationType.SPLINE.equals (this.tool_model.getTemplate ().getInterpolationType ())) {
+    		this.interpolation_lower_bound_text_field.setEnabled (false);
+        	this.interpolation_upper_bound_text_field.setEnabled (false);
+    	} else {
+    		this.interpolation_lower_bound_text_field.setEnabled (true);
+        	this.interpolation_upper_bound_text_field.setEnabled (true);
+    	}*/
+    	
+    	// Update view.
+    	this.interpolation_type_combo_box.setSelectedItem (
+    			this.tool_model.getTemplate ().getInterpolationType ().toString ());
+        this.outlier_response_combo_box.setSelectedItem (
+        		this.tool_model.getTemplate ().getOutlierResponse ().toString ());
+        this.outlier_distance_type_combo_box.setSelectedItem (
+        		this.tool_model.getTemplate ().getOutlierDistanceType ());
+        this.maximum_distance_text_box.setText (Double.toString (
+        		this.tool_model.getTemplate ().getOutlierDistance ()));
+       /* this.interpolation_lower_bound_text_field.setText (Double.toString (
+        		this.tool_model.getTemplate ().getLowerInterval ()));
+        this.interpolation_upper_bound_text_field.setText (Double.toString (
+        		this.tool_model.getTemplate ().getUpperInterval ()));*/
 	}
     
+    private void updateBarView () {
+    	
+    	// Disable everything.
+    	this.interpolation_type_combo_box.setEnabled (false);
+    	this.outlier_response_combo_box.setEnabled (false);
+    	//this.interpolation_lower_bound_text_field.setEnabled (false);
+    	//this.interpolation_upper_bound_text_field.setEnabled (false);
+    	
+    	// Update view.
+    	this.interpolation_type_combo_box.setSelectedIndex (0);
+        this.outlier_response_combo_box.setSelectedIndex (0);
+	}
+
+
     /**
 	* Getter Method. Provides this object's selected interpolation type in the form of an InterpolationType object.
 	* @return InterpolationType object based on its representation in the "interpolation_type_combo_box" Component.
@@ -57,7 +110,9 @@ public class ToolView extends javax.swing.JPanel {
     public InterpolationType getInterpolationType () {
         String i_type = (String) this.interpolation_type_combo_box.getSelectedItem ();
 
-        if (i_type.equals (InterpolationType.LINEAR.toString ())) {
+        if (i_type.equals (InterpolationType.NONE.toString ())) {
+            return (InterpolationType.NONE);
+        } else if (i_type.equals (InterpolationType.LINEAR.toString ())) {
             return (InterpolationType.LINEAR);
         } else if (i_type.equals (InterpolationType.QUADRATIC.toString ())) {
             return (InterpolationType.QUADRATIC);
@@ -76,9 +131,11 @@ public class ToolView extends javax.swing.JPanel {
 	* @return OutlierResponse object based on its representation in the "outlier_action_combo_box" Component.
 	*/
     public OutlierResponse getOutlierResponseType () {
-        String o_type = (String) this.outlier_action_combo_box.getSelectedItem ();
+        String o_type = (String) this.outlier_response_combo_box.getSelectedItem ();
         
-        if (o_type.equals (OutlierResponse.WARN.toString ())) {
+        if (o_type.equals (OutlierResponse.NONE.toString ())) {
+            return (OutlierResponse.NONE);
+        } else if (o_type.equals (OutlierResponse.WARN.toString ())) {
             return (OutlierResponse.WARN);
         } else {
             return (OutlierResponse.REMOVE);
@@ -86,174 +143,183 @@ public class ToolView extends javax.swing.JPanel {
     }
     
     /**
-     * Getter Method. Returns the contents of the "lower_bound_text_field" as a
-     * double.
-     * 
-     * @return A double, containing the value for use elsewhere.
-     */
-	public double getLowerInterval () {
-		return (Double.parseDouble (this.lower_bound_text_field.getText ()));
-	}
-
-	/**
-	 * Getter Method. Returns the contents of the "upper_bound_text_field" as a
-     * double.
-     * 
-     * @return A double, containing the value for use elsewhere.
-	 */
-	public double getUpperInterval () {
-		return (Double.parseDouble (this.upper_bound_text_field.getText ()));
-	}
-
-	/**
-	 * Getter Method. Returns the contents of the "interval_text_field" as an
-     * integer.
-     * 
-     * @return An int, containing the value for use elsewhere.
-	 */
-	public int getInterval () {
-		return (Integer.parseInt (this.interval_text_field.getText ()));
-	}
+	* Getter Method. Provides this object's selected outlier distance type in 
+	* the form of an OutlierDistanceType object.
+	* @return OutlierDistanceType object based on its representation in the "outlier_distance_type_combo_box" Component.
+	*/
+    public OutlierDistanceType getOutlierDistanceType () {
+        String o_type = (String) this.outlier_distance_type_combo_box.getSelectedItem ();
+        
+        if (o_type.equals (OutlierDistanceType.MAHALANOBIS.toString ())) {
+            return (OutlierDistanceType.MAHALANOBIS);
+        } /*else if (o_type.equals (OutlierDistanceType.STDEV.toString ())) {
+            return (OutlierDistanceType.STDEV);
+        } */else {
+            return (OutlierDistanceType.USER);
+        }
+    }
+    
+    public double getMaximumDistance () {
+    	try {
+    		return (Double.parseDouble (this.maximum_distance_text_box.getText ()));
+    	} catch (NumberFormatException ex) {
+    		 JOptionPane.showMessageDialog (this, "The text provided is not a valid number.\n"
+    		 		+ "Please provide a valid number for the Outlier Scan distance.");
+    		 return (0.0);
+    	}
+    }
     
     /**
 	* Initializes the visual components of this view form.
 	*/
     private void initComponents () {
-        this.setName ("Tool View");
+        this.setName ("Options View");
         
         // Initialize
-        interpolation_label = new javax.swing.JLabel ();
-        outlier_filtering_label = new javax.swing.JLabel ();
-        lower_bound_label = new javax.swing.JLabel();
-        upper_bound_label = new javax.swing.JLabel();
-        interval_label = new javax.swing.JLabel();
-        lower_bound_text_field = new javax.swing.JTextField();
-        upper_bound_text_field = new javax.swing.JTextField();
-        interval_text_field = new javax.swing.JTextField();
-        outlier_model = new javax.swing.DefaultComboBoxModel <> (
+        outlier_response_label = new javax.swing.JLabel();
+        outlier_response_combo_box = new javax.swing.JComboBox <String> ();
+        
+        outlier_distance_type_label = new javax.swing.JLabel();
+        outlier_distance_type_combo_box = new javax.swing.JComboBox <String> ();
+        
+        maximum_distance_label = new javax.swing.JLabel();
+        maximum_distance_text_box = new javax.swing.JTextField();
+        
+        interpolation_type_label = new javax.swing.JLabel();
+        interpolation_type_combo_box = new javax.swing.JComboBox <String> ();
+        
+        graph_button = new javax.swing.JButton();
+        graph_separator = new javax.swing.JSeparator();
+
+ 		// Outlier Filtering
+        outlier_distance_type_label.setText ("Outlier Distance Type");
+        distance_model = new javax.swing.DefaultComboBoxModel <String> (
+        		OutlierDistanceType.getOptions ());
+        outlier_distance_type_combo_box.setModel (distance_model);
+
+        maximum_distance_label.setText ("Manual Maximum Distance");
+        maximum_distance_text_box.setText (Double.toString (
+        		this.tool_model.getTemplate ().getOutlierDistance ()));
+        
+ 		outlier_response_label.setText ("Outlier Scanning Response");
+ 		outlier_model = new javax.swing.DefaultComboBoxModel <> (
                 OutlierResponse.getOptions ());
-        interpolation_model = new javax.swing.DefaultComboBoxModel <>
-        		(InterpolationType.getOptions ());
-        interpolation_type_combo_box = new javax.swing.JComboBox <>
-        		(interpolation_model);
-        outlier_action_combo_box = new javax.swing.JComboBox <>
-        		(outlier_model);
-        interpolation_separator = new javax.swing.JSeparator();
-        outlier_separator = new javax.swing.JSeparator();
-        
+		outlier_response_combo_box = new javax.swing.JComboBox <> (
+				outlier_model);
+
         // Interpolation
-        interpolation_label.setText ("Interpolation Type");
-        lower_bound_label.setText ("Lower Bound");
-        upper_bound_label.setText ("Upper Bound");
-        interval_label.setText ("# of Points");
-        lower_bound_text_field.setText ("0");
-        upper_bound_text_field.setText ("10");
-        interval_text_field.setText ("100");
-        lower_bound_text_field.setHorizontalAlignment (javax.swing.JTextField.TRAILING);
-        upper_bound_text_field.setHorizontalAlignment (javax.swing.JTextField.TRAILING);
-        interval_text_field.setHorizontalAlignment (javax.swing.JTextField.TRAILING);
+      	interpolation_type_label.setText("Interpolation Type");
 
-        
-        // Outlier Filtering
-        outlier_filtering_label.setText ("Outlier Filtering");
+      	interpolation_model = new javax.swing.DefaultComboBoxModel <> (
+      			InterpolationType.getOptions ());
+		interpolation_type_combo_box = new javax.swing.JComboBox <> (
+				interpolation_model);
 
-        // TODO: Update layout!
+        graph_button.setText ("Graph");
+
         // Layout Organization
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(this);
         this.setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(interpolation_separator)
-            .addComponent(outlier_separator)
+            .addComponent(graph_separator)
             .addGroup(layout.createSequentialGroup()
-                .addContainerGap()
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(layout.createSequentialGroup()
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(interpolation_label)
-                            .addGroup(layout.createSequentialGroup()
-                                .addGap(10, 10, 10)
-                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                                    .addComponent(lower_bound_label)
-                                    .addComponent(interval_label))))
-                        .addGap(26, 26, 26)
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                        .addContainerGap()
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                            .addComponent(maximum_distance_text_box)
+                            .addComponent(outlier_response_combo_box, javax.swing.GroupLayout.Alignment.LEADING, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                            .addComponent(graph_button, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                             .addComponent(interpolation_type_combo_box, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                            .addComponent(lower_bound_text_field)
-                            .addComponent(interval_text_field))
-                        .addGap(15, 15, 15)
+                            .addComponent(outlier_distance_type_combo_box, javax.swing.GroupLayout.Alignment.LEADING, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
+                    .addGroup(layout.createSequentialGroup()
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addGroup(layout.createSequentialGroup()
-                                .addComponent(upper_bound_label)
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                                .addComponent(upper_bound_text_field))))
-                    .addGroup(layout.createSequentialGroup()
-                        .addComponent(outlier_filtering_label)
-                        .addGap(42, 42, 42)
-                        .addComponent(outlier_action_combo_box, javax.swing.GroupLayout.PREFERRED_SIZE, 75, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(0, 0, Short.MAX_VALUE)))
-                .addContainerGap(43, Short.MAX_VALUE))
+                                .addGap(68, 68, 68)
+                                .addComponent(outlier_distance_type_label))
+                            .addGroup(layout.createSequentialGroup()
+                                .addGap(56, 56, 56)
+                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                    .addComponent(outlier_response_label)
+                                    .addComponent(maximum_distance_label))))
+                        .addGap(46, 46, 46)))
+                .addContainerGap())
+            .addGroup(layout.createSequentialGroup()
+                .addGap(75, 75, 75)
+                .addComponent(interpolation_type_label)
+                .addContainerGap())
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
                 .addContainerGap()
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                        .addComponent(interpolation_label)
-                        .addComponent(interpolation_type_combo_box, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                .addComponent(outlier_distance_type_label)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                        .addComponent(lower_bound_text_field, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addComponent(lower_bound_label))
-                    .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                        .addComponent(upper_bound_text_field, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addComponent(upper_bound_label)))
+                .addComponent(outlier_distance_type_combo_box, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(interval_label)
-                    .addComponent(interval_text_field, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addGap(18, 18, 18)
-                .addComponent(outlier_separator, javax.swing.GroupLayout.PREFERRED_SIZE, 10, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addComponent(outlier_response_label)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(outlier_action_combo_box, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(outlier_filtering_label))
-                .addGap(18, 18, 18)
-                .addComponent(interpolation_separator, javax.swing.GroupLayout.PREFERRED_SIZE, 10, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(133, Short.MAX_VALUE))
+                .addComponent(outlier_response_combo_box, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addComponent(maximum_distance_label)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addComponent(maximum_distance_text_box, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addComponent(graph_separator, javax.swing.GroupLayout.PREFERRED_SIZE, 10, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addComponent(interpolation_type_label)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addComponent(interpolation_type_combo_box, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 112, Short.MAX_VALUE)
+                .addComponent(graph_button)
+                .addContainerGap())
         );
     }
 
     // Variables declaration - do not modify
-    private javax.swing.JLabel interpolation_label;
-    private javax.swing.JLabel outlier_filtering_label;
-    private javax.swing.JLabel lower_bound_label;
-    private javax.swing.JLabel upper_bound_label;
-    private javax.swing.JLabel interval_label;
     private javax.swing.JComboBox <String> interpolation_type_combo_box;
-    private javax.swing.JComboBox <String> outlier_action_combo_box;
+    private javax.swing.JLabel interpolation_type_label;
+    private javax.swing.JComboBox <String> outlier_response_combo_box;
+    private javax.swing.JLabel outlier_response_label;
+    private javax.swing.JLabel maximum_distance_label;
+    private javax.swing.JTextField maximum_distance_text_box;
+    private javax.swing.JComboBox <String> outlier_distance_type_combo_box;
+    private javax.swing.JLabel outlier_distance_type_label;
     private javax.swing.DefaultComboBoxModel <String> outlier_model;
+    private javax.swing.DefaultComboBoxModel <String> distance_model;
     private javax.swing.DefaultComboBoxModel <String> interpolation_model;
-    private javax.swing.JSeparator interpolation_separator;
-    private javax.swing.JSeparator outlier_separator;
-    private javax.swing.JTextField lower_bound_text_field;
-    private javax.swing.JTextField upper_bound_text_field;
-    private javax.swing.JTextField interval_text_field;
+    private javax.swing.JSeparator graph_separator;
+    private javax.swing.JButton graph_button;
     
     // End of variables declaration
     
     // Created by Gerardo A. Navas Morales.
     /**
-	* Registers the "outlier_response" combo box as an object that should be listened to upon an option being selected.
+	* Registers the "interpolation_type" combo box as an object that should be listened to upon an option being selected.
 	*
 	* @param interpolationTypeListener ActionListener object provided by its Controller.
 	*/
-    public void addInterpolationTypeListener (
-            java.awt.event.ActionListener interpolationTypeListener) {
-        this.interpolation_type_combo_box
-                .addActionListener (interpolationTypeListener);
+    public void addInterpolationTypeListener (ItemListener interpolationTypeListener) {
+        this.interpolation_type_combo_box.addItemListener (interpolationTypeListener);
+    }
+    
+    /**
+	* Registers the "interpolation_lower_bound" text box as an object that should be listened to upon an option being selected.
+	*
+	* @param lowerBoundListener FocusAdapter object provided by its Controller.
+	*/
+    public void addLowerBoundListener (FocusAdapter lowerBoundListener) {
+        this.interpolation_type_combo_box.addFocusListener (lowerBoundListener);
+    }
+    
+    /**
+	* Registers the "interpolation_upper_bound" text box as an object that should be listened to upon an option being selected.
+	*
+	* @param upperBoundListener FocusAdapter object provided by its Controller.
+	*/
+    public void addUpperBoundListener (FocusAdapter upperBoundListener) {
+        this.interpolation_type_combo_box.addFocusListener (upperBoundListener);
     }
     
     /**
@@ -261,35 +327,35 @@ public class ToolView extends javax.swing.JPanel {
 	*
 	* @param outlierResponseListener ActionListener object provided by its Controller.
 	*/
-    public void addOutlierResponseListener (
-            java.awt.event.ActionListener outlierResponseListener) {
-        this.outlier_action_combo_box.addActionListener (outlierResponseListener);
+    public void addOutlierResponseListener (ItemListener outlierResponseListener) {
+        this.outlier_response_combo_box.addItemListener (outlierResponseListener);
     }
-
-	/**
+    
+    /**
+	* Registers the "outlier_response" combo box as an object that should be listened to upon an option being selected.
+	*
+	* @param outlierResponseListener ActionListener object provided by its Controller.
+	*/
+    public void addOutlierDistanceTypeListener (ItemListener outlier_distance_type_listener) {
+        this.outlier_distance_type_combo_box.addItemListener (outlier_distance_type_listener);
+    }
+    
+    /**
+	* Registers the "outlier_response" combo box as an object that should be listened to upon an option being selected.
+	*
+	* @param outlierResponseListener ActionListener object provided by its Controller.
+	*/
+    public void addOutlierDistanceListener (FocusAdapter outlier_distance_listener) {
+        this.maximum_distance_text_box.addFocusListener (outlier_distance_listener);
+    }
+    
+    /**
+	 * Registers the "graph_button" JButton as an object that should be
+	 * listened upon being selected.
 	 * 
-	 * @param lowerBoundListener
+	 * @param graphListener ActionListener object provided by its Controller.
 	 */
-	public void addLowerBoundListener 
-			(java.awt.event.FocusListener lowerBoundListener) {
-		this.lower_bound_text_field.addFocusListener (lowerBoundListener);
-	}
-
-	/**
-	 * 
-	 * @param upperBoundListener
-	 */
-	public void addUpperBoundListener 
-			(java.awt.event.FocusListener upperBoundListener) {
-		this.upper_bound_text_field.addFocusListener (upperBoundListener);
-	}
-
-	/**
-	 * 
-	 * @param upperBoundListener
-	 */
-	public void addIntervalListener 
-			(java.awt.event.FocusListener upperBoundListener) {
-		this.interval_text_field.addFocusListener (upperBoundListener);
+	public void addGraphListener (ActionListener graphListener) {
+		this.graph_button.addActionListener (graphListener);
 	}
 }

@@ -11,12 +11,11 @@ import javax.swing.JOptionPane;
 import org.apache.commons.math3.ml.clustering.DoublePoint;
 import org.jfree.chart.plot.PlotOrientation;
 import org.junit.Test;
-import org.pvg.plasmagraph.utils.data.DataReference;
-import org.pvg.plasmagraph.utils.data.DataSet;
 import org.pvg.plasmagraph.utils.data.GraphPair;
 import org.pvg.plasmagraph.utils.data.HeaderData;
 import org.pvg.plasmagraph.utils.data.readers.CSVProcessor;
-import org.pvg.plasmagraph.utils.graphs.GraphViewer;
+import org.pvg.plasmagraph.utils.data.readers.MatlabProcessor;
+import org.pvg.plasmagraph.utils.graphs.XYGraph;
 import org.pvg.plasmagraph.utils.template.Template;
 import org.pvg.plasmagraph.utils.tools.outlierscan.OutlierSearch;
 import org.pvg.plasmagraph.utils.tools.outlierscan.distances.MahalanobisDistance;
@@ -30,19 +29,17 @@ import org.pvg.plasmagraph.utils.types.OutlierResponse;
 @SuppressWarnings ("javadoc")
 public class OutlierSearchTest {
 
-	private String default_file_path = 
-			"C:/Users/tako/Documents/GitHub/PlasmaGraph/plasmagraph/test/csv/Parameter2013-06-11.csv"; //$NON-NLS-1$
+	private String default_file_path = "C:/Users/tako/Documents/GitHub/PlasmaGraph"
+			+ "/plasmagraph/test/matlab/Parameter2013-06-13.mat";
 	
 	@Test
 	public void testClusterScanning () throws Exception {
-		// Prepare helper tools
-		StringBuilder sb = new StringBuilder ();
 		
 		// Prepare the data.
-		CSVProcessor csv = new CSVProcessor (new File (default_file_path));
+		MatlabProcessor mat = new MatlabProcessor (new File (default_file_path));
 		//System.out.println (csv.toString ());
 		HeaderData hd = new HeaderData ();
-		csv.getHeaders (hd);
+		mat.getHeaders (hd);
 		
 		// Prepare the template.
 		Template t = new Template ();
@@ -51,17 +48,13 @@ public class OutlierSearchTest {
 		t.setOrientation (PlotOrientation.VERTICAL);
 		
 		// Prepare the GraphPair
-		sb.append (hd.get (1).getKey ())
-		  .append (" vs. ") //$NON-NLS-1$
-		  .append (hd.get (3).getKey ());
-		
-		GraphPair p = new GraphPair (6, 7, sb.toString ());
-		
-		// Clean the StringBuilder. It gets clogged sometimes.
-		sb.delete (0, sb.length () - 1);
+		GraphPair p = new GraphPair ();
+		p.changeX (6, hd.get (6).getKey ());
+		p.changeY (7, hd.get (7).getKey ());
 		
 		// Perform the procedure.
-		GraphViewer.createXYGraph (t, OutlierSearch.scanForOutliers (hd, t, p), p);
+		XYGraph g = new XYGraph (t, OutlierSearch.scanForOutliers (hd, t, p), p);
+		g.testGraph ();
 		
 		// Check if it worked.
 		assertTrue ("Proper Outlier Removal Test", JOptionPane.showConfirmDialog

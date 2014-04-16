@@ -1,18 +1,11 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
 <qualifiedTypeNameHistroy>
-<fullyQualifiedTypeName name="org.pvg.plasmagraph.utils.tools.OutlierSearch"/>
-<fullyQualifiedTypeName name="org.pvg.plasmagraph.utils.tools.Interpolator"/>
-<fullyQualifiedTypeName name="javax.swing.ListModel"/>
-<fullyQualifiedTypeName name="org.apache.commons.math3.util.FastMath"/>
-<fullyQualifiedTypeName name="org.apache.commons.math3.linear.RealVector"/>
 <fullyQualifiedTypeName name="org.apache.commons.math3.linear.ArrayRealVector"/>
 <fullyQualifiedTypeName name="org.apache.commons.math3.linear.RealMatrix"/>
 <fullyQualifiedTypeName name="org.apache.commons.math3.stat.descriptive.moment.VectorialCovariance"/>
 <fullyQualifiedTypeName name="org.apache.commons.math3.exception.DimensionMismatchException"/>
 <fullyQualifiedTypeName name="org.apache.commons.math3.linear.Array2DRowRealMatrix"/>
 <fullyQualifiedTypeName name="org.apache.commons.math3.ml.clustering.Cluster"/>
-<fullyQualifiedTypeName name="java.util.List"/>
-<fullyQualifiedTypeName name="javax.swing.JOptionPane"/>
 <fullyQualifiedTypeName name="org.apache.commons.math3.ml.clustering.DBSCANClusterer"/>
 <fullyQualifiedTypeName name="org.apache.commons.math3.stat.correlation.Covariance"/>
 <fullyQualifiedTypeName name="org.pvg.plasmagraph.utils.graphs.Graph"/>
@@ -31,18 +24,15 @@
 <fullyQualifiedTypeName name="org.pvg.plasmagraph.utils.tools.outlierscan.methods.ModifiedThompsonTauScanning"/>
 <fullyQualifiedTypeName name="org.pvg.plasmagraph.utils.tools.outlierscan.methods.ClusterScanning"/>
 <fullyQualifiedTypeName name="org.pvg.plasmagraph.utils.ExceptionHandler"/>
-<fullyQualifiedTypeName name="org.pvg.plasmagraph.utils.graphs.XYGraph"/>
 <fullyQualifiedTypeName name="org.pvg.plasmagraph.utils.graphs.BarGraph"/>
 <fullyQualifiedTypeName name="org.pvg.plasmagraph.utils.types.FileType"/>
 <fullyQualifiedTypeName name="org.pvg.plasmagraph.utils.types.ColumnType"/>
-<fullyQualifiedTypeName name="org.apache.commons.math3.util.Pair"/>
 <fullyQualifiedTypeName name="org.apache.commons.math3.stat.descriptive.moment.Mean"/>
 <fullyQualifiedTypeName name="org.apache.commons.math3.stat.descriptive.moment.StandardDeviation"/>
 <fullyQualifiedTypeName name="org.apache.commons.math3.stat.inference.TTest"/>
 <fullyQualifiedTypeName name="java.lang.String"/>
 <fullyQualifiedTypeName name="org.jfree.chart.plot.PlotOrientation"/>
 <fullyQualifiedTypeName name="org.apache.commons.validator.routines.DateValidator"/>
-<fullyQualifiedTypeName name="java.util.ArrayList"/>
 <fullyQualifiedTypeName name="org.apache.commons.math3.ml.clustering.DoublePoint"/>
 <fullyQualifiedTypeName name="java.util.Random"/>
 <fullyQualifiedTypeName name="org.pvg.plasmagraph.utils.tools.outlierscan.distances.MahalanobisDistance"/>
@@ -53,11 +43,21 @@
 <fullyQualifiedTypeName name="org.pvg.plasmagraph.utils.data.readers.CSVProcessor"/>
 <fullyQualifiedTypeName name="java.util.HashSet"/>
 <fullyQualifiedTypeName name="org.jfree.data.xy.XYSeriesCollection"/>
-<fullyQualifiedTypeName name="java.util.HashMap"/>
 <fullyQualifiedTypeName name="org.apache.commons.math3.stat.descriptive.SummaryStatistics"/>
 <fullyQualifiedTypeName name="org.pvg.plasmagraph.utils.template.Template"/>
 <fullyQualifiedTypeName name="org.pvg.plasmagraph.utils.data.HeaderData"/>
-<fullyQualifiedTypeName name="org.pvg.plasmagraph.utils.data.GraphPair"/>
 <fullyQualifiedTypeName name="org.pvg.plasmagraph.utils.data.DataSet"/>
 <fullyQualifiedTypeName name="org.pvg.plasmagraph.utils.graphs.GraphViewer"/>
+<fullyQualifiedTypeName name="org.pvg.plasmagraph.utils.graphs.XYGraph"/>
+<fullyQualifiedTypeName name="java.util.HashMap"/>
+<fullyQualifiedTypeName name="org.pvg.plasmagraph.utils.data.GraphPair"/>
+<fullyQualifiedTypeName name="org.apache.commons.math3.stat.descriptive.MultivariateSummaryStatistics"/>
+<fullyQualifiedTypeName name="javax.swing.JOptionPane"/>
+<fullyQualifiedTypeName name="org.pvg.plasmagraph.utils.tools.outlierscan.OutlierDistance"/>
+<fullyQualifiedTypeName name="org.pvg.plasmagraph.utils.types.OutlierDistanceType"/>
+<fullyQualifiedTypeName name="org.pvg.plasmagraph.utils.tools.outlierscan.distances.CartesianDistance"/>
+<fullyQualifiedTypeName name="java.awt.event.FocusListener"/>
+<fullyQualifiedTypeName name="java.util.List"/>
+<fullyQualifiedTypeName name="java.util.ArrayList"/>
+<fullyQualifiedTypeName name="org.apache.commons.math3.util.Pair"/>
 </qualifiedTypeNameHistroy>

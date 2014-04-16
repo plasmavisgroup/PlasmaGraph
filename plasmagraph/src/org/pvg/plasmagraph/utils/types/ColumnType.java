@@ -1,9 +1,5 @@
 package org.pvg.plasmagraph.utils.types;
 
-import org.apache.commons.lang3.math.NumberUtils;
-
-import com.jmatio.types.MLArray;
-
 /**
  * Setting container object for the possible types of Columns available in 
  * the PlasmaGraph program.
@@ -17,6 +13,8 @@ public final class ColumnType {
 	public static final ColumnType STRING = new ColumnType ("String");
 	/** Reference for a "DateTime" Column. */
 	public static final ColumnType DATETIME = new ColumnType ("Date Time");
+	/** Reference for a "DateTime" Column. */
+	public static final ColumnType NONE = new ColumnType ("None");
 	/** Name of column type. */
 	private String name;
 	
@@ -53,8 +51,9 @@ public final class ColumnType {
 	 */
 	public static String [] getOptions () {
     	return (new String []
-    			{ColumnType.DOUBLE.toString (), ColumnType.STRING.toString (),
-    			ColumnType.DATETIME.toString ()});
+    			{ColumnType.DOUBLE.toString (), ColumnType.STRING.toString ()//,
+    			//ColumnType.DATETIME.toString ()
+    			});
     }
 
 	/**
@@ -64,6 +63,7 @@ public final class ColumnType {
 	 */
 	public boolean isValidType () {
 		return ((this.name == "Double") || (this.name == "String") 
-				|| (this.name == "Date Time"));
+				//|| (this.name == "Date Time")
+				);
 	}
 }

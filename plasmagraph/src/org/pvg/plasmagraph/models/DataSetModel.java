@@ -1,17 +1,12 @@
 package org.pvg.plasmagraph.models;
 
 // Class Import Block
-import java.util.ArrayList;
-
 import javax.swing.ComboBoxModel;
 import javax.swing.DefaultComboBoxModel;
-import javax.swing.DefaultListModel;
-import javax.swing.ListModel;
 
 import org.apache.commons.math3.util.Pair;
-import org.pvg.plasmagraph.utils.data.DataReference;
-import org.pvg.plasmagraph.utils.data.HeaderData;
 import org.pvg.plasmagraph.utils.data.GraphPair;
+import org.pvg.plasmagraph.utils.data.HeaderData;
 import org.pvg.plasmagraph.utils.template.Template;
 import org.pvg.plasmagraph.utils.types.ColumnType;
 
@@ -28,8 +23,8 @@ public class DataSetModel {
     private Template t;
     /** Reference to MainModel's HeaderData, passed via constructor reference. */
     private HeaderData hd;
-    /** Reference to MainModel's DataReference, passed via constructor reference. */
-    private DataReference dr;
+    /** Reference to MainModel's GraphPair, passed via constructor reference. */
+    private GraphPair p;
     
     /**
      * Creates a new HeaderDataModel with references to the data and settings,
@@ -37,58 +32,22 @@ public class DataSetModel {
      * 
      * @param t_reference
      *            Settings - Template reference provided by PlasmaGraph.
-     * @param ds_reference
-     *            Data - HeaderData reference provided by PlasmaGraph.
+     * @param hd_reference Data - HeaderData reference provided by PlasmaGraph.
+     * @param p_reference Pairs - GraphPair reference provided by PlasmaGraph.
      */
     public DataSetModel (Template t_reference, HeaderData hd_reference,
-            DataReference dr_reference) {
+            GraphPair p_reference) {
         // Update currently-used Template and Data Sources.
         t = t_reference;
         hd = hd_reference;
-        dr = dr_reference;
+        p = p_reference;
     }
     
     /**
-     * Takes the current HeaderData and inserts the column names into a new
+     * Takes the current GraphPair and inserts the pair names into a new
      * ListModel<String>.
      * 
-     * @return A ListModel of Strings containing the column names of HeaderData.
-     */
-    public ListModel <String> resetAvailableList () {
-    	// Reset the old lists.
-    	DefaultListModel <String> list_available = new DefaultListModel <> ();
-    	
-    	// Populate AvailableHeaderDatasList's ListModel
-    	for (Pair<String, ColumnType> p : hd) {
-            list_available.addElement (p.getKey ());
-        }
-    	
-    	return (list_available);
-    }
-    
-    /**
-     * Takes the current DataReference and inserts the pair names into a new
-     * ListModel<String>.
-     * 
-     * @return A ListModel of Strings containing the pair names of DataReference.
-     */
-    public ListModel <String> resetSelectedList () {
-    	// Reset the old lists.
-    	DefaultListModel <String> list_selected = new DefaultListModel <> ();
-    	
-    	// Populate SelectedHeaderDatasList's ListModel
-        for (GraphPair p : dr) {
-        	list_selected.addElement (p.getName ());
-        }
-        
-        return (list_selected);
-    }
-    
-    /**
-     * Takes the current DataReference and inserts the pair names into a new
-     * ListModel<String>.
-     * 
-     * @return A ListModel of Strings containing the pair names of DataReference.
+     * @return A ListModel of Strings containing the pair names of GraphPair.
      */
     public ComboBoxModel <String> resetGroupByBox () {	
     	// This int's value must not change.
@@ -104,83 +63,97 @@ public class DataSetModel {
         	}
     	}
     	
-        
         return (new DefaultComboBoxModel <> (group_array));
     }
     
     /**
-     * Adds all the elements in the list provided to the SelectedHeaderDatas List.
-     * 
-     * @param list List of elements to add to the SelectedHeaderDatas List.
-     * @throws Exception Has no elements in the parameter provided.
+	 * Resets the status of the X Axis Column JComboBox to its default state based on
+	 * the current status of the HeaderData object. Creates a new DefaultComboBoxModel
+	 * and returns it.
+	 * 
+	 * @return A new DefaultComboBoxModel containing the String representations of each 
+	 * header in "hd".
 	 */
-    public void addToSelectedHeaderData (ArrayList <String> list) throws Exception {
-        
-        // We're attempting dangerous things that should throw errors.
-        // First, check if there's the correct number of things in that list.
-        if (list.size () == 2) {
-        	
-            // Bundle them into a pair and include that pair in DataReference "dr".
-            GraphPair added_element = new GraphPair (hd.find (list.get (0)),
-            		hd.find (list.get (1)), "" + list.get (0) + " vs. "
-                            + list.get (1));
-            
-            if (!dr.add (added_element)) {
-            	
-            	throw (new Exception ("Adding into DataReference failed."));
-            	
-            }
-            
-        } else {
-            // Otherwise, complain about having an empty list.
-            // TODO: Make Exception specifically for Adding values.
-            throw (new Exception ("There must be exactly two columns selected."));
-        }
-    }
-    
-    /**
-     * Removes all the elements in the list provided from the SelectedHeaderDatas List.
-     * 
-     * @param list List of elements to remove from the SelectedHeaderDatas List.
-     * @throws Exception Has no elements in the parameter provided.
+	public ComboBoxModel <String> resetXAxisColumn () {
+		DefaultComboBoxModel <String> x_column = new DefaultComboBoxModel <String> ();
+
+		for (Pair <String, ColumnType> p : this.hd) {
+			if (ColumnType.DOUBLE.equals (p.getValue ())) {
+				x_column.addElement (p.getKey ());
+			}
+		}
+		
+		return (x_column);
+	}
+
+	/**
+	 * Resets the status of the Y Axis Column JComboBox to its default state based on
+	 * the current status of the HeaderData object. Creates a new DefaultComboBoxModel
+	 * and returns it.
+	 * 
+	 * @return A new DefaultComboBoxModel containing the String representations of each 
+	 * header in "hd".
 	 */
-    public void removeFromSelectedHeaderData (ArrayList <String> list) throws Exception {
-        // We're attempting dangerous things that should throw errors.
-        // First, check if there's something in the list.
-        if (list.size () >= 1) {
-            
-            // For all the objects to remove...
-            for (String s : list) {
-            	
-                // ... Remove them., if they exist. If they don't, do nothing.
-                if (dr.contains (s)) {
-                	
-                    dr.remove (dr.findIndex (s));
-                    
-                } else {
-                	
-                	throw (new Exception ("Pair not found in reference list."));
-                	
-                }
-                
-            }
-            
-        } else {
-            // Otherwise, complain about having an empty list.
-            // TODO: Make Exception specifically for Removing values.
-        	throw (new Exception ("In order to remove, there must be at least one Pair selected."));
-        }
-    }
+	public ComboBoxModel <String> resetYAxisColumn () {
+		DefaultComboBoxModel <String> y_column = new DefaultComboBoxModel <String> ();
+
+		for (Pair <String, ColumnType> p : this.hd) {
+			if (ColumnType.DOUBLE.equals (p.getValue ())) {
+				y_column.addElement (p.getKey ());
+			}
+		}
+		
+		return (y_column);
+	}
+	
+	/**
+	 * @param groupingByElement
+	 */
+	public void changeGroup (String groupingByElement) {
+		if ("None".equals (groupingByElement) ||
+				"".equals (groupingByElement)) {
+			
+			this.p.changeGroup (0, groupingByElement);
+			
+		} else {
+			
+			this.p.changeGroup (hd.find (groupingByElement), groupingByElement);
+			
+		}
+	}
+
+	/**
+	 * @param xColumn
+	 */
+	public void changeXColumn (String xColumn) {
+		this.p.changeX (hd.find (xColumn), xColumn);
+	}
+
+	/**
+	 * @param yColumn
+	 */
+	public void changeYColumn (String yColumn) {
+		this.p.changeY (hd.find (yColumn), yColumn);
+	}
     
     /**
      * Getter method. Returns template.
-     * Used for HeaderDataView's "updateView ()" method.
      * 
      * @return t, a reference to the Template object.
      */
     public Template getTemplate () {
         return (t);
     }
+    
+    /**
+     * Getter method. Returns GraphPair.
+     * 
+     * @return t, a reference to the GraphPair object.
+     */
+    public GraphPair getGraphPair () {
+		// TODO Auto-generated method stub
+		return (p);
+	}
     
     /**
      * Support method to add listeners to the Template.
@@ -201,11 +174,11 @@ public class DataSetModel {
     }
 
     /**
-     * Support method to add listeners to the DataReference.
+     * Support method to add listeners to the GraphPair.
      * 
-     * @param c Listener to add to DataReference Notifier.
+     * @param c Listener to add to GraphPair Notifier.
      */
-	public void addDataReferenceChangeListener (javax.swing.event.ChangeListener c) {
-		dr.addChangeListener (c);
+	public void addGraphPairChangeListener (javax.swing.event.ChangeListener c) {
+		p.addChangeListener (c);
 	}
 }
