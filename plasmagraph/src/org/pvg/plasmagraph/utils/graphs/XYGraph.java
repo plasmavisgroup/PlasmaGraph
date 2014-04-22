@@ -39,11 +39,9 @@ import org.pvg.plasmagraph.utils.types.AxisType;
 import org.pvg.plasmagraph.utils.types.InterpolationType;
 
 /**
- * Graph class. Contains all the methods required to take in data of any kind
- * that the rest of the system may provide it and shape it into a proper graph
+ * <p>Graph class. Contains the methods required to take in numerical coordinate data that
+ * the rest of the system may provide it and shape it into a proper XY Scatterplot Graph
  * according to the settings in the Template.
- * 
- * Manages the graphing of any and all XY Plots.
  * 
  * @author Gerardo A. Navas Morales
  */
@@ -55,10 +53,9 @@ public class XYGraph implements Graph {
 	JFreeChart chart;
 
 	/**
-	 * Constructor. Makes a graph without the necessary data.
+	 * <p>Constructor. Makes a graph without the necessary data.
 	 * 
-	 * @param t
-	 *            Template reference used in the formation of various parts of
+	 * @param t Template reference used in the formation of various parts of
 	 *            the graph.
 	 */
 	public XYGraph (Template t) {
@@ -66,7 +63,7 @@ public class XYGraph implements Graph {
 	}
 
 	/**
-	 * Automates the changes to create a default XY Graph.
+	 * <p>Automates the changes to create a default XY Graph.
 	 * 
 	 * @return A JFreeChart with a default set of data points.
 	 */
@@ -108,7 +105,7 @@ public class XYGraph implements Graph {
 	}
 
 	/**
-	 * Helper method. Automates the changes to create a default XY Graph
+	 * <p>Helper method. Automates the changes to create a default XY Graph
 	 * Dataset.
 	 * 
 	 * @return An XYDataset with a default set of data points.
@@ -126,7 +123,8 @@ public class XYGraph implements Graph {
 	//====================================================//
 	
 	/**
-	 * Basic constructor.
+	 * <p>Basic constructor. Creates an XYDataset before creating the JFreeChart
+	 * itself.
 	 * 
 	 * @param t
 	 *            Template reference used in the formation of various parts of
@@ -142,7 +140,8 @@ public class XYGraph implements Graph {
 	}
 
 	/**
-	 * Constructor using HeaderData.
+	 * <p>Constructor using HeaderData. Calls HeaderData's "populateData" method
+	 * to create a DataSet from it.
 	 * 
 	 * @param t
 	 *            Template reference used in the formation of various parts of
@@ -158,7 +157,7 @@ public class XYGraph implements Graph {
 	}
 
 	/**
-	 * Interpolation constructor. Creates a XYGraph from a Template and
+	 * <p>Interpolation constructor. Creates a XYGraph from a Template and
 	 * XYSeriesCollection reference, which contains both the original
 	 * uninterpolated XYSeries and an interpolated XYSeries.
 	 * 
@@ -176,7 +175,7 @@ public class XYGraph implements Graph {
 	}
 
 	/**
-	 * Creates an XYDataset specifically for the purposes of graphing the data
+	 * <p>Creates an XYDataset specifically for the purposes of graphing the data
 	 * using the DataSet's provided values.
 	 * 
 	 * @param t
@@ -210,8 +209,10 @@ public class XYGraph implements Graph {
 	}
 
 	/**
-	 * Creates a JFreeChart, an object containing the visual representation of
+	 * <p>Creates a JFreeChart, an object containing the visual representation of
 	 * the requested graph, from a group of settings and a JFreeChart Dataset.
+	 * Code for this method is taken from the "ChartFactory" class in the
+	 * JFreeChart library, but modified so as to fit the changing details.
 	 * 
 	 * @param set
 	 *            Dataset reference used in the creation of the graph.
@@ -258,6 +259,13 @@ public class XYGraph implements Graph {
 		return (c);
 	}
 
+	/**
+	 * <p>Helper method. Handles the changes made to XYGraphs made without 
+	 * data. (AKA, empty plots made due to program errors or user mistakes.
+	 * 
+	 * @param t The Template object used to contain most of the graph settings.
+	 * @param c The JFreeChart object that will be modified.
+	 */
 	private void modifyPlot (Template t, JFreeChart c) {
 		// X Axis
 		if (AxisType.STANDARD.equals (t.getXAxisType ())) {
@@ -294,7 +302,7 @@ public class XYGraph implements Graph {
 
 		}
 		
-		// Create XYPlot
+		// Create XYPlot for additional modifications.
 		XYPlot plot = (XYPlot) c.getXYPlot ();
 		
 		// Change background color.
@@ -303,6 +311,15 @@ public class XYGraph implements Graph {
 		plot.setDomainGridlinePaint (Color.BLACK);
 	}
 
+	/**
+	 * <p>Helper method. Handles the changes made to XYGraphs made with data.
+	 * (AKA, those graphs made that contain no procedure-stopping errors or user
+	 * mistakes.)
+	 * 
+	 * @param t The Template object used to contain most of the graph settings.
+	 * @param p The GraphPair object used to contain the column and group data for the graph.
+	 * @param c The JFreeChart object that will be modified.
+	 */
 	private void modifyPlot (Template t, GraphPair p, JFreeChart c) {
 		// Create XYPlot
 		XYPlot plot = (XYPlot) c.getXYPlot ();
@@ -416,7 +433,7 @@ public class XYGraph implements Graph {
 	}
 
 	/**
-	 * Getter method. Provides the internal JFreeChart object that contains the
+	 * <p>Getter method. Provides the internal JFreeChart object that contains the
 	 * graph.
 	 * 
 	 * @return A JFreeChart created by the object.
@@ -427,7 +444,7 @@ public class XYGraph implements Graph {
 	}
 
 	/**
-	 * Testing method. Opens up a JFrame containing the graph!
+	 * <p>Opens up a JFrame containing the graph! Primarily used for testing purposes.
 	 */
 	@Override
 	public void testGraph () {
@@ -438,6 +455,12 @@ public class XYGraph implements Graph {
 		frame.setVisible (true);
 	}
 	
+	/**
+	 * <p>Helper method. Creates the list of valid colors to use in XYGraphs.
+	 * Used specifically for JFreeChart's chart points.
+	 * 
+	 * @return An array of Paint objects representing various usable colors.
+	 */
 	private Paint [] getXYPaintColors () {
 		Paint [] color_set = new Paint [8];
 		

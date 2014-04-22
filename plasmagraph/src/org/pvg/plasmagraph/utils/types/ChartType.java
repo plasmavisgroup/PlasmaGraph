@@ -4,8 +4,17 @@ import org.pvg.plasmagraph.utils.data.GraphPair;
 import org.pvg.plasmagraph.utils.data.HeaderData;
 
 /**
- * Setting container object for the possible types of Graphs available in 
+ * <p>Setting container object for the possible types of Graphs available in 
  * the PlasmaGraph program.
+ * 
+ * <p>The available options are:
+ * 
+ * <ul>
+ * <li>XY_GRAPH: (Default) The system will create an XY Scatter Graph with the
+ * data provided.</li>
+ * <li>BAR_GRAPH: (Disabled) The system will create a Bar Graph with the data
+ * provided.</li>
+ * </ul>
  * 
  * @author Gerardo A. Navas Morales
  */
@@ -43,10 +52,13 @@ public final class ChartType {
 	}
 	
 	/**
-	 * Provides a list of options that may be selected.
-	 * Specifically for use in the various views.
+	 * <p>Provides a list of options that may be selected. Specifically for use 
+	 * in the various views that compose PlasmaGraph.
 	 * 
-	 * @return A String array containing all the possible types this class holds.
+	 * <p>The order of the array is designed to contain the default option, that which
+	 * counts as the starting point for the data type, as the first option.
+	 * 
+	 * @return A String array containing all the valid possible types this class holds.
 	 */
 	public static String [] getOptions () {
     	return (new String []
@@ -76,9 +88,32 @@ public final class ChartType {
 			// Correct pairings: (String / Double) or (DateTime / Double).
 			// In that order.
 			return ((ColumnType.STRING.equals (hd.get (p.getXColumnIndex ()).getValue ()) &&
-					ColumnType.DOUBLE.equals (hd.get (p.getYColumnIndex ()).getValue ())) ||
+					ColumnType.DOUBLE.equals (hd.get (p.getYColumnIndex ()).getValue ())) /*||
 					(ColumnType.DATETIME.equals (hd.get (p.getXColumnIndex ()).getValue ()) &&
-					ColumnType.DOUBLE.equals (hd.get (p.getYColumnIndex ()).getValue ())));
+					ColumnType.DOUBLE.equals (hd.get (p.getYColumnIndex ()).getValue ()))*/
+					);
+			
+		}
+	}
+
+	/**
+	 * <p>Converts a string of text that is hopefully the string version of an object in this class
+     * to an object of this class' type. Default is "XY_GRAPH", assuming the output doesn't match
+     * anything else.
+     * 
+     * @param output The string to translate into an object of ChartType.
+     * @return An ChartType object that is either the default value or the objectized
+     * representation of the parameter provided.
+	 */
+	public static ChartType parse (String output) {
+		
+		if (ChartType.BAR_GRAPH.equals (output)) {
+			
+			return (ChartType.BAR_GRAPH);
+			
+		} else {
+			
+			return (ChartType.XY_GRAPH);
 			
 		}
 	}

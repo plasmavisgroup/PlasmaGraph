@@ -15,7 +15,7 @@ import org.pvg.plasmagraph.utils.template.Template;
 public interface Graph {
 	
 	/**
-	 * Creates a Dataset specifically for the purposes of graphing the data 
+	 * <p>Creates a Dataset specifically for the purposes of graphing the data 
 	 * using the DataSet's provided values.
 	 * 
 	 * @param t Template reference used in the formation of various parts 
@@ -28,7 +28,7 @@ public interface Graph {
 	Dataset createDataset (Template t, DataSet ds, GraphPair p) throws InvalidParametersException;
 	
 	/**
-	 * Creates a JFreeChart, an object containing the visual representation
+	 * <p>Creates a JFreeChart, an object containing the visual representation
 	 * of the requested graph, from a group of settings and a JFreeChart
 	 * Dataset.
 	 * 
@@ -41,14 +41,14 @@ public interface Graph {
 	JFreeChart createChart (Dataset set, Template t, GraphPair p);
 
 	/**
-	 * Getter method. Provides the internal JFreeChart object that contains the graph.
+	 * <p>Getter method. Provides the internal JFreeChart object that contains the graph.
 	 * 
 	 * @return A JFreeChart created by the object.
 	 */
 	JFreeChart getChart ();
 	
 	/**
-	 * Testing method. Opens up a JFrame containing the graph!
+	 * <p>Opens up a JFrame containing the graph! Primarily used for testing purposes.
 	 */
 	void testGraph ();
 }

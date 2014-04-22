@@ -12,7 +12,7 @@ public final class ColumnType {
 	/** Reference for a "String" Column. */
 	public static final ColumnType STRING = new ColumnType ("String");
 	/** Reference for a "DateTime" Column. */
-	public static final ColumnType DATETIME = new ColumnType ("Date Time");
+	//public static final ColumnType DATETIME = new ColumnType ("Date Time");
 	/** Reference for a "DateTime" Column. */
 	public static final ColumnType NONE = new ColumnType ("None");
 	/** Name of column type. */
@@ -44,10 +44,13 @@ public final class ColumnType {
 	}
 	
 	/**
-	 * Provides a list of options that may be selected.
-	 * Specifically for use in the various views.
+	 * <p>Provides a list of options that may be selected. Specifically for use 
+	 * in the various views that compose PlasmaGraph.
 	 * 
-	 * @return A String array containing all the possible types this class holds.
+	 * <p>The order of the array is designed to contain the default option, that which
+	 * counts as the starting point for the data type, as the first option.
+	 * 
+	 * @return A String array containing all the valid possible types this class holds.
 	 */
 	public static String [] getOptions () {
     	return (new String []

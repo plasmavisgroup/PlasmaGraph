@@ -19,8 +19,15 @@ import org.pvg.plasmagraph.utils.types.ColumnType;
 import org.pvg.plasmagraph.utils.types.FileType;
 
 /**
- * Container of Pair <String, ColumnType>s. Provides methods to create JFree 
- * HeaderDatas.
+ * <p>Container of Pairs of Strings and ColumnTypes that will be visible
+ * by the GUI and are available to be graphed.
+ * 
+ * <p>This class also handles the creation of DataSets based on the GraphPair
+ * provided to it via the use of its knowledge of the file that is currently being used.
+ * 
+ * <p>It is important to note that this class fires events! Therefore, this class
+ * should not be made more than once. (This class may be made into a singleton
+ * someday, but not yet.)
  * 
  * @author Gerardo A. Navas Morales
  */
@@ -34,7 +41,7 @@ public class HeaderData implements Iterable<Pair <String, ColumnType>> {
 	private Pair <File, FileType> file;
 
 	/**
-	 * Constructor. Creates a new ArrayList of Pair <String, ColumnType>s for this object.
+	 * <p>Constructor. Creates a new ArrayList of Pair <String, ColumnType>s for this object.
 	 * There should only exist one HeaderData for any given time.
 	 */
 	public HeaderData () {
@@ -44,10 +51,10 @@ public class HeaderData implements Iterable<Pair <String, ColumnType>> {
 	}
 
 	/**
-	 * Allows a new Pair <String, ColumnType> into the HeaderData if and only if its length
+	 * <p>Allows a new Pair <String, ColumnType> into the HeaderData if and only if its length
 	 * is the same as every other column. (Read: The first one is checked.)
 	 * 
-	 * @param o Pair <String, ColumnType> to add to the HeaderData.
+	 * @param o Pair of column name and column type to add to the HeaderData.
 	 * @return Boolean describing the success or failure of the action.
 	 */
 	public boolean add (Pair <String, ColumnType> o) {
@@ -57,7 +64,7 @@ public class HeaderData implements Iterable<Pair <String, ColumnType>> {
 	}
 	
 	/**
-	 * Allows a new Pair <String, ColumnType> into the HeaderData if and only if its length
+	 * <p>Allows a new Pair <String, ColumnType> into the HeaderData if and only if its length
 	 * is the same as every other column. (Read: The first one is checked.)
 	 * 
 	 * @param s String name of the column being added.
@@ -69,7 +76,7 @@ public class HeaderData implements Iterable<Pair <String, ColumnType>> {
 	}
 
 	/**
-	 * Removes a Pair <String, ColumnType> from the HeaderData.
+	 * <p>Removes a Pair <String, ColumnType> from the HeaderData.
 	 * 
 	 * @param o The Pair <String, ColumnType> to remove.
 	 * @return Boolean describing the success or failure of the action.
@@ -81,7 +88,7 @@ public class HeaderData implements Iterable<Pair <String, ColumnType>> {
 	}
 	
 	/**
-	 * Searches all Pair <String, ColumnType>s for the column provided.
+	 * <p>Searches all Pair <String, ColumnType>s for the column provided.
 	 * 
 	 * @param o The column being searched.
 	 * @return The integer index of the Pair <String, ColumnType> being searched for.
@@ -91,7 +98,7 @@ public class HeaderData implements Iterable<Pair <String, ColumnType>> {
 	}
 	
 	/**
-	 * Searches all Pair <String, ColumnType>s for the column name provided.
+	 * <p>Searches all Pair <String, ColumnType>s for the column name provided.
 	 * 
 	 * @param o The name / key of the pair being searched for.
 	 * @return The integer index of the Pair <String, ColumnType> being searched for.
@@ -109,7 +116,7 @@ public class HeaderData implements Iterable<Pair <String, ColumnType>> {
 	}
 
 	/**
-	 * Searches for a specific Pair <String, ColumnType>. Responds if it found it or not.
+	 * <p>Searches for a specific Pair <String, ColumnType>. Responds if it found it or not.
 	 * 
 	 * @param o Column being searched for.
 	 * @return A boolean stating if the column was found or not.
@@ -119,7 +126,7 @@ public class HeaderData implements Iterable<Pair <String, ColumnType>> {
 	}
 
 	/**
-	 * Getter method. Provides access to a Pair <String, ColumnType> at an index's location.
+	 * <p>Getter method. Provides access to a Pair <String, ColumnType> at an index's location.
 	 * 
 	 * @param i The index where the desired Pair <String, ColumnType> is located.
 	 * @return The Pair <String, ColumnType> at the index location.
@@ -129,7 +136,7 @@ public class HeaderData implements Iterable<Pair <String, ColumnType>> {
 	}
 	
 	/**
-	 * Getter method. Provides whether the one Pair <String, ColumnType> is a DoubleColumn.
+	 * <p>Getter method. Provides whether the one Pair <String, ColumnType> is a DoubleColumn.
 	 * 
 	 * @param index Integer value specifying the target column.
 	 * @return Boolean stating if the column if of type Double.
@@ -139,7 +146,7 @@ public class HeaderData implements Iterable<Pair <String, ColumnType>> {
 	}
 	
 	/**
-	 * Getter method. Provides whether the one Pair <String, ColumnType> is a StringColumn.
+	 * <p>Getter method. Provides whether the one Pair <String, ColumnType> is a StringColumn.
 	 * 
 	 * @param index Integer value specifying the target column.
 	 * @return Boolean stating if the column if of type String.
@@ -149,17 +156,21 @@ public class HeaderData implements Iterable<Pair <String, ColumnType>> {
 	}
 	
 	/**
-	 * Getter method. Provides whether the one Pair <String, ColumnType> is a DateTimeColumn.
+	 * <p>Getter method. Provides whether the one Pair <String, ColumnType> is a DateTimeColumn.
+	 * 
+	 * <p>As of this writing (V. 1.0), this returns false because the code to manage them in
+	 * graphs is currently not working.
 	 * 
 	 * @param index Integer value specifying the target column.
 	 * @return Boolean stating if the column if of type DateTime.
 	 */
 	public boolean isDateTime (int index) {
-		return (this.columns.get (index).getValue () == ColumnType.DATETIME);
+		return (false); 
+		//return (this.columns.get (index).getValue () == ColumnType.DATETIME);
 	}
 
 	/**
-	 * Getter method. Provides the size of the ArrayList contained.
+	 * <p>Getter method. Provides the size of the ArrayList contained.
 	 * 
 	 * @return Integer value of the current size of the ArrayList.
 	 */
@@ -168,7 +179,7 @@ public class HeaderData implements Iterable<Pair <String, ColumnType>> {
 	}
 
 	/**
-	 * Getter method. Provides a string representation of the ArrayList.
+	 * <p>Getter method. Provides a string representation of the ArrayList.
 	 * 
 	 * @return A String representation of the entire ArrayList.
 	 */
@@ -185,8 +196,9 @@ public class HeaderData implements Iterable<Pair <String, ColumnType>> {
 	}
 
 	/**
-	 * Populates a DataSet based on the GraphPair provided and the files this object maintains.<p>
-	 * Note that data may or may not be grouped; grouping status is based on what the GraphPair says.
+	 * <p>Populates a DataSet based on the GraphPair provided and the files this object maintains.
+	 * 
+	 * <p>Note that data may or may not be grouped; grouping status is based on what the GraphPair says.
 	 * 
 	 * @param p GraphPair object containing the columns to be graphed.
 	 * @return A new DataSet containing a full set of data, ready for graphing.
@@ -278,7 +290,7 @@ public class HeaderData implements Iterable<Pair <String, ColumnType>> {
 	
 	// Event Methods
 	/**
-	 * Adds the listener provided to the notification list.
+	 * <p>Adds the listener provided to the notification list.
 	 * 
 	 * @param listener Listener to add to the notification list.
 	 */
@@ -287,7 +299,7 @@ public class HeaderData implements Iterable<Pair <String, ColumnType>> {
 	}
 	
 	/**
-	 * Removes the listener provided from the notification list.
+	 * <p>Removes the listener provided from the notification list.
 	 * 
 	 * @param listener Listener to remove from notification list.
 	 */
@@ -296,7 +308,7 @@ public class HeaderData implements Iterable<Pair <String, ColumnType>> {
 	}
 	
 	/**
-	 * Sends a ChangeEvent to all listeners of this object,
+	 * <p>Sends a ChangeEvent to all listeners of this object,
 	 * declaring that this object has been changed in some way.
 	 */
 	public void notifyListeners () {
@@ -306,7 +318,7 @@ public class HeaderData implements Iterable<Pair <String, ColumnType>> {
 	}
 
 	/**
-	 * Testing method. Prints out a list of the listeners interested in
+	 * <p>Testing method. Prints out a list of the listeners interested in
 	 * this object into the out Stream.
 	 */
 	public void printListeners () {
@@ -317,7 +329,7 @@ public class HeaderData implements Iterable<Pair <String, ColumnType>> {
 
 	// File Map methods.
 	/**
-	 * Helper method. Provides interface to file_list.
+	 * <p>Helper method. Provides interface to file_list.
 	 * 
 	 * @param file File object to add to Map.
 	 * @param type File extension of object.
@@ -328,7 +340,7 @@ public class HeaderData implements Iterable<Pair <String, ColumnType>> {
 	}
 	
 	/**
-	 * Helper method. Provides interface to file_list.
+	 * <p>Helper method. Provides interface to file_list.
 	 * 
 	 * @return File and FileType pair contained in this object.
 	 */
@@ -337,7 +349,7 @@ public class HeaderData implements Iterable<Pair <String, ColumnType>> {
 	}
 	
 	/**
-	 * Getter method. Provides information on the existance of data in this object.
+	 * <p>Getter method. Provides information on the existance of data in this object.
 	 * 
 	 * @return True if this object has at least one pair of data; otherwise, false.
 	 */
@@ -346,7 +358,7 @@ public class HeaderData implements Iterable<Pair <String, ColumnType>> {
 	}
 
 	/**
-	 * Resets all data contained in this object, save for the listeners attached to it.
+	 * <p>Resets all data contained in this object, save for the listeners attached to it.
 	 */
 	public void reset () {
 		this.columns.clear ();
@@ -354,7 +366,7 @@ public class HeaderData implements Iterable<Pair <String, ColumnType>> {
 	}
 
 	/**
-	 * Verifies if the chart to be made contains the correct ColumnTypes!
+	 * <p>Verifies if the chart to be made contains the correct ColumnTypes!
 	 * 
 	 * @param chart_type The ChartType object that defines the type of chart that will be made.
 	 * @param p The GraphPair object containing the X Axis and Y Axis column indexes.

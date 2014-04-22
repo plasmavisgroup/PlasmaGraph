@@ -4,199 +4,181 @@ import static org.junit.Assert.*;
 
 import javax.swing.JOptionPane;
 
-import org.jfree.chart.plot.PlotOrientation;
 import org.junit.Test;
-import org.pvg.plasmagraph.utils.data.DataColumn;
 import org.pvg.plasmagraph.utils.data.DataSet;
 import org.pvg.plasmagraph.utils.data.GraphPair;
 import org.pvg.plasmagraph.utils.exceptions.InvalidParametersException;
-import org.pvg.plasmagraph.utils.graphs.BarGraph;
 import org.pvg.plasmagraph.utils.graphs.XYGraph;
 import org.pvg.plasmagraph.utils.template.Template;
+import org.pvg.plasmagraph.utils.types.ColumnType;
 
 @SuppressWarnings ("javadoc")
 public class DataSetTest {
 
 	@Test
-	public void testDataSet () {
-		DataColumn<String> dc = new DataColumn<> ("Words per Minute", "string");
-		assertTrue ("Test the type parameter:", dc.getType ().equals ("String"));
+	public void testAdd () {
+		// Testing ungrouped data
+		DataSet ds = this.createUngroupedDataSet ();
+		
+		for (int i = 0; (i < ds.size ()); ++i) {
+			
+			assertEquals ("Testing if the x values were added successfully", 
+					i, ds.getXValue (i), 0.5);
+			
+			assertEquals ("Testing if the y values were added successfully", 
+					i, ds.getYValue (i), 0.5);
+		}
+		
+		// Testing grouped data - double
+		ds = this.createDoublesGroupedDataSet ();
+		
+		for (int i = 0; (i < ds.size ()); ++i) {
+			
+			assertEquals ("Testing if the x values were added successfully", 
+					i, ds.getXValue (i), 0.5);
+			
+			assertEquals ("Testing if the y values were added successfully", 
+					i, ds.getYValue (i), 0.5);
+			
+			if (i < 25) {
+				assertEquals ("Testing if the group double values were added successfully", 
+						0, ds.getGroupDoubleValue (i), 0.5);
+			} else {
+				assertEquals ("Testing if the group double values were added successfully", 
+						1, ds.getGroupDoubleValue (i), 0.5);
+			}
+		}
+
+		// Testing grouped data - String
+		ds = this.createStringGroupedDataSet ();
+		
+		for (int i = 0; (i < ds.size ()); ++i) {
+			
+			assertEquals ("Testing if the x values were added successfully", 
+					i, ds.getXValue (i), 0.5);
+			
+			assertEquals ("Testing if the y values were added successfully", 
+					i, ds.getYValue (i), 0.5);
+			
+			if (i < 25) {
+				assertEquals ("Testing if the group String values were added successfully", 
+						"First Half.", ds.getGroupStringValue (i));
+			} else {
+				assertEquals ("Testing if the group String values were added successfully", 
+						"Second Half.", ds.getGroupStringValue (i));
+			}
+		}
+
 	}
 
-	@Test
-	public void testAdd () {
-		// Set up test.
-		DataSet ds = new DataSet (false);
-		DataColumn<String> dc1 = new DataColumn<> ("Pie Flavors", "string");
-		DataColumn<Double> dc2 = new DataColumn<> ("Pie Quantity", "double");
-		
-		// add(string)
-		assertFalse ("Basic add (String) test with DataColumn: ", dc1.add (""));
-		assertTrue ("Basic add (String) test with DataColumn: ", dc1.add ("Bland"));
-		assertTrue ("Basic add (String) test with DataColumn: ", dc1.add ("Pecan"));
-		assertFalse ("Basic add (String) test with DataColumn: ", dc1.add (null));
-		
-		// add(double)
-		assertFalse ("Basic add (String) test with DataColumn: ", dc2.add (null));
-		assertTrue ("Basic add (Double) test with DataColumn: ", dc2.add (3 * Math.E));
-		assertTrue ("Basic add (Double) test with DataColumn: ", dc2.add (20.0));
-		
-		// add(DataColumn)
-		assertTrue ("Basic column placement in DataSet: ", ds.add (dc1));
-		assertTrue ("Basic column placement in DataSet: ", ds.add (dc2));
-		
-		System.out.println (ds.toString () );
-	}
-	
 	@Test
 	public void testRemove () {
-		// Set up test.
-		DataSet ds = prepareDataset ();
+		// Testing ungrouped data
+		DataSet ds = this.createUngroupedDataSet ();
 		
-		// remove Strings
-		assertTrue ("Basic removal of a string value.", 
-				(ds.get (0).remove (1).equals ("Apple")));
-		assertTrue ("Basic removal of a string value.", 
-				(ds.get (0).remove ("Pecan")));
+		assertFalse ("Testing that this isn't a grouped dataset", ds.isGrouped ());
 		
-		// remove numbers
-		assertTrue ("Basic removal of a number value.", 
-				(ds.get (1).remove (0).equals (5.0)));
-		assertTrue ("Basic removal of a number value.", 
-				(ds.get (1).remove (15.0)));
+		for (int i = 0; (i < ds.size ()); ++i) {
+			
+			assertTrue ("Testing if the row was removed successfully", ds.remove (i));
+		}
 		
-		System.out.println (ds.toString ());
+		// Testing grouped data - double
+		ds = this.createDoublesGroupedDataSet ();
+		
+		assertTrue ("Testing that this is a grouped dataset", ds.isGrouped ());
+		assertTrue ("Testing that this is a double-grouped dataset", ds.isGroupDouble ());
+		
+		for (int i = 0; (i < ds.size ()); ++i) {
+			
+			assertTrue ("Testing if the row was removed successfully", ds.remove (i));
+		}
+
+		// Testing grouped data - String
+		ds = this.createStringGroupedDataSet ();
+		
+		assertTrue ("Testing that this is a grouped dataset", ds.isGrouped ());
+		assertTrue ("Testing that this is a String-grouped dataset", ds.isGroupString ());
+		
+		for (int i = 0; (i < ds.size ()); ++i) {
+			
+			assertTrue ("Testing if the row was removed successfully", ds.remove (i));
+			
+		}
 	}
-
-	//@Test
-	//public void testRemoveDataColumn () {
-	//	DataSet ds = prepareDataset ();
-	//	System.out.println (ds.toString ());
-	//	
-	//	assertTrue ("Removing first datacolumn: ", ds.remove (0) != null);
-	//}
-
 
 	@Test
 	public void testFind () {
-		// Generate DataSet
-		DataSet ds = new DataSet (false);
-		DataColumn <Double> dc1 = new DataColumn <> ("Time", "double");
-		DataColumn <Double> dc2 = new DataColumn <> ("Distance", "double");
+		// Testing ungrouped data
+		DataSet ds = this.createUngroupedDataSet ();
 		
-		dc1.add (0.0); dc2.add (0.0);
-		dc1.add (1.0); dc2.add (5.0);
-		dc1.add (2.0); dc2.add (10.0);
-		dc1.add (3.0); dc2.add (15.0);
-		dc1.add (4.0); dc2.add (20.0);
+		assertFalse ("Testing that this isn't a grouped dataset", ds.isGrouped ());
 		
-		ds.add (dc1);
-		ds.add (dc2);
+		assertEquals ("Trying to find an X value that doesn't exist!", -1,  ds.findX (-5));
+		assertEquals ("Trying to find an X value that does exist!", 25,  ds.findX (25));
 		
-		// Test
-		assertTrue ("Column 1 found: ", ds.find (dc1) == 0);
-		assertTrue ("Column 2 found: ", ds.find (dc2) == 1);
-		assertTrue ("Column named \"Time\" found: ", 
-				ds.find ("Time") == 0);
-		assertTrue ("Column named \"Distance\"  found: ", 
-				ds.find ("Distance") == 1);
-		assertFalse ("Column named \"Velocity\" not found: ", 
-				ds.find ("Velocity") == 2);
+		assertEquals ("Trying to find a Y value that doesn't exist!", -1,  ds.findY (-5));
+		assertEquals ("Trying to find a Y value that does exist!", 25,  ds.findY (25));
+		
+		// Testing grouped data - double
+		ds = this.createDoublesGroupedDataSet ();
+		
+		assertTrue ("Testing that this is a grouped dataset", ds.isGrouped ());
+		assertTrue ("Testing that this is a double-grouped dataset", ds.isGroupDouble ());
+		
+		assertEquals ("Trying to find an X value that doesn't exist!", -1,  ds.findX (-5));
+		assertEquals ("Trying to find an X value that does exist!", 25,  ds.findX (25));
+		
+		assertEquals ("Trying to find a Y value that doesn't exist!", -1,  ds.findY (-5));
+		assertEquals ("Trying to find a Y value that does exist!", 25,  ds.findY (25));
+		
+		assertEquals ("Trying to find a Group value that doesn't exist!",
+				-1,  ds.findGroup (-5, -5));
+		assertEquals ("Trying to find a Group value that doesn't exist!",
+				-1,  ds.findGroup (25, 24));
+		assertEquals ("Trying to find a Group value that does exist!", 
+				25,  ds.findGroup (25, 25));
 	}
-
+	
 	@Test
-	public void testContains () {
-		DataSet ds = prepareDataset ();
+	public void testSetGroupType () {
+		DataSet ds = new DataSet ();
+		assertFalse ("Testing that it's not grouped", ds.isGrouped ());
+		assertFalse ("Testing that it's not a double group", ds.isGroupDouble ());
+		assertFalse ("Testing that it's not a string group", ds.isGroupString ());
 		
-		DataColumn<String> dc1 = new DataColumn<> ("Pie Flavors", "string");
-		dc1.add ("Pecan");
-		dc1.add ("Apple");
-		dc1.add ("Cherry");
-		ds.add (dc1);
+		ds.setGroupType (ColumnType.DOUBLE);
 		
-		assertTrue ("Checking for a Pie Flavors element: ", ds.contains (dc1));
-		assertFalse ("Trying to see if it contains a null element: ", ds.contains (null));
-	}
-
-	@Test
-	public void testGet () {
-		// Generate DataSet
-		DataSet ds = new DataSet (false);
-		DataColumn <Double> dc1 = new DataColumn <> ("Time", "double");
-		DataColumn <Double> dc2 = new DataColumn <> ("Distance", "double");
+		assertTrue ("Testing that it's grouped", ds.isGrouped ());
+		assertTrue ("Testing that it's a double group", ds.isGroupDouble ());
+		assertFalse ("Testing that it's not a string group", ds.isGroupString ());
 		
-		dc1.add (0.0); dc2.add (0.0);
-		dc1.add (1.0); dc2.add (5.0);
-		dc1.add (2.0); dc2.add (10.0);
-		dc1.add (3.0); dc2.add (15.0);
-		dc1.add (4.0); dc2.add (20.0);
+		ds.setGroupType (ColumnType.STRING);
 		
-		ds.add (dc1);
-		ds.add (dc2);
+		assertTrue ("Testing that it's grouped", ds.isGrouped ());
+		assertFalse ("Testing that it's not a double group", ds.isGroupDouble ());
+		assertTrue ("Testing that it's a string group", ds.isGroupString ());
 		
-		// Test
-		assertTrue ("Same column: ", ds.get (0).equals (dc1));
-		assertFalse ("Different column: ", ds.get (0).equals (dc2));
-	}
-
-	@Test
-	public void testIsDouble () {
-		DataSet ds = prepareDataset ();
+		ds.setGroupType (ColumnType.NONE);
 		
-		assertFalse ("Checking if the entire set is of doubles: ", 
-				ds.isDouble ());
-	}
-
-	@Test
-	public void testIsDoubleInt () {
-		DataSet ds = prepareDataset ();
-		
-		assertTrue ("Checking if the second column is of doubles: ",
-				ds.isDouble (1));
-	}
-
-	@Test
-	public void testIsString () {
-		DataSet ds = prepareDataset ();
-		
-		assertFalse ("Checking if the entire set is of strings: ", 
-				ds.isString ());
-	}
-
-	@Test
-	public void testIsStringInt () {
-		DataSet ds = prepareDataset ();
-		
-		assertTrue ("Checking if the first column is of strings: ",
-				ds.isString (0));
-	}
-
-	@Test
-	public void testSize () {
-		DataSet ds = prepareDataset ();
-		
-		assertTrue ("Correct number of DataColumns: ", ds.size () == 2);
+		assertFalse ("Testing that it's not grouped", ds.isGrouped ());
+		assertFalse ("Testing that it's not a double group", ds.isGroupDouble ());
+		assertFalse ("Testing that it's not a string group", ds.isGroupString ());
 	}
 
 	@Test
 	public void testToXYGraphDataset () throws InvalidParametersException {
 		// Generate DataSet
-		DataSet ds = new DataSet (false);
-		DataColumn <Double> dc1 = new DataColumn <> ("Time", "double");
-		DataColumn <Double> dc2 = new DataColumn <> ("Distance", "double");
-		
 		GraphPair p = new GraphPair ();
 		p.changeX (0, "Time");
 		p.changeY (1, "Distance");
+		DataSet ds = new DataSet (p);
 		
-		dc1.add (0.0); dc2.add (0.0);
-		dc1.add (1.0); dc2.add (5.0);
-		dc1.add (2.0); dc2.add (10.0);
-		dc1.add (3.0); dc2.add (15.0);
-		dc1.add (4.0); dc2.add (20.0);
-		
-		ds.add (dc1);
-		ds.add (dc2);
+		ds.addToX (0.0); ds.addToY (0.0);
+		ds.addToX (1.0); ds.addToY (5.0);
+		ds.addToX (2.0); ds.addToY (10.0);
+		ds.addToX (3.0); ds.addToY (15.0);
+		ds.addToX (4.0); ds.addToY (20.0);
 		
 		// Generate Template.
 		Template t = new Template ();
@@ -210,58 +192,130 @@ public class DataSetTest {
 						"Proper XY Graph?",
 						JOptionPane.YES_NO_OPTION) == JOptionPane.YES_OPTION);
 	}
-
+	
 	@Test
-	public void testToBarGraphDataset () {
-		DataSet ds = prepareDataset ();
+	public void testToDoubleGroupedXYGraphDataset () throws InvalidParametersException {
+		// Generate DataSet
 		GraphPair p = new GraphPair ();
-		p.changeX (0, "Pie Flavors");
-		p.changeY (1, "Pie Quantity");
+		p.changeX (0, "Time");
+		p.changeY (1, "Distance");
+		p.changeGroup (2, "Group");
+		DataSet ds = new DataSet (ColumnType.DOUBLE, p);
+		
+		// Group 1
+		ds.addToX (0.0); ds.addToY (0.0);  ds.addToGroup (0.0); 
+		ds.addToX (1.0); ds.addToY (5.0);  ds.addToGroup (0.0); 
+		ds.addToX (2.0); ds.addToY (10.0); ds.addToGroup (0.0); 
+		ds.addToX (3.0); ds.addToY (15.0); ds.addToGroup (0.0); 
+		ds.addToX (4.0); ds.addToY (20.0); ds.addToGroup (0.0); 
+		
+		// Group 2
+		ds.addToX (0.0); ds.addToY (0.0);  ds.addToGroup (1.0); 
+		ds.addToX (1.0); ds.addToY (4.0);  ds.addToGroup (1.0); 
+		ds.addToX (2.0); ds.addToY (8.0); ds.addToGroup (1.0); 
+		ds.addToX (3.0); ds.addToY (12.0); ds.addToGroup (1.0); 
+		ds.addToX (4.0); ds.addToY (16.0); ds.addToGroup (1.0);
 		
 		// Generate Template.
 		Template t = new Template ();
-		t.setOrientation (PlotOrientation.VERTICAL);
 		//t.openTemplate (new java.io.File ("./template/graph_test.tem"));
 		
 		// Graph data via the XYGraph class!
-		BarGraph chart = new BarGraph (t, ds, p);
+		XYGraph chart = new XYGraph (t, ds, p);
 		chart.testGraph ();
 		assertTrue ("Correctly Displayed?: ", JOptionPane.showConfirmDialog
-				(null, "Does the graph look like a Bar Graph?",
-						"Proper Bar Graph?",
+				(null, "Does the graph look like an XY Graph?",
+						"Proper XY Graph?",
 						JOptionPane.YES_NO_OPTION) == JOptionPane.YES_OPTION);
 	}
-
+	
 	@Test
-	public void testGetColumnLength () {
-		DataSet ds = prepareDataset ();
-		DataSet empty = new DataSet (false);
+	public void testToStringGroupedXYGraphDataset () throws InvalidParametersException {
+		// Generate DataSet
+		GraphPair p = new GraphPair ();
+		p.changeX (0, "Time");
+		p.changeY (1, "Distance");
+		p.changeGroup (2, "Group");
+		DataSet ds = new DataSet (ColumnType.STRING, p);
 		
-		assertTrue ("Checking column length.", ds.getColumnLength () == 3);
-		assertTrue ("Checking col. len. of empty col.: ", empty.getColumnLength () == 0);
-		assertTrue ("Checking index columnLength:", ds.getColumnLength () == ds.getColumnLength (1));
+		// Group 1
+		ds.addToX (0.0); ds.addToY (0.0);  ds.addToGroup ("Group 1");
+		ds.addToX (1.0); ds.addToY (5.0);  ds.addToGroup ("Group 1");
+		ds.addToX (2.0); ds.addToY (10.0); ds.addToGroup ("Group 1");
+		ds.addToX (3.0); ds.addToY (15.0); ds.addToGroup ("Group 1");
+		ds.addToX (4.0); ds.addToY (20.0); ds.addToGroup ("Group 1");
+		
+		// Group 2
+		ds.addToX (0.0); ds.addToY (0.0);  ds.addToGroup ("Group 2");
+		ds.addToX (1.0); ds.addToY (4.0);  ds.addToGroup ("Group 2");
+		ds.addToX (2.0); ds.addToY (8.0);  ds.addToGroup ("Group 2");
+		ds.addToX (3.0); ds.addToY (12.0); ds.addToGroup ("Group 2");
+		ds.addToX (4.0); ds.addToY (16.0); ds.addToGroup ("Group 2");
+		
+		// Generate Template.
+		Template t = new Template ();
+		//t.openTemplate (new java.io.File ("./template/graph_test.tem"));
+		
+		// Graph data via the XYGraph class!
+		XYGraph chart = new XYGraph (t, ds, p);
+		chart.testGraph ();
+		assertTrue ("Correctly Displayed?: ", JOptionPane.showConfirmDialog
+				(null, "Does the graph look like an XY Graph?",
+						"Proper XY Graph?",
+						JOptionPane.YES_NO_OPTION) == JOptionPane.YES_OPTION);
 	}
 	
 	// Support methods.
-	/**
-	 * Prepares a basic dataset.
-	 * @return A basic dataset to test over.
-	 */
-	private DataSet prepareDataset () {
-		DataSet ds = new DataSet (false);
-		DataColumn<String> dc1 = new DataColumn<String> ("Pie Flavors", "string");
-		DataColumn<Double> dc2 = new DataColumn<Double> ("Pie Quantity", "double");
+	private DataSet createUngroupedDataSet () {
+		DataSet ds = new DataSet ();
 		
-		dc1.add ("Pecan");
-		dc1.add ("Apple");
-		dc1.add ("Cherry");
+		for (int i = 0; (i < 50); ++i) {
+			ds.addToX (i);
+			ds.addToY (i);
+		}
 		
-		dc2.add (5.0);
-		dc2.add (10.0);
-		dc2.add (15.0);
+		return (ds);
+	}
+	
+	private DataSet createDoublesGroupedDataSet () {
+		DataSet ds = new DataSet (ColumnType.DOUBLE);
 		
-		ds.add (dc1);
-		ds.add (dc2);
+		for (int i = 0; (i < 50); ++i) {
+			ds.addToX (i);
+			ds.addToY (i);
+			if (i < 25) {
+				ds.addToGroup (0);
+			} else {
+				ds.addToGroup (1);
+			}
+		}
+		
+		return (ds);
+	}
+	
+	private DataSet createStringGroupedDataSet () {
+		DataSet ds = new DataSet (ColumnType.STRING);
+		
+		for (int i = 0; (i < 50); ++i) {
+			ds.addToX (i);
+			ds.addToY (i);
+			if (i < 25) {
+				ds.addToGroup ("First Half.");
+			} else {
+				ds.addToGroup ("Second Half.");
+			}
+		}
+		
+		return (ds);
+	}
+	
+	private DataSet createLargeDataSet (int size) {
+		DataSet ds = new DataSet ();
+		
+		for (int i = 0; (i < size); ++i) {
+			ds.addToX (i);
+			ds.addToY (i);
+		}
 		
 		return (ds);
 	}

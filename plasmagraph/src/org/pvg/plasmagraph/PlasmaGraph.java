@@ -11,9 +11,9 @@ import org.pvg.plasmagraph.utils.template.*;
 import org.pvg.plasmagraph.views.*;
 
 /**
- * Initiating class for the product.
- * Creates the primary data objects and MVC architecture objects
- * before providing control (i.e. visibility) to MainView.
+ * <p>Initiating class for the program.
+ * <p>Creates the primary data objects and MVC architecture objects before
+ * providing control (i.e. visibility) to MainView.
  * 
  * @author Gerardo A. Navas Morales
  */

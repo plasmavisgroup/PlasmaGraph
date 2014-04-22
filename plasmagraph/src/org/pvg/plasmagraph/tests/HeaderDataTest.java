@@ -9,7 +9,7 @@ import org.junit.Test;
 import org.pvg.plasmagraph.utils.data.DataSet;
 import org.pvg.plasmagraph.utils.data.GraphPair;
 import org.pvg.plasmagraph.utils.data.HeaderData;
-import org.pvg.plasmagraph.utils.data.readers.CSVProcessor;
+//import org.pvg.plasmagraph.utils.data.readers.CSVProcessor;
 import org.pvg.plasmagraph.utils.data.readers.MatlabProcessor;
 import org.pvg.plasmagraph.utils.template.Template;
 import org.pvg.plasmagraph.utils.types.ColumnType;
@@ -23,12 +23,11 @@ public class HeaderDataTest {
 		// Prepare Data
 		HeaderData hd = new HeaderData ();
 		String [] column_names = new String [] {"Experiment Number", 
-				"Experiment Subject Name", "Success?", "Experiment Notes", 
-				"Experiment Date"};
+				"Experiment Subject Name", "Success?", "Experiment Notes"
+				};
 		
 		ColumnType [] column_types = new ColumnType [] {ColumnType.DOUBLE,
-				ColumnType.STRING, ColumnType.STRING, ColumnType.STRING,
-				ColumnType.DATETIME};
+				ColumnType.STRING, ColumnType.STRING, ColumnType.STRING};
 		
 		// Test
 		for (int i = 0; (i < column_names.length); ++i) {
@@ -42,12 +41,11 @@ public class HeaderDataTest {
 		// Prepare Data
 		HeaderData hd = new HeaderData ();
 		String [] column_names = new String [] {"Experiment Number", 
-				"Experiment Subject Name", "Success?", "Experiment Notes", 
-				"Experiment Date"};
+				"Experiment Subject Name", "Success?", "Experiment Notes"
+				};
 		
 		ColumnType [] column_types = new ColumnType [] {ColumnType.DOUBLE,
-				ColumnType.STRING, ColumnType.STRING, ColumnType.STRING,
-				ColumnType.DATETIME};
+				ColumnType.STRING, ColumnType.STRING, ColumnType.STRING};
 		
 		for (int i = 0; (i < column_names.length); ++i) {
 			hd.add (column_names[i], column_types[i]);
@@ -65,12 +63,11 @@ public class HeaderDataTest {
 		// Prepare Data
 		HeaderData hd = new HeaderData ();
 		String [] column_names = new String [] {"Experiment Number", 
-				"Experiment Subject Name", "Success?", "Experiment Notes", 
-				"Experiment Date"};
+				"Experiment Subject Name", "Success?", "Experiment Notes"
+				};
 		
 		ColumnType [] column_types = new ColumnType [] {ColumnType.DOUBLE,
-				ColumnType.STRING, ColumnType.STRING, ColumnType.STRING,
-				ColumnType.DATETIME};
+				ColumnType.STRING, ColumnType.STRING, ColumnType.STRING};
 		
 		for (int i = 0; (i < column_names.length); ++i) {
 			hd.add (column_names[i], column_types[i]);
@@ -83,7 +80,7 @@ public class HeaderDataTest {
 			i += 1;
 		}
 		
-		assertTrue (hd.find ("Experiment Date") == 4);
+		assertTrue (hd.find ("Experiment Subject Name") == 1);
 		
 	}
 
@@ -93,12 +90,11 @@ public class HeaderDataTest {
 		// Prepare Data
 		HeaderData hd = new HeaderData ();
 		String [] column_names = new String [] {"Experiment Number", 
-				"Experiment Subject Name", "Success?", "Experiment Notes", 
-				"Experiment Date"};
+				"Experiment Subject Name", "Success?", "Experiment Notes"
+				};
 		
 		ColumnType [] column_types = new ColumnType [] {ColumnType.DOUBLE,
-				ColumnType.STRING, ColumnType.STRING, ColumnType.STRING,
-				ColumnType.DATETIME};
+				ColumnType.STRING, ColumnType.STRING, ColumnType.STRING};
 		
 		for (int i = 0; (i < column_names.length); ++i) {
 			hd.add (column_names[i], column_types[i]);
@@ -117,12 +113,11 @@ public class HeaderDataTest {
 		// Prepare Data
 		HeaderData hd = new HeaderData ();
 		String [] column_names = new String [] {"Experiment Number", 
-				"Experiment Subject Name", "Success?", "Experiment Notes", 
-				"Experiment Date"};
+				"Experiment Subject Name", "Success?", "Experiment Notes"
+				};
 		
 		ColumnType [] column_types = new ColumnType [] {ColumnType.DOUBLE,
-				ColumnType.STRING, ColumnType.STRING, ColumnType.STRING,
-				ColumnType.DATETIME};
+				ColumnType.STRING, ColumnType.STRING, ColumnType.STRING};
 		
 		for (int i = 0; (i < column_names.length); ++i) {
 			hd.add (column_names[i], column_types[i]);
@@ -143,12 +138,11 @@ public class HeaderDataTest {
 		// Prepare Data
 		HeaderData hd = new HeaderData ();
 		String [] column_names = new String [] {"Experiment Number", 
-				"Experiment Subject Name", "Success?", "Experiment Notes", 
-				"Experiment Date"};
+				"Experiment Subject Name", "Success?", "Experiment Notes"
+				};
 		
 		ColumnType [] column_types = new ColumnType [] {ColumnType.DOUBLE,
-				ColumnType.STRING, ColumnType.STRING, ColumnType.STRING,
-				ColumnType.DATETIME};
+				ColumnType.STRING, ColumnType.STRING, ColumnType.STRING};
 		
 		for (int i = 0; (i < column_names.length); ++i) {
 			hd.add (column_names[i], column_types[i]);
@@ -159,7 +153,6 @@ public class HeaderDataTest {
 		assertFalse (hd.isDouble (1));
 		assertFalse (hd.isDouble (2));
 		assertFalse (hd.isDouble (3));
-		assertFalse (hd.isDouble (4));
 		
 	}
 
@@ -169,12 +162,11 @@ public class HeaderDataTest {
 		// Prepare Data
 		HeaderData hd = new HeaderData ();
 		String [] column_names = new String [] {"Experiment Number", 
-				"Experiment Subject Name", "Success?", "Experiment Notes", 
-				"Experiment Date"};
+				"Experiment Subject Name", "Success?", "Experiment Notes"
+				};
 		
 		ColumnType [] column_types = new ColumnType [] {ColumnType.DOUBLE,
-				ColumnType.STRING, ColumnType.STRING, ColumnType.STRING,
-				ColumnType.DATETIME};
+				ColumnType.STRING, ColumnType.STRING, ColumnType.STRING};
 		
 		for (int i = 0; (i < column_names.length); ++i) {
 			hd.add (column_names[i], column_types[i]);
@@ -185,8 +177,6 @@ public class HeaderDataTest {
 		assertTrue (hd.isString (1));
 		assertTrue (hd.isString (2));
 		assertTrue (hd.isString (3));
-		assertFalse (hd.isString (4));
-		
 	}
 
 	@Test
@@ -195,12 +185,11 @@ public class HeaderDataTest {
 		// Prepare Data
 		HeaderData hd = new HeaderData ();
 		String [] column_names = new String [] {"Experiment Number", 
-				"Experiment Subject Name", "Success?", "Experiment Notes", 
-				"Experiment Date"};
+				"Experiment Subject Name", "Success?", "Experiment Notes"
+				};
 		
 		ColumnType [] column_types = new ColumnType [] {ColumnType.DOUBLE,
-				ColumnType.STRING, ColumnType.STRING, ColumnType.STRING,
-				ColumnType.DATETIME};
+				ColumnType.STRING, ColumnType.STRING, ColumnType.STRING};
 		
 		for (int i = 0; (i < column_names.length); ++i) {
 			hd.add (column_names[i], column_types[i]);
@@ -210,9 +199,7 @@ public class HeaderDataTest {
 		assertFalse (hd.isDateTime (0));
 		assertFalse (hd.isDateTime (1));
 		assertFalse (hd.isDateTime (2));
-		assertFalse (hd.isDateTime (3));
-		assertTrue (hd.isDateTime (4));
-		
+		assertFalse (hd.isDateTime (3));		
 	}
 
 	@Test
@@ -224,12 +211,11 @@ public class HeaderDataTest {
 		assertTrue (hd.size () == 0);
 		
 		String [] column_names = new String [] {"Experiment Number", 
-				"Experiment Subject Name", "Success?", "Experiment Notes", 
-				"Experiment Date"};
+				"Experiment Subject Name", "Success?", "Experiment Notes"
+				};
 		
 		ColumnType [] column_types = new ColumnType [] {ColumnType.DOUBLE,
-				ColumnType.STRING, ColumnType.STRING, ColumnType.STRING,
-				ColumnType.DATETIME};
+				ColumnType.STRING, ColumnType.STRING, ColumnType.STRING};
 		
 		// Test
 		for (int i = 0; (i < column_names.length); ++i) {
@@ -239,7 +225,7 @@ public class HeaderDataTest {
 			assertFalse (hd.size () == 10);
 		}
 		
-		assertTrue (hd.size () == 5);
+		assertTrue (hd.size () == 4);
 		
 	}
 

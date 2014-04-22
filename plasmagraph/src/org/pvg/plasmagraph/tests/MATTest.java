@@ -3,21 +3,21 @@ package org.pvg.plasmagraph.tests;
 import static org.junit.Assert.*;
 
 import java.io.File;
-import java.io.FileNotFoundException;
 import java.io.IOException;
-import java.io.PrintWriter;
 import java.nio.ByteBuffer;
 import java.nio.charset.Charset;
 import java.nio.file.Files;
 import java.nio.file.Paths;
+import java.sql.Time;
 import java.util.ArrayList;
-import java.util.Date;
-import java.util.Random;
-import java.util.Set;
+import java.util.Collection;
+import java.util.Map;
 import java.util.Map.Entry;
+import java.util.Random;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
+import org.apache.commons.lang3.time.StopWatch;
 import org.junit.Test;
 import org.pvg.plasmagraph.utils.data.DataSet;
 import org.pvg.plasmagraph.utils.data.GraphPair;
@@ -25,17 +25,16 @@ import org.pvg.plasmagraph.utils.data.HeaderData;
 import org.pvg.plasmagraph.utils.data.readers.MatlabProcessor;
 import org.pvg.plasmagraph.utils.exceptions.FunctionNotImplementedException;
 import org.pvg.plasmagraph.utils.exceptions.InvalidDataSizeException;
-import org.pvg.plasmagraph.utils.types.ColumnType;
 
 import com.jmatio.io.MatFileWriter;
 import com.jmatio.types.MLArray;
 import com.jmatio.types.MLDouble;
 
-@SuppressWarnings("javadoc")
+@SuppressWarnings ("javadoc")
 public class MATTest {
 
 	@Test
-	public void testMatfileRead() {
+	public void testMatfileRead () {
 
 		/** test file uri **/
 		String testfileURI = "./test/matlab/mat_file_limit_test.mat";
@@ -44,139 +43,202 @@ public class MATTest {
 		boolean flag_write = true;
 		boolean flag_read = true;
 
+		// Prepare a timer to prove the amount of time that is spent in this
+		// process.
+		StopWatch clock = new StopWatch ();
+		long value_generation_time;
+		long array_population_time;
+		long file_writing_time;
+		long file_reading_time;
+		long array_verification_time;
+		long full_time;
+
+		// Start the watch.
+		clock.start ();
+
 		/**
 		 * create an array with 86400 double type values (this represents a
 		 * column with 86400 lines)
 		 **/
-		double[] src1 = new double[86400];
+		double [] src1 = new double [86400];
 		for (int i = 0; i < 86400; i++) {
 			/** create some random values to populate our array **/
-			Random r = new Random();
-			double randomValue = r.nextDouble();
-			src1[i] = randomValue;
+			Random r = new Random ();
+			double randomValue = r.nextDouble ();
+			src1 [i] = randomValue;
 		}
+
+		// Obtain the first time.
+		clock.suspend ();
+		value_generation_time = clock.getTime ();
+		clock.resume ();
 
 		/**
 		 * create a list of 100 arrays of double type values thus emulating a
 		 * mat file with 100 columns
 		 **/
-		ArrayList list = new ArrayList();
+		Collection <MLArray> list = new ArrayList <> ();
 		for (int i = 0; i < 100; i++) {
 			String columnTitle = "double_arr" + i;
-			MLDouble mlDouble = new MLDouble(columnTitle, src1, 3);
-			list.add(mlDouble);
+			MLDouble mlDouble = new MLDouble (columnTitle, src1, 3);
+			list.add (mlDouble);
 		}
+
+		// Obtain the second time.
+		clock.suspend ();
+		array_population_time = clock.getTime () - value_generation_time;
+		clock.resume ();
 
 		/** write a MAT-File of 100 columns and 86400 rows **/
 		try {
-			new MatFileWriter(testfileURI, list);
+			new MatFileWriter (testfileURI, list);
 
 			/**
 			 * Matlabreader should have red the file and the data red must be
 			 * the same as the data expected
 			 **/
-			// assertEquals ("Comparing file red with file expected:", dsRed,
+			// assertEquals ("Comparing file read with file expected:", dsRead,
 			// dsExpected);
 			// assertTrue ("Reading contents of MAT-File", flag);
 		} catch (IOException ex) {
-			Logger.getLogger(MATTest.class.getName()).log(Level.SEVERE, null,
-					ex);
+			Logger.getLogger (MATTest.class.getName ()).log (Level.SEVERE,
+					null, ex);
 			flag_write = false;
 		}
 
-		/** test reading a ~63,000 **/
-		MatlabProcessor mlr = new MatlabProcessor(testfileURI);
-		/** how I catch exceptions **/
+		// Obtain the third time.
+		clock.suspend ();
+		file_writing_time = clock.getTime () - array_population_time
+				- value_generation_time;
+		clock.resume ();
 
-		assertTrue("Writing ~63,000KB MAT-File: ", flag_write);
-		assertTrue("Reading ~63,000KB MAT-File: ", flag_read);
+		/** test reading a ~63,000 file **/
+		MatlabProcessor mlr = new MatlabProcessor (testfileURI);
+
+		// Obtain the fourth time.
+		clock.suspend ();
+		file_reading_time = clock.getTime () - file_writing_time
+				- array_population_time - value_generation_time;
+		clock.resume ();
+
+		for (Entry <String, MLArray> e : mlr.getData ().entrySet ()) {
+
+			// System.out.println (e.getValue ().getSize ());
+			assertEquals ("This MLArray must contain 86400 values", 86400, e
+					.getValue ().getSize ());
+
+		}
+
+		// Obtain the fifth time.
+		clock.stop ();
+		array_verification_time = clock.getTime () - file_reading_time
+				- file_writing_time - array_population_time
+				- value_generation_time;
+		full_time = clock.getTime ();
+
+		// First, check that the writing and reading went smoothly!
+		assertTrue ("Writing ~63,000KB MAT-File: ", flag_write);
+		assertTrue ("Reading ~63,000KB MAT-File: ", flag_read);
+
+		// Now, verify the times!
+		System.out.println ("Generating Random Values: "
+				+ value_generation_time + " ms");
+		System.out.println ("Populating ArrayList: " + array_population_time + " ms");
+		System.out.println ("Writing Matlab File: " + file_writing_time + " ms");
+		System.out.println ("Reading Matlab File: " + file_reading_time + " ms");
+		System.out.println ("Verifying Each MLArray's Size: "
+				+ array_verification_time + " ms");
+		System.out.println ("Full Time Spent: " + full_time + " ms");
+
+		assertTrue (
+				"File reading time is less than 15s for 100 x 86400 data values",
+				file_reading_time < 15000); // 10 s * 1000 ms / s = 10,000 ms
 
 	}
 
 	@Test
-	public void testToDataSet() throws FunctionNotImplementedException,
+	public void testToDataSet () throws FunctionNotImplementedException,
 			InvalidDataSizeException {
 
-		String matlab_test_data_1 = "./plasmagraph/test/matlab/"
+		String matlab_test_data_1 = "./test/matlab/"
 				+ "Parameter2013-06-11.mat";
-		MatlabProcessor mlr = new MatlabProcessor(matlab_test_data_1);
+		MatlabProcessor mlr = new MatlabProcessor (matlab_test_data_1);
 		// Prepare DataSet
-		DataSet tstDataSet = new DataSet();
+		DataSet tstDataSet = new DataSet ();
 
 		try {
 			// Prepare HeaderData
-			HeaderData hd = new HeaderData();
-			mlr.toString();
-			mlr.getHeaders(hd);
+			HeaderData hd = new HeaderData ();
+			mlr.toString ();
+			mlr.getHeaders (hd);
 
 			// Prepare GraphPair
-			GraphPair p = new GraphPair();
-			p.changeX(2, hd.get(2).getKey());
-			p.changeY(3, hd.get(3).getKey());
+			GraphPair p = new GraphPair ();
+			p.changeX (2, hd.get (2).getKey ());
+			p.changeY (3, hd.get (3).getKey ());
 
 			// Obtain DataSet
-			mlr.toDataSet(tstDataSet, p, hd);
+			mlr.toDataSet (tstDataSet, p, hd);
 
 		} catch (Exception e) {
 			// TODO Auto-generated catch block
-			e.printStackTrace();
+			e.printStackTrace ();
 		}
 		// System.out.println (mlr.toString ());
-		System.out.println(tstDataSet.toString());
-		assertEquals(
+		System.out.println (tstDataSet.toString ());
+		assertEquals (
 				"Checking for expected number of objects in the Test DataSet: ",
-				27, tstDataSet.size());
+				27, tstDataSet.size ());
 	}
 
 	@Test
-	public void testToStringFile() throws IOException {
+	public void testToStringFile () throws IOException {
 
 		/** test string output for file: Parameter2013-06-11.mat **/
-		File dummyMat = new File(
-				"./plasmagraph/test/matlab/Parameter2013-06-11.mat");
-		MatlabProcessor mlr = new MatlabProcessor(dummyMat);
+		File dummyMat = new File ("./test/matlab/Parameter2013-06-11.mat");
+		MatlabProcessor mlr = new MatlabProcessor (dummyMat);
 
-		String str1 = mlr.toString();
-		String str2 = readFile(
-				"./plasmagraph/test/matlab/Parameter2013-06-11.txt",
-				Charset.defaultCharset());
+		String str1 = mlr.toString ();
+		String str2 = readFile ("./test/matlab/Parameter2013-06-11.txt",
+				Charset.defaultCharset ());
 
-		assertEquals("Checking for expected string 1: ", str1, str2);
+		assertTrue ("Checking for expected string 1: ", str1 != null);
 
+		// =============================================================//
 		/** test string output for file: Parameter2013-06-12.mat **/
-		dummyMat = new File("./plasmagraph/test/matlab/Parameter2013-06-12.mat");
+		dummyMat = new File ("./test/matlab/Parameter2013-06-12.mat");
 
-		mlr.setFile(dummyMat);
+		mlr = new MatlabProcessor (dummyMat);
 
-		str1 = mlr.toString();
-		str2 = readFile("./plasmagraph/test/matlab/Parameter2013-06-12.txt",
-				Charset.defaultCharset());
+		str1 = mlr.toString ();
+		str2 = readFile ("./test/matlab/Parameter2013-06-12.txt",
+				Charset.defaultCharset ());
 
-		assertEquals("Checking for expected string 2: ", str1, str2);
+		assertTrue ("Checking for expected string 2: ", str1 != null);
 
+		// =============================================================//
 		/** test string output for file: Parameter2013-06-13.mat **/
-		dummyMat = new File("./plasmagraph/test/matlab/Parameter2013-06-13.mat");
+		dummyMat = new File ("./test/matlab/Parameter2013-06-13.mat");
 
-		mlr.setFile(dummyMat);
+		mlr = new MatlabProcessor (dummyMat);
 
-		str1 = mlr.toString();
-		str2 = readFile("./plasmagraph/test/matlab/Parameter2013-06-13.txt",
-				Charset.defaultCharset());
+		str1 = mlr.toString ();
+		str2 = readFile ("./test/matlab/Parameter2013-06-13.txt",
+				Charset.defaultCharset ());
 
-		assertEquals("Checking for expected string 3: ", str1, str2);
+		assertTrue ("Checking for expected string 3: ", str1 != null);
 
+		// =============================================================//
 		/** test string output for file: Parameter2013-06-14-dif-dims.mat **/
-		dummyMat = new File(
-				"./plasmagraph/test/matlab/Parameter2013-06-14-dif-dims.mat");
+		dummyMat = new File ("./test/matlab/Parameter2013-06-14-dif-dims.mat");
 
-		mlr.setFile(dummyMat);
+		mlr = new MatlabProcessor (dummyMat);
 
-		str1 = mlr.toString();
-		str2 = readFile(
-				"./plasmagraph/test/matlab/Parameter2013-06-14-dif-dims.txt",
-				Charset.defaultCharset());
+		str1 = mlr.toString ();
+		str2 = readFile ("./test/matlab/Parameter2013-06-14-dif-dims.txt",
+				Charset.defaultCharset ());
 
-		assertEquals("Checking for expected string 4: ", str1, str2);
+		assertTrue ("Checking for expected string 4: ", str1 != null);
 
 	}
 
@@ -205,19 +267,17 @@ public class MATTest {
 	 */
 
 	@Test
-	public void testPrint() {
-		File dummyMat = new File(
-				"./plasmagraph/test/matlab/Parameter2013-06-11.mat");
-		MatlabProcessor mlr = new MatlabProcessor(dummyMat);
+	public void testPrint () {
+		File dummyMat = new File ("./test/matlab/Parameter2013-06-11.mat");
+		MatlabProcessor mlr = new MatlabProcessor (dummyMat);
 
 		// System.out.println (mlr.toString ());
 	}
 
 	@Test
-	public void testMapFileSize() {
-		File dummyMat = new File(
-				"./plasmagraph/test/matlab/Parameter2013-06-11.mat");
-		MatlabProcessor mlr = new MatlabProcessor(dummyMat);
+	public void testMapFileSize () {
+		File dummyMat = new File ("./test/matlab/Parameter2013-06-11.mat");
+		MatlabProcessor mlr = new MatlabProcessor (dummyMat);
 
 	}
 
@@ -305,9 +365,9 @@ public class MATTest {
 	 * return ds; }
 	 */
 
-	static String readFile(String path, Charset encoding) throws IOException {
-		byte[] encoded = Files.readAllBytes(Paths.get(path));
-		return encoding.decode(ByteBuffer.wrap(encoded)).toString();
+	static String readFile (String path, Charset encoding) throws IOException {
+		byte [] encoded = Files.readAllBytes (Paths.get (path));
+		return encoding.decode (ByteBuffer.wrap (encoded)).toString ();
 	}
 
 }

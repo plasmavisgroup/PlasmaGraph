@@ -7,13 +7,11 @@ import com.jmatio.types.*;
 
 import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
 import java.util.Set;
 
-import org.apache.commons.lang3.math.NumberUtils;
 import org.apache.commons.math3.util.Pair;
 import org.pvg.plasmagraph.utils.ExceptionHandler;
 import org.pvg.plasmagraph.utils.data.DataSet;
@@ -22,15 +20,29 @@ import org.pvg.plasmagraph.utils.data.HeaderData;
 import org.pvg.plasmagraph.utils.exceptions.FunctionNotImplementedException;
 import org.pvg.plasmagraph.utils.exceptions.InvalidDataSizeException;
 import org.pvg.plasmagraph.utils.exceptions.InvalidFileException;
-import org.pvg.plasmagraph.utils.template.Template;
 import org.pvg.plasmagraph.utils.types.ColumnType;
 import org.pvg.plasmagraph.utils.types.FileType;
 
 /**
- * Data processor class. Manages the reading of MAT files and creates DataSets
- * for this project's usage.
+ * <p>Data processor class. Manages the reading of MAT files and creates
+ * HeaderData and DataSet objects for graphing operations.
  * 
- * @author Daniel Quintini
+ * <p>This class follows the "FileProcessor" interface, and includes additional methods
+ * designed to verify the integrity of column sizes, validity of columns and individual
+ * fields being used, and removal of invalid columns.
+ * 
+ * <p>Refer to {@link http://www.mathworks.com/help/pdf_doc/matlab/matfile_format.pdf}
+ * for information regarding the Matlab file formats; specifically, focus on the Level 5 format,
+ * as it is the format this class is designed to read from. Due to the nuances of Matlab Level-5
+ * columns, this system uses the external library JMatIO to process .mat files into a HashMap
+ * format, containing the Matlab array variable's name and contents as its keys and values,
+ * respectively.
+ * 
+ * <p>As an aside, this entire class assumes that any Strings provided to the system are
+ * contained in Matlab Cells of Characters,(MLCell and MLChar, respectively) and that the data
+ * is provided in the first column of any given Matlab Array. (MLArray)
+ * 
+ * @author Daniel Quintini and Gerardo A. Navas Morales
  */
 public class MatlabProcessor implements FileProcessor {
 
@@ -78,11 +90,10 @@ public class MatlabProcessor implements FileProcessor {
 	Map <String, MLArray> mat_data;
 
 	/**
-	 * Constructor. Creates a new MatlabProcessor with a default File location
+	 * <p>Constructor. Creates a new MatlabProcessor with a default File location
 	 * as specified by the method call.
 	 * 
-	 * @param f
-	 *            A File object, containing the default file location for the
+	 * @param f A File object, containing the default file location for the
 	 *            process.
 	 */
 	public MatlabProcessor (File f) {
@@ -91,11 +102,10 @@ public class MatlabProcessor implements FileProcessor {
 	}
 
 	/**
-	 * Constructor. Creates a new MatlabProcessor with a default File location
+	 * <p>Constructor. Creates a new MatlabProcessor with a default File location
 	 * as specified by the method call.
 	 * 
-	 * @param s
-	 *            A String object, containing the default file location for the
+	 * @param s A String object, containing the default file location for the
 	 *            process.
 	 */
 	public MatlabProcessor (String s) {
@@ -104,8 +114,10 @@ public class MatlabProcessor implements FileProcessor {
 	}
 
 	/**
-	 * Opens the Matlab file provided in the constructor and pulls out the data
-	 * into the Map variable in this class.
+	 * <p>Opens the file the Class is provided initially, 
+	 * and places said data into a data container for use in any other methods of this class.
+	 * 
+	 * <p>This method automatically handles any IOExceptions that may occur while reading the file.
 	 */
 	@Override
 	public void read () {
@@ -126,14 +138,20 @@ public class MatlabProcessor implements FileProcessor {
 		}
 
 	}
-	
+
+	/**
+	 * <p>Helper method for "getHeaders". Removes all invalid columns from the data already read.
+	 * 
+	 * <p>Invalid columns are those which do not have enough data in them to graph.
+	 */
 	private void removeInvalidColumns () {
-		// Now, verify that the data extracted has no nulls. If it does, remove them.
+		// Now, verify that the data extracted has no nulls. If it does, remove
+		// them.
 		// Find it and remove it.
 		Set <Map.Entry <String, MLArray>> s = this.mat_data.entrySet ();
 		ArrayList <Map.Entry <String, MLArray>> remove_array = new ArrayList <> (
 				this.mat_data.size ());
-		
+
 		for (Map.Entry <String, MLArray> e : s) {
 			if (!this.containsData (e)) {
 				// System.out.println ("Nothing in " + e.getKey () +
@@ -157,7 +175,14 @@ public class MatlabProcessor implements FileProcessor {
 		}
 	}
 
-	// TODO: Does this even work?
+	/**
+	 * <p>Helper method. Checks a Matlab variable for the existence of enough data to be
+	 * graphable. For the purposes of this class, this refers to having at least 3 or more
+	 * values.
+	 * 
+	 * @param e The Matlab variable to evaluate.
+	 * @return A boolean describing the validity of said Matlab variable.
+	 */
 	private boolean containsData (Map.Entry <String, MLArray> e) {
 		int amount_of_data = 0;
 
@@ -204,12 +229,28 @@ public class MatlabProcessor implements FileProcessor {
 	}
 
 	/**
-	 * Getter Method; creates a set of columns with the correct names based on
-	 * the data in the MAT file. Does not fill them in, however.
+	 * <p>Takes the data provided by the "read ()" method and converts it to 
+	 * a valid HeaderData object located in the "hd" parameter provided.
+	 * This occurs only if the resulting data is formatted correctly 
+	 * (Columns of equal lengths), has enough data to create graphs from it 
+	 * (Needs two or more columns / fields), and if the columns that exist
+	 * have at least some valid columns (Columns with at least three points of data).
 	 * 
-	 * @param hd
-	 *            HeaderData to fill out with Columns, but not with data.
-	 * @return A boolean describing the success or failure of this operation.
+	 * <p>Please note the following: 
+	 * <ul>This method checks for the existence of a column named "Header" or "header" 
+	 * before populating the HeaderData object. This is to know if there are special names 
+	 * that the user wishes to use for the columns automatically. If such a column exists, 
+	 * the system will take the column and populate the rest of the columns with said name. 
+	 * Said "Header" column will be removed from the data container during this process.</ul>
+	 * <ul>This method also checks if the file has been read before processing, 
+	 * and calls this class' "read ()" method beforehand if needed.</ul>
+	 * 
+	 * @param hd HeaderData object location where the created HeaderData will be placed.
+	 * @return A boolean describing the success or failure of this operation. Failure only 
+	 * results when the data file is invalid due to irregular column sizes or lack of 
+	 * graphable columns.
+	 * @throws Exception If the data isn't formatted correctly or if said operation isn't
+	 * available for the class yet.
 	 */
 	@Override
 	public boolean getHeaders (HeaderData hd) throws Exception {
@@ -217,24 +258,83 @@ public class MatlabProcessor implements FileProcessor {
 		if (this.mat_data.isEmpty ()) {
 			this.read ();
 		}
-		
+
 		// First, check and remove any invalid columns.
 		this.removeInvalidColumns ();
 
 		// Is it empty? Are the columns and rows the same size?
 		if (this.mat_data.size () >= 2) {
-			// Clear out what's in the old HeaderData before putting in new
-			// data.
+
+			// Clear out what's in the old HeaderData before checking if the
+			// columns are well-formed.
 			hd.reset ();
 			if (this.checkColumnSizes ()) {
-				// For each non-cell object...
 
-				for (String s : this.mat_data.keySet ()) {
-					// Get the type...
-					ColumnType col_type = this.getType (this.mat_data.get (s));
+				// Scan for a header MLArray, first. (Named "header" or
+				// "Header".)
+				if (this.mat_data.containsKey ("Header") || this.mat_data.containsKey ("header")) {
+					for (Entry <String, MLArray> e : this.mat_data.entrySet ()) {
+						
+						String s = e.getKey ();
+						if ("header".equals (s) || "Header".equals (s)) {
 
-					// And put it in.
-					hd.add (new Pair <> (s.trim (), col_type));
+							// Save the column as the name column!
+							List <String> header = new ArrayList <String> (this.mat_data.size () - 1);
+							for (MLArray m : ((MLCell) e.getValue ()).cells ()) {
+								header.add (((MLChar) m).getString (0));
+							}
+							
+							// Remove the first MLArray before this next part.
+							this.mat_data.remove (e.getValue ());
+							
+							// Fill up the contents of the HeaderData object!
+							int i = 0;
+							for (String variable_name : this.mat_data.keySet ()) {
+								// Get the type...
+								ColumnType col_type = this.getType (this.mat_data.get (variable_name));
+
+								// And put it in.
+								hd.add (new Pair <> (header.get (i).trim (), col_type));
+								i += 1;
+							}
+							
+						}
+					}
+				}
+				// If there is no column with said name, take the first column
+				// and check if it could be it.
+				else if (this.mat_data.values ().iterator ().next ().isCell ()) {
+					
+					// Save the column as the name column!
+					List <String> header = new ArrayList <String> (this.mat_data.size () - 1);
+					for (MLArray m : ((MLCell) this.mat_data.values ().iterator ().next ()).cells ()) {
+						header.add (((MLChar) m).getString (0));
+					}
+					
+					// Remove the first MLArray before this next part.
+					this.mat_data.remove (this.mat_data.values ().iterator ().next ());
+					
+					// Fill up the contents of the HeaderData object!
+					int i = 0;
+					for (String variable_name : this.mat_data.keySet ()) {
+						// Get the type...
+						ColumnType col_type = this.getType (this.mat_data.get (variable_name));
+
+						// And put it in.
+						hd.add (new Pair <> (header.get (i).trim (), col_type));
+						i += 1;
+					}
+					
+				}
+				// Otherwise, take the file's variable names as the column names as normal.
+				else {
+					for (String variable_name : this.mat_data.keySet ()) {
+						// Get the type...
+						ColumnType col_type = this.getType (this.mat_data.get (variable_name));
+
+						// And put it in.
+						hd.add (new Pair <> (variable_name.trim (), col_type));
+					}
 				}
 
 				// Then add that new file to the DataSet's list of files to
@@ -253,11 +353,10 @@ public class MatlabProcessor implements FileProcessor {
 	}
 
 	/**
-	 * Helper method. Provides the type of a MLArray's contents via its key, a
+	 * <p>Helper method. Provides the type of a MLArray's contents via its key, a
 	 * String.
 	 * 
-	 * @param m
-	 *            The MLArray of data.
+	 * @param m The MLArray of data.
 	 * @return A ColumnType value of the type of data the MLArray contains.
 	 */
 	private ColumnType getType (MLArray m) {
@@ -271,14 +370,14 @@ public class MatlabProcessor implements FileProcessor {
 			return (ColumnType.STRING);
 
 		} else {
-			
+
 			return (ColumnType.NONE);
-			
+
 		}
 	}
 
 	/**
-	 * Checks the column sizes of the mat_data to see if they are all of equal
+	 * <p>Checks the column sizes of the mat_data to see if they are all of equal
 	 * size.
 	 * 
 	 * @return A boolean describing the success or failure of this operation.
@@ -323,15 +422,23 @@ public class MatlabProcessor implements FileProcessor {
 	}
 
 	/**
-	 * Transforms the Map data object that JMatIO dumps out into a proper
-	 * DataSet for the purposes of PlasmaGraph.
+	 * <p>Takes the data provided by the "read ()" method, as well as valid HeaderData
+	 * and GraphPair objects and converts it into a valid DataSet object. Said object contains
+	 * the data contained in the columns provided by the GraphPair object, and uses the HeaderData's
+	 * ColumnTypes and column names to verify the validity of said columns and the data they
+	 * contains.
 	 * 
-	 * @param ds
-	 *            A DataSet object with its DataGroups being of the DataRow
-	 *            type.
-	 * @throws FunctionNotImplementedException
-	 *             A specific function of this class is currently unavailable.
-	 * @throws InvalidDataSizeException
+	 * <p>Please note the following:
+	 * <ul>This method works with both un-grouped and grouped graphs.</ul>
+	 * <ul>This method also checks if the file has been read before processing, 
+	 * and calls this class' "read ()" method beforehand if needed.</ul>
+	 * 
+	 * 
+	 * @param ds DataSet object location where the created DataSet will be placed.
+	 * @param p GraphPair object describing the columns that will be featured in the graph.
+	 * @param hd HeaderData object describing the file's columns' names and types.
+	 * @throws Exception If the data isn't formatted correctly or if said operation isn't
+	 * available for the class yet.
 	 */
 	@Override
 	public void toDataSet (DataSet ds, GraphPair p, HeaderData hd)
@@ -345,62 +452,136 @@ public class MatlabProcessor implements FileProcessor {
 		}
 
 		// Create a container of MLArrays that will be graphed.
-		//ArrayList <MLArray> columns = new ArrayList <> (p.getNumberOfColumns ());
-		HashMap <String, MLArray> columns = new HashMap <> (p.getNumberOfColumns ());
-		ArrayList <String> header_list = new ArrayList <> ();
+		// ArrayList <MLArray> columns = new ArrayList <> (p.getNumberOfColumns
+		// ());
+		HashMap <String, MLArray> columns = new HashMap <> (
+				p.getNumberOfColumns ());
 		
+		
+		// Before trying to populate the columns Map, check if there's a "header" column to use for
+		// 	column name / variable translations.
+		Map <String, String> header_dictionary = new HashMap <> (this.mat_data.size () - 1);
 		for (Entry <String, MLArray> e : this.mat_data.entrySet ()) {
 
 			if (e.getKey ().equals ("Header") || e.getKey ().equals ("header")) {
-				System.out.println ("Found the header!");
-				// TODO: Header code.
+				
+				//System.out.println ("Found the header!");
 				for (int i = 0; (i < e.getValue ().getM ()); ++i) {
-					header_list.add (((MLChar) (((MLCell) e.getValue ()).
-							cells ().get (i))).getString (0));
+					
+					// The "header_name" is obtained from the MLCell in the same way any other Matlab String is obtained in this formatting of data.
+					String header_name = ((MLChar) ( ((MLCell) e.getValue ())
+							.cells ().get (i))).getString (0);
+					
+					// The "variable_name" is obtained from the Map's MLArray's name variable.
+					String variable_name = ((ArrayList <MLArray>) this.mat_data.values ()).get (i + 1).getName ();
+					
+					// Finally, put that combination into the dictionary.
+					header_dictionary.put (header_name, variable_name);
 				}
+				
+				// After all that, make sure to remove this entry from the "mat_data" object!
+				this.mat_data.remove (e.getKey ());
 			}
 		}
-		
-		/** iterate over every group of data in the level 5 MAT-File **/
-		for (Entry <String, MLArray> e : this.mat_data.entrySet ()) {
+
+		// Verify if said "header" column was ever found.
+		if (header_dictionary.isEmpty ()) {
 			
-			/** create and add the data column to the result set **/
-			if (!p.isGrouped ()) {
+			// It wasn't. Follow standard procedure.
+			/** iterate over every group of data in the level 5 MAT-File **/
+			for (Entry <String, MLArray> e : this.mat_data.entrySet ()) {
+				
+				// Store the variable name; it'll make it a bit more readable.
+				String variable_name = e.getKey ();
 
-				if (e.getKey ().equals (hd.get (p.getXColumnIndex ()).getKey ())) {
-					//System.out.println ("Got the X Column.");
-					
-					columns.put ("X", e.getValue ());
-					
-				} else if (e.getKey ().equals (hd.get (p.getYColumnIndex ()).getKey ())) {
-					//System.out.println ("Got the Y Column.");
-					
-					columns.put ("Y", e.getValue ());
-					
+				/** create and add the data column to the result set **/
+				if (!p.isGrouped ()) {
+
+					// Note: "header_dictionary"'s "get" method will translate a "header"-sourced name into the variable name.
+					if (variable_name.equals (hd.get (p.getXColumnIndex ()).getKey ())) {
+						// System.out.println ("Got the X Column.");
+
+						columns.put ("X", e.getValue ());
+
+					} else if (variable_name.equals (hd.get (p.getYColumnIndex ()).getKey ())) {
+						// System.out.println ("Got the Y Column.");
+
+						columns.put ("Y", e.getValue ());
+
+					} else {
+						// System.out.println ("Not found."); // TODO
+					}
+
 				} else {
-					//System.out.println ("Not found."); // TODO
+
+					if (variable_name.equals (hd.get (p.getXColumnIndex ()).getKey ())) {
+
+						columns.put ("X", e.getValue ());
+
+					} else if (variable_name.equals (hd.get (p.getYColumnIndex ()).getKey ())) {
+
+						columns.put ("Y", e.getValue ());
+
+					} else if (variable_name.equals (hd.get (p.getGroup ()).getKey ())) {
+
+						columns.put ("G", e.getValue ());
+						ds.setGroupType (this.getType (e.getValue ()));
+
+					} else {
+						// System.out.println ("Not found."); // TODO
+					}
+
 				}
-
-			} else {
-
-				if (e.getKey ().equals (hd.get (p.getXColumnIndex ()).getKey ())) {
-					
-					columns.put ("X", e.getValue ());
-					
-				} else if (e.getKey ().equals (hd.get (p.getYColumnIndex ()).getKey ())) {
-					
-					columns.put ("Y", e.getValue ());
-					
-				} else if (e.getKey ().equals (hd.get (p.getGroup ()).getKey ())) {
-					
-					columns.put ("G", e.getValue ());
-					ds.setGroupType (this.getType (e.getValue ()));
-					
-				} else {
-					//System.out.println ("Not found."); // TODO
-				}
-
 			}
+			
+		} else {
+			
+			// It was! Follow modified procedure!
+			/** iterate over every group of data in the level 5 MAT-File **/
+			for (Entry <String, MLArray> e : this.mat_data.entrySet ()) {
+				
+				// Save the old name!
+				String variable_name = header_dictionary.get (e.getKey ());
+
+				/** create and add the data column to the result set **/
+				if (!p.isGrouped ()) {
+
+					if (variable_name.equals (hd.get (p.getXColumnIndex ()).getKey ())) {
+						// System.out.println ("Got the X Column.");
+
+						columns.put ("X", e.getValue ());
+
+					} else if (variable_name.equals (hd.get (p.getYColumnIndex ()).getKey ())) {
+						// System.out.println ("Got the Y Column.");
+
+						columns.put ("Y", e.getValue ());
+
+					} else {
+						// System.out.println ("Not found."); // TODO
+					}
+
+				} else {
+
+					if (variable_name.equals (hd.get (p.getXColumnIndex ()).getKey ())) {
+
+						columns.put ("X", e.getValue ());
+
+					} else if (variable_name.equals (hd.get (p.getYColumnIndex ()).getKey ())) {
+
+						columns.put ("Y", e.getValue ());
+
+					} else if (variable_name.equals (hd.get (p.getGroup ()).getKey ())) {
+
+						columns.put ("G", e.getValue ());
+						ds.setGroupType (this.getType (e.getValue ()));
+
+					} else {
+						// System.out.println ("Not found."); // TODO
+					}
+
+				}
+			}
+			
 		}
 
 		// Now, verify the integrity of the data before saying it's all right!
@@ -421,22 +602,39 @@ public class MatlabProcessor implements FileProcessor {
 		}
 
 	}
-	
-	private void verifyDataIntegrity (HashMap<String, MLArray> columns, DataSet ds)
-			throws FunctionNotImplementedException, InvalidDataSizeException {
-		// Test the arrays for valid data before insterting them into the
+
+	/**
+	 * <p>Helper method for the "toDataSet" method. Checks if every row of
+	 * the columns requested by the GraphPair (which are already provided
+	 * to this method via a unique HashMap parameter) is a valid value for
+	 * the column's type. A row is valid if all of its values, including the
+	 * Group column if included in the graph, are valid as per the "isValid"
+	 * methods; said values are included into the DataSet. Thus, THIS is the
+	 * method that puts values into the DataSet.
+	 * 
+	 * @param columns The HashMap of Matlab variables to be graphed.
+	 * @param ds The DataSet to place said Matlab variable data in.
+	 * @throws FunctionNotImplementedException Occurs when an invalid Column type
+	 * is provided to this system.
+	 * @throws InvalidDataSizeException Occurs when the columns requested are of
+	 * the incorrect format.
+	 */
+	private void verifyDataIntegrity (HashMap <String, MLArray> columns,
+			DataSet ds) throws FunctionNotImplementedException,
+			InvalidDataSizeException {
+		// Test the arrays for valid data before inserting them into the
 		// DataSet.
 		if (columns.size () == 2 || columns.size () == 3) {
 
 			// In each rows, check the value for all MLArrays, and make sure the
 			// values are acceptable..
 			for (int row = 0; (row < columns.get ("X").getM ()); ++row) {
-				
+
 				// Use a flag to verify the validity of the row.
 				boolean valid_row = true;
 
 				// For each column.
-				for (Entry<String, MLArray> m : columns.entrySet ()) {
+				for (Entry <String, MLArray> m : columns.entrySet ()) {
 
 					// If it's still valid...
 					if (valid_row) {
@@ -444,20 +642,22 @@ public class MatlabProcessor implements FileProcessor {
 
 						if (ColumnType.DOUBLE.equals (c_type)) {
 
-							valid_row = isValid (((MLDouble) m.getValue ()).get (row));
+							valid_row = isValid ( ((MLDouble) m.getValue ())
+									.get (row));
 
 						} else { // (ColumnType.STRING.equals (c_type))
 
 							if (m.getValue ().isChar ()) {
-								
-								valid_row = isValid (((MLChar) m.getValue ()).getString (row));
-								
+
+								valid_row = isValid ( ((MLChar) m.getValue ())
+										.getString (row));
+
 							} else if (m.getValue ().isCell ()) {
-								
-								valid_row = isValid (((MLChar)
-										((MLCell) m.getValue ()).cells ().get (row)).
-										getString (0));
-								
+
+								valid_row = isValid ( ((MLChar) ((MLCell) m
+										.getValue ()).cells ().get (row))
+										.getString (0));
+
 							}
 
 						}
@@ -467,53 +667,59 @@ public class MatlabProcessor implements FileProcessor {
 
 				// If the row was verified to be valid...
 				if (valid_row) {
-					
-					Pair <Double, Double> xy = new Pair <> (((MLDouble) columns.get ("X")).get (row),
+
+					Pair <Double, Double> xy = new Pair <> (
+							((MLDouble) columns.get ("X")).get (row),
 							((MLDouble) columns.get ("Y")).get (row));
-					
+
 					ds.addToX (xy.getFirst ());
 					ds.addToY (xy.getSecond ());
 
 					if (ds.isGrouped () && columns.size () == 3) {
 						if (columns.get ("G").isDouble ()) {
-							//System.out.println ("This group is a double!");
-							
-							ds.addToGroup (((MLDouble) columns.get ("G"))
+							// System.out.println ("This group is a double!");
+
+							ds.addToGroup ( ((MLDouble) columns.get ("G"))
 									.get (row));
-							
-						} /*else if (columns.get ("G").isInt8 ()) { 
-							
-							ds.addToGroup (((MLInt8) columns.get ("G"))
-									.get (row));
-							
-						} else if (columns.get ("G").isInt16 ()) { 
-							
-							ds.addToGroup (((MLInt16) columns.get ("G"))
-									.get (row));
-							
-						} else if (columns.get ("G").isInt32 ()) { 
-							
-							ds.addToGroup (((MLInt32) columns.get ("G"))
-									.get (row));
-							
-						} else if (columns.get ("G").isInt64 ()) { 
-							
-							ds.addToGroup (((MLInt64) columns.get ("G"))
-									.get (row));
-							
-						} */else { //if (columns.get (2).isCell () || columns.get (2).isChar ()) {
-							
+
+						} /*
+						 * else if (columns.get ("G").isInt8 ()) {
+						 * 
+						 * ds.addToGroup (((MLInt8) columns.get ("G")) .get
+						 * (row));
+						 * 
+						 * } else if (columns.get ("G").isInt16 ()) {
+						 * 
+						 * ds.addToGroup (((MLInt16) columns.get ("G")) .get
+						 * (row));
+						 * 
+						 * } else if (columns.get ("G").isInt32 ()) {
+						 * 
+						 * ds.addToGroup (((MLInt32) columns.get ("G")) .get
+						 * (row));
+						 * 
+						 * } else if (columns.get ("G").isInt64 ()) {
+						 * 
+						 * ds.addToGroup (((MLInt64) columns.get ("G")) .get
+						 * (row));
+						 * 
+						 * }
+						 */else { // if (columns.get (2).isCell () ||
+									// columns.get (2).isChar ()) {
+
 							if (columns.get ("G").isCell ()) {
-								//System.out.println ("This group is a cell of chars!");
-								
-									ds.addToGroup (((MLChar) 
-											((MLCell) columns.get ("G")).cells ().get (row)).
-											getString (0));
+								// System.out.println
+								// ("This group is a cell of chars!");
+
+								ds.addToGroup ( ((MLChar) ((MLCell) columns
+										.get ("G")).cells ().get (row))
+										.getString (0));
 
 							} else if (columns.get ("G").isChar ()) {
-								//System.out.println ("This group is a char!");
-								
-								ds.addToGroup (((MLChar) columns.get ("G")).getString (row));
+								// System.out.println ("This group is a char!");
+
+								ds.addToGroup ( ((MLChar) columns.get ("G"))
+										.getString (row));
 
 							} else {
 								// TODO: error!
@@ -529,85 +735,12 @@ public class MatlabProcessor implements FileProcessor {
 		} else {
 			throw (new InvalidDataSizeException ("MatlabProcessor"));
 		}
-	}/*
-
-	private void createColumn (DataSet ds, HeaderData hd, GraphPair p,
-			Entry <String, MLArray> e) {
-		*//** create and add the data column to the result set **//*
-		if (p.isGrouped ()) {
-			if (e.getKey ().equals (hd.get (p.getXColumnIndex ()).getKey ())) {
-
-				MLDouble mxDOUBLE_values = (MLDouble) e.getValue ();
-				for (int i = 0; i < mxDOUBLE_values.getM (); ++i) {
-					ds.addToX (mxDOUBLE_values.get (i, 0));
-				}
-
-			} else if (e.getKey ().equals (
-					hd.get (p.getYColumnIndex ()).getKey ())) {
-
-				MLDouble mxDOUBLE_values = (MLDouble) e.getValue ();
-				for (int i = 0; i < mxDOUBLE_values.getM (); ++i) {
-					ds.addToY (mxDOUBLE_values.get (i, 0));
-				}
-
-			} else if (e.getKey ().equals (p.getGroupName ())) {
-
-				if (ColumnType.DOUBLE.equals (hd.get (p.getGroup ())
-						.getValue ())) {
-
-					MLDouble mxDOUBLE_values = (MLDouble) e.getValue ();
-					for (int i = 0; i < mxDOUBLE_values.getM (); ++i) {
-						ds.addToGroup (mxDOUBLE_values.get (i, 0));
-					}
-
-				} else if (ColumnType.DOUBLE.equals (hd.get (p.getGroup ())
-						.getValue ())) {
-
-					if (e.getValue ().isCell ()) {
-
-						MLCell mxCELL_values = (MLCell) e.getValue ();
-						for (int i = 0; i < mxCELL_values.getM (); ++i) {
-							ds.addToGroup ( ((MLChar) mxCELL_values.get (i, 0))
-									.getString (0));
-						}
-
-					} else if (e.getValue ().isChar ()) {
-
-						MLChar mxCHAR_values = (MLChar) e.getValue ();
-						for (int i = 0; i < mxCHAR_values.getM (); ++i) {
-							ds.addToGroup (mxCHAR_values.getString (i));
-						}
-
-					}
-
-				}
-
-			}
-		} else {
-			if (e.getKey ().equals (hd.get (p.getXColumnIndex ()).getKey ())) {
-
-				MLDouble mxDOUBLE_values = (MLDouble) e.getValue ();
-				for (int i = 0; i < mxDOUBLE_values.getM (); ++i) {
-					ds.addToX (mxDOUBLE_values.get (i, 0));
-				}
-
-			} else if (e.getKey ().equals (
-					hd.get (p.getYColumnIndex ()).getKey ())) {
-
-				MLDouble mxDOUBLE_values = (MLDouble) e.getValue ();
-				for (int i = 0; i < mxDOUBLE_values.getM (); ++i) {
-					ds.addToY (mxDOUBLE_values.get (i, 0));
-				}
-
-			}
-		}
-	}*/
+	}
 
 	/**
-	 * Checks if any given double is a valid value.
+	 * <p>Checks if any given double is a valid value.
 	 * 
-	 * @param d
-	 *            The double to verify.
+	 * @param d The double to verify.
 	 * @return True if the value isn't a NaN, is not Infinite, and is not null;
 	 *         else, False.
 	 */
@@ -616,10 +749,9 @@ public class MatlabProcessor implements FileProcessor {
 	}
 
 	/**
-	 * Checks if any given String is a valid value.
+	 * <p>Checks if any given String is a valid value.
 	 * 
-	 * @param s
-	 *            The String to verify.
+	 * @param s The String to verify.
 	 * @return True if the value isn't a NaN, is not null, and is not empty
 	 *         (""); else, False.
 	 */
@@ -633,9 +765,9 @@ public class MatlabProcessor implements FileProcessor {
 	}
 
 	/**
-	 * Getter method. Provides the file object currently in use.
+	 * <p>Getter method. Provides the File object being used in this object.
 	 * 
-	 * @return The file object being used by this object.
+	 * @return The File object contained in this object.
 	 */
 	@Override
 	public File getFile () {
@@ -643,19 +775,7 @@ public class MatlabProcessor implements FileProcessor {
 	}
 
 	/**
-	 * Setter method. Allows for changing the file object that this object is
-	 * using.
-	 * 
-	 * @param f
-	 *            The new file object to take the place of the old one.
-	 */
-	@Override
-	public void setFile (File f) {
-		this.mat_file = f;
-	}
-
-	/**
-	 * Creates a string that contains the key names of each of the MLArrays
+	 * <p>Creates a string that contains the key names of each of the MLArrays
 	 * 
 	 * @return A string representation of the MAT file.
 	 */
@@ -694,59 +814,60 @@ public class MatlabProcessor implements FileProcessor {
 			sb.append ("Values: [");
 
 			switch (m.getValue ().getType ()) {
-				case mxUNKNOWN_CLASS:
-					break;
-				case mxCELL_CLASS:
-					MLCell mxCELL_values = (MLCell) m.getValue ();
-					for (int i = 0; i < mxCELL_values.getM (); i++) {
-						sb.append (((MLChar) mxCELL_values.get (i, 0)).getString (0));
-						sb.append (", ");
-					}
-					break;
-				case mxSTRUCT_CLASS:
-					break;
-				case mxCHAR_CLASS:
-					MLChar mxCHAR_values = (MLChar) m.getValue ();
-					for (int i = 0; i < mxCHAR_values.getM (); i++) {
-						sb.append (mxCHAR_values.getString (i));
-						sb.append (", ");
-					}
-					break;
-				case mxSPARSE_CLASS:
-					break;
-				case mxDOUBLE_CLASS:
-					MLDouble mxDOUBLE_values = (MLDouble) m.getValue ();
-					for (int i = 0; i < mxDOUBLE_values.getM (); i++) {
-						sb.append (mxDOUBLE_values.get (i, 0));
-						sb.append (", ");
-					}
-					break;
-				case mxSINGLE_CLASS:
-					break;
-				case mxINT8_CLASS:
-					break;
-				case mxUINT8_CLASS:
-					break;
-				case mxINT16_CLASS:
-					break;
-				case mxUINT16_CLASS:
-					break;
-				case mxINT32_CLASS:
-					break;
-				case mxUINT32_CLASS:
-					break;
-				case mxINT64_CLASS:
-					break;
-				case mxUINT64_CLASS:
-					break;
-				case mxFUNCTION_CLASS:
-					break;
-				case mxOPAQUE_CLASS:
-					break;
-				case mxOBJECT_CLASS:
-					break;
-				default:
-					break;
+			case mxUNKNOWN_CLASS:
+				break;
+			case mxCELL_CLASS:
+				MLCell mxCELL_values = (MLCell) m.getValue ();
+				for (int i = 0; i < mxCELL_values.getM (); i++) {
+					sb.append ( ((MLChar) mxCELL_values.get (i, 0))
+							.getString (0));
+					sb.append (", ");
+				}
+				break;
+			case mxSTRUCT_CLASS:
+				break;
+			case mxCHAR_CLASS:
+				MLChar mxCHAR_values = (MLChar) m.getValue ();
+				for (int i = 0; i < mxCHAR_values.getM (); i++) {
+					sb.append (mxCHAR_values.getString (i));
+					sb.append (", ");
+				}
+				break;
+			case mxSPARSE_CLASS:
+				break;
+			case mxDOUBLE_CLASS:
+				MLDouble mxDOUBLE_values = (MLDouble) m.getValue ();
+				for (int i = 0; i < mxDOUBLE_values.getM (); i++) {
+					sb.append (mxDOUBLE_values.get (i, 0));
+					sb.append (", ");
+				}
+				break;
+			case mxSINGLE_CLASS:
+				break;
+			case mxINT8_CLASS:
+				break;
+			case mxUINT8_CLASS:
+				break;
+			case mxINT16_CLASS:
+				break;
+			case mxUINT16_CLASS:
+				break;
+			case mxINT32_CLASS:
+				break;
+			case mxUINT32_CLASS:
+				break;
+			case mxINT64_CLASS:
+				break;
+			case mxUINT64_CLASS:
+				break;
+			case mxFUNCTION_CLASS:
+				break;
+			case mxOPAQUE_CLASS:
+				break;
+			case mxOBJECT_CLASS:
+				break;
+			default:
+				break;
 			}
 
 			sb.append ("]");
@@ -757,7 +878,7 @@ public class MatlabProcessor implements FileProcessor {
 	}
 
 	/**
-	 * Getter method. Provides the Map object obtained from the file.
+	 * <p>Getter method. Provides the Map object obtained from the file.
 	 * 
 	 * @return The Map object that this object contains.
 	 */

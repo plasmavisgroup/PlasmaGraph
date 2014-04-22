@@ -22,9 +22,14 @@ import org.pvg.plasmagraph.utils.types.OutlierDistanceType;
 import org.pvg.plasmagraph.utils.types.OutlierResponse;
 
 /**
- * Settings container for all of PlasmaGraph.
- * Maintains every possible setting that can and will be used in graphing
+ * <p>Settings container for all of PlasmaGraph.
+ * 
+ * <p>Maintains every possible setting that can and will be used in graphing
  * or using the optional tools.
+ * 
+ * <p>It is important to note that this class fires events! Therefore, this class
+ * should not be made more than once. (This class may be made into a singleton
+ * someday, but not yet.)
  * 
  * @version 0.8.4
  * @author Gerardo A. Navas Morales
@@ -87,8 +92,7 @@ public class Template {
 	
 	// Constructors
 	/**
-	 *  (Default) Constructor for Template objects.
-	 *  Provides default values to new Template object.
+	 *  <p>Constructor for Template objects. Provides default values to new Template object.
 	 */
 	public Template () {
 		// Use the defaults!
@@ -113,8 +117,7 @@ public class Template {
 	}
 	
 	/**
-	 * Constructor for Template objects.
-	 * Provides user-assigned values to new Template object.
+	 * <p>Constructor for Template objects. Provides user-assigned values to new Template object.
 	 * @param name The name of the chart to be created. (String)
 	 * @param type ChartType object containing the type of graph to make. (ChartType)
 	 * @param x The name of the x axis for the chart to be created. (String)
@@ -157,7 +160,7 @@ public class Template {
 	
 	// Event Methods
 	/**
-	 * Adds the listener provided to the notification list.
+	 * <p>Adds the listener provided to the notification list.
 	 * 
 	 * @param listener Listener to add to the notification list.
 	 */
@@ -166,7 +169,8 @@ public class Template {
 	}
 	
 	/**
-	 * Getter Method. Provides the "using_legend" variable.
+	 * <p>Getter Method. Provides the "using_legend" variable.
+	 * 
      * @return A boolean variable, "using_legend", contained by this object.
 	 */
 	public final boolean generatesLegend () {
@@ -174,7 +178,8 @@ public class Template {
 	}
 	
 	/**
-	 * Getter Method. Provides the "using_tooltips" variable.
+	 * <p>Getter Method. Provides the "using_tooltips" variable.
+	 * 
      * @return A boolean variable, "using_tooltips", contained by this object.
 	 */
 	public final boolean generatesTooltips () {
@@ -192,7 +197,8 @@ public class Template {
 	// Getters and Setters
 	
 	/**
-	 * Getter Method. Provides the "chart_name" variable.
+	 * <p>Getter Method. Provides the "chart_name" variable.
+	 * 
      * @return A String variable, "chart_name", contained by this object.
 	 */
 	public final String getChartName () {
@@ -200,7 +206,8 @@ public class Template {
 	}
 
 	/**
-	 * Getter Method. Provides the "chart_type" variable.
+	 * <p>Getter Method. Provides the "chart_type" variable.
+	 * 
 	 * @return A ChartType variable, "chart_type", contained by this object.
 	 */
 	public final ChartType getChartType () {
@@ -208,7 +215,8 @@ public class Template {
 	}
 
 	/**
-	 * Getter Method. Provides the "interpolation_point_amount" variable.
+	 * <p>Getter Method. Provides the "interpolation_point_amount" variable.
+	 * 
      * @return A String variable, "interpolation_point_amount", contained by this object.
 	 */
 	public final int getInterpolationInterval () {
@@ -216,7 +224,8 @@ public class Template {
 	}
 
 	/**
-	 * Getter Method. Provides the "default_interpolation_type" variable.
+	 * <p>Getter Method. Provides the "default_interpolation_type" variable.
+	 * 
      * @return An InterpolationType variable, "default_interpolation_type", contained by this object.
 	 */
 	public final InterpolationType getInterpolationType () {
@@ -224,7 +233,8 @@ public class Template {
 	}
 	
 	/**
-	 * Getter Method. Provides the "interpolation_lower_range" variable.
+	 * <p>Getter Method. Provides the "interpolation_lower_range" variable.
+	 * 
      * @return A String variable, "interpolation_lower_range", contained by this object.
 	 */
 	public final double getLowerInterval () {
@@ -232,7 +242,8 @@ public class Template {
 	}
 
 	/**
-	 * Getter Method. Provides the "orientation" variable.
+	 * <p>Getter Method. Provides the "orientation" variable.
+	 * 
      * @return A PlotOrientation variable, "orientation", contained by this object.
 	 */
 	public final PlotOrientation getOrientation () {
@@ -240,7 +251,8 @@ public class Template {
 	}
 	
 	/**
-	 * Getter Method. Provides the "default_outlier_reaction" variable.
+	 * <p>Getter Method. Provides the "default_outlier_reaction" variable.
+	 * 
      * @return An OutlierResponse variable, "default_outlier_reaction", contained by this object.
 	 */
 	public final OutlierResponse getOutlierResponse () {
@@ -248,7 +260,8 @@ public class Template {
 	}
 
 	/**
-	 * Getter Method. Provides the "interpolation_upper_range" variable.
+	 * <p>Getter Method. Provides the "interpolation_upper_range" variable.
+	 * 
      * @return A String variable, "interpolation_upper_range", contained by this object.
 	 */
 	public final double getUpperInterval () {
@@ -256,7 +269,8 @@ public class Template {
 	}
 
 	/**
-	 * Getter Method. Provides the "x_axis_label" variable.
+	 * <p>Getter Method. Provides the "x_axis_label" variable.
+	 * 
      * @return A String variable, "x_axis_label", contained by this object.
 	 */
 	public final String getXAxisLabel () {
@@ -264,7 +278,8 @@ public class Template {
 	}
 	
 	/**
-	 * Getter Method. Provides the "x_axis_column_name" variable.
+	 * <p>Getter Method. Provides the "x_axis_column_name" variable.
+	 * 
      * @return A String variable, "x_axis_column_name", contained by this object.
 	 */
 	/*public String getXAxisColumn () {
@@ -272,7 +287,7 @@ public class Template {
 	}*/
 	
 	/**
-	 * Getter Method. Provides the current AxisType for the X Axis.
+	 * <p>Getter Method. Provides the current AxisType for the X Axis.
 	 * 
 	 * @return An AxisType object specifying the type of Axis to use.
 	 */
@@ -281,7 +296,8 @@ public class Template {
 	}
 
 	/**
-	 * Getter Method. Provides the "y_axis_label" variable.
+	 * <p>Getter Method. Provides the "y_axis_label" variable.
+	 * 
      * @return A String variable, "y_axis_label", contained by this object.
 	 */
 	public final String getYAxisLabel () {
@@ -289,7 +305,8 @@ public class Template {
 	}
 	
 	/**
-	 * Getter Method. Provides the "y_axis_column_name" variable.
+	 * <p>Getter Method. Provides the "y_axis_column_name" variable.
+	 * 
      * @return A String variable, "y_axis_column_name", contained by this object.
 	 */
 /*	public String getYAxisColumn () {
@@ -297,7 +314,7 @@ public class Template {
 	}
 */
 	/**
-	 * Getter Method. Provides the current AxisType for the Y Axis.
+	 * <p>Getter Method. Provides the current AxisType for the Y Axis.
 	 * 
 	 * @return An AxisType object specifying the type of Axis to use.
 	 */
@@ -306,7 +323,7 @@ public class Template {
 	}
 	
 	/**
-	 * Getter Method. Provides the current OutlierDistancetype for outlier scanning.
+	 * <p>Getter Method. Provides the current OutlierDistancetype for outlier scanning.
 	 * 
 	 * @return An OutlierDistancetype object specifying the distance calculation
 	 * mechanism for Outlier Scanning.
@@ -316,7 +333,7 @@ public class Template {
 	}
 	
 	/**
-	 * Getter Method. Provides the current distance for outlier scanning.
+	 * <p>Getter Method. Provides the current distance for outlier scanning.
 	 * 
 	 * @return A double object specifying the maximum acceptable distance
 	 * between points.
@@ -326,7 +343,7 @@ public class Template {
 	}
 
 	/**
-	 * Getter method. Checks to see if the ChartName is currently in its default
+	 * <p>Getter method. Checks to see if the ChartName is currently in its default
 	 * state.
 	 * 
 	 * @return True if the chart_name variable is equal to "Empty vs. Variable"; else, False.
@@ -336,7 +353,7 @@ public class Template {
 	}
 
 	/**
-	 * Getter method. Checks to see if the XAxisLabel is currently in its default
+	 * <p>Getter method. Checks to see if the XAxisLabel is currently in its default
 	 * state.
 	 * 
 	 * @return True if the x_axis_label variable is equal to "X Axis"; else, False.
@@ -346,7 +363,7 @@ public class Template {
 	}
 
 	/**
-	 * Getter method. Checks to see if the YAxisLabel is currently in its default
+	 * <p>Getter method. Checks to see if the YAxisLabel is currently in its default
 	 * state.
 	 * 
 	 * @return True if the x_axis_label variable is equal to "Y Axis"; else, False.
@@ -356,7 +373,7 @@ public class Template {
 	}
 
 	/**
-	 * Sends a ChangeEvent to all listeners of this object,
+	 * <p>Sends a ChangeEvent to all listeners of this object,
 	 * declaring that this Template object has been changed in some way.
 	 */
 	public void notifyListeners () {
@@ -366,7 +383,8 @@ public class Template {
 	}
 
 	/**
-	 * Provides user-assigned values to new Template object based on file selected.
+	 * <p>Provides user-assigned values to new Template object based on file selected.
+	 * <p>TODO: Update this method!
 	 * 
 	 * @param f File being opened.
 	 */
@@ -378,11 +396,7 @@ public class Template {
             // Now, read and put in the correct place!
             // Classifications
             String output = reader.readLine();
-            if (output.equals (ChartType.XY_GRAPH.toString ())) {
-                this.chart_type = ChartType.XY_GRAPH;
-            } else {//if (output.equals (ChartType.BAR_GRAPH.toString ())) {
-                this.chart_type = ChartType.BAR_GRAPH;
-            } 
+            this.chart_type = ChartType.parse (output);
 
             // Label names.
             output = reader.readLine();
@@ -410,44 +424,18 @@ public class Template {
             
             // Data Set Features
             output = reader.readLine ();
-            if (AxisType.STANDARD.toString ().equals (output)) {
-                this.x_axis_type = AxisType.STANDARD;
-            } else {
-            	this.x_axis_type = AxisType.LOG;
-            }
+            this.x_axis_type = AxisType.parse (output);
             output = reader.readLine ();
-            if (AxisType.STANDARD.toString ().equals (output)) {
-                this.y_axis_type = AxisType.STANDARD;
-            } else {
-            	this.y_axis_type = AxisType.LOG;
-            }
+            this.y_axis_type = AxisType.parse (output);
             
             // Tool Features
             // Interpolation Type
             output = reader.readLine();
-            if (output.equals (InterpolationType.LINEAR.toString ())) {
-                this.default_interpolation_type = InterpolationType.LINEAR;
-            } 
-            else if (output.equals (InterpolationType.QUADRATIC.toString ())) {
-                this.default_interpolation_type = InterpolationType.QUADRATIC;
-            } 
-            else if (output.equals (InterpolationType.CUBIC.toString ())) {
-                this.default_interpolation_type = InterpolationType.CUBIC;
-            } 
-            else if (output.equals (InterpolationType.QUARTIC.toString ())) {
-                this.default_interpolation_type = InterpolationType.QUARTIC;
-            } 
-            else {
-                this.default_interpolation_type = InterpolationType.SPLINE;
-            }
+            this.default_interpolation_type = InterpolationType.parse (output);
             
             // Outlier Response
             output = reader.readLine();
-            if (output.equals (OutlierResponse.WARN.toString())) {
-                this.default_outlier_reaction = OutlierResponse.WARN;
-            } else {
-                this.default_outlier_reaction = OutlierResponse.REMOVE;
-            }
+            this.default_outlier_reaction = OutlierResponse.parse (output);
             
             // Interpolation ranges and interval
             output = reader.readLine();
@@ -456,6 +444,12 @@ public class Template {
     		this.interpolation_upper_range		= Double.parseDouble (output);
     		output = reader.readLine();
     		this.interpolation_point_amount		= Integer.parseInt (output);
+    		
+    		// Outlier distance and type
+    		output = reader.readLine ();
+    		this.outlier_distance = Double.parseDouble (output);
+    		output = reader.readLine ();
+    		this.outlier_distance_type = OutlierDistanceType.parse (output);
     		
     		// Fire messages to all listeners!
     		this.notifyListeners ();
@@ -482,7 +476,7 @@ public class Template {
 	}
 
 	/**
-	 * Removes the listener provided from the notification list.
+	 * <p>Removes the listener provided from the notification list.
 	 * 
 	 * @param listener Listener to remove from notification list.
 	 */
@@ -491,7 +485,7 @@ public class Template {
 	}
 
 	/**
-	 * Saves template in a plain text format for simplicity.
+	 * <p>Saves template in a plain text format for simplicity.
 	 * Calls on the string version to save the file.
 	 * 
 	 * @param f JFileChooser with selected file name.
@@ -501,8 +495,9 @@ public class Template {
 	}
 
 	/**
-     * Saves template in a plain text format for simplicity.
+     * <p>Saves template in a plain text format for simplicity.
      * Uses BufferedWriter in order to create and manipulate said object.
+     * <p>TODO: Update this method!
      * 
      * @param file_name File name to be opened in order to save template.
      */
@@ -543,6 +538,10 @@ public class Template {
             sb.append (this.interpolation_upper_range + ls);
             sb.append (this.interpolation_point_amount + ls);
             
+        	// Outlier distance and type
+            sb.append (this.outlier_distance + ls);
+            sb.append (this.outlier_distance_type.toString () + ls);
+            
 
             // Write it to the BufferedWriter
             writer.write (sb.toString ());
@@ -555,7 +554,8 @@ public class Template {
 	}
 
 	/**
-	 * Setter Method. Changes the "chart_name" variable.
+	 * <p>Setter Method. Changes the "chart_name" variable.
+	 * 
      * @param name The new ChartType variable to replace this object's "chart_type" variable's contents.
 	 */
 	public final void setChartName (String name) {
@@ -563,7 +563,8 @@ public class Template {
 	}
 
 	/**
-	 * Setter Method. Changes the "chart_name" variable.
+	 * <p>Setter Method. Changes the "chart_name" variable.
+	 * 
 	 * @param graph The new ChartType variable to replace this object's "chart_type" variable's contents.
 	 */
 	public final void setChartType (ChartType graph) {
@@ -571,7 +572,8 @@ public class Template {
 	}
 
 	/**
-	 * Setter Method. Changes the "interpolation_point_amount" variable.
+	 * <p>Setter Method. Changes the "interpolation_point_amount" variable.
+	 * 
      * @param interval The new String variable to replace this object's "interpolation_point_amount" variable's contents.
 	 */
 	public final void setInterpolationInterval (int interval) {
@@ -579,7 +581,8 @@ public class Template {
 	}
 	
 	/**
-	 * Setter Method. Changes the "default_interpolation_type" variable.
+	 * <p>Setter Method. Changes the "default_interpolation_type" variable.
+	 * 
      * @param type The new InterpolationType variable to replace this object's "default_interpolation_type" variable's contents.
 	 */
 	public final void setInterpolationType (InterpolationType type) {
@@ -587,7 +590,8 @@ public class Template {
 	}
 
 	/**
-	 * Setter Method. Changes the "using_legend" variable.
+	 * <p>Setter Method. Changes the "using_legend" variable.
+	 * 
      * @param legend The new boolean variable to replace this object's "using_legend" variable's contents.
 	 */
 	public final void setLegend (boolean legend) {
@@ -595,7 +599,8 @@ public class Template {
 	}
 	
 	/**
-	 * Setter Method. Changes the "interpolation_lower_range" variable.
+	 * <p>Setter Method. Changes the "interpolation_lower_range" variable.
+	 * 
      * @param lower The new String variable to replace this object's "interpolation_lower_range" variable's contents.
 	 */
 	public final void setLowerInterval (double lower) {
@@ -603,7 +608,8 @@ public class Template {
 	}
 
 	/**
-	 * Setter Method. Changes the "orientation" variable.
+	 * <p>Setter Method. Changes the "orientation" variable.
+	 * 
      * @param orientation The new PlotOrientation variable to replace this object's "orientation" variable's contents.
 	 */
 	public final void setOrientation (PlotOrientation orientation) {
@@ -611,7 +617,8 @@ public class Template {
 	}
 	
 	/**
-	 * Setter Method. Changes the "default_outlier_reaction" variable.
+	 * <p>Setter Method. Changes the "default_outlier_reaction" variable.
+	 * 
      * @param reaction The new OutlierResponse variable to replace this object's "default_outlier_reaction" variable's contents.
 	 */
 	public final void setOutlierResponse (OutlierResponse reaction) {
@@ -619,7 +626,8 @@ public class Template {
 	}
 
 	/**
-	 * Setter Method. Changes the "using_tooltips" variable.
+	 * <p>Setter Method. Changes the "using_tooltips" variable.
+	 * 
      * @param tooltips The new boolean variable to replace this object's "using_tooltips" variable's contents.
 	 */
 	public final void setTooltips (boolean tooltips) {
@@ -627,7 +635,8 @@ public class Template {
 	}
 
 	/**
-	 * Setter Method. Changes the "interpolation_upper_range" variable.
+	 * <p>Setter Method. Changes the "interpolation_upper_range" variable.
+	 * 
      * @param upper The new String variable to replace this object's "interpolation_upper_range" variable's contents.
 	 */
 	public final void setUpperInterval (double upper) {
@@ -635,7 +644,8 @@ public class Template {
 	}
 	
 	/**
-	 * Setter Method. Changes the "generate_urls" variable.
+	 * <p>Setter Method. Changes the "generate_urls" variable.
+	 * 
      * @param urls The new boolean variable to replace this object's "generate_urls" variable's contents.
 	 */
 	public final void setURLs (boolean urls) {
@@ -643,7 +653,8 @@ public class Template {
 	}
 	
 	/**
-	 * Setter Method. Changes the "x_axis_label" variable.
+	 * <p>Setter Method. Changes the "x_axis_label" variable.
+	 * 
      * @param label The new String variable to replace this object's "x_axis_label" variable's contents.
 	 */
 	public final void setXAxisLabel (String label) {
@@ -651,7 +662,8 @@ public class Template {
 	}
 	
 	/**
-	 * Setter Method. Changes the "x_axis_column_name" variable.
+	 * <p>Setter Method. Changes the "x_axis_column_name" variable.
+	 * 
      * @param column_name The new String variable to replace this object's "x_axis_column_name" variable's contents.
 	 */
 /*	public void setXAxisColumn (String column_name) {
@@ -659,7 +671,7 @@ public class Template {
 	}*/
 	
 	/**
-	 * Setter Method. Sets this object's X Axis AxisType to that of the parameter provided.
+	 * <p>Setter Method. Sets this object's X Axis AxisType to that of the parameter provided.
 	 * 
 	 * @param xAxisType An AxisType object specifying the type of Axis to use.
 	 */
@@ -668,7 +680,8 @@ public class Template {
 	}
 	
 	/**
-	 * Verifies if the "default_interpolation_type" object is set to its default state.
+	 * <p>Verifies if the "default_interpolation_type" object is set to its default state.
+	 * 
 	 * @return True if the "default_interpolation_type" is InterpolationType.NONE; else, False.
 	 */
 	public boolean isInterpolating () {
@@ -676,7 +689,8 @@ public class Template {
 	}
 	
 	/**
-	 * Verifies if the "default_outlier_reaction" object is set to its default state.
+	 * <p>Verifies if the "default_outlier_reaction" object is set to its default state.
+	 * 
 	 * @return True if the "default_outlier_reaction" is OutlierResponse.NONE; else, False.
 	 */
 	public boolean isSearching () {
@@ -684,7 +698,7 @@ public class Template {
 	}
 
 	/**
-	 * Setter Method. Checks the contents of the String provided and sets this object's
+	 * <p>Setter Method. Checks the contents of the String provided and sets this object's
 	 * X Axis AxisType accordingly.
 	 * 
 	 * @param xAxisType A String object specifying the type of Axis to use.
@@ -702,7 +716,8 @@ public class Template {
 	}
 
 	/**
-	 * Setter Method. Changes the "y_axis_label" variable.
+	 * <p>Setter Method. Changes the "y_axis_label" variable.
+	 * 
      * @param label The new String variable to replace this object's "y_axis_label" variable's contents.
 	 */
 	public final void setYAxisLabel (String label) {
@@ -710,7 +725,8 @@ public class Template {
 	}
 	
 	/**
-	 * Setter Method. Changes the "y_axis_column_name" variable.
+	 * <p>Setter Method. Changes the "y_axis_column_name" variable.
+	 * 
      * @param column_name The new String variable to replace this object's "y_axis_column_name" variable's contents.
 	 */
 /*	public void setYAxisColumn (String column_name) {
@@ -718,7 +734,7 @@ public class Template {
 	}
 */
 	/**
-	 * Setter Method. Sets this object's Y Axis AxisType to that of the parameter provided.
+	 * <p>Setter Method. Sets this object's Y Axis AxisType to that of the parameter provided.
 	 * 
 	 * @param yAxisType An AxisType object specifying the type of Axis to use.
 	 */
@@ -727,7 +743,7 @@ public class Template {
 	}
 	
 	/**
-	 * Setter Method. Checks the contents of the String provided and sets this object's
+	 * <p>Setter Method. Checks the contents of the String provided and sets this object's
 	 * Y Axis AxisType accordingly.
 	 * 
 	 * @param yAxisType A String object specifying the type of Axis to use.
@@ -745,7 +761,7 @@ public class Template {
 	}
 	
 	/**
-	 * Setter Method. Sets the current distance calulcation mechanism for 
+	 * <p>Setter Method. Sets the current distance calulcation mechanism for 
 	 * Outlier Scanning.
 	 * 
 	 * @param t An OutlierDistanceType specifying the Outlier Scanning distance
@@ -756,7 +772,7 @@ public class Template {
 	}
 	
 	/**
-	 * Setter Method. Sets the current distance for outlier scanning.
+	 * <p>Setter Method. Sets the current distance for outlier scanning.
 	 * 
 	 * @param outlier_distance A double specifying the maximum acceptable 
 	 * distance between points.
@@ -766,8 +782,8 @@ public class Template {
 	}
 
 	/**
-	 * Provides a textual representation of this Template object.
-	 * Uses StringBuilder in order to allow for increasing complexity while avoiding the eyesore of mile-long concatenated strings.
+	 * <p>Provides a textual representation of this Template object.
+	 * <p>Uses StringBuilder in order to allow for increasing complexity while avoiding the eyesore of mile-long concatenated strings.
 	 * @return A String object containing a description of this object.
 	 */
 	@Override

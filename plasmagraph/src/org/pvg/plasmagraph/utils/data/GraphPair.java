@@ -7,11 +7,15 @@ import javax.swing.event.ChangeEvent;
 import javax.swing.event.ChangeListener;
 
 /**
- * Container object for the DataReference class.
- * Contains the indexes of two different Data Columns in the main DataSet and
- * their name on the ListModel.
+ * <p>Container object for the DataReference class. Contains the indexes
+ * of two different Data Columns in the main DataSet and their name on the Java
+ * Swing ListModel.
  * 
- * Note: The first index value is always assumed to be the "None" option.
+ * <p>Note: The first index value is always assumed to be the "None" option.
+ * 
+ * <p>It is important to note that this class fires events! Therefore, this class
+ * should not be made more than once. (This class may be made into a singleton
+ * someday, but not yet.)
  * 
  * @author Gerardo A. Navas Morales
  */
@@ -33,7 +37,7 @@ public class GraphPair {
     private Set <ChangeListener> listeners;
 	
     /**
-	 * Default constructor; used for resetting in the DataReference.
+	 * <p>Default constructor; used for resetting in the DataReference.
 	 */
 	public GraphPair () {
 		this.listeners = new HashSet <> ();
@@ -41,7 +45,7 @@ public class GraphPair {
 	}
 	
 	/**
-	 * Constructor; creates a new grouped Pair.
+	 * <p>Constructor; creates a new grouped Pair.
 	 * 
 	 * @param group Group index.
 	 * @param group_name Group index name.
@@ -65,7 +69,7 @@ public class GraphPair {
 	}
 	
 	/**
-	 * Changes only the Group By column name and index for the GraphPair.
+	 * <p>Changes only the Group By column name and index for the GraphPair.
 	 * 
 	 * @param group Group column index.
 	 * @param group_name Group column name.
@@ -87,7 +91,7 @@ public class GraphPair {
 	}
 	
 	/**
-	 * Changes only the X Axis name and index for the GraphPair.
+	 * <p>Changes only the X Axis name and index for the GraphPair.
 	 * 
 	 * @param x X Axis column index.
 	 * @param x_name X Axis column name.
@@ -109,7 +113,7 @@ public class GraphPair {
 	}
 
 	/**
-	 * Changes only the Y Axis name and index for the GraphPair.
+	 * <p>Changes only the Y Axis name and index for the GraphPair.
 	 * 
 	 * @param y Y Axis column index.
 	 * @param y_name Y Axis column name.
@@ -131,7 +135,7 @@ public class GraphPair {
 	}
 
 	/**
-	 * Getter; Provides the object's group DataColumn index value.
+	 * <p>Getter; Provides the object's group DataColumn index value.
 	 * 
 	 * @return group_index, an index of the group DataColumn in the main DataSet.
 	 */
@@ -141,7 +145,7 @@ public class GraphPair {
 	}
 	
 	/**
-	 * Getter; Provides the object's group DataColumn index value.
+	 * <p>Getter; Provides the object's group DataColumn index value.
 	 * 
 	 * @return group_index, an index of the group DataColumn in the main DataSet.
 	 */
@@ -151,7 +155,7 @@ public class GraphPair {
 	}
 	
 	/**
-	 * Getter; Provides the object's first DataColumn index value.
+	 * <p>Getter; Provides the object's first DataColumn index value.
 	 * 
 	 * @return x_index, an index of a DataColumn in the HeaderData.
 	 */
@@ -160,7 +164,7 @@ public class GraphPair {
 	}
 	
 	/**
-	 * Getter; Provides the object's first DataColumn index value.
+	 * <p>Getter; Provides the object's first DataColumn index value.
 	 * 
 	 * @return x_index, an index of a DataColumn in the main DataSet.
 	 */
@@ -170,7 +174,7 @@ public class GraphPair {
 	}
 	
 	/**
-	 * Getter; Provides the object's first DataColumn index value.
+	 * <p>Getter; Provides the object's first DataColumn index value.
 	 * 
 	 * @return x_index, an index of a DataColumn in the HeaderData.
 	 */
@@ -179,7 +183,7 @@ public class GraphPair {
 	}
 	
 	/**
-	 * Getter; Provides the object's second DataColumn index value.
+	 * <p>Getter; Provides the object's second DataColumn index value.
 	 * 
 	 * @return y_index, an index of a DataColumn in the main DataSet.
 	 */
@@ -193,7 +197,7 @@ public class GraphPair {
 	}
 
 	/**
-	 * Getter method. Returns the combination of both columns' names.
+	 * <p>Getter method. Returns the combination of both columns' names.
 	 * 
 	 * @return A String containing the combination of both column names.
 	 */
@@ -211,7 +215,7 @@ public class GraphPair {
 	}
 	
 	/**
-	 * Getter method. Returns the index values for the group and columns.
+	 * <p>Getter method. Returns the index values for the group and columns.
 	 * 
 	 * @return A string containing the index values of all columns being used.
 	 */
@@ -220,7 +224,7 @@ public class GraphPair {
 	}
 
 	/**
-	 * Getter method. States whether the data will be grouped or not.
+	 * <p>Getter method. States whether the data will be grouped or not.
 	 * 
 	 * @return True if the "group_index" and "group_name" variables are initialized; else, False.
 	 */
@@ -229,7 +233,8 @@ public class GraphPair {
 	}
 
 	/**
-	 * Getter method. Returns the number of columns that this GraphPair is containing information on.
+	 * <p>Getter method. Returns the number of columns that this GraphPair
+	 * is containing information on.
 	 * 
 	 * @return The integer 2 if this object isn't containing a grouping column; else, the integer 3.
 	 */
@@ -238,7 +243,7 @@ public class GraphPair {
 	}
 	
 	/**
-	 * Getter method. Checks to see if the X Axis Column is ready to be graphed.
+	 * <p>Getter method. Checks to see if the X Axis Column is ready to be graphed.
 	 * 
 	 * @return True if the "x_index" and "x_name" is initialized; else, False.
 	 */
@@ -247,7 +252,7 @@ public class GraphPair {
 	}
 	
 	/**
-	 * Getter method. Checks to see if the Y Axis Column is ready to be graphed.
+	 * <p>Getter method. Checks to see if the Y Axis Column is ready to be graphed.
 	 * 
 	 * @return True if the "y_index" and "y_name" is initialized; else, False.
 	 */
@@ -256,16 +261,18 @@ public class GraphPair {
 	}
 	
 	/**
-	 * Getter method. Tells if the X and Y Column halfs of this pair have been initialized at least once.
+	 * <p>Getter method. Tells if the X and Y Column halfs of this pair have
+	 * been initialized at least once.
 	 * 
-	 * @return True if both changeX and changeY were called at least once, or if any non-default constructor was called originally; else, False.
+	 * @return True if both changeX and changeY were called at least once, or
+	 * if any non-default constructor was called originally; else, False.
 	 */
 	public boolean isReady () {
 		return (this.isXColumnReady () && this.isYColumnReady ());
 	}
 	
 	/**
-	 * Returns all the variables contained in this object back to their default state,
+	 * <p>Returns all the variables contained in this object back to their default state,
 	 * as defined in the default constructor.
 	 */
 	public void reset () {
@@ -297,7 +304,7 @@ public class GraphPair {
 	
 	// Event Methods
 	/**
-	 * Adds the listener provided to the notification list.
+	 * <p>Adds the listener provided to the notification list.
 	 * 
 	 * @param listener Listener to add to the notification list.
 	 */
@@ -306,7 +313,7 @@ public class GraphPair {
 	}
 	
 	/**
-	 * Removes the listener provided from the notification list.
+	 * <p>Removes the listener provided from the notification list.
 	 * 
 	 * @param listener Listener to remove from notification list.
 	 */
@@ -315,7 +322,7 @@ public class GraphPair {
 	}
 	
 	/**
-	 * Sends a ChangeEvent to all listeners of this object,
+	 * <p>Sends a ChangeEvent to all listeners of this object,
 	 * declaring that this Template object has been changed in some way.
 	 */
 	public void notifyListeners () {

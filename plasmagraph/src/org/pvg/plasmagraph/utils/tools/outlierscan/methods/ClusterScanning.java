@@ -259,8 +259,7 @@ public class ClusterScanning implements ScanMethod {
 			 DataSet original, GraphPair p) {
 
 		// Prepare DataSet and DataColumns.
-		DataSet ds = new DataSet (p);
-		ds.setGroupType (original.getGroupType ());
+		DataSet ds = new DataSet (original.getGroupType (), p);
 		
 		// Populate DataColumns
 		if (p.isGrouped ()) {

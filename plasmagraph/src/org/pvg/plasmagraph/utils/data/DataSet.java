@@ -22,8 +22,8 @@ import org.pvg.plasmagraph.utils.types.ColumnType;
 import com.jmatio.types.MLChar;
 
 /**
- * Container of the data in a graph before conversion into a JFreeChart Dataset type.
- * <p> Provides methods to create JFree Datasets.
+ * <p>Container of the data in a graph before conversion into a JFreeChart Dataset type.
+ * <p>Provides methods to create JFree Datasets.
  * 
  * @author Gerardo A. Navas Morales
  */
@@ -44,7 +44,7 @@ public class DataSet {
 	ArrayList <String> group_column_string;
 	
 	/**
-	 * Basic constructor. Creates an ungrouped DataSet.
+	 * <p>Basic constructor. Creates an ungrouped DataSet.
 	 * 
 	 * @param p GraphPair object used to provide the Column names.
 	 */
@@ -65,7 +65,7 @@ public class DataSet {
 	}
 	
 	/**
-	 * Basic constructor. Creates an ungrouped DataSet.
+	 * <p>Constructor. Creates an ungrouped DataSet.
 	 * 
 	 * @param p GraphPair object used to provide the Column names.
 	 */
@@ -80,28 +80,49 @@ public class DataSet {
 		y_column = new ArrayList <> ();
 		
 		// Set Group Column data.
-		
-		/*if (m.isDouble ()) {
-
-			return (ColumnType.DOUBLE);
-
-		} else if (m.isCell () || m.isChar ()) {
-
-			return (ColumnType.STRING);
-
-		} else {
-			
-			return (ColumnType.NONE);
-			
-		}*/
-		
-		this.group_type = ColumnType.NONE; // TODO: THIS NEEDS TO BE A TYPE THAT ISN'T NONE.
+		this.group_type = ColumnType.NONE;
 		group_column_double = null;
 		group_column_string = null;
 	}
 	
 	/**
-	 * Basic constructor. Creates an ungrouped DataSet.
+	 * <p>Constructor. Creates a grouped DataSet.
+	 * 
+	 * @param group_type The ColumnType of the Group Column.
+	 */
+	public DataSet (ColumnType group_type) {
+		// Set names
+		this.x_column_name = "";
+		this.y_column_name = "";
+		this.group_column_name ="";
+		
+		// Set X / Y Column data.
+		x_column = new ArrayList <> ();
+		y_column = new ArrayList <> ();
+		
+		// Set Group Column data.
+		this.group_type = group_type;
+		
+		if (ColumnType.DOUBLE.equals (group_type)) {
+			
+			group_column_double = new ArrayList <> ();
+			group_column_string = null;
+			
+		} else if (ColumnType.STRING.equals (group_type)) {
+			
+			group_column_double = null;
+			group_column_string = new ArrayList <> ();
+			
+		} else { // if (ColumnType.NONE.equals (group_type)) {
+			
+			group_column_double = null;
+			group_column_string = null;
+			
+		}
+	}
+	
+	/**
+	 * <p>Constructor. Creates a grouped DataSet.
 	 * 
 	 * @param group_type The ColumnType of the Group Column.
 	 * @param p GraphPair object used to provide the Column names.
@@ -137,21 +158,88 @@ public class DataSet {
 		}
 	}
 	
+	/**
+	 * <p>Constructor. Creates an ungrouped DataSet.
+	 * 
+	 * @param x_name Name to use for the X Column.
+	 * @param y_name Name to use for the Y Column.
+	 * @param p GraphPair object used to provide the Column names.
+	 */
+	public DataSet (String x_name, String y_name) {
+		// Set names
+		this.x_column_name = x_name;
+		this.y_column_name = y_name;
+		this.group_column_name ="";
+		
+		// Set X / Y Column data.
+		x_column = new ArrayList <> ();
+		y_column = new ArrayList <> ();
+		
+		// Set Group Column data.
+		this.group_type = ColumnType.NONE;
+		this.group_column_double = null;
+		this.group_column_string = null;
+	}
+	
+	/**
+	 * <p>Constructor. Creates a grouped DataSet.
+	 * 
+	 * @param group_type The ColumnType of the Group Column.
+	 * @param x_name Name to use for the X Column.
+	 * @param y_name Name to use for the Y Column.
+	 * @param group_name Name to use for the Group Column.
+	 */
+	public DataSet (ColumnType group_type, String x_name, String y_name, 
+			String group_name) {
+		// Set names
+		this.x_column_name = x_name;
+		this.y_column_name = y_name;
+		this.group_column_name = group_name;
+		
+		// Set X / Y Column data.
+		x_column = new ArrayList <> ();
+		y_column = new ArrayList <> ();
+		
+		// Set Group Column data.
+		this.group_type = group_type;
+		
+		if (ColumnType.DOUBLE.equals (group_type)) {
+			
+			group_column_double = new ArrayList <> ();
+			group_column_string = null;
+			
+		} else if (ColumnType.STRING.equals (group_type)) {
+			
+			group_column_double = null;
+			group_column_string = new ArrayList <> ();
+			
+		} else { // if (ColumnType.NONE.equals (group_type)) {
+			
+			group_column_double = null;
+			group_column_string = null;
+			
+		}
+	}
+	
 	// Add methods.
 	
 	// Assumption: It is assumed that any method putting values into this object
 	// will make sure that each column has the same number of objects.
 	/**
-	 * @param d
-	 * @return 
+	 * <p>Appends an additional double value to the X Column.
+	 * 
+	 * @param d The double value to include in the X Column.
+	 * @return A boolean describing the success of the operation.
 	 */
 	public boolean addToX (double d) {
 		return (x_column.add (d));
 	}
 
 	/**
-	 * @param d
-	 * @return
+	 * <p>Appends the entirety of a doubles array into the X Column.
+	 * 
+	 * @param d The doubles values to add into the X Column.
+	 * @return A boolean describing the success of the operations.
 	 */
 	public boolean addToX (double [] d) {
 		ArrayList <Double> doubles_collection = new ArrayList <Double> (d.length);
@@ -164,16 +252,20 @@ public class DataSet {
 	}
 	
 	/**
-	 * @param d
-	 * @return 
+	 * <p>Appends an additional doubles value into the Y Column.
+	 * 
+	 * @param d The double value to add into the Y Column.
+	 * @return A boolean describing the success of the operation.
 	 */
 	public boolean addToY (double d) {
 		return (y_column.add (d));
 	}
 	
 	/**
-	 * @param d
-	 * @return
+	 * <p>Appends the entirety of a doubles array into the Y Column.
+	 * 
+	 * @param d The doubles values to add into the Y Column.
+	 * @return A boolean describing the success of the operations.
 	 */
 	public boolean addToY (double [] d) {
 		ArrayList <Double> doubles_collection = new ArrayList <Double> (d.length);
@@ -186,8 +278,11 @@ public class DataSet {
 	}
 	
 	/**
-	 * @param d
-	 * @return 
+	 * <p>Appends the entirety of a doubles array into the Group Column,
+	 * if the data will be grouped.
+	 * 
+	 * @param d The double value to add into the Group Column.
+	 * @return A boolean describing the success of the operation.
 	 */
 	public boolean addToGroup (double d) {
 		if (ColumnType.DOUBLE.equals (group_type)) {
@@ -198,8 +293,11 @@ public class DataSet {
 	}
 	
 	/**
-	 * @param d
-	 * @return
+	 * <p>Appends the entirety of a doubles array into the Group Column,
+	 * if the data will be grouped.
+	 * 
+	 * @param d The doubles values to add into the Group Column.
+	 * @return A boolean describing the success of the operation.
 	 */
 	public boolean addToGroup (double [] d) {
 		if (ColumnType.DOUBLE.equals (group_type)) {
@@ -216,8 +314,11 @@ public class DataSet {
 	}
 	
 	/**
-	 * @param s
-	 * @return 
+	 * <p> Appends a single String value into the Group Column,
+	 * if the data will be grouped.
+	 * 
+	 * @param s The String value to add into the Group Column.
+	 * @return A boolean describing the success of the operation.
 	 */
 	public boolean addToGroup (String s) {
 		if (ColumnType.STRING.equals (group_type)) {
@@ -228,8 +329,11 @@ public class DataSet {
 	}
 	
 	/**
-	 * @param s
-	 * @return
+	 * <p>Appends the entirety of a String array into the Group Column,
+	 * if the data will be grouped.
+	 * 
+	 * @param s The String values to add into the Group Column.
+	 * @return A boolean describing the success of the operation.
 	 */
 	public boolean addToGroup (String [] s) {
 		if (ColumnType.STRING.equals (group_type)) {
@@ -246,41 +350,61 @@ public class DataSet {
 	}
 	
 	// Remove methods.
+	public boolean remove (int row) {
+		if (this.isGrouped ()) {
+			return (this.removeFromX (row) && 
+					this.removeFromY (row) && 
+					this.removeFromGroup (row));
+		} else {
+			return (this.removeFromX (row) && 
+					this.removeFromY (row));
+		}
+	}
 	/**
-	 * @param d
-	 * @return 
+	 * <p>Removes the first value found with the value provided in the X Column.
+	 * 
+	 * @param d The double value to remove from the X Column.
+	 * @return A boolean describing the success of the operation.
 	 */
-	public boolean removFromeX (double d) {
+	public boolean removeFromX (double d) {
 		return (x_column.remove (d));
 	}
 	
 	/**
-	 * @param i
-	 * @return
+	 * <p>Removes the value found in the index provided in the X Column.
+	 * 
+	 * @param i The index of the value to remove from the X Column.
+	 * @return A boolean describing the success of the operation.
 	 */
-	public boolean removFromeX (int i) {
+	public boolean removeFromX (int i) {
 		return (x_column.remove (i) != null);
 	}
 	
 	/**
-	 * @param d
-	 * @return 
+	 * <p>Removes the first value found with the value provided in the Y Column.
+	 * 
+	 * @param d The double value to remove from the Y Column.
+	 * @return A boolean describing the success of the operation.
 	 */
 	public boolean removeFromY (double d) {
 		return (y_column.remove (d));
 	}
 	
 	/**
-	 * @param i
-	 * @return
+	 * <p>Removes the value found in the index provided in the Y Column.
+	 * 
+	 * @param i The index of the value to remove from the Y Column.
+	 * @return A boolean describing the success of the operation.
 	 */
-	public boolean removFromeY (int i) {
+	public boolean removeFromY (int i) {
 		return (y_column.remove (i) != null);
 	}
 	
 	/**
-	 * @param d
-	 * @return 
+	 * <p>Removes the double value found with the value provided in the Group Column.
+	 * 
+	 * @param d The double value to remove from the Group Column.
+	 * @return A boolean describing the success of the operation.
 	 */
 	public boolean removeFromGroup (double d) {
 		if (ColumnType.DOUBLE.equals (group_type)) {
@@ -291,8 +415,10 @@ public class DataSet {
 	}
 	
 	/**
-	 * @param s
-	 * @return 
+	 * <p>Removes the String value found with the value provided in the Group Column.
+	 * 
+	 * @param s The String value to remove from the Group Column.
+	 * @return A boolean describing the success of the operation.
 	 */
 	public boolean removeFromGroup (String s) {
 		if (ColumnType.STRING.equals (group_type)) {
@@ -303,10 +429,12 @@ public class DataSet {
 	}
 	
 	/**
-	 * @param i
-	 * @return
+	 * <p>Removes the value found in the index value provided in the Group Column.
+	 * 
+	 * @param i The index value to remove from the Group Column.
+	 * @return A boolean describing the success of the operation.
 	 */
-	public boolean removFromeGroup (int i) {
+	public boolean removeFromGroup (int i) {
 		if (ColumnType.DOUBLE.equals (group_type)) {
 			
 			return (group_column_double.remove (i) != null);
@@ -322,14 +450,32 @@ public class DataSet {
 	}
 	
 	// Get methods.
+	/**
+	 * <p>Getter method. Provides the value found at the index of the X Column.
+	 * 
+	 * @param i The index value of the value to obtain.
+	 * @return The double value at the index location.
+	 */
 	public double getXValue (int i) {
 		return (this.x_column.get (i));
 	}
 	
+	/**
+	 * <p>Getter method. Provides the value found at the index of the Y Column.
+	 * 
+	 * @param i The index value of the value to obtain.
+	 * @return The double value at the index location.
+	 */
 	public double getYValue (int i) {
 		return (this.y_column.get (i));
 	}
 	
+	/**
+	 * <p>Getter method. Provides the double value found at the index of the Group Column.
+	 * 
+	 * @param i The index value of the value to obtain.
+	 * @return The double value at the index location.
+	 */
 	public double getGroupDoubleValue (int i) {
 		if (ColumnType.DOUBLE.equals (group_type)) {
 			return (this.group_column_double.get (i));
@@ -339,6 +485,12 @@ public class DataSet {
 		}
 	}
 	
+	/**
+	 * <p>Getter method. Provides the String value found at the index of the Group Column.
+	 * 
+	 * @param i The index value of the value to obtain.
+	 * @return The String value at the index location.
+	 */
 	public String getGroupStringValue (int i) {
 		if (ColumnType.STRING.equals (group_type)) {
 			return (this.group_column_string.get (i));
@@ -349,43 +501,43 @@ public class DataSet {
 	}
 	
 	/**
-	 * Getter method. Provides the X Column's name.
+	 * <p>Getter method. Provides the X Column's name.
 	 * 
-	 * @return The value in "x_column_name".
+	 * @return The value in the variable "x_column_name".
 	 */
 	public String getXName () {
 		return (this.x_column_name);
 	}
 	
 	/**
-	 * Getter method. Provides the Y Column's name.
+	 * <p>Getter method. Provides the Y Column's name.
 	 * 
-	 * @return The value in "y_column_name".
+	 * @return The value in the variable "y_column_name".
 	 */
 	public String getYName () {
 		return (this.y_column_name);
 	}
 	
 	/**
-	 * Getter method. Provides the Group Column's name.
+	 * <p>Getter method. Provides the Group Column's name.
 	 * 
-	 * @return The value in "group_column_name".
+	 * @return The value in the variable "group_column_name".
 	 */
 	public String getGroupName () {
 		return (this.group_column_name);
 	}
 	
 	/**
-	 * Getter method. Provides the Group Column's ColumnType.
+	 * <p>Getter method. Provides the Group Column's ColumnType.
 	 * 
-	 * @return The value in "group_type".
+	 * @return The value in the variable "group_type".
 	 */
 	public ColumnType getGroupType () {
 		return (this.group_type);
 	}
 	
 	/**
-	 * Getter method. Provides the size of the ArrayList contained.
+	 * <p>Getter method. Provides the size of the ArrayList contained.
 	 * 
 	 * @return Integer value of the current size of the ArrayLists.
 	 */
@@ -393,86 +545,50 @@ public class DataSet {
 		return (this.x_column.size ());
 	}
 	
+	/**
+	 * <p>Getter method. Provides the list of values contained in the X Column.
+	 * 
+	 * @return The variable "x_column".
+	 */
 	public List <Double> getX () {
 		return (this.x_column);
 	}
 	
+	/**
+	 * <p>Getter method. Provides the list of values contained in the Y Column.
+	 * 
+	 * @return The variable "y_column".
+	 */
 	public List <Double> getY () {
 		return (this.y_column);
 	}
 	
-	/**
-	 * @return
-	 */
-	public double getXMax () {
-			double max = this.getXValue (0);
-			
-			for (double d : this.x_column) {
-				max = (max < d) ? d : max;
-			}
-			
-			return (max);
-	}
-	
-	/**
-	 * @return
-	 */
-	public double getXMin () {
-			double min = this.getXValue (0);
-			
-			for (double d : this.x_column) {
-				min = (min > d) ? d : min;
-			}
-			
-			return (min);
-	}
-	
-	/**
-	 * @return
-	 */
-	public double getYMax () {
-			double max = this.getYValue (0);
-			
-			for (double d : this.y_column) {
-				max = (max < d) ? d : max;
-			}
-			
-			return (max);
-	}
-	
-	/**
-	 * @return
-	 */
-	public double getYMin () {
-			double min = this.getYValue (0);
-			
-			for (double d : this.y_column) {
-				min = (min > d) ? d : min;
-			}
-			
-			return (min);
-	}
-	
 	// Find and contains methods.
 	/**
-	 * @param d
-	 * @return 
+	 * <p>Tells if a value is contained in the X Column.
+	 * 
+	 * @param d The double value to search for in the X Column.
+	 * @return A boolean describing the success of the operation.
 	 */
 	public boolean containsX (double d) {
 		return (x_column.contains (d));
 	}
 	
 	/**
-	 * @param d
-	 * @return 
+	 * <p>Tells if a value is contained in the Y Column.
+	 * 
+	 * @param d The double value to search for in the Y Column.
+	 * @return A boolean describing the success of the operation.
 	 */
 	public boolean containsY (double d) {
 		return (y_column.contains (d));
 	}
 	
 	/**
-	 * @param d
-	 * @return 
+	 * <p>Tells if a value is contained in the Group Column, assuming there is one.
+	 * 
+	 * @param d The double value to search for in the Group Column.
+	 * @return A boolean describing the success of the operation.
 	 */
 	public boolean containsGroup (double d) {
 		if (ColumnType.DOUBLE.equals (group_type)) {
@@ -483,8 +599,10 @@ public class DataSet {
 	}
 	
 	/**
-	 * @param s
-	 * @return 
+	 * <p>Tells if a value is contained in the Group Column, assuming there is one.
+	 * 
+	 * @param s The String value to search for in the Group Column.
+	 * @return A boolean describing the success of the operation.
 	 */
 	public boolean containsGroup (String s) {
 		if (ColumnType.STRING.equals (group_type)) {
@@ -494,6 +612,12 @@ public class DataSet {
 		}
 	}
 	
+	/**
+	 * <p>Tells if the value provided exists in the X Column.
+	 * 
+	 * @param o The X Column value.
+	 * @return The row index position of the values provided, or -1 if it wasn't found.
+	 */
 	public int findX (double o) {
 		for (int i = 0; (i < this.x_column.size ()); ++i) {
 			if (this.x_column.get (i) == o) {
@@ -504,6 +628,12 @@ public class DataSet {
 		return (-1);
 	}
 	
+	/**
+	 * <p>Tells if the value provided exists in the Y Column.
+	 * 
+	 * @param o The Y Column value.
+	 * @return The row index position of the values provided, or -1 if it wasn't found.
+	 */
 	public int findY (double o) {
 		for (int i = 0; (i < this.y_column.size ()); ++i) {
 			if (this.y_column.get (i) == o) {
@@ -514,13 +644,22 @@ public class DataSet {
 		return (-1);
 	}
 	
+	/**
+	 * <p>Tells if the values provided exists in the X and Y Column if there exists a Group column.
+	 * 
+	 * @param x The X Column value.
+	 * @param y The Y Column value.
+	 * @return The row index position of the values provided, or -1 if it wasn't found or there is no Group column in this DataSet.
+	 */
 	public int findGroup (double x, double y) {
-		for (int i = 0; (i < this.x_column.size ()) && 
-				(i < this.y_column.size ()); ++i) {
-			
-			if ((this.x_column.get (i) == x) && (this.y_column.get (i) == y)) {
-				return (i);
-			}
+		if (!ColumnType.NONE.equals (this.group_type)) {
+			for (int i = 0; (i < this.x_column.size ()) && 
+					(i < this.y_column.size ()); ++i) {
+				
+				if ((this.x_column.get (i) == x) && (this.y_column.get (i) == y)) {
+					return (i);
+				}
+			}	
 		}
 		
 		return (-1);
@@ -528,8 +667,10 @@ public class DataSet {
 	
 	// Set methods.
 	/**
-	 * @param d
-	 * @return 
+	 * <p>Changes the values found in the X Column to those provided.
+	 * 
+	 * @param d The double array to insert into the X Column.
+	 * @return A boolean describing the success of the operation.
 	 */
 	public boolean setToX (double [] d) {
 		ArrayList <Double> x = new ArrayList <> (d.length);
@@ -542,8 +683,10 @@ public class DataSet {
 	}
 	
 	/**
-	 * @param d
-	 * @return 
+	 * <p>Changes the values found in the X Column to those provided.
+	 * 
+	 * @param d The ArrayList to insert into the X Column.
+	 * @return A boolean describing the success of the operation.
 	 */
 	public boolean setToX (ArrayList <Double> d) {
 		x_column.clear ();
@@ -551,8 +694,10 @@ public class DataSet {
 	}
 	
 	/**
-	 * @param d
-	 * @return 
+	 * <p>Changes the values found in the Y Column to those provided.
+	 * 
+	 * @param d The double array to insert into the Y Column.
+	 * @return A boolean describing the success of the operation.
 	 */
 	public boolean setToY (double [] d) {
 
@@ -566,8 +711,10 @@ public class DataSet {
 	}
 	
 	/**
-	 * @param d
-	 * @return 
+	 * <p>Changes the values found in the Y Column to those provided.
+	 * 
+	 * @param d The ArrayList to insert into the Y Column.
+	 * @return A boolean describing the success of the operation.
 	 */
 	public boolean setToY (ArrayList <Double> d) {
 		x_column.clear ();
@@ -575,8 +722,10 @@ public class DataSet {
 	}
 	
 	/**
-	 * @param d
-	 * @return 
+	 * <p>Changes the values found in the Group Column to those provided.
+	 * 
+	 * @param d The double array to insert into the Group Column.
+	 * @return A boolean describing the success of the operation.
 	 */
 	public boolean setToGroup (double [] d) {
 		if (ColumnType.DOUBLE.equals (group_type)) {
@@ -594,8 +743,10 @@ public class DataSet {
 	}
 	
 	/**
-	 * @param s
-	 * @return 
+	 * <p>Changes the values found in the Group Column to those provided.
+	 * 
+	 * @param s The String array to insert into the Group Column.
+	 * @return A boolean describing the success of the operation.
 	 */
 	public boolean setToGroup (String [] s) {
 		if (ColumnType.STRING.equals (group_type)) {
@@ -613,8 +764,9 @@ public class DataSet {
 	}
 	
 	/**
+	 * <p>Setter method. Changes the ColumnType of the Group Column to the provided value.
 	 * 
-	 * @param c
+	 * @param c The new ColumnType variable.
 	 */
 	public void setGroupType (ColumnType c) {
 		this.group_type = c;
@@ -624,17 +776,22 @@ public class DataSet {
 			this.group_column_double = new ArrayList <> ();
 			this.group_column_string = null;
 			
-		} else { //if (ColumnType.STRING.equals (this.group_type)) {
+		} else if (ColumnType.STRING.equals (this.group_type)) {
 			
 			this.group_column_string = new ArrayList <> ();
 			this.group_column_double = null;
+			
+		} else {
+			
+			this.group_column_double = null;
+			this.group_column_string = null;
 			
 		}
 	}
 	
 	// Checking methods.
 	/**
-	 * Getter method. Provides whether the group column is of the type Double.
+	 * <p>Getter method. Provides whether the group column is of the type Double.
 	 * 
 	 * @return Boolean stating if the group column is of the type Double.
 	 */
@@ -643,7 +800,7 @@ public class DataSet {
 	}
 	
 	/**
-	 * Getter method. Provides whether the group column is of the type String.
+	 * <p>Getter method. Provides whether the group column is of the type String.
 	 * 
 	 * @return Boolean stating if the group column is of the type Double.
 	 */
@@ -654,7 +811,7 @@ public class DataSet {
 	// Conversion methods.
 	
 	/**
-	 * Given a group of index values and a name, provides a JFree XYSeries Dataset
+	 * <p>Given a group of index values and a name, provides a JFree XYSeries Dataset
 	 * for the purpose of graphing XY Graphs.
 	 * 
 	 * @param p Pair of index values with a pre-defined name.
@@ -671,7 +828,7 @@ public class DataSet {
 	}
 	
 	/**
-	 * Given a group of index values and a name, provides a JFree XYSeriesCollection
+	 * <p>Given a group of index values and a name, provides a JFree XYSeriesCollection
 	 * Dataset for the purpose of graphing XY Graphs.
 	 * 
 	 * @param p GraphPair object used to determine various graph-related data.
@@ -733,9 +890,9 @@ public class DataSet {
 	}
 	
 	/**
-	 * Given a group of index values and a name, provides a JFree CategoryDataset
+	 * <p>Given a group of index values and a name, provides a JFree CategoryDataset
 	 * for the purpose of graphing Bar Graphs.
-	 * TODO: Make the method more robust. Add flexibility for varying combinations of double and string!
+	 * <p>TODO: Make the method more robust. Add flexibility for varying combinations of double and string!
 	 * 
 	 * @param p Pair of index values with a pre-defined name.
 	 * @return A DefaultCategoryDataset containing the desired data.
@@ -763,9 +920,7 @@ public class DataSet {
 	}*/
 	
 	/**
-	 * Creates a double [][] containing all the values in this DataSet.
-	 * TODO: Currently can only be used for 2-column data sets.
-	 * TODO: Currently assumes all values are doubles. Check first..
+	 * <p>Creates a double [][] containing all the values in this DataSet. Can only be used for 2-column data sets.
 	 * 
 	 * @return A 2-columned DataSet converted to a double [][].
 	 */
@@ -784,9 +939,11 @@ public class DataSet {
 	}
 	
 	/**
-	 * @param i The column to select. 0 signals the X column, whereas 1 signals the Y column.
+	 * <p>Makes a copy of one of the two columns as a doubles array based on the index provided.
 	 * 
-	 * @return
+	 * @param i The column to select. 0 signals the X column, whereas 1 signals the Y column. Any other value is invalid.
+	 * @return An array of doubles containing a copy of the current state of the X or Y Column, or an array with one "0.0"
+	 * value if the index is invalid.
 	 */
 	public double [] getColumnArray (int i) {
 		if (i == 0) {
@@ -811,42 +968,7 @@ public class DataSet {
 	}
 	
 	/**
-	 * @return
-	 */
-	public double [] getDoubleGroupColumnArray () {
-		if (ColumnType.DOUBLE.equals (group_type)) {
-			double [] column = new double [this.group_column_double.size ()];
-			
-			for (int i = 0; i < this.group_column_double.size (); ++i) {
-				column[i] = this.group_column_double.get (i);
-			}
-			
-			return (column);
-		} else { // if (ColumnType.STRING.equals (group_type)) {
-			return (new double [] {0.0});
-		}
-	}
-	
-	/**
-	 * @return
-	 */
-	public String [] getStringGroupColumnArray () {
-		if (ColumnType.DOUBLE.equals (group_type)) {
-			String [] column = new String [this.group_column_string.size ()];
-			
-			for (int i = 0; i < this.group_column_string.size (); ++i) {
-				column[i] = this.group_column_string.get (i);
-			}
-			
-			return (column);
-			
-		} else { // if (ColumnType.STRING.equals (group_type)) {
-			return (new String [] {"Empty"});
-		}
-	}
-	
-	/**
-	 * Getter method. Provides a String representation of the ArrayList.
+	 * <p>Getter method. Provides a String representation of the ArrayList.
 	 * 
 	 * @return A String representation of the entire ArrayList.
 	 */
@@ -874,6 +996,15 @@ public class DataSet {
         return sb.toString();
 	}
 	
+	/**
+	 * <p>A helper method used to split the "toString" code for each column.
+	 * Delegates the String to be provided to one of three methods depending
+	 * on the index provided.
+	 * 
+	 * @param i The index value of the column to describe; 0 refers to the X Column,
+	 * 1 to the Y Column, and 2 to the Group Column. All other values are invalid.
+	 * @return A String describing the column requested via the index value.
+	 */
 	private String getColumnString (int i) {
 		if (i == 0) {
 			return (this.getXColumnString ());
@@ -886,6 +1017,12 @@ public class DataSet {
 		}
 	}
 	
+	/**
+	 * <p>Provides a textual representation of the status of the X Column. 
+	 * Effectively a "toString" method just for the X Column.
+	 * 
+	 * @return A String describing the X Column of this object.
+	 */
 	private String getXColumnString () {
 		StringBuilder sb = new StringBuilder();	
 
@@ -912,6 +1049,12 @@ public class DataSet {
         return sb.toString();
 	}
 	
+	/**
+	 * <p>Provides a textual representation of the status of the Y Column. 
+	 * Effectively a "toString" method just for the Y Column.
+	 * 
+	 * @return A String describing the Y Column of this object.
+	 */
 	private String getYColumnString () {
 		StringBuilder sb = new StringBuilder();	
 
@@ -938,6 +1081,12 @@ public class DataSet {
         return sb.toString();
 	}
 	
+	/**
+	 * <p>Provides a textual representation of the status of the Group Column. 
+	 * Effectively a "toString" method just for the Group Column.
+	 * 
+	 * @return A String describing the Group Column of this object.
+	 */
 	private String getGroupColumnString () {
 		StringBuilder sb = new StringBuilder();	
 
@@ -979,7 +1128,7 @@ public class DataSet {
 	}
 	
 	/**
-	 * Provides the number of parameters that exist in this DataSet.
+	 * <p>Provides the number of parameters that exist in this DataSet.
 	 * This is also known as the K in some statistical functions.
 	 * 
 	 * @return The number of parameters that this DataSet contains.
@@ -993,7 +1142,7 @@ public class DataSet {
 	}
 	
 	/**
-	 * Getter method for the "grouped" private variable.
+	 * <p>Getter method for the "grouped" private variable.
 	 * 
 	 * @return A boolean stating whether this DataSet contains a Group By column or not.
 	 */
@@ -1002,9 +1151,10 @@ public class DataSet {
 	}
         
     /**
+     * <p>Tests equality between this object and some other object.
      * 
-     * @param o
-     * @return 
+     * @param o An object that may or may not be an equivalent DataSet.
+     * @return A boolean describing if both objects are roughly equivalent to each other.
      */
     @Override
     public boolean equals (Object o) {
@@ -1059,10 +1209,10 @@ public class DataSet {
     }
 
     /**
-     * Orders data based on the X column's values.
+     * <p>Orders data based on the X column's values.
      * 
-     * @param x_column 
-     * @param y_column 
+     * @param x_column Double array to put the X Column's ordered values into.
+     * @param y_column Double array to put the Y Column's ordered values into.
      */
 	public void orderData (double [] x_column, double [] y_column) {
 
@@ -1097,8 +1247,10 @@ public class DataSet {
 	}
 
 	/**
+	 * <p>Provides the number of items in this DataSet.
+	 * <p>It is assumed that the columns of the DataSet all have the same length.
 	 * 
-	 * @return
+	 * @return The number of values in the X Column.
 	 */
 	public int getItemCount () {
 		//if (this.getX ().size () == this.getY ().size ()) {

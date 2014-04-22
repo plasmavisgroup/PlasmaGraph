@@ -1,7 +1,20 @@
 package org.pvg.plasmagraph.utils.types;
 
 /**
- * Setting container object for the typical Alpha values.
+ * Confidence Interval representation container object for the typical
+ * Alpha values and their respective Confidence Intervals.
+ * 
+ * <p>The available options are:
+ * 
+ * <ul>
+ * <li>CI99: Represents a confidence interval of 99%, the
+ * highest CI possible.</li>
+ * <li>CI98: Represents a confidence interval of 98%.</li>
+ * <li>CI95: Represents a confidence interval of 95%.</li>
+ * <li>CI90: Represents a confidence interval of 90%.</li>
+ * <li>INVALID: Represents a confidence interval not mentioned
+ * above, or an invalid possibility.</li>
+ * </ul>
  * 
  * @author Gerardo A. Navas Morales
  */
@@ -45,19 +58,25 @@ public final class AlphaType {
 	}
 	
 	/**
-	 * Provides a list of options that may be selected.
-	 * Specifically for use in the various views.
+	 * <p>Provides a list of options that may be selected. Specifically for use 
+	 * in the various views that compose PlasmaGraph.
 	 * 
-	 * @return A String array containing all the possible types this class holds.
+	 * <p>The order of the array is designed to contain the default option, that which
+	 * counts as the starting point for the data type, as the first option.
+	 * 
+	 * @return A String array containing all the valid possible types this class holds.
 	 */
 	public static String [] getOptions () {
-    	return (new String []
-    			{AlphaType.CI99.toString (), AlphaType.CI98.toString (),
-    			AlphaType.CI95.toString (), AlphaType.CI90.toString (),});
+    	return (new String [] {
+    			AlphaType.CI99.toString (), 
+    			AlphaType.CI98.toString (),
+    			AlphaType.CI95.toString (), 
+    			AlphaType.CI90.toString ()
+    			});
     }
 
 	/**
-	 * Provides the numeric representation of the AlphaType.
+	 * <p>Provides the numeric representation of the AlphaType.
 	 * 
 	 * @return A double, containing the alpha value in decimal format.
 	 */
