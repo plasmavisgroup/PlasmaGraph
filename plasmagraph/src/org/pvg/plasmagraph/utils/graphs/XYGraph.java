@@ -191,7 +191,7 @@ public class XYGraph implements Graph {
 		// Create the Dataset
 		XYSeriesCollection set = new XYSeriesCollection ();
 		
-		System.out.println (p.isGrouped ());
+		//System.out.println (p.isGrouped ());
 		
 		if (p.isGrouped ()) {
 			

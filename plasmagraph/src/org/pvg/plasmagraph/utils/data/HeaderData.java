@@ -243,7 +243,7 @@ public class HeaderData implements Iterable<Pair <String, ColumnType>> {
 				
 				mat_reader.toDataSet (ds, p, this);
 				
-				System.out.println ("Derp: " + ds.toString ());
+				//System.out.println ("Derp: " + ds.toString ());
 				
 			} else {
 				
@@ -268,7 +268,7 @@ public class HeaderData implements Iterable<Pair <String, ColumnType>> {
 				
 				mat_reader.toDataSet (ds, p, this);
 				
-				System.out.println ("Derp: " + ds.toString ());
+				//System.out.println ("Derp: " + ds.toString ());
 				
 			} else {
 				

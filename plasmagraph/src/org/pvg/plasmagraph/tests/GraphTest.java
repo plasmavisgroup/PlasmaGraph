@@ -10,6 +10,8 @@ import org.jfree.chart.plot.PlotOrientation;
 import org.junit.Test;
 import org.pvg.plasmagraph.utils.data.DataSet;
 import org.pvg.plasmagraph.utils.data.GraphPair;
+import org.pvg.plasmagraph.utils.data.HeaderData;
+import org.pvg.plasmagraph.utils.data.readers.MatlabProcessor;
 import org.pvg.plasmagraph.utils.exceptions.InvalidParametersException;
 import org.pvg.plasmagraph.utils.graphs.BarGraph;
 import org.pvg.plasmagraph.utils.graphs.XYGraph;
@@ -34,6 +36,33 @@ public class GraphTest {
 		
 		// Graph data via the XYGraph class!
 		XYGraph chart = new XYGraph (t, ds, p);
+		chart.testGraph ();
+		
+		// Test
+		assertTrue ("Correctly Displayed?: ", JOptionPane.showConfirmDialog
+				(null, "Does the graph look like an XY Graph?",
+						"Proper XY Graph?",
+						JOptionPane.YES_NO_OPTION) == JOptionPane.YES_OPTION);
+	}
+	
+	@Test
+	public void testLargeMatlabGraph () throws Exception {
+		/** test file uri **/
+		String testfileURI = "./test/matlab/mat_file_limit_test.mat";
+		
+		// Prepare the HeaderData object.
+		MatlabProcessor mat = new MatlabProcessor (testfileURI);
+		HeaderData hd = new HeaderData ();
+		mat.getHeaders (hd);
+		
+		// Prepare the Template and GraphPair
+		Template t = new Template ();
+		GraphPair p = new GraphPair ();
+		p.changeX (0, "double_arr0");
+		p.changeY (1, "double_arr1");
+		
+		// Graph it!
+		XYGraph chart = new XYGraph (t, hd, p);
 		chart.testGraph ();
 		
 		// Test

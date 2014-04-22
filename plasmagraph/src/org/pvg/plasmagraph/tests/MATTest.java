@@ -60,12 +60,12 @@ public class MATTest {
 		 * create an array with 86400 double type values (this represents a
 		 * column with 86400 lines)
 		 **/
-		double [] src1 = new double [86400];
-		for (int i = 0; i < 86400; i++) {
+		int array_size = 86400;
+		double [] src1 = new double [array_size];
+		for (int i = 0; i < array_size; i++) {
 			/** create some random values to populate our array **/
 			Random r = new Random ();
-			double randomValue = r.nextDouble ();
-			src1 [i] = randomValue;
+			src1 [i] = r.nextGaussian ();
 		}
 
 		// Obtain the first time.
@@ -80,7 +80,7 @@ public class MATTest {
 		Collection <MLArray> list = new ArrayList <> ();
 		for (int i = 0; i < 100; i++) {
 			String columnTitle = "double_arr" + i;
-			MLDouble mlDouble = new MLDouble (columnTitle, src1, 3);
+			MLDouble mlDouble = new MLDouble (columnTitle, src1, array_size);
 			list.add (mlDouble);
 		}
 
@@ -124,7 +124,8 @@ public class MATTest {
 		for (Entry <String, MLArray> e : mlr.getData ().entrySet ()) {
 
 			// System.out.println (e.getValue ().getSize ());
-			assertEquals ("This MLArray must contain 86400 values", 86400, e
+			assertEquals ("This MLArray must contain " + array_size + 
+					" values", array_size, e
 					.getValue ().getSize ());
 
 		}
