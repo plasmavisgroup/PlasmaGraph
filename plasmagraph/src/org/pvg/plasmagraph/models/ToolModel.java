@@ -12,7 +12,7 @@ import org.pvg.plasmagraph.utils.template.Template;
  * Manipulates the ToolView to provide functionality to the multiple
  * tools available.
  * 
- * @author Gerardo A. Navas Morales
+ * @author Plasma Visualization Group
  */
 public class ToolModel {
     // Externally-contained variables.

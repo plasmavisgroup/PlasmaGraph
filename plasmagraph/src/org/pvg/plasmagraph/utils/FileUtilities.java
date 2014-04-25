@@ -4,16 +4,16 @@ import java.io.File;
 
 /**
  * 
- * @author Gerardo A. Navas Morales
+ * @author Plasma Visualization Group
  *
  */
 public class FileUtilities {
 
 	/**
-	 * Borrowed code from {@link http://docs.oracle.com/javase/tutorial/uiswing/components/filechooser.html} 's
-	 * Utils.java file.
+	 * Borrowed code from <a href = "http://docs.oracle.com/javase/tutorial/uiswing/components/filechooser.html">
+	 * Oracle's Utils.java</a> file.
 	 * @param f
-	 * @return
+	 * @return The file type name extension.
 	 */
 	public static String getExtension (File f) {
         String ext = null;

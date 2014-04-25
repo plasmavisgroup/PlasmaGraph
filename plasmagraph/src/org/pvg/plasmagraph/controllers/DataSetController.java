@@ -19,7 +19,7 @@ import org.pvg.plasmagraph.views.DataSetView;
  * embedded into MainView's JTabbedPane, and allows for communication between
  * its View and Model.
  * 
- * @author Gerardo A. Navas Morales
+ * @author Plasma Visualization Group
  */
 public class DataSetController {
 	// Externally-contained variables.
@@ -78,7 +78,7 @@ public class DataSetController {
 	 * Listener for the "chart_type" JComboBox part of the DataSetView. Relies
 	 * on FocusListener to manage messages.
 	 * 
-	 * @author Gerardo A. Navas Morales
+	 * @author Plasma Visualization Group
 	 */
 	class ChartTitleListener extends FocusAdapter {
 
@@ -101,7 +101,7 @@ public class DataSetController {
 	 * Listener for the "chart_type" JComboBox part of the DataSetView. Relies
 	 * on ActionListener to manage messages.
 	 * 
-	 * @author Gerardo A. Navas Morales
+	 * @author Plasma Visualization Group
 	 */
 	class ChartTypeListener implements ActionListener {
 
@@ -123,7 +123,7 @@ public class DataSetController {
 	 * Listener for the "group_by" JComboBox part of the DataSetView. Relies on
 	 * ActionListener to manage messages.
 	 * 
-	 * @author Gerardo A. Navas Morales
+	 * @author Plasma Visualization Group
 	 */
 	class GroupByColumnListener implements ActionListener {
 
@@ -145,7 +145,7 @@ public class DataSetController {
 	 * Listener for the "chart_type" JComboBox part of the DataSetView. Relies
 	 * on ActionListener to manage messages.
 	 * 
-	 * @author Gerardo A. Navas Morales
+	 * @author Plasma Visualization Group
 	 */
 	class XColumnListener implements ActionListener {
 
@@ -166,7 +166,7 @@ public class DataSetController {
 	 * Listener for the "chart_type" JComboBox part of the DataSetView. Relies
 	 * on ActionListener to manage messages.
 	 * 
-	 * @author Gerardo A. Navas Morales
+	 * @author Plasma Visualization Group
 	 */
 	class YColumnListener implements ActionListener {
 
@@ -187,7 +187,7 @@ public class DataSetController {
 	 * Listener for the "chart_type" JComboBox part of the DataSetView. Relies
 	 * on FocusListener to manage messages.
 	 * 
-	 * @author Gerardo A. Navas Morales
+	 * @author Plasma Visualization Group
 	 */
 	class XAxisNameListener extends FocusAdapter {
 
@@ -210,7 +210,7 @@ public class DataSetController {
 	 * Listener for the "chart_type" JComboBox part of the DataSetView. Relies
 	 * on FocusListener to manage messages.
 	 * 
-	 * @author Gerardo A. Navas Morales
+	 * @author Plasma Visualization Group
 	 */
 	class YAxisNameListener extends FocusAdapter {
 
@@ -237,7 +237,7 @@ public class DataSetController {
 	 * Listener for the "chart_type" JComboBox part of the DataSetView. Relies
 	 * on ActionListener to manage messages.
 	 * 
-	 * @author Gerardo A. Navas Morales
+	 * @author Plasma Visualization Group
 	 */
 	class XAxisTypeListener implements ActionListener {
 
@@ -263,7 +263,7 @@ public class DataSetController {
 	 * Listener for the "chart_type" JComboBox part of the DataSetView. Relies
 	 * on ActionListener to manage messages.
 	 * 
-	 * @author Gerardo A. Navas Morales
+	 * @author Plasma Visualization Group
 	 */
 	class YAxisTypeListener implements ActionListener {
 
@@ -289,7 +289,7 @@ public class DataSetController {
 	 * Listener for the "graph" JButton part of the DataSetView. Relies
 	 * on ActionListener to manage messages.
 	 * 
-	 * @author Gerardo A. Navas Morales
+	 * @author Plasma Visualization Group
 	 */
 	class GraphListener implements ActionListener {
 
@@ -305,7 +305,7 @@ public class DataSetController {
 	 * Relies on ChangeListener in order to know that a change has occurred in
 	 * the Template.
 	 * 
-	 * @author Gerardo A. Navas Morales
+	 * @author Plasma Visualization Group
 	 */
 	class DataViewTemplateListener implements ChangeListener {
 
@@ -338,7 +338,7 @@ public class DataSetController {
 	 * Relies on ChangeListener in order to know that a change has occurred in
 	 * the DataSet.
 	 * 
-	 * @author Gerardo A. Navas Morales
+	 * @author Plasma Visualization Group
 	 */
 	class DataViewHeaderDataListener implements ChangeListener {
 

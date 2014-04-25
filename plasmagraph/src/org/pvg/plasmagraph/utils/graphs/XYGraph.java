@@ -6,6 +6,7 @@ import java.awt.Paint;
 import java.awt.geom.Ellipse2D;
 
 import javax.swing.JFrame;
+import javax.swing.JOptionPane;
 
 import org.jfree.chart.ChartColor;
 import org.jfree.chart.ChartFactory;
@@ -43,7 +44,7 @@ import org.pvg.plasmagraph.utils.types.InterpolationType;
  * the rest of the system may provide it and shape it into a proper XY Scatterplot Graph
  * according to the settings in the Template.
  * 
- * @author Gerardo A. Navas Morales
+ * @author Plasma Visualization Group
  */
 public class XYGraph implements Graph {
 	
@@ -136,6 +137,20 @@ public class XYGraph implements Graph {
 	 * @throws InvalidParametersException Whenever an invalid column is found in this process.
 	 */
 	public XYGraph (Template t, DataSet ds, GraphPair p) throws InvalidParametersException {
+		if (ds.getNumberOfUniqueGroups () > 40) {
+			
+			JOptionPane.showMessageDialog (null, "The group column for this graph contains 40 or more unique groups.\n"
+					+ "As a result, the graph will probably be badly-formed. Verify the columns being graphed\n"
+					+ "and try again with a better group column selection.");
+			
+		} else if (ds.getNumberOfUniqueGroups () == 1) {
+			
+			JOptionPane.showMessageDialog (null, "The group column for this graph contains only one unique group.\n"
+					+ "As a result, the graph is unchanged compared to its ungrouped state."
+					+ "If this was not your intention, try again with a better group column selection.");
+			
+		}
+		
 		chart = createChart (createDataset (t, ds, p), t, p);
 	}
 
@@ -276,8 +291,7 @@ public class XYGraph implements Graph {
 			c.getXYPlot ().setDomainAxis (domain);
 
 		} else {// if (AxisType.LOG.equals (t.getXAxisType ())) {
-
-			System.out.println ("Does it even get here? Default X Log");
+			
 			ValueAxis domain = new LogAxis (t.getXAxisLabel ());
 			domain.setLabelFont (new Font ("Arial", Font.BOLD, 16));
 			c.getXYPlot ().setDomainAxis (domain);
@@ -293,8 +307,6 @@ public class XYGraph implements Graph {
 			c.getXYPlot ().setRangeAxis (range);
 
 		} else {// if (AxisType.LOG.equals (t.getYAxisType ())) {
-
-			System.out.println ("Does it even get here? Default Y Log");
 
 			ValueAxis range = new LogAxis (t.getYAxisLabel ());
 			range.setLabelFont (new Font ("Arial", Font.BOLD, 16));
@@ -345,16 +357,12 @@ public class XYGraph implements Graph {
 
 			if (t.isDefaultXAxisLabel ()) {
 
-				System.out.println ("Does it even get here? Default X Log");
-
 				ValueAxis domain = new LogAxis (p.getXIndexName ());// NumberAxis
 																	// ();
 				domain.setLabelFont (new Font ("Arial", Font.BOLD, 16));
 				plot.setDomainAxis (domain);
 
 			} else {
-
-				System.out.println ("Does it even get here? Custom X Log");
 
 				ValueAxis domain = new LogAxis (t.getXAxisLabel ());
 				domain.setLabelFont (new Font ("Arial", Font.BOLD, 16));
@@ -385,15 +393,11 @@ public class XYGraph implements Graph {
 
 			if (t.isDefaultYAxisLabel ()) {
 
-				System.out.println ("Does it even get here? Default Y Log");
-
 				ValueAxis range = new LogAxis (p.getYIndexName ());
 				range.setLabelFont (new Font ("Arial", Font.BOLD, 16));
 				plot.setRangeAxis (range);
 
 			} else {
-
-				System.out.println ("Does it even get here? Custom Y Log");
 
 				ValueAxis range = new LogAxis (t.getYAxisLabel ());
 				range.setLabelFont (new Font ("Arial", Font.BOLD, 16));

@@ -1,4 +1,4 @@
-package org.pvg.plasmagraph.utils.tools.outlierscan;
+package org.pvg.plasmagraph.utils.tools.outlierscan.distances;
 
 import java.util.ArrayList;
 

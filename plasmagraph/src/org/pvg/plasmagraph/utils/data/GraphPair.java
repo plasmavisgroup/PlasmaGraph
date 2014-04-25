@@ -17,7 +17,7 @@ import javax.swing.event.ChangeListener;
  * should not be made more than once. (This class may be made into a singleton
  * someday, but not yet.)
  * 
- * @author Gerardo A. Navas Morales
+ * @author Plasma Visualization Group
  */
 public class GraphPair {
 	/** Index of the grouping DataColumn. 0 points towards no proper column selected. */

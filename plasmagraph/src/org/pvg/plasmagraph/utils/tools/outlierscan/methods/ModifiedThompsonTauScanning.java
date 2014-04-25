@@ -18,7 +18,7 @@ import org.pvg.plasmagraph.utils.template.Template;
  * ModifiedThompsonTauScanning class provides a robust procedure for the analysis
  * and removal of outlying data points.
  * 
- * @author Gerardo A. Navas Morales
+ * @author Plasma Visualization Group
  */
 public class ModifiedThompsonTauScanning implements ScanMethod {
 

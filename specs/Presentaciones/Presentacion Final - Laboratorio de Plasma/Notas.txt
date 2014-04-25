@@ -1,0 +1,95 @@
+Como siempre:
+	1) [] = Notas para presentadores. No se incluye en "slides".
+	2) Resto se incluye en los slides, incluyendo los parentesis.
+	3) Cada "slide" esta marcado por el numero y el titulo del mismo.
+	4) El numero del slide no necesariamente va a ser el numero en la presentacion; solamente mide el orden de los temas.
+
+===========================================
+
+Esta presentacion sera un poco mas dirigida a como utilisar la herramienta y explicar como la herramienta hace las cosas. Por tener una audiencia diferente, la presentacion sera bastante diferente a la presentacion final del capstone.
+
+Slide - Title
+=============
+1 - Title Screen 
+
+	Presentacion - PlasmaGraph
+	PUPR Plasma Laboratory
+	Cliente: Angel Gonzales-Lizardo
+	Por: Gerardo A. Navas and Daniel Quintini
+	Profesor: Luis A. Ortiz
+
+2 - Table of Contents
+
+	Explicacion breve del programa.
+	Graficando con PlasmaGraph.
+	Herramientas opcionales.
+	Detalles de implementacion.
+
+3 - Explicacion breve del programa: Cualidades necesarias
+
+	Las cualidades necesarias para utilisar una herramienta en ves de Matlab:
+		Simple y enfocada en graficar data.
+		Programa portatil y facil de utilizar.
+		Pueda salvar grafos en imagenes.
+		Leer data en formatos ya-existentes. (Matlab: .mat)
+		Poder agrupar data por una caracteristica.
+		Interpolacion de datos.
+		Busqueda de posibles datos erroneos. (Busqueda de 'Outliers')
+			[Tendencia general de la data contra cualquier punto "bastante lejos"]
+		Poder salvar opciones seleccionadas.
+
+4 - Explicacion breve del programa: Resultado
+
+	[Incluye imagen del programa cono se ve ahora.]
+
+5 - Graficando con PlasmaGraph: Graficacion basica
+
+	[Imagen - "plasmagraph_selecting_Import_Data.png"]
+	[Imagen - "plasmagraph_Import_Data_window.png"]
+	[Imagen - "plasmagraph_selecting_columns.png"]
+	[Imagen - "plasmagraph_selecting_Graph_button_Data_tab.png"]
+	[Imagen - "plasmagraph_graph_result.png"]
+
+6 - Graficando con PlasmaGraph: Graficacion con Interpolacion
+
+	[Imagen - "plasmagraph_selecting_Import_Data.png"]
+	[Imagen - "plasmagraph_Import_Data_window.png"]
+	[Imagen - "plasmagraph_selecting_columns.png"]
+	[Imagen - "plasmagraph_selecting_Tools_tab.png"]
+	[Imagen - "plasmagraph_selecting_Interpolation_Linear.png"]
+	[Imagen - "plasmagraph_selecting_Graph_button_Tools_tab.png"]
+	[Imagen - "plasmagraph_graph_interpolation_r_value_results.png"]
+	[Imagen - "plasmagraph_graph_result.png"]
+
+7 - Graficando con PlasmaGraph: Graficacion con Agrupacion
+
+	[Imagen - "plasmagraph_selecting_Import_Data.png"]
+	[Imagen - "plasmagraph_Import_Data_window.png"]
+	[Imagen - "plasmagraph_selecting_columns.png"]
+	[Imagen - "plasmagraph_selecting_group_column.png"]
+	[Imagen - "plasmagraph_selecting_Graph_button_Data_tab.png"]
+	[Imagen - "plasmagraph_graph_result.png"]
+
+8 - Graficando con PlasmaGraph: Graficacion con Outlier Search
+
+	[Imagen - "plasmagraph_selecting_Import_Data.png"]
+	[Imagen - "plasmagraph_Import_Data_window.png"]
+	[Imagen - "plasmagraph_selecting_columns.png"]
+	[Imagen - "plasmagraph_selecting_Tools_tab.png"]
+	[Imagen - "plasmagraph_selecting_Outlier_Search_User.png"]
+	[Imagen - "plasmagraph_selecting_Outlier_Search_Distance.png"]
+	[Imagen - "plasmagraph_selecting_Graph_button_Tools_tab.png"]
+	[Imagen - "plasmagraph_graph_outlier_search_results.png"]
+	[Imagen - "plasmagraph_graph_result.png"]
+
+9 - Graficando con PlasmaGraph: Graficacion con Interpolacion y Agrupacion
+
+	[Imagen - "plasmagraph_selecting_Import_Data.png"]
+	[Imagen - "plasmagraph_Import_Data_window.png"]
+	[Imagen - "plasmagraph_selecting_columns.png"]
+	[Imagen - "plasmagraph_selecting_group_column.png"]
+	[Imagen - "plasmagraph_selecting_Tools_tab.png"]
+	[Imagen - "plasmagraph_selecting_Interpolation_Linear.png"]
+	[Imagen - "plasmagraph_selecting_Graph_button_Tools_tab.png"]
+	[Imagen - "plasmagraph_graph_multiple_interpolation_r_value_results.png"]
+	[Imagen - "plasmagraph_graph_result.png"]

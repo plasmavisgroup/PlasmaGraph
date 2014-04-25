@@ -14,9 +14,9 @@ import org.pvg.plasmagraph.utils.data.HeaderData;
 import org.pvg.plasmagraph.utils.exceptions.FunctionNotImplementedException;
 import org.pvg.plasmagraph.utils.graphs.XYGraph;
 import org.pvg.plasmagraph.utils.template.Template;
-import org.pvg.plasmagraph.utils.tools.outlierscan.OutlierDistance;
 import org.pvg.plasmagraph.utils.tools.outlierscan.distances.CartesianDistance;
 import org.pvg.plasmagraph.utils.tools.outlierscan.distances.MahalanobisDistance;
+import org.pvg.plasmagraph.utils.tools.outlierscan.distances.OutlierDistance;
 import org.pvg.plasmagraph.utils.types.ColumnType;
 import org.pvg.plasmagraph.utils.types.OutlierDistanceType;
 import org.pvg.plasmagraph.utils.types.OutlierResponse;
@@ -24,7 +24,7 @@ import org.pvg.plasmagraph.utils.types.OutlierResponse;
 /**
  * TODO
  * 
- * @author Gerardo A. Navas Morales
+ * @author Plasma Visualization Group
  */
 public class ClusterScanning implements ScanMethod {
 

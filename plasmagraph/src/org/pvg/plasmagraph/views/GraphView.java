@@ -13,7 +13,7 @@ import org.pvg.plasmagraph.utils.types.ChartType;
 /**
  * TODO
  * 
- * @author Gerardo A. Navas Morales
+ * @author Plasma Visualization Group
  */
 @SuppressWarnings ("serial")
 public class GraphView extends JFrame {
@@ -91,9 +91,9 @@ public class GraphView extends JFrame {
 		} 
 		// Verify if the X and Y Columns are the same as the Group column.
 		else if (hd.get (p.getXColumnIndex ()).getKey ().equals (
-						hd.get (p.getGroup ()).getKey ()) ||
+						p.getGroupName ()) ||
 				hd.get (p.getYColumnIndex ()).getKey ().equals (
-						hd.get (p.getGroup ()).getKey ())) {
+						p.getGroupName ())) {
 			
 			JOptionPane.showMessageDialog (
 					this, "Error: Graphing in groups requires the X and Y Columns\n"

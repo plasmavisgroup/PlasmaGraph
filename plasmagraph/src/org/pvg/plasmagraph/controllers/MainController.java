@@ -23,7 +23,7 @@ import HelpManual.HelpManual;
  * Controller for the Main MVC. Manages messages being sent around the program
  * from the MainView.
  * 
- * @author Gerardo A. Navas Morales
+ * @author Plasma Visualization Group
  */
 public class MainController {
 	/** Reference to model related to this controller. */

@@ -3,7 +3,7 @@ package org.pvg.plasmagraph.utils.types;
 /**
  * File type container object. Describes the file types that are usable in this program.
  * 
- * @author Gerardo A. Navas Morales
+ * @author Plasma Visualization Group
  */
 public class FileType {
 	/** Reference for the "CSV" File Type. */

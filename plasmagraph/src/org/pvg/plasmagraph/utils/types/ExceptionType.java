@@ -4,7 +4,7 @@ package org.pvg.plasmagraph.utils.types;
  * Setting container object for the possible types of Exceptions in 
  * the PlasmaGraph program.
  * 
- * @author Gerardo A. Navas Morales
+ * @author Plasma Visualization Group
  */
 public class ExceptionType {
 	/** Reference for a "Incorrect JFileChooser Selection" NullPointerException. */

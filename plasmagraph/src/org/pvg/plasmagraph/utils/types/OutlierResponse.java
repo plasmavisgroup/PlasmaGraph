@@ -15,7 +15,7 @@ package org.pvg.plasmagraph.utils.types;
  * already been verified beforehand.</li>
  * </ul>
  * 
- * @author Gerardo A. Navas Morales
+ * @author Plasma Visualization Group
  */
 public final class OutlierResponse {
 	/** Reference for no Outlier Scanning. */

@@ -5,7 +5,7 @@ import org.pvg.plasmagraph.views.GraphView;
 
 /**
  * 
- * @author Gerardo A. Navas Morales
+ * @author Plasma Visualization Group
  */
 public class GraphController {
 	

@@ -8,7 +8,6 @@ import org.apache.commons.math3.linear.LUDecomposition;
 import org.apache.commons.math3.linear.RealMatrix;
 import org.apache.commons.math3.ml.clustering.DoublePoint;
 import org.apache.commons.math3.stat.correlation.Covariance;
-import org.pvg.plasmagraph.utils.tools.outlierscan.OutlierDistance;
 import org.pvg.plasmagraph.utils.types.OutlierDistanceType;
 
 public class MahalanobisDistance implements OutlierDistance {

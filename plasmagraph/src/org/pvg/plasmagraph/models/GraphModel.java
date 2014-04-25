@@ -20,7 +20,7 @@ import org.pvg.plasmagraph.utils.types.ChartType;
 /**
  * TODO
  * 
- * @author Gerardo A. Navas Morales
+ * @author Plasma Visualization Group
  */
 public class GraphModel {
 

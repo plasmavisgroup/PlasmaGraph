@@ -32,7 +32,7 @@ import au.com.bytecode.opencsv.CSVWriter;
  * The class is currently non-functional due to changes in the DataSet and lack of<p>
  * support in the tools available.
  * 
- * @author Gerardo A. Navas Morales
+ * @author Plasma Visualization Group
  *//*
 public class CSVProcessor implements FileProcessor {
 	*//**	Data container for values to and from the CSVReader / Writer classes. *//*

@@ -26,7 +26,7 @@ import org.pvg.plasmagraph.utils.template.Template;
  * <p>Finally, the convention for inheriting classes is to add the suffix "Processor"
  * to the type of file it reads. (MatlabProcessor, CSVProcessor, etc.)
  * 
- * @author Gerardo A. Navas Morales
+ * @author Plasma Visualization Group
  */
 public interface FileProcessor {
 

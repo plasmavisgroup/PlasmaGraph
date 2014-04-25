@@ -3,7 +3,6 @@ package org.pvg.plasmagraph.utils.tools.outlierscan.distances;
 import java.util.ArrayList;
 
 import org.apache.commons.math3.ml.clustering.DoublePoint;
-import org.pvg.plasmagraph.utils.tools.outlierscan.OutlierDistance;
 import org.pvg.plasmagraph.utils.types.OutlierDistanceType;
 
 public class CartesianDistance implements OutlierDistance {

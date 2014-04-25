@@ -5,7 +5,7 @@ import org.jfree.data.xy.XYSeries;
 /**
  * Random class with methods that help manipulate the JFreeChart classes.
  * 
- * @author Gerardo A. Navas Morales
+ * @author Plasma Visualization Group
  */
 public class JFreeChartUtilities {
 

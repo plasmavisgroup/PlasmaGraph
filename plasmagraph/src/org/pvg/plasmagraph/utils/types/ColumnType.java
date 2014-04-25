@@ -4,7 +4,7 @@ package org.pvg.plasmagraph.utils.types;
  * Setting container object for the possible types of Columns available in 
  * the PlasmaGraph program.
  * 
- * @author Gerardo A. Navas Morales
+ * @author Plasma Visualization Group
  */
 public final class ColumnType {
 	/** Reference for a "Double" Column. */

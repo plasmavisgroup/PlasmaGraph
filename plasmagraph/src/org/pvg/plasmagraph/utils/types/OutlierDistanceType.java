@@ -14,7 +14,7 @@ package org.pvg.plasmagraph.utils.types;
  * cluster and any other point.</li>
  * </ul>
  * 
- * @author Gerardo A. Navas Morales
+ * @author Plasma Visualization Group
  */
 public class OutlierDistanceType {
 	

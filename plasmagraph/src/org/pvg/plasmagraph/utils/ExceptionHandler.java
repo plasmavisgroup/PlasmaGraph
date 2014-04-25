@@ -14,7 +14,7 @@ import com.jmatio.types.MLArray;
  * JFrame handler for all Exceptions. Contains all error-handling code that would be 
  * shown to the user.
  * 
- * @author Gerardo A. Navas Morales
+ * @author Plasma Visualization Group
  */
 public class ExceptionHandler {
 	

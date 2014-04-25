@@ -25,7 +25,7 @@ import org.pvg.plasmagraph.views.DatasetLogView;
  * deals with the modification of the Template, the DataSet, and DataFilter
  * objects.
  * 
- * @author Gerardo A. Navas Morales
+ * @author Plasma Visualization Group
  */
 public class MainModel {
     // Externally-controlled variables

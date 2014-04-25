@@ -19,7 +19,7 @@ import org.pvg.plasmagraph.utils.types.OutlierResponse;
 * into MainView's JTabbedPane, and communicates changes
 * done to the View to the Model via the Controller's Listeners.
 *
-* @author Gerardo A. Navas Morales
+* @author Plasma Visualization Group
 */
 @SuppressWarnings ("serial")
 public class ToolView extends javax.swing.JPanel {
@@ -298,7 +298,7 @@ public class ToolView extends javax.swing.JPanel {
     /**
 	* Registers the "interpolation_type" combo box as an object that should be listened to upon an option being selected.
 	*
-	* @param interpolationTypeListener ActionListener object provided by its Controller.
+	* @param interpolationTypeListener ItemListener object provided by its Controller.
 	*/
     public void addInterpolationTypeListener (ItemListener interpolationTypeListener) {
         this.interpolation_type_combo_box.addItemListener (interpolationTypeListener);
@@ -325,7 +325,7 @@ public class ToolView extends javax.swing.JPanel {
     /**
 	* Registers the "outlier_response" combo box as an object that should be listened to upon an option being selected.
 	*
-	* @param outlierResponseListener ActionListener object provided by its Controller.
+	* @param outlierResponseListener ItemListener object provided by its Controller.
 	*/
     public void addOutlierResponseListener (ItemListener outlierResponseListener) {
         this.outlier_response_combo_box.addItemListener (outlierResponseListener);
@@ -334,7 +334,7 @@ public class ToolView extends javax.swing.JPanel {
     /**
 	* Registers the "outlier_response" combo box as an object that should be listened to upon an option being selected.
 	*
-	* @param outlierResponseListener ActionListener object provided by its Controller.
+	* @param outlier_distance_type_listener ItemListener object provided by its Controller.
 	*/
     public void addOutlierDistanceTypeListener (ItemListener outlier_distance_type_listener) {
         this.outlier_distance_type_combo_box.addItemListener (outlier_distance_type_listener);
@@ -343,7 +343,7 @@ public class ToolView extends javax.swing.JPanel {
     /**
 	* Registers the "outlier_response" combo box as an object that should be listened to upon an option being selected.
 	*
-	* @param outlierResponseListener ActionListener object provided by its Controller.
+	* @param outlier_distance_listener FocusAdapter object provided by its Controller.
 	*/
     public void addOutlierDistanceListener (FocusAdapter outlier_distance_listener) {
         this.maximum_distance_text_box.addFocusListener (outlier_distance_listener);

@@ -24,7 +24,7 @@ import org.pvg.plasmagraph.utils.types.OutlierResponse;
 
 /**
  * TODO
- * @author Gerardo A. Navas Morales
+ * @author Plasma Visualization Group
  */
 @SuppressWarnings ("javadoc")
 public class OutlierSearchTest {

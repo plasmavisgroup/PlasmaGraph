@@ -32,7 +32,7 @@ import org.pvg.plasmagraph.utils.types.OutlierResponse;
  * someday, but not yet.)
  * 
  * @version 0.8.4
- * @author Gerardo A. Navas Morales
+ * @author Plasma Visualization Group
  */
 public class Template {
 	// Variables

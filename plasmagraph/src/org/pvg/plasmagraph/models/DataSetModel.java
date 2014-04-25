@@ -15,7 +15,7 @@ import org.pvg.plasmagraph.utils.types.ColumnType;
  * Manipulates both the data sets that will be used in the
  * graphs as well as the HeaderDataView itself.
  * 
- * @author Gerardo A. Navas Morales
+ * @author Plasma Visualization Group
  */
 public class DataSetModel {
     // Externally-contained variables.

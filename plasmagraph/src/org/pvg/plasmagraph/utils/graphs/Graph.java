@@ -10,7 +10,7 @@ import org.pvg.plasmagraph.utils.template.Template;
 /**
  * TODO
  * 
- * @author Gerardo A. Navas Morales
+ * @author Plasma Visualization Group
  */
 public interface Graph {
 	

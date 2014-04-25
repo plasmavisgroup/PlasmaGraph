@@ -10,7 +10,7 @@ import org.pvg.plasmagraph.models.MainModel;
  * Defines the visual organization of the primary JFrame, its menu options, and the JTabbedFrame which contains the AestheticView, DataSetView, and ToolView.
  * Also communicates changes done to the View to the Model via the Controller's Listeners.
  * 
- * @author Gerardo A. Navas Morales
+ * @author Plasma Visualization Group
  */
 @SuppressWarnings ("serial")
 public class MainView extends javax.swing.JFrame {

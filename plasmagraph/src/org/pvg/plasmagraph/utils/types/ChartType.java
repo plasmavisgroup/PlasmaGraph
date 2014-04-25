@@ -16,7 +16,7 @@ import org.pvg.plasmagraph.utils.data.HeaderData;
  * provided.</li>
  * </ul>
  * 
- * @author Gerardo A. Navas Morales
+ * @author Plasma Visualization Group
  */
 public final class ChartType {
 	/** Reference for a "XY Graph" Chart. */

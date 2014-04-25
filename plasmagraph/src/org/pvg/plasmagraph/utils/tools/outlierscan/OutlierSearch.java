@@ -16,7 +16,9 @@ public class OutlierSearch {
      * Given a DataSet with only the desired variables to scan, provides any
      * and all outliers via the IQR (Interquartile Range) method.
      * 
-     * @param ds The focused DataSet of values.
+     * @param hd HeaderData object containing all possible columns.
+     * @param t Template object containing specific information regarding Outlier Scan type selected by user.
+     * @param p GraphPair object containing specific column index values being graphed.
      * @throws FunctionNotImplementedException 
      */
     public static DataSet scanForOutliers (HeaderData hd, Template t, GraphPair p) throws FunctionNotImplementedException {

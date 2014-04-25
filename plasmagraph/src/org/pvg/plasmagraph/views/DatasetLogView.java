@@ -2,7 +2,7 @@ package org.pvg.plasmagraph.views;
 
 /**
  * 
- * @author Daniel Quintini
+ * @author Plasma Visualization Group
  */
 @SuppressWarnings ("serial")
 public class DatasetLogView extends javax.swing.JFrame {

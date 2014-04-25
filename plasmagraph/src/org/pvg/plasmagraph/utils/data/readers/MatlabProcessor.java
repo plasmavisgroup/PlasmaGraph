@@ -31,7 +31,7 @@ import org.pvg.plasmagraph.utils.types.FileType;
  * designed to verify the integrity of column sizes, validity of columns and individual
  * fields being used, and removal of invalid columns.
  * 
- * <p>Refer to {@link http://www.mathworks.com/help/pdf_doc/matlab/matfile_format.pdf}
+ * <p>Refer to MathWork's <a href = "http://www.mathworks.com/help/pdf_doc/matlab/matfile_format.pdf">matfile_format.pdf</a>}
  * for information regarding the Matlab file formats; specifically, focus on the Level 5 format,
  * as it is the format this class is designed to read from. Due to the nuances of Matlab Level-5
  * columns, this system uses the external library JMatIO to process .mat files into a HashMap
@@ -42,7 +42,7 @@ import org.pvg.plasmagraph.utils.types.FileType;
  * contained in Matlab Cells of Characters,(MLCell and MLChar, respectively) and that the data
  * is provided in the first column of any given Matlab Array. (MLArray)
  * 
- * @author Daniel Quintini and Gerardo A. Navas Morales
+ * @author Plasma Visualization Group and Gerardo A. Navas Morales
  */
 public class MatlabProcessor implements FileProcessor {
 

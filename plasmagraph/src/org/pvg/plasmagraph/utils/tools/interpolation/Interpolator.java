@@ -35,7 +35,7 @@ import org.pvg.plasmagraph.utils.types.InterpolationType;
 /**
  * TODO
  * 
- * @author Gerardo A. Navas Morales
+ * @author Plasma Visualization Group
  */
 public class Interpolator {
 	
@@ -141,7 +141,7 @@ public class Interpolator {
     		
     		// Combine both Collections, and then return an XYGraph of them all!
     		for (Object s : grouped_interpolations.getSeries ()) {
-    			if (s != null) {
+    			if (s != null && grouped_sets.indexOf ((XYSeries) s) == -1) {
     				grouped_sets.addSeries ((XYSeries) s);
     			}
     		}

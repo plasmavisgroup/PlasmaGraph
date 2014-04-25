@@ -3,22 +3,20 @@ package org.pvg.plasmagraph.utils.tools;
 import org.pvg.plasmagraph.utils.types.AlphaType;
 
 /**
- * Compares the Pearson Coefficient R values provided by the Interpolator Class
+ * <p>Compares the Pearson Coefficient R values provided by the Interpolator Class
  * to values provided by the standardized Pearson critical value table. (Example
- * found in {@link http
- * ://www.gifted.uconn.edu/siegle/research/correlation/corrchrt.htm}, but
- * <b>MANY</b> others exist!)
+ * found <a href = "http://www.gifted.uconn.edu/siegle/research/correlation/corrchrt.htm">here</a>,
+ * but <b>MANY</b> others exist!)
  * 
- * A note should be made for negative values provided by the Interpolator Class;
- * as stated in {@link http
- * ://www.gifted.uconn.edu/siegle/research/correlation/alphaleve.htm}, the
- * negative component of an R-value does not detract from an interpolation's
+ * <p>A note should be made for negative values provided by the Interpolator Class;
+ * as stated <a href = "http://www.gifted.uconn.edu/siegle/research/correlation/alphaleve.htm">here</a>, 
+ * the negative component of an R-value does not detract from an interpolation's
  * validity; the negative component signifies its direction (upwards tendencies
  * yield positive R values, whereas downward tendencies yield negative values.),
  * whereas its magnitude is what determines the confidence the user should have
  * with said interpolation.
  * 
- * @author Gerardo A. Navas Morales
+ * @author Plasma Visualization Group
  */
 public class DataConfidence {
 
@@ -26,10 +24,10 @@ public class DataConfidence {
 	 * Provides a Confidence Interval value that can be then used to assume a
 	 * correlation between two columns of data or not.
 	 * 
-	 * @param number_of_data_points
-	 * @param alpha
-	 * @return
-	 * @throws Exception
+	 * @param number_of_data_points The value of n for this data set.
+	 * @param alpha The desired CI alpha value; either .01, .02, .05, or .10.
+	 * @return A double containing the requisite CI value.
+	 * @throws Exception if the alpha values do not correspond to the four usable alpha values.
 	 */
 	private static double getConfidenceInterval (int number_of_data_points,
 			AlphaType alpha) throws Exception {

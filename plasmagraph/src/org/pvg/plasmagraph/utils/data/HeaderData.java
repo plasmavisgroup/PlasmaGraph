@@ -29,7 +29,7 @@ import org.pvg.plasmagraph.utils.types.FileType;
  * should not be made more than once. (This class may be made into a singleton
  * someday, but not yet.)
  * 
- * @author Gerardo A. Navas Morales
+ * @author Plasma Visualization Group
  */
 public class HeaderData implements Iterable<Pair <String, ColumnType>> {
 	// Event Firing
@@ -333,7 +333,6 @@ public class HeaderData implements Iterable<Pair <String, ColumnType>> {
 	 * 
 	 * @param file File object to add to Map.
 	 * @param type File extension of object.
-	 * @return Boolean describinb the success or failure of the operation.
 	 */
 	public void setFile (File file, FileType type) {
 		this.file = new Pair <File, FileType> (file, type);

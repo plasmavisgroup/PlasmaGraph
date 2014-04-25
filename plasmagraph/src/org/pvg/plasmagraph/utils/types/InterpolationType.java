@@ -20,7 +20,7 @@ package org.pvg.plasmagraph.utils.types;
  * pass through every point in the graph.</li>
  * </ul>
  * 
- * @author Gerardo A. Navas Morales
+ * @author Plasma Visualization Group
  */
 public final class InterpolationType {
 	/** Reference for No Regression. */

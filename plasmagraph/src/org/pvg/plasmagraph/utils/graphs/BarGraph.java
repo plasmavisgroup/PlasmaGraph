@@ -33,7 +33,7 @@ import org.pvg.plasmagraph.utils.types.AxisType;
  * The class is currently non-functional due to changes in the DataSet and lack of<p>
  * support in the tools available.
  * 
- * @author Gerardo A. Navas Morales
+ * @author Plasma Visualization Group
  */
 public class BarGraph implements Graph {
 	JFreeChart chart;

@@ -15,7 +15,7 @@ import org.pvg.plasmagraph.views.*;
  * <p>Creates the primary data objects and MVC architecture objects before
  * providing control (i.e. visibility) to MainView.
  * 
- * @author Gerardo A. Navas Morales
+ * @author Plasma Visualization Group
  */
 public class PlasmaGraph {
 

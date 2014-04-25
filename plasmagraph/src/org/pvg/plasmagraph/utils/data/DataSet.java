@@ -25,7 +25,7 @@ import com.jmatio.types.MLChar;
  * <p>Container of the data in a graph before conversion into a JFreeChart Dataset type.
  * <p>Provides methods to create JFree Datasets.
  * 
- * @author Gerardo A. Navas Morales
+ * @author Plasma Visualization Group
  */
 public class DataSet {
 	
@@ -45,8 +45,6 @@ public class DataSet {
 	
 	/**
 	 * <p>Basic constructor. Creates an ungrouped DataSet.
-	 * 
-	 * @param p GraphPair object used to provide the Column names.
 	 */
 	public DataSet () {
 		// Set names
@@ -163,7 +161,6 @@ public class DataSet {
 	 * 
 	 * @param x_name Name to use for the X Column.
 	 * @param y_name Name to use for the Y Column.
-	 * @param p GraphPair object used to provide the Column names.
 	 */
 	public DataSet (String x_name, String y_name) {
 		// Set names
@@ -1258,5 +1255,37 @@ public class DataSet {
 		//} else {
 		//	return (0);
 		//}
+	}
+	
+	public int getNumberOfUniqueGroups () {
+		if (ColumnType.DOUBLE.equals (this.group_type)) {
+			
+			ArrayList <Double> d_array = new ArrayList <> ();
+			
+			for (double d : this.group_column_double) {
+				if (!d_array.contains (d)) {
+					d_array.add (d);
+				}
+			}
+			
+			return (d_array.size ());
+			
+		} else if (ColumnType.STRING.equals (this.group_type)) {
+			
+			ArrayList <String> s_array = new ArrayList <> ();
+			
+			for (String s : this.group_column_string) {
+				if (!s_array.contains (s)) {
+					s_array.add (s);
+				}
+			}
+			
+			return (s_array.size ());
+			
+		} else {
+			
+			return (0);
+			
+		}
 	}
 }

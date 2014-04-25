@@ -20,7 +20,7 @@ import org.pvg.plasmagraph.views.ToolView;
  * Controller for the Tool MVC.
  * Manages messages being sent around the program from the ToolView.
  * 
- * @author Gerardo A. Navas Morales
+ * @author Plasma Visualization Group
  */
 public class ToolController {
     // Externally-contained variables.
@@ -65,7 +65,7 @@ public class ToolController {
      * Relies on ActionListener in order to know that a change in selected item
      * occured.
      * 
-     * @author Gerardo A. Navas Morales
+     * @author Plasma Visualization Group
      */
     class InterpolationTypeListener implements ItemListener {
         
@@ -93,7 +93,7 @@ public class ToolController {
      * Relies on ActionListener in order to know that a change in selected item
      * occured.
      * 
-     * @author Gerardo A. Navas Morales
+     * @author Plasma Visualization Group
      */
  /*   class InterpolationLowerBoundListener extends FocusAdapter {
         
@@ -118,7 +118,7 @@ public class ToolController {
      * Relies on ActionListener in order to know that a change in selected item
      * occured.
      * 
-     * @author Gerardo A. Navas Morales
+     * @author Plasma Visualization Group
      */
 /*    class InterpolationUpperBoundListener extends FocusAdapter {
         
@@ -143,7 +143,7 @@ public class ToolController {
      * Relies on ActionListener in order to know that a change in selected item
      * occured.
      * 
-     * @author Gerardo A. Navas Morales
+     * @author Plasma Visualization Group
      */
     class OutlierResponseListener implements ItemListener {
         
@@ -169,7 +169,7 @@ public class ToolController {
      * Relies on ActionListener in order to know that a change in selected item
      * occured.
      * 
-     * @author Gerardo A. Navas Morales
+     * @author Plasma Visualization Group
      */
     class OutlierDistanceTypeListener implements ItemListener {
         
@@ -195,7 +195,7 @@ public class ToolController {
      * Relies on ActionListener in order to know that a change in selected item
      * occured.
      * 
-     * @author Gerardo A. Navas Morales
+     * @author Plasma Visualization Group
      */
     class OutlierDistanceListener extends FocusAdapter {
         
@@ -217,7 +217,7 @@ public class ToolController {
 	 * Listener for the "graph" JButton part of the DataSetView. Relies
 	 * on ActionListener to manage messages.
 	 * 
-	 * @author Gerardo A. Navas Morales
+	 * @author Plasma Visualization Group
 	 */
 	class GraphListener implements ActionListener {
 
@@ -233,7 +233,7 @@ public class ToolController {
      * Relies on ChangeListener in order to know that a change has occurred
      * in the Template. 
      * 
-     * @author Gerardo A. Navas Morales
+     * @author Plasma Visualization Group
      */
     class ToolViewTemplateListener implements ChangeListener {
 

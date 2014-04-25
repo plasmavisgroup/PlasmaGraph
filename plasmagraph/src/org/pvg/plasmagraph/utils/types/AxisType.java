@@ -18,7 +18,7 @@ package org.pvg.plasmagraph.utils.types;
  * categories; these are usually words, but can also be numbers.</li>
  * </ul>
  * 
- * @author Gerardo A. Navas Morales
+ * @author Plasma Visualization Group
  */
 public final class AxisType {
 	/** Reference for a "Number Axis" Chart. */

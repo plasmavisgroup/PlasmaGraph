@@ -16,7 +16,7 @@ package org.pvg.plasmagraph.utils.types;
  * above, or an invalid possibility.</li>
  * </ul>
  * 
- * @author Gerardo A. Navas Morales
+ * @author Plasma Visualization Group
  */
 public final class AlphaType {
 	/** Reference for the 99% CI. */
