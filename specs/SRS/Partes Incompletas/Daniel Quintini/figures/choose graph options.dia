@@ -91,7 +91,7 @@
         <dia:point val="7.75,11.305"/>
       </dia:attribute>
       <dia:attribute name="obj_bb">
-        <dia:rectangle val="6.45,8.555;9.05,14.055"/>
+        <dia:rectangle val="5.9675,8.555;9.55181,14.055"/>
       </dia:attribute>
       <dia:attribute name="meta">
         <dia:composite type="dict"/>
@@ -117,7 +117,7 @@
       <dia:attribute name="text">
         <dia:composite type="text">
           <dia:attribute name="string">
-            <dia:string>#End user#</dia:string>
+            <dia:string>#Data Analyst#</dia:string>
           </dia:attribute>
           <dia:attribute name="font">
             <dia:font family="sans" style="0" name="Helvetica"/>

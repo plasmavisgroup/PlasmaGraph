@@ -65,16 +65,16 @@
   <dia:layer name="Background" visible="true" active="true">
     <dia:object type="UML - Actor" version="0" id="O0">
       <dia:attribute name="obj_pos">
-        <dia:point val="33.1,9.655"/>
+        <dia:point val="8.05,9.755"/>
       </dia:attribute>
       <dia:attribute name="obj_bb">
-        <dia:rectangle val="31.8,6.905;34.4,12.405"/>
+        <dia:rectangle val="6.2675,7.005;9.8325,12.505"/>
       </dia:attribute>
       <dia:attribute name="meta">
         <dia:composite type="dict"/>
       </dia:attribute>
       <dia:attribute name="elem_corner">
-        <dia:point val="31.85,6.955"/>
+        <dia:point val="6.8,7.055"/>
       </dia:attribute>
       <dia:attribute name="elem_width">
         <dia:real val="2.5"/>
@@ -94,7 +94,7 @@
       <dia:attribute name="text">
         <dia:composite type="text">
           <dia:attribute name="string">
-            <dia:string>#End user#</dia:string>
+            <dia:string>#Data Analyst#</dia:string>
           </dia:attribute>
           <dia:attribute name="font">
             <dia:font family="sans" style="0" name="Helvetica"/>
@@ -103,7 +103,7 @@
             <dia:real val="0.80000000000000004"/>
           </dia:attribute>
           <dia:attribute name="pos">
-            <dia:point val="33.1,12.195"/>
+            <dia:point val="8.05,12.295"/>
           </dia:attribute>
           <dia:attribute name="color">
             <dia:color val="#000000"/>
@@ -307,7 +307,7 @@
         <dia:point val="16.425,12.9813"/>
       </dia:attribute>
       <dia:attribute name="obj_bb">
-        <dia:rectangle val="16.425,12.5863;19.1775,13.0638"/>
+        <dia:rectangle val="16.425,12.5744;19.1894,13.0877"/>
       </dia:attribute>
       <dia:attribute name="text">
         <dia:composite type="text">
@@ -337,21 +337,21 @@
     </dia:object>
     <dia:object type="Standard - Line" version="0" id="O7">
       <dia:attribute name="obj_pos">
-        <dia:point val="31.85,9.655"/>
+        <dia:point val="9.3,9.755"/>
       </dia:attribute>
       <dia:attribute name="obj_bb">
-        <dia:rectangle val="17.6923,9.60482;31.9002,9.75518"/>
+        <dia:rectangle val="9.24937,9.65437;13.2956,9.80563"/>
       </dia:attribute>
       <dia:attribute name="conn_endpoints">
-        <dia:point val="31.85,9.655"/>
-        <dia:point val="17.7425,9.705"/>
+        <dia:point val="9.3,9.755"/>
+        <dia:point val="13.245,9.705"/>
       </dia:attribute>
       <dia:attribute name="numcp">
         <dia:int val="1"/>
       </dia:attribute>
       <dia:connections>
-        <dia:connection handle="0" to="O0" connection="3"/>
-        <dia:connection handle="1" to="O1" connection="4"/>
+        <dia:connection handle="0" to="O0" connection="4"/>
+        <dia:connection handle="1" to="O1" connection="3"/>
       </dia:connections>
     </dia:object>
   </dia:layer>
