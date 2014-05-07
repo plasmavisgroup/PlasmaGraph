@@ -108,6 +108,7 @@ public class MainModel {
                  		 	p.reset ();
                      	 }
                       } catch (Exception ex) {
+                    	  System.out.println (ex.fillInStackTrace ());
                      	 ExceptionHandler.handleMalformedDataFileException ("Matlab File Reader");
                       }
                       

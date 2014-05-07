@@ -12,6 +12,8 @@ import java.util.Map;
 import java.util.Map.Entry;
 import java.util.Set;
 
+import javax.swing.JOptionPane;
+
 import org.apache.commons.math3.util.Pair;
 import org.pvg.plasmagraph.utils.ExceptionHandler;
 import org.pvg.plasmagraph.utils.data.DataSet;
@@ -145,21 +147,17 @@ public class MatlabProcessor implements FileProcessor {
 	 * <p>Invalid columns are those which do not have enough data in them to graph.
 	 */
 	private void removeInvalidColumns () {
-		// Now, verify that the data extracted has no nulls. If it does, remove
-		// them.
+		// Now, verify that the data extracted has no nulls. If it does, remove them.
 		// Find it and remove it.
 		Set <Map.Entry <String, MLArray>> s = this.mat_data.entrySet ();
 		ArrayList <Map.Entry <String, MLArray>> remove_array = new ArrayList <> (
 				this.mat_data.size ());
 
+		// Remove only nulls in columns that aren't the Header column.
 		for (Map.Entry <String, MLArray> e : s) {
-			if (!this.containsData (e)) {
-				// System.out.println ("Nothing in " + e.getKey () +
-				// "! Removing it.");
-				remove_array.add (e);
-			} else {
-				// System.out.println ("Found at least two points in " +
-				// e.getKey () + "! Keeping it!");
+			if ((!this.isHeaderColumn (e.getKey ())) && (!this.containsData (e))) {
+
+					remove_array.add (e);
 			}
 		}
 
@@ -208,16 +206,11 @@ public class MatlabProcessor implements FileProcessor {
 			for (int i = 0; (i < mxCELL_values.getM ())
 					&& (amount_of_data <= 2); ++i) {
 
-				// System.out.println ("Value: " + ((MLChar) mxCELL_values.get
-				// (i, 0)).getString (0));
-				// System.out.println ("Is valid? " + this.isValid (((MLChar)
-				// mxCELL_values.get (i, 0)).getString (0)));
-
 				if (this.isValid ( ((MLChar) mxCELL_values.get (i, 0))
 						.getString (0))) {
 					amount_of_data += 1;
 				}
-			} // TODO: Does this even work?
+			}
 
 		} else {
 
@@ -272,35 +265,45 @@ public class MatlabProcessor implements FileProcessor {
 
 				// Scan for a header MLArray, first. (Named "header" or
 				// "Header".)
-				if (this.mat_data.containsKey ("Header") || this.mat_data.containsKey ("header")) {
+				if (this.containsHeader ()) {
 					for (Entry <String, MLArray> e : this.mat_data.entrySet ()) {
 						
-						String s = e.getKey ();
-						if ("header".equals (s) || "Header".equals (s)) {
-
-							// Save the column as the name column!
+						if (this.isHeaderColumn (e.getKey ())) {
+							
+							//System.out.println ("This is a header column!");
+							
+							// Create a list of the column names contained in the header array!
+							// We're going to assume that all headers are going to be MLCells of MLChars.
+							// I mean, how else are you going to handle strings?
 							List <String> header = new ArrayList <String> (this.mat_data.size () - 1);
 							for (MLArray m : ((MLCell) e.getValue ()).cells ()) {
 								header.add (((MLChar) m).getString (0));
+								//System.out.println ("Parameter Name: " + ((MLChar) m).getString (0));
 							}
 							
-							// Remove the first MLArray before this next part.
+							
+							// Remove the Header MLArray before this next part.
 							this.mat_data.remove (e.getValue ());
 							
 							// Fill up the contents of the HeaderData object!
+							// WARNING: THIS ASSUMES BOTH THE MATLAB DATA AND HEADER LIST ARE IN THE SAME ORDER.
 							int i = 0;
 							for (String variable_name : this.mat_data.keySet ()) {
-								// Get the type...
-								ColumnType col_type = this.getType (this.mat_data.get (variable_name));
-
-								// And put it in.
-								hd.add (new Pair <> (header.get (i).trim (), col_type));
-								i += 1;
+								
+								//System.out.println ("Parameter Name: " + header.get (i));
+								
+								if (!this.isHeaderColumn (variable_name)) {
+									// Put in the correct header name and type.
+									hd.add (new Pair <> (header.get (i).trim (), 
+											this.getType (this.mat_data.get (variable_name))));
+								}
+								++i;
 							}
 							
 						}
 					}
 				}
+				
 				// If there is no column with said name, take the first column
 				// and check if it could be it.
 				else if (this.mat_data.values ().iterator ().next ().isCell ()) {
@@ -352,6 +355,11 @@ public class MatlabProcessor implements FileProcessor {
 		}
 	}
 
+	private boolean containsHeader () {
+		return (this.mat_data.containsKey ("Header") || this.mat_data.containsKey ("header")
+				|| this.mat_data.containsKey ("Headers") || this.mat_data.containsKey ("headers"));
+	}
+
 	/**
 	 * <p>Helper method. Provides the type of a MLArray's contents via its key, a
 	 * String.
@@ -386,32 +394,41 @@ public class MatlabProcessor implements FileProcessor {
 		int n = -1;
 		int m = -1;
 
-		for (MLArray mat_array : this.mat_data.values ()) {
-			// Determine if the object is an MLCell. If it is, recurse further
-			// before continuing!
-			if (mat_array instanceof MLCell) {
+		//for (MLArray mat_array : this.mat_data.values ()) {
+		for (Map.Entry <String, MLArray> e : this.mat_data.entrySet ()) {
+			
+			// First, make sure the MLArray isn't the header column!
+			if (!this.isHeaderColumn (e.getKey ())) {
+				
+				// If it's not, then check the contents!
+				MLArray mat_array = e.getValue ();
+				
+				// Determine if the object is an MLCell. If it is, recurse further
+				// before continuing!
+				if (mat_array instanceof MLCell) {
 
-				if (! ((MLCell) mat_array).cells ().get (0).isChar ()) {
-					return (false);
-				}
-
-			} else {
-				// Check if they haven't been first set yet.
-				if (n == -1) {
-
-					n = mat_array.getN ();
-
-				} else if (m == -1) {
-
-					m = mat_array.getM ();
-
-				}
-
-				// Otherwise, check if the m and n are equal to its values.
-
-				else {
-					if (! ( (n == mat_array.getN ()) && (m == mat_array.getM ()))) {
+					if (! ((MLCell) mat_array).cells ().get (0).isChar ()) {
 						return (false);
+					}
+
+				} else {
+					// Check if they haven't been first set yet.
+					if (n == -1) {
+
+						n = mat_array.getN ();
+
+					} else if (m == -1) {
+
+						m = mat_array.getM ();
+
+					}
+
+					// Otherwise, check if the m and n are equal to its values.
+
+					else {
+						if (! ( (n == mat_array.getN ()) && (m == mat_array.getM ()))) {
+							return (false);
+						}
 					}
 				}
 			}
@@ -622,6 +639,7 @@ public class MatlabProcessor implements FileProcessor {
 	private void verifyDataIntegrity (HashMap <String, MLArray> columns,
 			DataSet ds) throws FunctionNotImplementedException,
 			InvalidDataSizeException {
+		int number_of_invalid_rows = 0;
 		// Test the arrays for valid data before inserting them into the
 		// DataSet.
 		if (columns.size () == 2 || columns.size () == 3) {
@@ -728,13 +746,20 @@ public class MatlabProcessor implements FileProcessor {
 						}
 					}
 
+				} else {
+					number_of_invalid_rows += 1;
 				}
 
 			}
 
 		} else {
+			
 			throw (new InvalidDataSizeException ("MatlabProcessor"));
 		}
+		
+		// Finally, show the number of rows removed due to invalid data.
+		JOptionPane.showMessageDialog (null, "There were " + number_of_invalid_rows + 
+				"rows removed from the graph due to invalid data.");
 	}
 
 	/**
@@ -884,5 +909,10 @@ public class MatlabProcessor implements FileProcessor {
 	 */
 	public Map <String, MLArray> getData () {
 		return (this.mat_data);
+	}
+	
+	private boolean isHeaderColumn (String variable_name) {
+		return ("header".equals (variable_name) || "Header".equals (variable_name)
+				|| "headers".equals (variable_name) || "Headers".equals (variable_name));
 	}
 }

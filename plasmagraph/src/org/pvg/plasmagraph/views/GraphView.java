@@ -55,8 +55,7 @@ public class GraphView extends JFrame {
 		
 		// Verify if data exists in the HeaderData object.
 		else if (!hd.hasValidGraphTypes (
-					this.graph_model.getTemplate ().getChartType (),
-					p)) {
+				this.graph_model.getTemplate ().getChartType (), p)) {
 				
 				JOptionPane.showMessageDialog (
 						this, "Error: This graph does not have the correct column types for the selected chart type.\n"
