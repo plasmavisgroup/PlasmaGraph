@@ -11,6 +11,6 @@
 	<classpathentry kind="lib" path="lib/JARs/junit-4.11.jar"/>
 	<classpathentry kind="lib" path="lib/JARs/opencsv-2.3.jar"/>
 	<classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER"/>
-	<classpathentry kind="lib" path="C:/Users/tako/Documents/GitHub/PlasmaGraph/plasmagraph/lib/JARs/jh.jar"/>
+	<classpathentry kind="lib" path="lib/JARs/jh.jar"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>
