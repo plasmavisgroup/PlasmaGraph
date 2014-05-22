@@ -837,65 +837,73 @@ public class MatlabProcessor implements FileProcessor {
 			sb.append (System.getProperty ("line.separator"));
 
 			sb.append ("Values: [");
-
+			
+			String prefix = "";
 			switch (m.getValue ().getType ()) {
-			case mxUNKNOWN_CLASS:
-				break;
-			case mxCELL_CLASS:
-				MLCell mxCELL_values = (MLCell) m.getValue ();
-				for (int i = 0; i < mxCELL_values.getM (); i++) {
-					sb.append ( ((MLChar) mxCELL_values.get (i, 0))
-							.getString (0));
-					sb.append (", ");
-				}
-				break;
-			case mxSTRUCT_CLASS:
-				break;
-			case mxCHAR_CLASS:
-				MLChar mxCHAR_values = (MLChar) m.getValue ();
-				for (int i = 0; i < mxCHAR_values.getM (); i++) {
-					sb.append (mxCHAR_values.getString (i));
-					sb.append (", ");
-				}
-				break;
-			case mxSPARSE_CLASS:
-				break;
-			case mxDOUBLE_CLASS:
-				MLDouble mxDOUBLE_values = (MLDouble) m.getValue ();
-				for (int i = 0; i < mxDOUBLE_values.getM (); i++) {
-					sb.append (mxDOUBLE_values.get (i, 0));
-					sb.append (", ");
-				}
-				break;
-			case mxSINGLE_CLASS:
-				break;
-			case mxINT8_CLASS:
-				break;
-			case mxUINT8_CLASS:
-				break;
-			case mxINT16_CLASS:
-				break;
-			case mxUINT16_CLASS:
-				break;
-			case mxINT32_CLASS:
-				break;
-			case mxUINT32_CLASS:
-				break;
-			case mxINT64_CLASS:
-				break;
-			case mxUINT64_CLASS:
-				break;
-			case mxFUNCTION_CLASS:
-				break;
-			case mxOPAQUE_CLASS:
-				break;
-			case mxOBJECT_CLASS:
-				break;
-			default:
-				break;
+				case mxUNKNOWN_CLASS:
+					break;
+				case mxCELL_CLASS:
+					prefix = "";
+					MLCell mxCELL_values = (MLCell) m.getValue ();
+					for (int i = 0; i < mxCELL_values.getM (); i++) {
+						sb.append(prefix);
+						sb.append ( ((MLChar) mxCELL_values.get (i, 0))
+								.getString (0));
+						prefix = ", ";
+					}
+					break;
+				case mxSTRUCT_CLASS:
+					break;
+				case mxCHAR_CLASS:
+					prefix = "";
+					MLChar mxCHAR_values = (MLChar) m.getValue ();
+					for (int i = 0; i < mxCHAR_values.getM (); i++) {
+						sb.append(prefix);
+						sb.append (mxCHAR_values.getString (i));
+						prefix = ", ";
+					}
+					break;
+				case mxSPARSE_CLASS:
+					break;
+				case mxDOUBLE_CLASS:
+					prefix = "";
+					MLDouble mxDOUBLE_values = (MLDouble) m.getValue ();
+					for (int i = 0; i < mxDOUBLE_values.getM (); i++) {
+						sb.append(prefix);
+						sb.append (mxDOUBLE_values.get (i, 0));
+						prefix = ", ";
+					}
+					break;
+				case mxSINGLE_CLASS:
+					break;
+				case mxINT8_CLASS:
+					break;
+				case mxUINT8_CLASS:
+					break;
+				case mxINT16_CLASS:
+					break;
+				case mxUINT16_CLASS:
+					break;
+				case mxINT32_CLASS:
+					break;
+				case mxUINT32_CLASS:
+					break;
+				case mxINT64_CLASS:
+					break;
+				case mxUINT64_CLASS:
+					break;
+				case mxFUNCTION_CLASS:
+					break;
+				case mxOPAQUE_CLASS:
+					break;
+				case mxOBJECT_CLASS:
+					break;
+				default:
+					break;
 			}
 
 			sb.append ("]");
+			sb.append (System.getProperty ("line.separator"));
 			sb.append (System.getProperty ("line.separator"));
 		}
 
