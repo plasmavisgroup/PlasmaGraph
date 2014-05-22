@@ -8,6 +8,7 @@ import org.apache.commons.math3.util.Pair;
 import org.junit.Test;
 import org.pvg.plasmagraph.utils.data.DataSet;
 import org.pvg.plasmagraph.utils.data.GraphPair;
+import org.pvg.plasmagraph.utils.data.HeaderColumn;
 import org.pvg.plasmagraph.utils.data.HeaderData;
 //import org.pvg.plasmagraph.utils.data.readers.CSVProcessor;
 import org.pvg.plasmagraph.utils.data.readers.MatlabProcessor;
@@ -52,8 +53,8 @@ public class HeaderDataTest {
 		}
 		
 		// Test
-		assertTrue (hd.remove (new Pair <> (column_names[0], column_types[0])));
-		assertFalse (hd.remove (new Pair <> (column_names[0], column_types[0])));
+		assertTrue (hd.remove (0));
+		assertFalse (hd.remove (0));
 		
 	}
 
@@ -75,8 +76,8 @@ public class HeaderDataTest {
 		
 		// Test
 		int i = 0;
-		for (Pair <String, ColumnType> p : hd) {
-			assertTrue (hd.find (p) == i);
+		for (HeaderColumn hc : hd) {
+			assertTrue (hd.find (hc) == i);
 			i += 1;
 		}
 		
@@ -101,8 +102,8 @@ public class HeaderDataTest {
 		}
 		
 		// Test
-		for (Pair <String, ColumnType> p : hd) {
-			assertTrue (hd.contains (p));
+		for (HeaderColumn hc : hd) {
+			assertTrue (hd.contains (hc));
 		}
 		
 	}
@@ -125,8 +126,8 @@ public class HeaderDataTest {
 		
 		// Test
 		int i = 0;
-		for (Pair <String, ColumnType> p : hd) {
-			assertTrue (hd.get (i).equals (p));
+		for (HeaderColumn hc : hd) {
+			assertTrue (hd.get (i).equals (hc));
 			i += 1;
 		}
 

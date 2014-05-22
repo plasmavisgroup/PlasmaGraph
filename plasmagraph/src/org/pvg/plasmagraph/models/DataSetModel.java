@@ -6,6 +6,7 @@ import javax.swing.DefaultComboBoxModel;
 
 import org.apache.commons.math3.util.Pair;
 import org.pvg.plasmagraph.utils.data.GraphPair;
+import org.pvg.plasmagraph.utils.data.HeaderColumn;
 import org.pvg.plasmagraph.utils.data.HeaderData;
 import org.pvg.plasmagraph.utils.template.Template;
 import org.pvg.plasmagraph.utils.types.ColumnType;
@@ -77,7 +78,7 @@ public class DataSetModel {
 	public ComboBoxModel <String> resetXAxisColumn () {
 		DefaultComboBoxModel <String> x_column = new DefaultComboBoxModel <String> ();
 
-		for (Pair <String, ColumnType> p : this.hd) {
+		for (HeaderColumn p : this.hd) {
 			if (ColumnType.DOUBLE.equals (p.getValue ())) {
 				x_column.addElement (p.getKey ());
 			}
@@ -97,7 +98,7 @@ public class DataSetModel {
 	public ComboBoxModel <String> resetYAxisColumn () {
 		DefaultComboBoxModel <String> y_column = new DefaultComboBoxModel <String> ();
 
-		for (Pair <String, ColumnType> p : this.hd) {
+		for (HeaderColumn p : this.hd) {
 			if (ColumnType.DOUBLE.equals (p.getValue ())) {
 				y_column.addElement (p.getKey ());
 			}

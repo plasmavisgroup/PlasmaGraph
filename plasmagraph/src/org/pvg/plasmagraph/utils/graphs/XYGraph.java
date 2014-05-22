@@ -321,6 +321,7 @@ public class XYGraph implements Graph {
 		plot.setBackgroundPaint (Color.WHITE);
 		plot.setRangeGridlinePaint (Color.BLACK);
 		plot.setDomainGridlinePaint (Color.BLACK);
+
 	}
 
 	/**

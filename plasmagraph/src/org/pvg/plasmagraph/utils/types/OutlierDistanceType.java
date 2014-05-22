@@ -64,8 +64,8 @@ public class OutlierDistanceType {
 	 */
     public static String [] getOptions () {
     	return (new String []
-    			{OutlierDistanceType.MAHALANOBIS.toString (),
-    			OutlierDistanceType.USER.toString ()
+    			{OutlierDistanceType.USER.toString (),
+    			OutlierDistanceType.MAHALANOBIS.toString ()
     			//OutlierDistanceType.STDEV.toString ()
     			});
     }

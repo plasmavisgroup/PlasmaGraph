@@ -116,48 +116,6 @@ public class Template {
 		this.outlier_distance				= 0.0;
 	}
 	
-	/**
-	 * <p>Constructor for Template objects. Provides user-assigned values to new Template object.
-	 * @param name The name of the chart to be created. (String)
-	 * @param type ChartType object containing the type of graph to make. (ChartType)
-	 * @param x The name of the x axis for the chart to be created. (String)
-	 * @param y The name of the y axis for the chart to be created. (String)
-	 * @param legend If the legend will be visible on the chart. (boolean)
-	 * @param tooltips If tool tips will be available on the chart. (boolean)
-	 * @param urls If URLs will be generated for the chart. (boolean)
-	 * @param o The orientation of the range axis. (PlotOrientation) [PlotOrientation.HORIZONTAL or PlotOrientation.VERTICAL.]
-	 * @param x_type AxisType that the X Axis will use. (AxisType)
-	 * @param y_type AxisType that the Y Axis will use. (AxisType)
-	 * @param interpolation Type of interpolation that will be performed. (InterpolationType)
-	 * @param outlier Type of response that the outlier search will provide. (OutlierResponse)
-	 * @param lower Lower bound of the interpolated data. (double)
-	 * @param upper Upper bound of the interpolated data. (double)
-	 * @param n Number of points to graph in the interpolated data. (int)
-	 */
-	public Template (String name, ChartType type, String x, String y, 
-			boolean legend, boolean tooltips, boolean urls, PlotOrientation o,
-			AxisType x_type, AxisType y_type,
-			InterpolationType interpolation, OutlierResponse outlier,
-			double lower, double upper, int n) {
-		this.chart_name 					= name;
-		this.chart_type 					= type;
-		this.x_axis_label 					= x;
-		this.y_axis_label 					= y;
-		this.using_legend 					= legend;
-		this.using_tooltips 				= tooltips;
-		this.generate_urls 					= urls;
-		this.orientation					= o;
-		this.x_axis_type					= x_type;
-		this.y_axis_type					= y_type;
-		this.default_interpolation_type 	= interpolation;
-		this.default_outlier_reaction 		= outlier;
-		this.interpolation_lower_range 		= lower;
-		this.interpolation_upper_range		= upper;
-		this.interpolation_point_amount		= n;
-		this.outlier_distance_type 			= OutlierDistanceType.MAHALANOBIS;
-		this.outlier_distance				= 0.0;
-	}
-	
 	// Event Methods
 	/**
 	 * <p>Adds the listener provided to the notification list.

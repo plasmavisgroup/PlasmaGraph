@@ -15,10 +15,11 @@ import java.util.Set;
 import javax.swing.JOptionPane;
 
 import org.apache.commons.math3.util.Pair;
-import org.pvg.plasmagraph.utils.ExceptionHandler;
 import org.pvg.plasmagraph.utils.data.DataSet;
 import org.pvg.plasmagraph.utils.data.GraphPair;
+import org.pvg.plasmagraph.utils.data.HeaderColumn;
 import org.pvg.plasmagraph.utils.data.HeaderData;
+import org.pvg.plasmagraph.utils.exceptions.ExceptionHandler;
 import org.pvg.plasmagraph.utils.exceptions.FunctionNotImplementedException;
 import org.pvg.plasmagraph.utils.exceptions.InvalidDataSizeException;
 import org.pvg.plasmagraph.utils.exceptions.InvalidFileException;
@@ -263,47 +264,36 @@ public class MatlabProcessor implements FileProcessor {
 			hd.reset ();
 			if (this.checkColumnSizes ()) {
 
-				// Scan for a header MLArray, first. (Named "header" or
-				// "Header".)
+				//=====================================================================================//
+				// Labelled Headered Data Procedure.
+				//=====================================================================================//
+				// Scan for a header MLArray, first.
 				if (this.containsHeader ()) {
 					for (Entry <String, MLArray> e : this.mat_data.entrySet ()) {
 						
 						if (this.isHeaderColumn (e.getKey ())) {
 							
-							//System.out.println ("This is a header column!");
-							
-							// Create a list of the column names contained in the header array!
-							// We're going to assume that all headers are going to be MLCells of MLChars.
-							// I mean, how else are you going to handle strings?
-							List <String> header = new ArrayList <String> (this.mat_data.size () - 1);
-							for (MLArray m : ((MLCell) e.getValue ()).cells ()) {
-								header.add (((MLChar) m).getString (0));
-								//System.out.println ("Parameter Name: " + ((MLChar) m).getString (0));
-							}
-							
-							
-							// Remove the Header MLArray before this next part.
-							this.mat_data.remove (e.getValue ());
-							
-							// Fill up the contents of the HeaderData object!
-							// WARNING: THIS ASSUMES BOTH THE MATLAB DATA AND HEADER LIST ARE IN THE SAME ORDER.
+							// Create the HeaderData object!
 							int i = 0;
+							ArrayList <MLArray> graph_names = ((MLCell) e.getValue ()).cells ();
 							for (String variable_name : this.mat_data.keySet ()) {
 								
-								//System.out.println ("Parameter Name: " + header.get (i));
-								
-								if (!this.isHeaderColumn (variable_name)) {
-									// Put in the correct header name and type.
-									hd.add (new Pair <> (header.get (i).trim (), 
-											this.getType (this.mat_data.get (variable_name))));
-								}
+								String graph_name = ((MLChar) graph_names.get (i)).getString (0).trim ();
+
+								ColumnType column_type = this.getType (this.mat_data.get (variable_name));
+								hd.add (new HeaderColumn (
+										variable_name,
+										//graph_name,
+										column_type));
 								++i;
+								
 							}
-							
 						}
 					}
 				}
-				
+				//=====================================================================================//
+				// Unlabelled Headered Data Procedure.
+				//=====================================================================================//
 				// If there is no column with said name, take the first column
 				// and check if it could be it.
 				else if (this.mat_data.values ().iterator ().next ().isCell ()) {
@@ -324,21 +314,34 @@ public class MatlabProcessor implements FileProcessor {
 						ColumnType col_type = this.getType (this.mat_data.get (variable_name));
 
 						// And put it in.
-						hd.add (new Pair <> (header.get (i).trim (), col_type));
+						hd.add (new HeaderColumn (
+								header.get (i).trim (), 
+								//header.get (i).trim (), 
+								col_type));
 						i += 1;
 					}
 					
 				}
+				//=====================================================================================//
+				// Unheadered Data Procedure.
+				//=====================================================================================//
 				// Otherwise, take the file's variable names as the column names as normal.
 				else {
 					for (String variable_name : this.mat_data.keySet ()) {
-						// Get the type...
-						ColumnType col_type = this.getType (this.mat_data.get (variable_name));
+						// TODO: Remove once Headered Data Reading works.
+						if (!this.isHeaderColumn (variable_name)) {
+							// Get the type...
+							ColumnType col_type = this.getType (this.mat_data.get (variable_name));
 
-						// And put it in.
-						hd.add (new Pair <> (variable_name.trim (), col_type));
+							// And put it in.
+							hd.add (new HeaderColumn (
+									variable_name.trim (), 
+									//variable_name.trim (), 
+									col_type));
+						}
 					}
 				}
+				//=====================================================================================//
 
 				// Then add that new file to the DataSet's list of files to
 				// import.
@@ -355,9 +358,18 @@ public class MatlabProcessor implements FileProcessor {
 		}
 	}
 
+	/**
+	 * <p>Private helper method. Returns a boolean stating if a Header column exists in the "mat_data".
+	 * 
+	 * <p>CURRENTLY DISABLED. This is because of a mismatch between the determinism of the data file's
+	 * header column's order and the non-determism of the HashMap JMatIO puts the data into.
+	 * 
+	 * @return False, always.
+	 */
 	private boolean containsHeader () {
-		return (this.mat_data.containsKey ("Header") || this.mat_data.containsKey ("header")
-				|| this.mat_data.containsKey ("Headers") || this.mat_data.containsKey ("headers"));
+		/*return (this.mat_data.containsKey ("Header") || this.mat_data.containsKey ("header")
+				|| this.mat_data.containsKey ("Headers") || this.mat_data.containsKey ("headers"));*/
+		return (false);
 	}
 
 	/**
@@ -478,27 +490,47 @@ public class MatlabProcessor implements FileProcessor {
 		// Before trying to populate the columns Map, check if there's a "header" column to use for
 		// 	column name / variable translations.
 		Map <String, String> header_dictionary = new HashMap <> (this.mat_data.size () - 1);
-		for (Entry <String, MLArray> e : this.mat_data.entrySet ()) {
+		
+		if (this.containsHeader ()) {
+			for (Entry <String, MLArray> e : this.mat_data.entrySet ()) {
 
-			if (e.getKey ().equals ("Header") || e.getKey ().equals ("header")) {
-				
-				//System.out.println ("Found the header!");
-				for (int i = 0; (i < e.getValue ().getM ()); ++i) {
+				if (this.isHeaderColumn (e.getKey ())) {
 					
-					// The "header_name" is obtained from the MLCell in the same way any other Matlab String is obtained in this formatting of data.
-					String header_name = ((MLChar) ( ((MLCell) e.getValue ())
-							.cells ().get (i))).getString (0);
+					//System.out.println ("Found the header!");
+					for (int i = 0; (i < e.getValue ().getM ()); ++i) {
+						
+						// The "header_name" is obtained from the MLCell in the same way any other Matlab String is obtained in this formatting of data.
+						String header_name = ((MLChar) ( ((MLCell) e.getValue ())
+								.cells ().get (i))).getString (0);
+						
+						// The "variable_name" is obtained from the Map's MLArray's name variable.
+						int c_counter = 0; String variable_name = "";
+						for (Entry <String, MLArray> c : this.mat_data.entrySet ()) {
+							
+							// If it's this one, save the name and run out.
+							System.out.println ("I am at: " + c_counter);
+							System.out.println ("But looking for: " + i);
+							if (c_counter == i) {
+								variable_name = c.getKey ();
+								//break;
+							}
+							System.out.println ("I'm done with this round.");
+							// If not found, add to the counter and continue.
+							c_counter++;
+						}
+						
+						// Finally, put that combination into the dictionary.
+						header_dictionary.put (header_name, variable_name);
+					}
 					
-					// The "variable_name" is obtained from the Map's MLArray's name variable.
-					String variable_name = ((ArrayList <MLArray>) this.mat_data.values ()).get (i + 1).getName ();
-					
-					// Finally, put that combination into the dictionary.
-					header_dictionary.put (header_name, variable_name);
+					// After all that, make sure to remove this entry from the "mat_data" object!
+					this.mat_data.remove (e.getKey ());
 				}
-				
-				// After all that, make sure to remove this entry from the "mat_data" object!
-				this.mat_data.remove (e.getKey ());
 			}
+		}
+		
+		for (Map.Entry <String, String> translation : header_dictionary.entrySet ()) {
+			System.out.println ("Translation: " + translation.getKey () + " => " + translation.getValue ());
 		}
 
 		// Verify if said "header" column was ever found.

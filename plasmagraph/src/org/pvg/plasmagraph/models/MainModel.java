@@ -8,11 +8,11 @@ import javax.swing.JFileChooser;
 import javax.swing.JOptionPane;
 import javax.swing.filechooser.FileNameExtensionFilter;
 
-import org.pvg.plasmagraph.utils.ExceptionHandler;
 import org.pvg.plasmagraph.utils.FileUtilities;
 import org.pvg.plasmagraph.utils.data.GraphPair;
 import org.pvg.plasmagraph.utils.data.HeaderData;
 import org.pvg.plasmagraph.utils.data.readers.MatlabProcessor;
+import org.pvg.plasmagraph.utils.exceptions.ExceptionHandler;
 import org.pvg.plasmagraph.utils.types.ExceptionType;
 import org.pvg.plasmagraph.utils.types.FileType;
 import org.pvg.plasmagraph.utils.template.Template;

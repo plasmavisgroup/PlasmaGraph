@@ -7,6 +7,7 @@ import java.util.Iterator;
 import java.util.ListIterator;
 import java.util.Set;
 
+import javax.swing.JOptionPane;
 import javax.swing.event.ChangeEvent;
 import javax.swing.event.ChangeListener;
 
@@ -31,17 +32,17 @@ import org.pvg.plasmagraph.utils.types.FileType;
  * 
  * @author Plasma Visualization Group
  */
-public class HeaderData implements Iterable<Pair <String, ColumnType>> {
+public class HeaderData implements Iterable<HeaderColumn> {
 	// Event Firing
     /** Collection of listeners for any change that occurs in this HeaderData. */
     private Set <ChangeListener> listeners;
-	/** Container for Pair <String, ColumnType>s. */
-	private ArrayList <Pair<String, ColumnType>> columns;
+	/** Container for HeaderColumns. */
+	private ArrayList <HeaderColumn> columns;
 	/** Container for Files containing data for this object. */
 	private Pair <File, FileType> file;
 
 	/**
-	 * <p>Constructor. Creates a new ArrayList of Pair <String, ColumnType>s for this object.
+	 * <p>Constructor. Creates a new ArrayList of HeaderColumns for this object.
 	 * There should only exist one HeaderData for any given time.
 	 */
 	public HeaderData () {
@@ -51,63 +52,75 @@ public class HeaderData implements Iterable<Pair <String, ColumnType>> {
 	}
 
 	/**
-	 * <p>Allows a new Pair <String, ColumnType> into the HeaderData if and only if its length
+	 * <p>Allows a new HeaderColumn into the HeaderData if and only if its length
 	 * is the same as every other column. (Read: The first one is checked.)
 	 * 
-	 * @param o Pair of column name and column type to add to the HeaderData.
+	 * @param o HeaderColumn to add to the collection.
 	 * @return Boolean describing the success or failure of the action.
 	 */
-	public boolean add (Pair <String, ColumnType> o) {
+	public boolean add (HeaderColumn o) {
 		boolean b = this.columns.add (o);
 		this.notifyListeners ();
+		System.out.println ("Adding new column to HeaderList: " + o.toString ());
 		return (b);
 	}
 	
 	/**
-	 * <p>Allows a new Pair <String, ColumnType> into the HeaderData if and only if its length
+	 * <p>Allows a new HeaderColumn into the HeaderData if and only if its length
 	 * is the same as every other column. (Read: The first one is checked.)
 	 * 
-	 * @param s String name of the column being added.
+	 * @param v Variable name of the column being added.
+	 * @param g Graph's name of the column being added.
 	 * @param o ColumnType of the column being added.
 	 * @return Boolean describing the success or failure of the action.
 	 */
-	public boolean add (String s, ColumnType o) {
-		return (this.add (new Pair<> (s, o)));
+	public boolean add (String v, ColumnType o) {//String g, ColumnType o) {
+		return (this.add (new HeaderColumn (v, o)));//g, o)));
 	}
 
 	/**
-	 * <p>Removes a Pair <String, ColumnType> from the HeaderData.
+	 * <p>Removes a HeaderColumn from the HeaderData.
 	 * 
-	 * @param o The Pair <String, ColumnType> to remove.
+	 * @param o The HeaderColumn to remove.
 	 * @return Boolean describing the success or failure of the action.
 	 */
-	public boolean remove (Pair <String, ColumnType> o) {
+	public boolean remove (HeaderColumn o) {
 		boolean b = this.columns.remove (o);
 		this.notifyListeners ();
 		return (b);
 	}
 	
 	/**
-	 * <p>Searches all Pair <String, ColumnType>s for the column provided.
+	 * <p>Removes a HeaderColumn from the HeaderData via its index position.
+	 * 
+	 * @param i The index value of the HeaderColumn to remove.
+	 * @return Boolean describing the success or failure of the action.
+	 */
+	public boolean remove (int i) {
+		boolean b = this.columns.remove (this.columns.get (i));
+		this.notifyListeners ();
+		return (b);
+	}
+	
+	/**
+	 * <p>Searches all HeaderColumns for the column provided.
 	 * 
 	 * @param o The column being searched.
-	 * @return The integer index of the Pair <String, ColumnType> being searched for.
+	 * @return The integer index of the HeaderColumn being searched for.
 	 */
-	public int find (Pair <String, ColumnType> o) {
+	public int find (HeaderColumn o) {
 		return (this.columns.indexOf (o));
 	}
 	
 	/**
-	 * <p>Searches all Pair <String, ColumnType>s for the column name provided.
+	 * <p>Searches all HeaderColumns for the column name provided.
 	 * 
-	 * @param o The name / key of the pair being searched for.
-	 * @return The integer index of the Pair <String, ColumnType> being searched for.
+	 * @param o The variable name / key of the pair being searched for.
+	 * @return The integer index of the HeaderColumn being searched for.
 	 */
 	public int find (String o) {
-		ListIterator <Pair<String, ColumnType>> find_iterator = this.columns.listIterator ();
-		
 		for (int i = 0; (i < this.size ()); ++i) {
-			if (this.columns.get (i).getKey ().equals (o)) {
+			if (this.columns.get (i).getVariableName ().equals (o)) {
 				return (i);
 			}
 		}
@@ -116,47 +129,47 @@ public class HeaderData implements Iterable<Pair <String, ColumnType>> {
 	}
 
 	/**
-	 * <p>Searches for a specific Pair <String, ColumnType>. Responds if it found it or not.
+	 * <p>Searches for a specific HeaderColumn. Responds if it found it or not.
 	 * 
 	 * @param o Column being searched for.
 	 * @return A boolean stating if the column was found or not.
 	 */
-	public boolean contains (Pair <String, ColumnType> o) {
+	public boolean contains (HeaderColumn o) {
 		return (this.columns.contains (o));
 	}
 
 	/**
-	 * <p>Getter method. Provides access to a Pair <String, ColumnType> at an index's location.
+	 * <p>Getter method. Provides access to a HeaderColumn at an index's location.
 	 * 
-	 * @param i The index where the desired Pair <String, ColumnType> is located.
-	 * @return The Pair <String, ColumnType> at the index location.
+	 * @param i The index where the desired HeaderColumn is located.
+	 * @return The HeaderColumn at the index location.
 	 */
-	public Pair <String, ColumnType> get (int i) {
+	public HeaderColumn get (int i) {
 		return (this.columns.get (i));
 	}
 	
 	/**
-	 * <p>Getter method. Provides whether the one Pair <String, ColumnType> is a DoubleColumn.
+	 * <p>Getter method. Provides whether the one HeaderColumn is a DoubleColumn.
 	 * 
 	 * @param index Integer value specifying the target column.
 	 * @return Boolean stating if the column if of type Double.
 	 */
 	public boolean isDouble (int index) {
-		return (this.columns.get (index).getValue () == ColumnType.DOUBLE);
+		return (this.columns.get (index).getColumnType () == ColumnType.DOUBLE);
 	}
 	
 	/**
-	 * <p>Getter method. Provides whether the one Pair <String, ColumnType> is a StringColumn.
+	 * <p>Getter method. Provides whether the one HeaderColumn is a StringColumn.
 	 * 
 	 * @param index Integer value specifying the target column.
 	 * @return Boolean stating if the column if of type String.
 	 */
 	public boolean isString (int index) {
-		return (this.columns.get (index).getValue () == ColumnType.STRING);
+		return (this.columns.get (index).getColumnType () == ColumnType.STRING);
 	}
 	
 	/**
-	 * <p>Getter method. Provides whether the one Pair <String, ColumnType> is a DateTimeColumn.
+	 * <p>Getter method. Provides whether the one HeaderColumn is a DateTimeColumn.
 	 * 
 	 * <p>As of this writing (V. 1.0), this returns false because the code to manage them in
 	 * graphs is currently not working.
@@ -166,7 +179,7 @@ public class HeaderData implements Iterable<Pair <String, ColumnType>> {
 	 */
 	public boolean isDateTime (int index) {
 		return (false); 
-		//return (this.columns.get (index).getValue () == ColumnType.DATETIME);
+		//return (this.columns.get (index).getColumnType () == ColumnType.DATETIME);
 	}
 
 	/**
@@ -187,7 +200,7 @@ public class HeaderData implements Iterable<Pair <String, ColumnType>> {
 	public String toString () {
 		StringBuilder sb = new StringBuilder ();
 		
-		for (Pair <String, ColumnType> p : this.columns) {
+		for (HeaderColumn p : this.columns) {
 			sb.append (p.getKey ()).append (", ")
 				.append (p.getValue ().toString ()).append ("\n");
 		}
@@ -212,7 +225,21 @@ public class HeaderData implements Iterable<Pair <String, ColumnType>> {
 			
 				ds = this.getData (file, p);
 				
-		} catch (Exception ex) {
+		} // Errors!
+		// 1. What if the classes are incorrect? Developer Error.
+		catch (ClassCastException ex) {
+			JOptionPane.showMessageDialog (null,
+					"Data Type mismatch: Cannot populate graph with data due to invalid type.");
+		}
+		
+		// 2. What if the function isn't implemented yet?
+		catch (FunctionNotImplementedException ex) {
+			JOptionPane.showMessageDialog (null,
+					"Functional Error: Cannot graph using data due to lack of means to process it.");
+		}
+		
+		// 3. General exceptions.
+		catch (Exception ex) {
 			
 			// Trying to grab two data sets when there's only one?
 			System.out.println ("Error in HeaderData!\n" + ex.toString ());
@@ -284,7 +311,7 @@ public class HeaderData implements Iterable<Pair <String, ColumnType>> {
 	
 	// Iterator / Iterable methods.
 	@Override
-	public Iterator<Pair <String, ColumnType>> iterator () {
+	public Iterator<HeaderColumn> iterator () {
 		return (this.columns.iterator ());
 	}
 	
