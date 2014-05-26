@@ -10,7 +10,7 @@ import org.pvg.plasmagraph.utils.types.AxisType;
 import org.pvg.plasmagraph.utils.types.ChartType;
 
 /**
- * 
+ * <p>Graphical User Interface class designed to present the organization of the Data Set Tab on the Settings Window.
  * @author Plasma Visualization Group
  */
 @SuppressWarnings ("serial")

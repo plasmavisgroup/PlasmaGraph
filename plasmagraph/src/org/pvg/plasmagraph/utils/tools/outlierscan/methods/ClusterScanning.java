@@ -12,7 +12,6 @@ import org.pvg.plasmagraph.utils.data.DataSet;
 import org.pvg.plasmagraph.utils.data.GraphPair;
 import org.pvg.plasmagraph.utils.data.HeaderData;
 import org.pvg.plasmagraph.utils.exceptions.FunctionNotImplementedException;
-import org.pvg.plasmagraph.utils.graphs.XYGraph;
 import org.pvg.plasmagraph.utils.template.Template;
 import org.pvg.plasmagraph.utils.tools.outlierscan.distances.CartesianDistance;
 import org.pvg.plasmagraph.utils.tools.outlierscan.distances.MahalanobisDistance;
@@ -193,7 +192,7 @@ public class ClusterScanning implements ScanMethod {
 		return (outliers);
 	}
 
-	/**
+/*	*//**
 	 * Provides a list of outliers from the total group of clustered data.
 	 * Assumes largest concentration of points is the line/curve, and all other
 	 * clusters are outliers.
@@ -203,7 +202,7 @@ public class ClusterScanning implements ScanMethod {
 	 * 
 	 * @param dbl_cluster The collection of clusters created by the DBSCAN procedure.
 	 * @return A list of points that are outliers from the "dbl_cluster" input.
-	 */
+	 *//*
 	private static List <DoublePoint> getOutliers (List<Cluster<DoublePoint>> dbl_cluster) {
 		
 		// Prepare the data containers.
@@ -229,7 +228,7 @@ public class ClusterScanning implements ScanMethod {
 		}
 		
 		return (outliers);
-	}
+	}*/
 	
 	/**
 	 * Removes the outliers from the primary array.

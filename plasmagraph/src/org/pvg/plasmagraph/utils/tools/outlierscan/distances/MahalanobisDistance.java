@@ -1,6 +1,5 @@
 package org.pvg.plasmagraph.utils.tools.outlierscan.distances;
 
-import java.math.BigDecimal;
 import java.util.ArrayList;
 
 import org.apache.commons.math3.linear.Array2DRowRealMatrix;
@@ -86,6 +85,8 @@ public class MahalanobisDistance implements OutlierDistance {
 		return (OutlierDistanceType.MAHALANOBIS.toString ());
 	}
 	
+	// Test Methods
+	@SuppressWarnings ("unused")
 	private void printArrayContents (ArrayList <DoublePoint> p_array) {
 		System.out.println ("Contents of ArrayList \'outlier_array\': ");
     	for (DoublePoint p : p_array) {
@@ -93,6 +94,7 @@ public class MahalanobisDistance implements OutlierDistance {
     	}
 	}
 	
+	@SuppressWarnings ("unused")
 	private void printMatrixContents (RealMatrix m) {
 		System.out.println (m.getRowDimension () + " x " + m.getColumnDimension ());
         System.out.println (m.toString ());

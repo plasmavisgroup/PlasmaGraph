@@ -6,9 +6,7 @@ import javax.swing.JTabbedPane;
 import org.pvg.plasmagraph.models.MainModel;
 
 /**
- * View for the program settings modification pane.
- * Defines the visual organization of the primary JFrame, its menu options, and the JTabbedFrame which contains the AestheticView, DataSetView, and ToolView.
- * Also communicates changes done to the View to the Model via the Controller's Listeners.
+ * <p>Graphical User Interface class designed to present the organization of the Settings Window, including its Menu Bar.
  * 
  * @author Plasma Visualization Group
  */
@@ -47,7 +45,7 @@ public class MainView extends javax.swing.JFrame {
         import_template_option = new javax.swing.JMenuItem ();
         save_template_option = new javax.swing.JMenuItem ();
         help_menu = new javax.swing.JMenu ();
-        help_menu_about = new javax.swing.JMenuItem();
+        //help_menu_about = new javax.swing.JMenuItem();
         help_menu_manual = new javax.swing.JMenuItem();
         options_menu = new javax.swing.JMenu ();
         exit_menu_option = new javax.swing.JMenuItem ();
@@ -143,7 +141,7 @@ public class MainView extends javax.swing.JFrame {
     private javax.swing.JMenuItem save_template_option;
     
     private javax.swing.JMenu help_menu;
-    private javax.swing.JMenuItem help_menu_about;
+    //private javax.swing.JMenuItem help_menu_about;
     private javax.swing.JMenuItem help_menu_manual; 
     
     private javax.swing.JMenu options_menu;

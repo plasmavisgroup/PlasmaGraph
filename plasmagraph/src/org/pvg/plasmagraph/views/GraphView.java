@@ -11,7 +11,7 @@ import org.pvg.plasmagraph.utils.graphs.XYGraph;
 import org.pvg.plasmagraph.utils.types.ChartType;
 
 /**
- * TODO
+ * <p>Graphical User Interface class designed to present the organization of the Graph Window, including the graph it contains.
  * 
  * @author Plasma Visualization Group
  */
@@ -170,9 +170,5 @@ public class GraphView extends JFrame {
 		this.pack ();
 		this.setVisible (true);
 
-	}
-	
-	private void log (String string) {
-		System.out.println (string);
 	}
 }
