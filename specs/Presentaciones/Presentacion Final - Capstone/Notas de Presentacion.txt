@@ -49,10 +49,10 @@ Slide - Title
 	
 	[Incluye imagen del programa como se ve ahora.]
 
-	Las cualidades necesarias del programa se implementaron de la siguiente forma:
+	[Las cualidades necesarias del programa se implementaron de la siguiente forma:
 		Un panel visual con opciones y herramientas.
 		Un panel visual con el grafo siempre visible y guardable ("Right-click").
-		Un boton de graficacion (Llamado "Graph") en el panel de opciones y herramientas.
+		Un boton de graficacion (Llamado "Graph") en el panel de opciones y herramientas.]
 
 5 - Explicacion breve: Herramientas para implementacion
 

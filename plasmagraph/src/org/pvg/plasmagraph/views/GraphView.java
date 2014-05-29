@@ -150,7 +150,7 @@ public class GraphView extends JFrame {
 		//this.graphUpdate ();
 		
 		// Change background color.
-		chart.getPlot ().setBackgroundPaint (Color.WHITE);
+		chart.setBackgroundPaint (Color.WHITE);
 		
 		if (ChartType.XY_GRAPH.equals (
 				this.graph_model.getTemplate ().getChartType ())) {

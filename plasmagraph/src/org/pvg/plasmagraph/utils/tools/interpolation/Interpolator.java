@@ -397,11 +397,6 @@ public class Interpolator {
 			double [] y_column = new double [ds.size ()];
 			ds.orderData (x_column, y_column);
 			
-			// Test: Show what the hell the columns contain.
-			for (int i = 0; (i < x_column.length); ++i) {
-				System.out.println ("(" + x_column[i] + ", " + y_column[i] + ")");
-			}
-			
 	    	// Get Function to create data.
 	    	SplineInterpolator spline = new SplineInterpolator ();
 	    	PolynomialSplineFunction func = spline.interpolate (x_column, y_column);

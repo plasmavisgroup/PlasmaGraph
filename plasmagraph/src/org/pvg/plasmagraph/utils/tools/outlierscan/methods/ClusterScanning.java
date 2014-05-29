@@ -83,14 +83,13 @@ public class ClusterScanning implements ScanMethod {
 		dbl_cluster = outlier_clustering.cluster (data_array);
 		
 		// View data.
-		System.out.println ("Distance is: " + outlier_clustering.getEps ());
-		for (Cluster <DoublePoint> c : dbl_cluster) {
+		/*for (Cluster <DoublePoint> c : dbl_cluster) {
 			System.out.println ("New Cluster\nPoints in this cluster: " + c.getPoints ().size ());
 			
 			for (DoublePoint p : c.getPoints ()) {
 				System.out.println (p.toString ());
 			}
-		}
+		}*/
 		
 		// Determine if the user wants to be told of the outliers.
 		if (t.getOutlierResponse () == OutlierResponse.WARN) {

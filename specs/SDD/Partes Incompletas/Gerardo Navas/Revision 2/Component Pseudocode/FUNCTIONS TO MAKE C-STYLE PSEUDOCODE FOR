@@ -1,0 +1,32 @@
+FUNCTIONS TO MAKE C-STYLE PSEUDOCODE FOR
+========================================
+
+PlasmaGraph: main ()
+
+MainModel: importData ()
+MainModel: importTemplate ()
+MainModel: saveTemplate ()
+MainModel: prepareDataLog ()
+
+GraphModel: graph () 
+GraphModel: unscannedGraphing (boolean)
+GraphModel: scannedGraphing (boolean)
+GraphModel: graphEmptyChart ()
+
+GraphView: graphUpdate () [maybe??]
+
+HeaderData: populateData (GraphPair) + getData (Pair <File, FileType>, GraphPair)
+DataSet: toXYGraphDataset (GraphPair)
+DataSet toGroupedXYGraphDataSet (GraphPair)
+
+MatlabProcessor: getHeaders (HeaderData)
+MatlabProcessor: toDataSet (DataSet, GraphPair, HeaderData)
+
+XYGraph: createChart (Dataset, Template, GraphPair)
+
+Template: saveTemplate (String)
+Template: openTemplate (File)
+
+Interpolator: interpolate ()
+
+ClusterScanning: scan (HeaderData, Template, GraphPair)

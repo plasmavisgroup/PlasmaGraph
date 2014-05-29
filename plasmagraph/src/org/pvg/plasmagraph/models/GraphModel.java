@@ -1,6 +1,5 @@
 package org.pvg.plasmagraph.models;
 
-import javax.swing.JOptionPane;
 import javax.swing.event.ChangeListener;
 
 import org.jfree.chart.JFreeChart;

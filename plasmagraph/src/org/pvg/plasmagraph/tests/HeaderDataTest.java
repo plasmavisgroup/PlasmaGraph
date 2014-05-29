@@ -4,7 +4,6 @@ import static org.junit.Assert.*;
 
 import java.io.File;
 
-import org.apache.commons.math3.util.Pair;
 import org.junit.Test;
 import org.pvg.plasmagraph.utils.data.DataSet;
 import org.pvg.plasmagraph.utils.data.GraphPair;
@@ -12,7 +11,7 @@ import org.pvg.plasmagraph.utils.data.HeaderColumn;
 import org.pvg.plasmagraph.utils.data.HeaderData;
 //import org.pvg.plasmagraph.utils.data.readers.CSVProcessor;
 import org.pvg.plasmagraph.utils.data.readers.MatlabProcessor;
-import org.pvg.plasmagraph.utils.template.Template;
+//import org.pvg.plasmagraph.utils.template.Template;
 import org.pvg.plasmagraph.utils.types.ColumnType;
 
 @SuppressWarnings ("javadoc")
@@ -238,9 +237,6 @@ public class HeaderDataTest {
 				+ "/plasmagraph/test/matlab/Parameter2013-06-11.mat";
 		
 		try {
-			// Prepare Template
-			Template t = new Template ();
-			
 			// Prepare Data
 			MatlabProcessor csv = new MatlabProcessor (new File (data));
 			HeaderData hd = new HeaderData ();

@@ -3,30 +3,30 @@
   realizations="true" associations="true" dependencies="false" nesting-relationships="true">  
   <interface id="1" language="java" name="org.pvg.plasmagraph.utils.graphs.Graph" project="plasmagraph" 
     file="/plasmagraph/src/org/pvg/plasmagraph/utils/graphs/Graph.java" binary="false" corner="BOTTOM_RIGHT">    
-    <position height="-1" width="-1" x="222" y="203"/>    
-    <display autosize="true" stereotype="true" package="true" initial-value="true" signature="true" accessors="true" 
+    <position height="53" width="149" x="406" y="120"/>    
+    <display autosize="true" stereotype="true" package="true" initial-value="false" signature="true" accessors="true" 
       visibility="true">      
-      <attributes public="true" package="true" protected="true" private="true" static="true"/>      
-      <operations public="true" package="true" protected="true" private="true" static="true"/>    
+      <attributes public="false" package="false" protected="false" private="false" static="false"/>      
+      <operations public="false" package="false" protected="false" private="false" static="false"/>    
     </display>  
   </interface>  
   <class id="2" language="java" name="org.pvg.plasmagraph.utils.graphs.XYGraph" project="plasmagraph" 
     file="/plasmagraph/src/org/pvg/plasmagraph/utils/graphs/XYGraph.java" binary="false" corner="BOTTOM_RIGHT">    
-    <position height="-1" width="-1" x="606" y="205"/>    
-    <display autosize="true" stereotype="true" package="true" initial-value="true" signature="true" accessors="true" 
+    <position height="-1" width="-1" x="481" y="259"/>    
+    <display autosize="true" stereotype="true" package="true" initial-value="false" signature="true" accessors="true" 
       visibility="true">      
-      <attributes public="true" package="true" protected="true" private="true" static="true"/>      
-      <operations public="true" package="true" protected="true" private="true" static="true"/>    
+      <attributes public="false" package="false" protected="false" private="false" static="false"/>      
+      <operations public="false" package="false" protected="false" private="false" static="false"/>    
     </display>  
   </class>  
   <realization id="3">    
     <end type="SOURCE" refId="2"/>    
     <end type="TARGET" refId="1"/>  
   </realization>  
-  <classifier-display autosize="true" stereotype="true" package="true" initial-value="true" signature="true" 
+  <classifier-display autosize="true" stereotype="true" package="true" initial-value="false" signature="true" 
     accessors="true" visibility="true">    
-    <attributes public="true" package="true" protected="true" private="true" static="true"/>    
-    <operations public="true" package="true" protected="true" private="true" static="true"/>  
+    <attributes public="false" package="false" protected="false" private="false" static="false"/>    
+    <operations public="false" package="false" protected="false" private="false" static="false"/>  
   </classifier-display>  
   <association-display labels="true" multiplicity="true"/>
 </class-diagram>

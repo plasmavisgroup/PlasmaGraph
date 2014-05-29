@@ -308,16 +308,4 @@ public class DataSetTest {
 		
 		return (ds);
 	}
-	
-	private DataSet createLargeDataSet (int size) {
-		DataSet ds = new DataSet ();
-		
-		for (int i = 0; (i < size); ++i) {
-			ds.addToX (i);
-			ds.addToY (i);
-		}
-		
-		return (ds);
-	}
-
 }

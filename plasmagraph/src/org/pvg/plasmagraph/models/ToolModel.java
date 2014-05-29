@@ -19,7 +19,8 @@ public class ToolModel {
     /** Reference to MainModel's Template, passed via constructor reference. */
     private Template t;
     /** Reference to MainModel's DataSet, passed via constructor reference. */
-    private HeaderData hd;
+    @SuppressWarnings ("unused")
+	private HeaderData hd;
     /** Reference to MainModel's GraphPair, passed via constructor reference. */
     private GraphPair p;
     

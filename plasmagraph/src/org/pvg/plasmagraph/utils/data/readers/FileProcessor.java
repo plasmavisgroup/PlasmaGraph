@@ -1,12 +1,10 @@
 package org.pvg.plasmagraph.utils.data.readers;
 
 import java.io.File;
-import java.util.ArrayList;
 
 import org.pvg.plasmagraph.utils.data.DataSet;
 import org.pvg.plasmagraph.utils.data.GraphPair;
 import org.pvg.plasmagraph.utils.data.HeaderData;
-import org.pvg.plasmagraph.utils.template.Template;
 
 /**
  * <p>Interface for all classes that manage files for the PlasmaGraph program.

@@ -6,14 +6,12 @@ import java.util.Random;
 
 import javax.swing.JOptionPane;
 
-import org.jfree.chart.plot.PlotOrientation;
 import org.junit.Test;
 import org.pvg.plasmagraph.utils.data.DataSet;
 import org.pvg.plasmagraph.utils.data.GraphPair;
 import org.pvg.plasmagraph.utils.data.HeaderData;
 import org.pvg.plasmagraph.utils.data.readers.MatlabProcessor;
 import org.pvg.plasmagraph.utils.exceptions.InvalidParametersException;
-import org.pvg.plasmagraph.utils.graphs.BarGraph;
 import org.pvg.plasmagraph.utils.graphs.XYGraph;
 import org.pvg.plasmagraph.utils.template.Template;
 

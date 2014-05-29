@@ -274,18 +274,18 @@ public class MatlabProcessor implements FileProcessor {
 						if (this.isHeaderColumn (e.getKey ())) {
 							
 							// Create the HeaderData object!
-							int i = 0;
-							ArrayList <MLArray> graph_names = ((MLCell) e.getValue ()).cells ();
+							//int i = 0;
+							//ArrayList <MLArray> graph_names = ((MLCell) e.getValue ()).cells ();
 							for (String variable_name : this.mat_data.keySet ()) {
 								
-								String graph_name = ((MLChar) graph_names.get (i)).getString (0).trim ();
+								//String graph_name = ((MLChar) graph_names.get (i)).getString (0).trim ();
 
 								ColumnType column_type = this.getType (this.mat_data.get (variable_name));
 								hd.add (new HeaderColumn (
 										variable_name,
 										//graph_name,
 										column_type));
-								++i;
+								//++i;
 								
 							}
 						}

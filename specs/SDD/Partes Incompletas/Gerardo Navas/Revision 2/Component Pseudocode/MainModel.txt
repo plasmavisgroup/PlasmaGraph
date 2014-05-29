@@ -1,0 +1,41 @@
+void importData ():
+	Open a File Choosing Window and allow the user to select a file
+	If the File Chooser Window was closed via the "Open" button:
+		If the file selected is a Matlab file:
+			Read the file's column names and types into the HeaderData object
+			Notify all GUI components of changes done to the HeaderData object
+			Reset the GraphPair object
+		Otherwise:
+			Open an Error Window stating this program cannot read that type of file
+	Otherwise:
+		Open an Error Window stating that the operation was cancelled
+
+void importTemplate ():
+	Open a File Choosing Window and allow the user to select a file
+		If the File Chooser Window was closed via the "Open" button:
+			If the file selected is a Template file:
+				Ask the user if they want to overwrite their current settings
+				If the user responds that they do:
+					Open the template and put its contents into the Template object
+				Otherwise:
+					Open an Error Window stating that the Template will not be opened
+			Otherwise:
+				Open an Error Window stating this program cannot read that type of file
+		Otherwise:
+			Open an Error Window stating that the operation was cancelled
+
+void saveTemplate ():
+	Open a File Choosing Window and allow the user to select a location and name for the file
+		If the File Chooser Window was closed via the "Open" button:
+			Save the file under the selected name in the selected location
+		Otherwise:
+			Open an Error Window stating that the operation was cancelled
+
+void prepareDataLog ():
+	If the file in the HeaderData object is a Matlab file:
+		Open the file and obtain the text representation of the data within the file
+		Open a DatasetLogView window with the extracted text
+		Make the DatasetLogView window visible
+	Otherwise:
+		Open a DatasetLogView window with no text
+		Make the DatasetLogView window visible

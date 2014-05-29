@@ -103,8 +103,7 @@ public class Template {
 		this.using_legend 					= true;
 		this.using_tooltips 				= true;
 		this.generate_urls 					= false;
-		this.orientation 					= PlotOrientation.VERTICAL;
-		//this.group_by						= false;
+		this.orientation 					=  PlotOrientation.VERTICAL;
 		this.x_axis_type					= AxisType.STANDARD;
 		this.y_axis_type					= AxisType.STANDARD;
 		this.default_interpolation_type 	= InterpolationType.NONE;

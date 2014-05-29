@@ -1,0 +1,20 @@
+XYSeries toXYGraphDataset (GraphPair):
+	Create a new XYSeries object with the name provided by the GraphPair object
+	For each row in this DataSet object:
+		Add the row's X and Y values into the XYSeries object
+	Return the XYSeries object
+
+XYSeriesCollection toGroupedXYGraphDataset (GraphPair):
+	Create a HashMap object containing Object and XYSeries objects
+	For each row in this DataSet object:
+		If the HashMap object contains a value equal to the Group Column's value in the row:
+			Add the row's X and Y values into that XYSeries object
+		Otherwise:
+			Create a new XYSeries object with that Group Column value
+			Add the row's X and Y values into that XYSeries object
+			Add that Group Column value and XYSeries object into the HashMap
+	Create a new XYSeriesCollection object
+	For each XYSeries object in the HashMap:
+		Add the XYSeries object into the XYSeriesCollection object
+
+	Return the XYSeriesCollection object

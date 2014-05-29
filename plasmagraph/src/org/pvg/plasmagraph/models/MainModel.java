@@ -2,7 +2,6 @@ package org.pvg.plasmagraph.models;
 
 //Class Import Block
 import java.io.File;
-import java.util.Map.Entry;
 
 import javax.swing.JFileChooser;
 import javax.swing.JOptionPane;

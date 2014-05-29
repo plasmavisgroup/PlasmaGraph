@@ -4,22 +4,14 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Comparator;
 import java.util.HashMap;
-import java.util.Iterator;
 import java.util.List;
-import java.util.ListIterator;
-import java.util.Map;
-import java.util.TreeMap;
 
 import org.apache.commons.math3.linear.Array2DRowRealMatrix;
-import org.jfree.data.category.DefaultCategoryDataset;
 import org.jfree.data.xy.XYDataItem;
 import org.jfree.data.xy.XYSeries;
 import org.jfree.data.xy.XYSeriesCollection;
 import org.pvg.plasmagraph.utils.exceptions.InvalidParametersException;
-import org.pvg.plasmagraph.utils.exceptions.InvalidTypeException;
 import org.pvg.plasmagraph.utils.types.ColumnType;
-
-import com.jmatio.types.MLChar;
 
 /**
  * <p>Container of the data in a graph before conversion into a JFreeChart Dataset type.
@@ -1207,6 +1199,7 @@ public class DataSet {
 
     /**
      * <p>Orders data based on the X column's values.
+     * <p>WARNING: Uses Objects.
      * 
      * @param x_column Double array to put the X Column's ordered values into.
      * @param y_column Double array to put the Y Column's ordered values into.

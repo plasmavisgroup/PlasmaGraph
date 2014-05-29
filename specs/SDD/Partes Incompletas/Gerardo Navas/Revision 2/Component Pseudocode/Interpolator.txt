@@ -1,0 +1,40 @@
+Graph interpolate ():
+	If the Interpolation object's GraphPair contains a Group column:
+		Convert the Interpolation object's DataSet to a DataSet XYSeriesCollection object.
+		Create a Storage XYSeriesCollection object.
+		For each XYSeries object in the DataSet XYSeriesCollection:
+			Create the interpolated XYSeries object of the Collection's XYSeries object based on the Template's Interpolation Type.
+			Insert the interpolated XYSeries object into the storage XYSeriesCollection.
+
+		For each XYSeries object in the storage XYSeriesCollection:
+			If the object is not an empty XYSeries object:
+				Add the XYSeries to the DataSet XYSeriesCollection object.
+
+		Return an XYGraph containing the Template the DataSet XYSeriesCollection, and the GraphPair.
+
+	Otherwise:
+		Convert the Interpolation object's DataSet to a DataSet XYSeries object.
+		Create an interpolation of the DataSet XYSeries Object based on the Template's Interpolation Type.
+		Create an XYSeriesCollection containing the DataSet XYSeries object and the interpolation XYSeries object.
+		Return an XYGraph containing the Template, the XYSeriesCollection, and the GraphPair.
+
+XYSeries getInterpolation (XYSeries):
+	
+	If the user requests a linear interpolation:
+		Create a SimpleRegression object containing the XYSeries data.
+		Create a linear regression with the SimpleRegression object.
+		Return an XYSeries containing the linear regression data.
+
+	If the user requests a quadratic interpolation:
+		Create a rank 2 polynomial regression via the Regression object's "getPolynomialRegression" function.
+		Return an XYSeries containing the data within the polynomial regression.
+
+	If the user requests a cubic interpolation:
+		Create a rank 3 polynomial regression via the Regression object's "getPolynomialRegression" function.
+		Return an XYSeries containing the data within the polynomial regression.
+
+	If the user requests a spline interpolation:
+		Order the XYSeries data in ascending X Column order.
+		Create a SplineInterpolator object.
+		Create a PolynomialSplineFunction object with the X and Y Column data.
+		Return an XYSeries containing the data within the PolynomialSplineFunction.

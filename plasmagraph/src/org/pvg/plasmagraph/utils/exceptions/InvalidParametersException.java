@@ -4,6 +4,10 @@ import javax.swing.JOptionPane;
 
 public class InvalidParametersException extends Exception {
 	
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 3721450135699901184L;
 	String message;
 	
 	public InvalidParametersException (String s) {

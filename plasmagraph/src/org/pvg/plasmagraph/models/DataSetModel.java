@@ -4,7 +4,6 @@ package org.pvg.plasmagraph.models;
 import javax.swing.ComboBoxModel;
 import javax.swing.DefaultComboBoxModel;
 
-import org.apache.commons.math3.util.Pair;
 import org.pvg.plasmagraph.utils.data.GraphPair;
 import org.pvg.plasmagraph.utils.data.HeaderColumn;
 import org.pvg.plasmagraph.utils.data.HeaderData;

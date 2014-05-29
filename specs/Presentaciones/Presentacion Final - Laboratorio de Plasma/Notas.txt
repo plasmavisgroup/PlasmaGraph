@@ -22,7 +22,6 @@ Slide - Title
 
 	Explicacion breve del programa.
 	Graficando con PlasmaGraph.
-	Herramientas opcionales.
 	Detalles de implementacion.
 
 3 - Explicacion breve del programa: Cualidades necesarias
@@ -93,3 +92,5 @@ Slide - Title
 	[Imagen - "plasmagraph_selecting_Graph_button_Tools_tab.png"]
 	[Imagen - "plasmagraph_graph_multiple_interpolation_r_value_results.png"]
 	[Imagen - "plasmagraph_graph_result.png"]
+
+10 - Detalles de implementacion: 

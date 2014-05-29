@@ -23,7 +23,8 @@ public class HelpManual {
     private URL hsURL;    
     
     public HelpManual(){
-        File hsFile = new File("src/HelpManual/HelpManual.hs");
+        File hsFile = new File(".HelpManual/HelpManual.hs");
+    	//File hsFile = new File("src/HelpManual/HelpManual.hs");
         try{
             ClassLoader cl = getClass().getClassLoader();
             // Define the location of the JavaHelp HelpSet .HS file

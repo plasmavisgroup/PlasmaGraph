@@ -30,8 +30,6 @@ public class MainController {
 	MainModel main_model;
 	/** Reference to view related to this controller. */
 	MainView main_view;
-	/** Reference to AestheticView included in this Frame's JTabbedFrame. */
-	//AestheticView aesthetic_view;
 	/** Reference to DataSetView included in this Frame's JTabbedFrame. */
 	DataSetView data_view;
 	/** Reference to ToolView included in this Frame's JTabbedFrame. */
@@ -109,29 +107,6 @@ public class MainController {
 		}
 
 	}
-/*
-	class DataResetMenuListener implements ActionListener {
-
-		@Override
-		public void actionPerformed (ActionEvent arg0) {
-			SwingWorker <Void, Void> data_worker = new SwingWorker <Void, Void> () {
-
-				@Override
-				protected Void doInBackground () throws Exception {
-					main_model.resetData ();
-					data_view.updateXAxisColumn ();
-					data_view.updateYAxisColumn ();
-					data_view.updateGroupBy ();
-					return null;
-				}
-
-			};
-
-			data_worker.run ();
-
-		}
-
-	}*/
 
 	class ViewDataMenuListener implements ActionListener {
 
@@ -191,9 +166,6 @@ public class MainController {
 		}
 
 	}
-
-	// Graph Action Listener Inner Class
-	// TODO
 
 	// Exit Action Listener Inner Class
 	class ExitMenuListener implements ActionListener {
