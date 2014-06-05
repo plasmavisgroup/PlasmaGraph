@@ -1,0 +1,952 @@
+<zuiprezi>
+  <version>10</version>
+  <zui-table>
+    <settings>
+      
+      <autoplay>
+        
+        <delay>4000</delay>
+        
+      </autoplay>
+      
+      <bounds x="-173220.1051768143" y="-118284.48044578152" width="346440.2103536286" height="236568.96089156304"/>
+      <aspectratio>off</aspectratio>
+      <languages>
+        <language>en</language>
+      </languages>
+      <mode type="normal"/>
+    </settings>
+    <object id="0_30863873" type="button" x="0" y="7.2256508588764304e-12" r="0" s="369.81235093256686" class="invisible">
+      <type>invisible</type>
+      <size>
+        <w>938.0486557331152</w>
+        <h>640.9112637450412</h>
+      </size>
+      <meta>
+        <parentTemplate>blueprint</parentTemplate>
+        <notModifiedByUser>from-template</notModifiedByUser>
+      </meta>
+    </object>
+    <object id="24_30863873" type="button" x="68034.74066298163" y="-36031.38594504746" r="0" s="65.8239852507195" class="roundrect">
+      <type>roundrect</type>
+      <size>
+        <w>1021.9354838709676</w>
+        <h>600</h>
+      </size>
+      <meta>
+        <parentTemplate>blueprint</parentTemplate>
+        <notModifiedByUser>from-template</notModifiedByUser>
+      </meta>
+    </object>
+    <object id="25_30863873" type="text" x="68032.05998401405" y="-50472.59301671658" r="0" s="126.7095620579601" class="strong">
+      <height>27.1875</height>
+      <width>409.346143553921</width>
+      <p align="center">
+        <text><![CDATA[Project Overview]]></text>
+      </p>
+      <layout>
+        <layout-element role="title"/>
+      </layout>
+    </object>
+    <object id="26_30863873" type="text" x="68255.93343672006" y="-31983.574551026893" r="0" s="79.51380960248837" class="body">
+      <height>326.25</height>
+      <width>757.0262628548127</width>
+      <p listType="bullet" indent="1">
+        <text><![CDATA[Why does the plasma laboratory needs a specialized graphing tool?]]></text>
+      </p>
+      <p>
+        <text><![CDATA[]]></text>
+      </p>
+      <p listType="bullet" indent="1">
+        <text><![CDATA[What must the graphing tool do (requirements)?]]></text>
+      </p>
+      <p>
+        <text><![CDATA[]]></text>
+      </p>
+      <p listType="bullet" indent="1">
+        <text><![CDATA[What schedule did the project follow?]]></text>
+      </p>
+      <p>
+        <text><![CDATA[]]></text>
+      </p>
+      <p listType="bullet" indent="1">
+        <text><![CDATA[How were the requirements implemented?]]></text>
+      </p>
+      <p>
+        <text><![CDATA[]]></text>
+      </p>
+      <p listType="bullet" indent="1">
+        <text><![CDATA[What tools were used for the implementation?]]></text>
+      </p>
+      <p>
+        <text><![CDATA[]]></text>
+      </p>
+      <p listType="bullet" indent="1">
+        <text><![CDATA[What problems appear during implementation? ]]></text>
+      </p>
+      <layout>
+        <layout-element role="body"/>
+      </layout>
+    </object>
+    <object id="27_30863873" type="button" x="68040.55219269719" y="3483.7431774457177" r="0" s="65.8239852507195" class="roundrect">
+      <type>roundrect</type>
+      <size>
+        <w>1021.9354838709676</w>
+        <h>600</h>
+      </size>
+      <meta>
+        <parentTemplate>blueprint</parentTemplate>
+        <notModifiedByUser>from-template</notModifiedByUser>
+      </meta>
+    </object>
+    <object id="28_30863873" type="text" x="66422.2125489535" y="-9716.948996736213" r="0" s="104.7186463288926" class="strong">
+      <height>54.375</height>
+      <width>542.103152459433</width>
+      <p align="center">
+        <text><![CDATA[Why does the plasma laboratory need a specialized graphing tool?]]></text>
+      </p>
+      <layout>
+        <layout-element role="title"/>
+      </layout>
+    </object>
+    <object id="29_30863873" type="text" x="67730.0076456026" y="473.1623139900871" r="0" s="81.47189452932015" class="body">
+      <height>135.9375</height>
+      <width>776.7119308967831</width>
+      <p listType="bullet" indent="1">
+        <text><![CDATA[The laboratory's research is done using the Mirror and Cusp Plasma Machine whose output is interpreted using MATLAB®.]]></text>
+      </p>
+      <p listType="bullet" indent="1">
+        <text><![CDATA[MATLAB® doesn't provide a graphical user interface to create graphs with the data produced.]]></text>
+      </p>
+      <layout>
+        <layout-element role="body"/>
+      </layout>
+    </object>
+    <object id="30_30863873" type="button" x="-33163.9804649528" y="-16271.893963234657" r="0" s="130.8634487476501" class="roundrect">
+      <type>roundrect</type>
+      <size>
+        <w>1021.9354838709676</w>
+        <h>600</h>
+      </size>
+      <meta>
+        <parentTemplate>blueprint</parentTemplate>
+        <notModifiedByUser>from-template</notModifiedByUser>
+      </meta>
+    </object>
+    <object id="31_30863873" type="button" x="-66765.27894298185" y="42970.51325480002" r="0" s="65.47473397276403" class="roundrect">
+      <type>roundrect</type>
+      <size>
+        <w>1021.9354838709676</w>
+        <h>600</h>
+      </size>
+      <meta>
+        <parentTemplate>blueprint</parentTemplate>
+        <notModifiedByUser>from-template</notModifiedByUser>
+      </meta>
+    </object>
+    <object id="32_30863873" type="text" x="-70046.95662161804" y="30008.52307209411" r="0" s="114.5793289890023" class="strong">
+      <height>54.375</height>
+      <width>442.0190146464135</width>
+      <p align="center">
+        <text><![CDATA[Which tools were used for the implementation?]]></text>
+      </p>
+      <layout>
+        <layout-element role="title"/>
+      </layout>
+    </object>
+    <object id="34_30863873" type="button" x="654.3788132985002" y="42859.568691058754" r="0" s="65.47473397276403" class="roundrect">
+      <type>roundrect</type>
+      <size>
+        <w>1021.9354838709676</w>
+        <h>600</h>
+      </size>
+      <meta>
+        <parentTemplate>blueprint</parentTemplate>
+        <notModifiedByUser>from-template</notModifiedByUser>
+      </meta>
+    </object>
+    <object id="35_30863873" type="text" x="586.7106818233176" y="29897.57850835284" r="0" s="114.5793289890023" class="strong">
+      <height>54.375</height>
+      <width>449.1574531520432</width>
+      <p align="center">
+        <text><![CDATA[How were the requirements implemented?]]></text>
+      </p>
+      <layout>
+        <layout-element role="title"/>
+      </layout>
+    </object>
+    <object id="7" type="image" x="-87884.16098235456" y="40548.62846439496" r="0" s="47.50623892335469">
+      <source w="256" h="256">1857636433<url>1857636433.png</url></source>
+      <sourceUrl>java.png</sourceUrl>
+    <resource><id>1857636433</id><url>http://0103.static.prezi.com.s3.amazonaws.com/media/6/c/a/afc5b06a5422066ce3c37cc52272309bd1a85.png</url></resource></object>
+    <object id="65_30863873" type="text" x="-33169.309873272934" y="-44982.190890400874" r="0" s="251.90893892325948" class="strong">
+      <height>27.1875</height>
+      <width>409.346143553921</width>
+      <p align="center">
+        <text><![CDATA[About Plasmagraph]]></text>
+      </p>
+      <layout>
+        <layout-element role="title"/>
+      </layout>
+    </object>
+    <object id="3" type="image" x="-82631.64579714934" y="-43364.48296667846" r="0" s="51.68998767131293">
+      <source w="380" h="180">1857343282<url>1857343282.png</url></source>
+      <sourceUrl>Project Logo - PlasmaGraph1-RoundedBorders.png</sourceUrl>
+    <resource><id>1857343282</id><url>http://0103.static.prezi.com.s3.amazonaws.com/media/5/0/3/9d479e15715698b82ef726bdb6a3408ae093d.png</url></resource></object>
+    <object id="2" type="image" x="13929.109413118558" y="-43364.76249513594" r="0" s="63.36192037128681">
+      <source w="310" h="119">1857343261<url>1857343261.png</url></source>
+      <sourceUrl>Group Logo - PVG.png</sourceUrl>
+    <resource><id>1857343261</id><url>http://0103.static.prezi.com.s3.amazonaws.com/media/7/5/4/bc03741c50798da6b664a7679d0edf15d802f.png</url></resource></object>
+    <object id="66_30863873" type="text" x="-34236.044930656884" y="-14247.514399642017" r="0" s="139.24919039147593" class="body">
+      <height>244.6875</height>
+      <width>799.0586251232659</width>
+      <p>
+        <text><![CDATA[PlasmaGraph is a software tool designed to graph data produced by the Mirror & Cusp Plasma Machine at the Polytechnic University of Puerto Rico's Plasma Laboratory. The following people were involved in the project that lead to the creation of the software tool:]]></text>
+      </p>
+      <p>
+        <text><![CDATA[]]></text>
+      </p>
+      <p listType="bullet" indent="1">
+        <text><![CDATA[Client: Angel Gonzaez-Lizardo]]></text>
+      </p>
+      <p listType="bullet" indent="1">
+        <text><![CDATA[Developers: Daniel E. Quintini & Gerardo A. Navas]]></text>
+      </p>
+      <p listType="bullet" indent="1">
+        <text><![CDATA[Advisor: Luis A. Ortiz]]></text>
+      </p>
+      <layout>
+        <layout-element role="body"/>
+      </layout>
+    </object>
+    <object id="74_30863873" type="button" x="46842.07535029797" y="16026.4510165861" r="0" s="23.38369197262738" class="roundrect">
+      <type>roundrect</type>
+      <size>
+        <w>1058.5106382978724</w>
+        <h>600</h>
+      </size>
+      <meta>
+        <parentTemplate>blueprint</parentTemplate>
+        <notModifiedByUser>from-template</notModifiedByUser>
+      </meta>
+    </object>
+    <object id="82_30863873" type="shape" x="34112.74968635117" y="-50966.20681145022" r="1.713665431903233e-14" s="59.52033495947261" class="line3">
+      <geom type="arrow">
+        <sp>-190.05390043968336 0</sp>
+        <ep>190.0539004396834 0</ep>
+        <t>8</t>
+      </geom>
+      <meta>
+        <parentTemplate>blueprint</parentTemplate>
+        <notModifiedByUser>from-template</notModifiedByUser>
+      </meta>
+    </object>
+    <object id="83_30863873" type="shape" x="96743.34355726503" y="-15839.340713825099" r="90.00000000000001" s="59.52033495947261" class="line3">
+      <geom type="arrow">
+        <sp>-190.05390043968336 0</sp>
+        <ep>190.0539004396834 0</ep>
+        <t>8</t>
+      </geom>
+      <meta>
+        <parentTemplate>blueprint</parentTemplate>
+        <notModifiedByUser>from-template</notModifiedByUser>
+      </meta>
+    </object>
+    <object id="84_30863873" type="shape" x="31301.68821202057" y="23615.1494080265" r="80.29624131028788" s="30.367517836465616" class="line3">
+      <geom type="arrow">
+        <sp>-155.77957759659014 -158.71362207699136</sp>
+        <ep>155.77957759659017 -158.71362207699136</ep>
+        <b>317.4272441539827</b>
+        <t>8</t>
+      </geom>
+      <meta>
+        <parentTemplate>blueprint</parentTemplate>
+        <notModifiedByUser>from-template</notModifiedByUser>
+      </meta>
+    </object>
+    <object id="85_30863873" type="shape" x="58686.34642589487" y="18447.938978903563" r="179.99999999999997" s="59.52033495947261" class="line3">
+      <geom type="arrow">
+        <sp>-69.00869984022056 0</sp>
+        <ep>69.00869984022056 0</ep>
+        <t>8</t>
+      </geom>
+      <meta>
+        <parentTemplate>blueprint</parentTemplate>
+        <notModifiedByUser>from-template</notModifiedByUser>
+      </meta>
+    </object>
+    <object id="89_30863873" type="text" x="46601.51989581816" y="16576.257430168815" r="0" s="26.956345822684554" class="body">
+      <height>299.0625</height>
+      <width>807.0338516468514</width>
+      <p>
+        <text><![CDATA[While gathering the requirements for this project we came to the conclusion that PlasmaGraph must be ]]></text>
+        <text color="12960707" style="italic"><![CDATA[portable]]></text>
+        <text><![CDATA[, ]]></text>
+        <text color="12960707"><![CDATA[user friendly]]></text>
+        <text><![CDATA[ and capable to accomplishing the following functional requirements:]]></text>
+      </p>
+      <p listType="bullet" indent="1">
+        <text><![CDATA[Import data produced by the plasma machine]]></text>
+      </p>
+      <p listType="bullet" indent="1">
+        <text><![CDATA[Create graphs]]></text>
+      </p>
+      <p listType="bullet" indent="1">
+        <text><![CDATA[Save graphs]]></text>
+      </p>
+      <p listType="bullet" indent="1">
+        <text><![CDATA[Detect Outliers]]></text>
+      </p>
+      <p listType="bullet" indent="1">
+        <text><![CDATA[Interpolate data and provide confidence level]]></text>
+      </p>
+      <p listType="bullet" indent="1">
+        <text><![CDATA[Group data]]></text>
+      </p>
+      <p listType="bullet" indent="1">
+        <text><![CDATA[Validate data]]></text>
+      </p>
+      <layout>
+        <layout-element role="body"/>
+      </layout>
+    </object>
+    <object id="90_30863873" type="text" x="405.3129543168816" y="-76864.92103560676" r="0" s="729.0729571520839" class="head">
+      <height>28.8</height>
+      <width>331.94649424124964</width>
+      <p align="center">
+        <text><![CDATA[PlasmaGraph]]></text>
+      </p>
+    </object>
+    <object id="4" type="text" x="-35192.89047328971" y="13073.371021369727" r="0" s="126.59017308315994" class="body">
+      <height>81.5625</height>
+      <width>965.2223725107825</width>
+      <p>
+        <text style="italic" weight="normal"><![CDATA[This project is part of the Computer Science Undergraduate Program under the Polytechnic University of Puerto Rico]]></text>
+        <text style="italic"><![CDATA[ Electrical & Computer Engineering and Computer Science Department]]></text>
+      </p>
+    </object>
+    <object id="5" type="text" x="81811.05977128938" y="15822.31907891582" r="0" s="50.728026152647516" class="body">
+      <height>108.75</height>
+      <width>639.0444542970538</width>
+      <p>
+        <text><![CDATA[These factors forced researchers without MATLAB® programming knowledge to convert the data into a 'spreadsheet' format before being able to produce analyses.]]></text>
+      </p>
+    </object>
+    <object id="6" type="text" x="46544.45810304244" y="11119.249504107145" r="0" s="32.61717844544832" class="body">
+      <height>27.1875</height>
+      <width>697.9976570782226</width>
+      <p>
+        <text><![CDATA[What must the graphing tool do (requirements)?]]></text>
+      </p>
+    </object>
+    <object id="8" type="image" x="-47506.2191165909" y="40365.77846439498" r="0" s="22.111994844325086">
+      <source w="800" h="426">1857647884<url>1857647884.png</url></source>
+      <sourceUrl>eclipse-800x426.png</sourceUrl>
+    <resource><id>1857647884</id><url>http://0103.static.prezi.com.s3.amazonaws.com/media/e/2/b/b11914c92fa1d840724ce5395123ce13e482f.png</url></resource></object>
+    <object id="9" type="image" x="-68860.57340415871" y="41368.62258619691" r="0" s="41.87661946351537">
+      <source w="392" h="308">1857654547<url>1857654547.png</url></source>
+      <sourceUrl>Icon-Matlab.png</sourceUrl>
+    <resource><id>1857654547</id><url>http://0103.static.prezi.com.s3.amazonaws.com/media/d/9/4/42f81596789d2cf0dbff3f44be287ee088039.png</url></resource></object>
+    <object id="10" type="image" x="-22549.821790553386" y="47042.32213985861" r="0" s="31.925482114800456">
+      <source w="287" h="727">1857725242<url>1857725242.PNG</url></source>
+      <sourceUrl>Capture.PNG</sourceUrl>
+    <resource><id>1857725242</id><url>http://0103.static.prezi.com.s3.amazonaws.com/media/7/b/3/1f69c93e483dbcee1e624763964247d78c810.PNG</url></resource></object>
+    <object id="11" type="image" x="15513.680804201033" y="47041.99261140111" r="0" s="38.576545580526236">
+      <source w="696" h="459">1857729817<url>1857729817.PNG</url></source>
+      <sourceUrl>Capture.PNG</sourceUrl>
+    <resource><id>1857729817</id><url>http://0103.static.prezi.com.s3.amazonaws.com/media/3/2/6/0faca5fae2d2fe3d689ff5730f17846e8f3ff.PNG</url></resource></object>
+    <object id="12" type="image" x="-9753.243201334375" y="47041.66308294363" r="0" s="32.312122751345974">
+      <source w="287" h="728">1857733999<url>1857733999.PNG</url></source>
+      <sourceUrl>Capture.PNG</sourceUrl>
+    <resource><id>1857733999</id><url>http://0103.static.prezi.com.s3.amazonaws.com/media/e/7/3/310a363a4f4acf3309dcdb7fe8b0bad693c16.PNG</url></resource></object>
+    <object id="13" type="button" x="67739.58175696847" y="42862.950925109966" r="0" s="64.18537698608299" class="roundrect">
+      <type>roundrect</type>
+      <size>
+        <w>1048.9795918367347</w>
+        <h>600</h>
+      </size>
+    </object>
+    <object id="15" type="text" x="67685.8686183997" y="28674.11460304903" r="0" s="108.74002921420261" class="strong">
+      <height>27.1875</height>
+      <width>-532.88671875</width>
+      <p>
+        <text><![CDATA[What schedule did the project follow?]]></text>
+      </p>
+    </object>
+    <object id="16" type="text" x="67148.07817579657" y="34441.85119427558" r="0" s="50.728026152647516" class="body">
+      <height>81.5625</height>
+      <width>1060.105567004668</width>
+      <p>
+        <text><![CDATA[The total amount of time for completing this project was nine (9) months. Approximately four and a half (~4.5) months were spent producing documentation and four and a half (~4.5) implementing the product.]]></text>
+      </p>
+    </object>
+    <object id="17" type="button" x="158268.06577641083" y="102367.55544467983" r="0" s="7.892535182722383" class="bracket">
+      <type>bracket</type>
+      <size>
+        <w>795.8814665996988</w>
+        <h>600</h>
+      </size>
+    </object>
+    <object id="18" type="text" x="158183.9312729636" y="101086.98022013527" r="0" s="10.614177521037828" class="strong">
+      <height>54.375</height>
+      <width>441.7236270925229</width>
+      <p>
+        <text><![CDATA[What problems appeared during implementation?]]></text>
+      </p>
+    </object>
+    <object id="19" type="text" x="158280.28785779493" y="102778.18744611157" r="0" s="7.974588670952542" class="body">
+      <height>217.5</height>
+      <width>684.1169229686055</width>
+      <p listType="bullet" indent="1">
+        <text><![CDATA[Some requirements evolved during the implementation.]]></text>
+      </p>
+      <p>
+        <text><![CDATA[]]></text>
+      </p>
+      <p listType="bullet" indent="1">
+        <text><![CDATA[Several versions of the user interface were made before approval.]]></text>
+      </p>
+      <p>
+        <text><![CDATA[]]></text>
+      </p>
+      <p listType="bullet" indent="1">
+        <text><![CDATA[Coordination between multiple groups proved more difficult than expected.]]></text>
+      </p>
+    </object>
+    <object id="20" type="button" x="-2646.05" y="84240.05" r="0" s="57.34388790948726" class="circle">
+      <type>circle</type>
+      <size>
+        <w>600.1814333232538</w>
+        <h>600</h>
+      </size>
+    </object>
+    <object id="21" type="shape" x="-51051.096417191555" y="81635.9754953123" r="24.80598660296758" s="30.367517836465627" class="line3">
+      <geom type="arrow">
+        <sp>-1066.4187830224623 -198.83004008609504</sp>
+        <ep>1066.4187830224623 -198.83004008609504</ep>
+        <b>397.6600801721901</b>
+        <t>8</t>
+      </geom>
+    </object>
+    <object id="22" type="text" x="-2662.055494493177" y="74212.80935660723" r="0" s="55.73848208166765" class="strong">
+      <height>27.1875</height>
+      <width>-417.66796875</width>
+      <p>
+        <text><![CDATA[Overview of the final product]]></text>
+      </p>
+    </object>
+    <object id="23" type="text" x="-2371.635720814896" y="81519.7364228561" r="0" s="38.0701332434039" class="body">
+      <height>217.5</height>
+      <width>552</width>
+      <p>
+        <text><![CDATA[Its primary function is to enable users with no programming skills to produce graphs from data files made in the plasma laboratory. This is accomplished by presenting the user with a series of windows, buttons, and input fields that he or she can use to order PlasmaGraph what to do. ]]></text>
+      </p>
+    </object>
+    <object id="24" type="button" x="-2646.05" y="91614.09204624766" r="0" s="12.474905798372186" class="circle">
+      <type>circle</type>
+      <size>
+        <w>800</w>
+        <h>800</h>
+      </size>
+    </object>
+    <object id="25" type="text" x="-2582.734061897623" y="88908.12510440708" r="0" s="30.129772546475763" class="strong">
+      <height>54.375</height>
+      <width>185.55514692772175</width>
+      <p align="center">
+        <text><![CDATA[Let's create a graph]]></text>
+      </p>
+    </object>
+    <object id="26" type="text" x="-2682.5488737878054" y="91551.21792335073" r="0" s="15.731460017935488" class="body">
+      <height>135.9375</height>
+      <width>-475.27734375</width>
+      <p>
+        <text><![CDATA[Step 1: Import data]]></text>
+      </p>
+      <p>
+        <text><![CDATA[]]></text>
+      </p>
+      <p>
+        <text><![CDATA[Step 2: Choose graph options]]></text>
+      </p>
+      <p>
+        <text><![CDATA[]]></text>
+      </p>
+      <p>
+        <text><![CDATA[Step 3: Create and save the graph]]></text>
+      </p>
+    </object>
+    <object id="27" type="button" x="-2525.3914714516823" y="94338.46216264548" r="0" s="3.4535181676532574" class="circle">
+      <type>circle</type>
+      <size>
+        <w>800</w>
+        <h>800</h>
+      </size>
+    </object>
+    <object id="28" type="text" x="-2525.653203617732" y="93476.80715549338" r="0" s="5.234643320968035" class="strong">
+      <height>27.1875</height>
+      <width>-158.42578125</width>
+      <p>
+        <text><![CDATA[Import Data]]></text>
+      </p>
+    </object>
+    <object id="30" type="image" x="-2474.091966906223" y="94382.95663087373" r="0" s="2.829399703760617">
+      <source w="765" h="499">1857903979<url>1857903979.PNG</url></source>
+      <sourceUrl>Capture.PNG</sourceUrl>
+    <resource><id>1857903979</id><url>http://0103.static.prezi.com.s3.amazonaws.com/media/7/0/4/e0e2eee34fdc88cb2b5e771397cf485241b33.PNG</url></resource></object>
+    <object id="31" type="button" x="-2492.9366828616785" y="95330.68880413499" r="0" s="0.6082169448928382" class="circle">
+      <type>circle</type>
+      <size>
+        <w>800</w>
+        <h>800.2590673575128</h>
+      </size>
+    </object>
+    <object id="32" type="text" x="-2487.936762685192" y="95173.84751102391" r="0" s="0.9580051607786628" class="strong">
+      <height>27.1875</height>
+      <width>-288.046875</width>
+      <p>
+        <text><![CDATA[Choose Graph Options]]></text>
+      </p>
+    </object>
+    <object id="33" type="image" x="-2497.647861850578" y="95335.1382509578" r="0" s="0.33511891627571266">
+      <source w="729" h="800">1857926986<url>1857926986.PNG</url></source>
+      <sourceUrl>Capture.PNG</sourceUrl>
+    <resource><id>1857926986</id><url>http://0103.static.prezi.com.s3.amazonaws.com/media/1/2/7/aa99624026e2b8b2c7caba1c3cf609b37be2e.PNG</url></resource></object>
+    <object id="34" type="button" x="-2492.9219987190513" y="95515.34380474845" r="0" s="0.09951958180201988" class="circle">
+      <type>circle</type>
+      <size>
+        <w>800</w>
+        <h>800</h>
+      </size>
+    </object>
+    <object id="35" type="text" x="-2492.166989557236" y="95489.8795102109" r="0" s="0.13214545857330784" class="strong">
+      <height>27.1875</height>
+      <width>-360.05859375</width>
+      <p>
+        <text><![CDATA[Create and save the graph]]></text>
+      </p>
+    </object>
+    <object id="36" type="image" x="-2492.9602293837493" y="95515.32636887705" r="0" s="0.05884327395433178">
+      <source w="1079" h="426">1857941392<url>1857941392.PNG</url></source>
+      <sourceUrl>Capture.PNG</sourceUrl>
+    <resource><id>1857941392</id><url>http://0103.static.prezi.com.s3.amazonaws.com/media/f/7/9/41271c57ffe33ffa850e53fdea3ca26b67d36.PNG</url></resource></object>
+    <object id="0_21597197" type="shape" x="-2314.6587497379046" y="59780.882374583634" r="-180" s="59.52033495947263" class="line3">
+      <geom type="arrow">
+        <sp>-698.8655113007188 0</sp>
+        <ep>698.8655113007189 0</ep>
+        <t>8</t>
+      </geom>
+      <meta>
+        <parentTemplate>blueprint</parentTemplate>
+        <notModifiedByUser>from-template</notModifiedByUser>
+      </meta>
+    </object>
+    <object id="15_21597197" type="button" x="88978.3" y="51303.45" r="0" s="11.813036084637217" class="invisible">
+      <type>invisible</type>
+      <size>
+        <w>1204.0268456375838</w>
+        <h>600</h>
+      </size>
+    </object>
+    <object id="11_21597197" type="button" x="53470.3" y="41545.45" r="0" s="7.921007265140862" class="invisible">
+      <type>invisible</type>
+      <size>
+        <w>4195.055915244262</w>
+        <h>600</h>
+      </size>
+    </object>
+    <object id="7_21597197" type="image" x="53096.9" y="41414.700000000004" r="0" s="26.993339898187724">
+      <source w="1166" h="115">1859134843<url>1859134843.png</url></source>
+      <sourceUrl>Schedule - Phase A.png</sourceUrl>
+    <resource><id>1859134843</id><url>http://0103.static.prezi.com.s3.amazonaws.com/media/4/9/4/43afe92c0c50e49c168d014d2b7ae3e1a84cf.png</url></resource></object>
+    <object id="12_21597197" type="button" x="87311" y="41768.2" r="0" s="11.575189720517004" class="invisible">
+      <type>invisible</type>
+      <size>
+        <w>1845.4109589041095</w>
+        <h>600</h>
+      </size>
+    </object>
+    <object id="6_21597197" type="image" x="87256.04999999999" y="41620.2" r="0" s="21.847653389959255">
+      <source w="942" h="275">1859134834<url>1859134834.png</url></source>
+      <sourceUrl>Schedule - Phase B.png</sourceUrl>
+    <resource><id>1859134834</id><url>http://0103.static.prezi.com.s3.amazonaws.com/media/5/a/e/3150bb07c1ae9faf2a18f52c39dda49886c40.png</url></resource></object>
+    <object id="14_21597197" type="button" x="70114.7" y="51327.25" r="0" s="9.35925442813036" class="invisible">
+      <type>invisible</type>
+      <size>
+        <w>1646.5057179161372</w>
+        <h>600</h>
+      </size>
+    </object>
+    <object id="8_21597197" type="image" x="70056.95" y="51275.149999999994" r="0" s="14.987821629622992">
+      <source w="1001" h="332">1859134849<url>1859134849.png</url></source>
+      <sourceUrl>Schedule - Phase D.png</sourceUrl>
+    <resource><id>1859134849</id><url>http://0103.static.prezi.com.s3.amazonaws.com/media/1/0/c/7e2a84c133a998b6f1b7c6adc3fa428657449.png</url></resource></object>
+    <object id="13_21597197" type="button" x="48425.5" y="51351" r="0" s="9.434572443435092" class="invisible">
+      <type>invisible</type>
+      <size>
+        <w>2359.4117647058824</w>
+        <h>600</h>
+      </size>
+    </object>
+    <object id="10_21597197" type="image" x="48305.15" y="51274.3" r="0" s="16.234541027575858">
+      <source w="1303" h="287">1859134867<url>1859134867.png</url></source>
+      <sourceUrl>Schedule - Phase C.png</sourceUrl>
+    <resource><id>1859134867</id><url>http://0103.static.prezi.com.s3.amazonaws.com/media/0/2/5/6aaae3b6659807d4d25a7aefa41e761fdfd00.png</url></resource></object>
+    <object id="16_21597197" type="image" x="88979" y="51303.24999999999" r="0" s="13.373078807268033">
+      <source w="997" h="256">1859174008<url>1859174008.png</url></source>
+      <sourceUrl>Schedule - Phase E.png</sourceUrl>
+    <resource><id>1859174008</id><url>http://0103.static.prezi.com.s3.amazonaws.com/media/1/6/a/9853f463cdc476515630e0283b4f11589d9fc.png</url></resource></object>
+    <object id="17_21597197" type="image" x="-68225.35" y="55226.2" r="0" s="41.690501154788635">
+      <source w="450" h="196">1859203690<url>1859203690.PNG</url></source>
+      <sourceUrl>Capture.PNG</sourceUrl>
+    <resource><id>1859203690</id><url>http://0103.static.prezi.com.s3.amazonaws.com/media/3/f/8/b19b19b44da5a2d2fba6b339855ddb3be10ce.PNG</url></resource></object>
+  </zui-table>
+  <background>
+    <layer depth="14.188154480996664" fadescale="0.15505892629986773">
+      <object id="background1002794501" type="image" x="1586.2376247043696" y="13725.66758418408" r="0" s="215.99680111810898">
+        <source w="1650" h="1650">1002794501<url>1002794501.png</url></source>
+        <sourceUrl>grph_paper5.png</sourceUrl>
+      <resource><id>1002794501</id><url>http://0103.static.prezi.com.s3.amazonaws.com/media/6/b/5/45b9ac69010ef6fc63b1d6ee5da12ab1abca9.png</url></resource></object>
+    </layer>
+  </background>
+  <path>
+    <s>
+      <eagle o="0_30863873"/>
+    </s>
+    <s>
+      <eagle o="30_30863873"/>
+    </s>
+    <s>
+      <eagle o="24_30863873"/>
+    </s>
+    <s>
+      <eagle o="27_30863873"/>
+    </s>
+    <s>
+      <eagle o="74_30863873"/>
+    </s>
+    <s>
+      <eagle o="13"/>
+    </s>
+    <s>
+      <eagle o="11_21597197"/>
+    </s>
+    <s>
+      <eagle o="12_21597197"/>
+    </s>
+    <s>
+      <eagle o="13_21597197"/>
+    </s>
+    <s>
+      <eagle o="14_21597197"/>
+    </s>
+    <s>
+      <eagle o="15_21597197"/>
+    </s>
+    <s>
+      <eagle o="34_30863873"/>
+    </s>
+    <s>
+      <eagle o="31_30863873"/>
+    </s>
+    <s>
+      <eagle o="20"/>
+    </s>
+    <s>
+      <eagle o="24"/>
+    </s>
+    <s>
+      <eagle o="27"/>
+    </s>
+    <s>
+      <eagle o="31"/>
+    </s>
+    <s>
+      <eagle o="34"/>
+    </s>
+    <s>
+      <eagle o="17"/>
+    </s>
+    <s>
+      <eagle o="0_30863873"/>
+    </s>
+  </path>
+  <style type="text/css"><![CDATA[
+@font-face
+{
+	src: url('LiberationMonoPR-Regular.keg');
+	fontFamily: body;
+	font-class: body;
+	font-style: normal;
+	font-weight: normal;
+	font-family: LiberationMonoPR;
+}
+
+@font-face
+{
+	src: url('Komika-Title.keg');
+	fontFamily: head;
+	font-class: head;
+	font-style: normal;
+	font-weight: normal;
+	font-family: Komika-Title;
+}
+
+@font-face
+{
+	src: url('LiberationMonoPR-Bold.keg');
+	fontFamily: strong;
+	font-class: strong;
+	font-style: normal;
+	font-weight: bold;
+	font-family: LiberationMonoPR;
+}
+
+@font-face
+{
+	src: url('LiberationMonoPR-BoldItalic.keg');
+	font-style: italic;
+	font-weight: bold;
+	font-family: LiberationMonoPR;
+}
+
+@font-face
+{
+	src: url('LiberationMonoPR-Italic.keg');
+	font-style: italic;
+	font-weight: normal;
+	font-family: LiberationMonoPR;
+}
+
+.line1
+{
+	color: #e64038;
+	gradEndColor: #e64038;
+	gradStartColor: #e64038;
+}
+
+.line2
+{
+	color: #e7d74e;
+	gradEndColor: #e7d74e;
+	gradStartColor: #e7d74e;
+}
+
+.line3
+{
+	color: #fff;
+	gradEndColor: #fff;
+	gradStartColor: #fff;
+}
+
+.line4
+{
+	color: #3a91fb;
+	gradEndColor: #3a91fb;
+	gradStartColor: #3a91fb;
+}
+
+.line5
+{
+	color: #222;
+	gradEndColor: #222;
+	gradStartColor: #222;
+}
+
+.poly1
+{
+	borderThickness: 0;
+	color: #0e3b8d;
+	gradEndColor: #e64038;
+	gradStartColor: #e64038;
+}
+
+.poly2
+{
+	borderThickness: 0;
+	color: #0e3b8d;
+	gradEndColor: #e7d74e;
+	gradStartColor: #e7d74e;
+}
+
+.poly3
+{
+	borderThickness: 0;
+	color: #0e3b8d;
+	gradEndColor: #fff;
+	gradStartColor: #fff;
+}
+
+.poly4
+{
+	borderThickness: 0;
+	color: #0e3b8d;
+	gradEndColor: #3a91fb;
+	gradStartColor: #3a91fb;
+}
+
+.poly5
+{
+	borderThickness: 0;
+	color: #0e3b8d;
+	gradEndColor: #222;
+	gradStartColor: #222;
+}
+
+Background
+{
+	gradEnd: #0e3b8d;
+	gradStart: #0e3b8d;
+}
+
+Grid
+{
+	color: #114bb3;
+}
+
+ZArrow
+{
+	gradEndAlpha: 1;
+	gradStartAlpha: 1;
+	lockTintAlpha: 0;
+}
+
+ZCircle
+{
+	borderAlpha: 0;
+	gradEndAlpha: 1;
+	gradStartAlpha: 1;
+	lockTintAlpha: 0;
+	radius: 0;
+	thickness: 100;
+}
+
+ZCurveLine
+{
+	color: #000;
+}
+
+ZFrame.bracket
+{
+	gradEndAlpha: 1;
+	gradEndColor: #000;
+	gradStartAlpha: 1;
+	gradStartColor: #000;
+	padding: 1.03;
+	thickness: 7;
+}
+
+ZFrame.circle
+{
+	gradEndAlpha: 1;
+	gradEndColor: #fff;
+	gradStartAlpha: 1;
+	gradStartColor: #fff;
+	padding: 1.03;
+	thickness: 5;
+}
+
+ZFrame.roundrect
+{
+	borderAlpha: 1;
+	borderColor: #fff;
+	borderThickness: 8;
+	gradEndAlpha: 0.1;
+	gradEndColor: #fff;
+	gradStartAlpha: 0.1;
+	gradStartColor: #fff;
+	padding: 1.03;
+	radius: 0;
+}
+
+ZLabel
+{
+	lockTintAlpha: 0.15;
+	padding: 1.2;
+}
+
+ZLabel.body
+{
+	color: #fff;
+	fontFamily: body;
+}
+
+ZLabel.body-background
+{
+	background-alpha: 0.9;
+	background-color: #3452a3;
+	background-padding: 4;
+}
+
+ZLabel.head
+{
+	color: #fff;
+	fontFamily: head;
+}
+
+ZLabel.head-background
+{
+	background-alpha: 0.9;
+	background-color: #333;
+	background-padding: 4;
+}
+
+ZLabel.strong
+{
+	color: #ccc;
+	fontFamily: strong;
+}
+
+ZLabel.strong-background
+{
+	background-alpha: 0.7;
+	background-color: #3452a3;
+	background-padding: 4;
+}
+
+ZLine
+{
+	color: #333;
+	lockTintAlpha: 0;
+}
+
+ZMarker
+{
+	alpha: 0.6;
+	color: #64f9a1;
+}
+
+ZPath
+{
+	alpha: 1;
+	color: #40abe6;
+	textColor: #fff;
+	thickness: 3;
+}
+
+ZPath Ball.base
+{
+	alpha: 1;
+	fillColor: #40abe6;
+	radius: 12;
+}
+
+ZPath Ball.mid
+{
+	alpha: .5;
+	fillColor: #40abe6;
+	radius: 8;
+}
+
+ZPoly
+{
+	borderAlpha: 0;
+	gradEndAlpha: 1;
+	gradStartAlpha: 1;
+	lockTintAlpha: 0;
+	radius: 0;
+	thickness: 100;
+}
+
+]]></style>
+  <hash>144235e8</hash>
+<sync><oid>ufhyip_m0sje</oid><title>plasmagraph-graphing-tool</title><hash>144235e8</hash></sync><config>TmZ3OAsaqrYuDpGlBP7wATdGvPGV+0pRE5S68KGUErAq6ibq/j1XOb4mp8aIO4TPtYEfNhbul8FkUkVXy75YDEeDxihqnc7h8LL/r8h+dAHrAAD+OwjeG2gsBk3puiQJZY40CtayYkwlsa6C6bp46Y0G53rGqJXn+fyQpv+aP4aHrCATzEZR/b0PNPwZbblgd9YPDDH1taWjbcwMbU8GlCt6O9MwWPQxYvexUK4Ncf1SfZAsVBpmJdQPQzSgfVTBFPCeUOaRGd6JhxvfHwrMmc9iuyt5nYnT78neO1g2IjyLUHgWh+RM9WL7Ezm43n8XmAn4cfNfgLT6aYeFGlVpcA==</config></zuiprezi>
