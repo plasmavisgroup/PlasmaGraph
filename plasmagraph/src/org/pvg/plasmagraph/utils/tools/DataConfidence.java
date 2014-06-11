@@ -616,7 +616,7 @@ public class DataConfidence {
 		AlphaType ci;
 		try {
 			ci = getHighestCI (r, n);
-			if (AlphaType.CI99.equals (ci)) {
+			/*if (AlphaType.CI99.equals (ci)) {
 				return ("There exists a correlation between both variables with a 99% Confidence.");
 			} else if (AlphaType.CI98.equals (ci)) {
 				return ("There exists a correlation between both variables with a 98% Confidence.");
@@ -626,6 +626,17 @@ public class DataConfidence {
 				return ("There exists a correlation between both variables with a 90% Confidence.");
 			} else {
 				return ("A useful correlation between both variables does not exist.");
+			}*/
+			if (AlphaType.CI99.equals (ci)) {
+				return ("(99% confidence in correlation.)");
+			} else if (AlphaType.CI98.equals (ci)) {
+				return ("(98% confidence in correlation.)");
+			} else if (AlphaType.CI95.equals (ci)) {
+				return ("(95% confidence in correlation.)");
+			} else if (AlphaType.CI90.equals (ci)) {
+				return ("(90% confidence in correlation.)");
+			} else {
+				return ("(No correlation.)");
 			}
 		} catch (Exception e) {
 			// TODO Auto-generated catch block

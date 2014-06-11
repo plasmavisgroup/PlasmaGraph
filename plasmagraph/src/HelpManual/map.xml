@@ -5,7 +5,6 @@
   <mapID target="Help" url="html/index.htm" />
   <mapID target="graph_window" url="html/graph_window.htm" />
   <mapID target="tools_window" url="html/toolswindow.htm" />
-  <mapID target="csvfile_specs" url="html/csvfile_specs.htm" />
   <mapID target="import_data" url="html/import_data.htm" />
   <mapID target="import_template" url="html/import_template.htm" />
   <mapID target="matfile_specs" url="html/matfile_specs.htm" />

@@ -3,7 +3,6 @@
 <toc version="1.0">
   <tocitem text="PlasmaGraph Help" target="Help" >
       <tocitem text="Matlab File Specs" target="matfile_specs" />
-      <tocitem text="CSV File Specs" target="csvfile_specs" />
   </tocitem>
   <tocitem text="Tools window" target="tools_window">
     <tocitem text="Import Data" target="import_data" />

@@ -16,12 +16,17 @@ import org.jfree.chart.StandardChartTheme;
 import org.jfree.chart.axis.LogAxis;
 import org.jfree.chart.axis.NumberAxis;
 import org.jfree.chart.axis.ValueAxis;
+import org.jfree.chart.block.BlockContainer;
+import org.jfree.chart.block.FlowArrangement;
 import org.jfree.chart.labels.StandardXYToolTipGenerator;
 import org.jfree.chart.labels.XYToolTipGenerator;
 import org.jfree.chart.plot.DefaultDrawingSupplier;
 import org.jfree.chart.plot.XYPlot;
 import org.jfree.chart.renderer.xy.XYItemRenderer;
 import org.jfree.chart.renderer.xy.XYLineAndShapeRenderer;
+import org.jfree.chart.title.CompositeTitle;
+import org.jfree.chart.title.LegendTitle;
+import org.jfree.chart.title.TextTitle;
 import org.jfree.chart.urls.StandardXYURLGenerator;
 import org.jfree.chart.urls.XYURLGenerator;
 import org.jfree.chart.util.ParamChecks;
@@ -29,6 +34,8 @@ import org.jfree.data.general.Dataset;
 import org.jfree.data.xy.XYDataset;
 import org.jfree.data.xy.XYSeries;
 import org.jfree.data.xy.XYSeriesCollection;
+import org.jfree.ui.RectangleEdge;
+import org.jfree.ui.VerticalAlignment;
 import org.pvg.plasmagraph.utils.data.DataSet;
 import org.pvg.plasmagraph.utils.data.GraphPair;
 import org.pvg.plasmagraph.utils.data.HeaderData;
@@ -50,6 +57,7 @@ public class XYGraph implements Graph {
 	private static ChartTheme currentTheme = new StandardChartTheme ("JFree");
 	
 	JFreeChart chart;
+	String r_values_string;
 
 	/**
 	 * <p>Constructor. Makes a graph without the necessary data.
@@ -183,7 +191,8 @@ public class XYGraph implements Graph {
 	 * @param p
 	 *            GraphPair reference used in
 	 */
-	public XYGraph (Template t, XYSeriesCollection graph_data, GraphPair p) {
+	public XYGraph (Template t, XYSeriesCollection graph_data, GraphPair p, String r_values) {
+		this.r_values_string = r_values;
 		chart = createChart (graph_data, t, p);
 	}
 
@@ -421,18 +430,49 @@ public class XYGraph implements Graph {
 				DefaultDrawingSupplier.DEFAULT_OUTLINE_PAINT_SEQUENCE,
 				DefaultDrawingSupplier.DEFAULT_STROKE_SEQUENCE,
 				DefaultDrawingSupplier.DEFAULT_OUTLINE_STROKE_SEQUENCE,
-				DefaultDrawingSupplier.DEFAULT_SHAPE_SEQUENCE));
+				DefaultDrawingSupplier.DEFAULT_SHAPE_SEQUENCE)
+				);
 
 		// Change thickness of interpolation line, if it exists
 		if (!InterpolationType.NONE.equals (t.getInterpolationType ())) {
+			
 			XYItemRenderer renderer = c.getXYPlot ().getRenderer ();
+			XYSeriesCollection dataset_collection = (XYSeriesCollection) (c.getXYPlot ().getDataset ());
+			int number_of_series = dataset_collection.getSeriesCount ();
 			
-			int number_of_series = ((XYSeriesCollection) (c.getXYPlot ().getDataset ())).getSeriesCount ();
-			
-			for (int i = (number_of_series/ 2); (i < number_of_series); ++i) {
-				renderer.setSeriesShape (i, new Ellipse2D.Double (-3.0, -3.0, 1.0, 1.0));
+			for (int i = 0; (i < number_of_series); ++i) {
+
+				if (this.isInterpolationLine (dataset_collection.getSeries (i))) {
+					
+					renderer.setSeriesShape (i, new Ellipse2D.Double (-3.0, -3.0, 1.0, 1.0));
+					
+				}
 			}
 		}
+		
+		// Add R values to the bottom of the graph.
+		if (!("".equals (r_values_string) || null == r_values_string)) {
+
+			// Change the Legend to be above this text.
+			LegendTitle legend= c.getLegend ();
+			legend.setPosition (RectangleEdge.BOTTOM);
+			legend.setVerticalAlignment (VerticalAlignment.TOP);
+			
+			// Now, edit the new Subtitle!
+			TextTitle r_value_string = new TextTitle (r_values_string, new Font("SansSerif", Font.PLAIN, 12));
+
+			BlockContainer r_values_container = new BlockContainer (new FlowArrangement ());
+			r_values_container.add (r_value_string);
+
+			CompositeTitle r_values_title = new CompositeTitle (r_values_container);
+			r_values_title.setPosition (RectangleEdge.BOTTOM);
+			
+			c.addSubtitle (0, r_values_title);
+		}
+	}
+	
+	private boolean isInterpolationLine (XYSeries series) {
+		return ((String) series.getKey ()).contains ("Interpolation of");
 	}
 
 	/**

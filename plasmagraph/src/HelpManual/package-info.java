@@ -1,5 +1,5 @@
 /**
- * Contains the main method that initiates the program.
+ * Contains the Help menu loader class.
  */
 /**
  * Help File classes. 

@@ -4,7 +4,7 @@
   <class id="1" language="java" name="org.pvg.plasmagraph.controllers.DataSetController.ChartTitleListener" 
     project="plasmagraph" file="/plasmagraph/src/org/pvg/plasmagraph/controllers/DataSetController.java" binary="false" 
     corner="BOTTOM_RIGHT">    
-    <position height="-1" width="-1" x="134" y="607"/>    
+    <position height="-1" width="-1" x="345" y="430"/>    
     <display autosize="true" stereotype="true" package="true" initial-value="false" signature="true" accessors="true" 
       visibility="true">      
       <attributes public="false" package="false" protected="false" private="false" static="false"/>      
@@ -14,7 +14,7 @@
   <class id="2" language="java" name="org.pvg.plasmagraph.controllers.DataSetController.DataViewHeaderDataListener" 
     project="plasmagraph" file="/plasmagraph/src/org/pvg/plasmagraph/controllers/DataSetController.java" binary="false" 
     corner="BOTTOM_RIGHT">    
-    <position height="-1" width="-1" x="342" y="607"/>    
+    <position height="-1" width="-1" x="364" y="486"/>    
     <display autosize="true" stereotype="true" package="true" initial-value="false" signature="true" accessors="true" 
       visibility="true">      
       <attributes public="false" package="false" protected="false" private="false" static="false"/>      
@@ -24,7 +24,7 @@
   <class id="3" language="java" name="org.pvg.plasmagraph.controllers.DataSetController.GraphListener" 
     project="plasmagraph" file="/plasmagraph/src/org/pvg/plasmagraph/controllers/DataSetController.java" binary="false" 
     corner="BOTTOM_RIGHT">    
-    <position height="-1" width="-1" x="550" y="607"/>    
+    <position height="-1" width="-1" x="604" y="544"/>    
     <display autosize="true" stereotype="true" package="true" initial-value="false" signature="true" accessors="true" 
       visibility="true">      
       <attributes public="false" package="false" protected="false" private="false" static="false"/>      
@@ -34,7 +34,7 @@
   <class id="4" language="java" name="org.pvg.plasmagraph.controllers.DataSetController.YAxisTypeListener" 
     project="plasmagraph" file="/plasmagraph/src/org/pvg/plasmagraph/controllers/DataSetController.java" binary="false" 
     corner="BOTTOM_RIGHT">    
-    <position height="-1" width="-1" x="734" y="607"/>    
+    <position height="-1" width="-1" x="755" y="545"/>    
     <display autosize="true" stereotype="true" package="true" initial-value="false" signature="true" accessors="true" 
       visibility="true">      
       <attributes public="false" package="false" protected="false" private="false" static="false"/>      
@@ -44,7 +44,7 @@
   <class id="5" language="java" name="org.pvg.plasmagraph.controllers.DataSetController.YAxisNameListener" 
     project="plasmagraph" file="/plasmagraph/src/org/pvg/plasmagraph/controllers/DataSetController.java" binary="false" 
     corner="BOTTOM_RIGHT">    
-    <position height="-1" width="-1" x="918" y="607"/>    
+    <position height="-1" width="-1" x="971" y="367"/>    
     <display autosize="true" stereotype="true" package="true" initial-value="false" signature="true" accessors="true" 
       visibility="true">      
       <attributes public="false" package="false" protected="false" private="false" static="false"/>      
@@ -54,7 +54,7 @@
   <class id="6" language="java" name="org.pvg.plasmagraph.controllers.DataSetController.YColumnListener" 
     project="plasmagraph" file="/plasmagraph/src/org/pvg/plasmagraph/controllers/DataSetController.java" binary="false" 
     corner="BOTTOM_RIGHT">    
-    <position height="-1" width="-1" x="1102" y="607"/>    
+    <position height="-1" width="-1" x="906" y="543"/>    
     <display autosize="true" stereotype="true" package="true" initial-value="false" signature="true" accessors="true" 
       visibility="true">      
       <attributes public="false" package="false" protected="false" private="false" static="false"/>      
@@ -64,7 +64,7 @@
   <class id="7" language="java" name="org.pvg.plasmagraph.controllers.DataSetController.XAxisNameListener" 
     project="plasmagraph" file="/plasmagraph/src/org/pvg/plasmagraph/controllers/DataSetController.java" binary="false" 
     corner="BOTTOM_RIGHT">    
-    <position height="-1" width="-1" x="128" y="481"/>    
+    <position height="-1" width="-1" x="341" y="319"/>    
     <display autosize="true" stereotype="true" package="true" initial-value="false" signature="true" accessors="true" 
       visibility="true">      
       <attributes public="false" package="false" protected="false" private="false" static="false"/>      
@@ -74,7 +74,7 @@
   <class id="8" language="java" name="org.pvg.plasmagraph.controllers.DataSetController.XAxisTypeListener" 
     project="plasmagraph" file="/plasmagraph/src/org/pvg/plasmagraph/controllers/DataSetController.java" binary="false" 
     corner="BOTTOM_RIGHT">    
-    <position height="-1" width="-1" x="312" y="481"/>    
+    <position height="-1" width="-1" x="342" y="376"/>    
     <display autosize="true" stereotype="true" package="true" initial-value="false" signature="true" accessors="true" 
       visibility="true">      
       <attributes public="false" package="false" protected="false" private="false" static="false"/>      
@@ -84,7 +84,7 @@
   <class id="9" language="java" name="org.pvg.plasmagraph.controllers.DataSetController.GroupByColumnListener" 
     project="plasmagraph" file="/plasmagraph/src/org/pvg/plasmagraph/controllers/DataSetController.java" binary="false" 
     corner="BOTTOM_RIGHT">    
-    <position height="-1" width="-1" x="505" y="481"/>    
+    <position height="-1" width="-1" x="443" y="542"/>    
     <display autosize="true" stereotype="true" package="true" initial-value="false" signature="true" accessors="true" 
       visibility="true">      
       <attributes public="false" package="false" protected="false" private="false" static="false"/>      
@@ -94,7 +94,7 @@
   <class id="10" language="java" name="org.pvg.plasmagraph.controllers.DataSetController.DataViewTemplateListener" 
     project="plasmagraph" file="/plasmagraph/src/org/pvg/plasmagraph/controllers/DataSetController.java" binary="false" 
     corner="BOTTOM_RIGHT">    
-    <position height="-1" width="-1" x="714" y="481"/>    
+    <position height="-1" width="-1" x="976" y="303"/>    
     <display autosize="true" stereotype="true" package="true" initial-value="false" signature="true" accessors="true" 
       visibility="true">      
       <attributes public="false" package="false" protected="false" private="false" static="false"/>      
@@ -104,7 +104,7 @@
   <class id="11" language="java" name="org.pvg.plasmagraph.controllers.DataSetController.ChartTypeListener" 
     project="plasmagraph" file="/plasmagraph/src/org/pvg/plasmagraph/controllers/DataSetController.java" binary="false" 
     corner="BOTTOM_RIGHT">    
-    <position height="-1" width="-1" x="915" y="481"/>    
+    <position height="-1" width="-1" x="970" y="485"/>    
     <display autosize="true" stereotype="true" package="true" initial-value="false" signature="true" accessors="true" 
       visibility="true">      
       <attributes public="false" package="false" protected="false" private="false" static="false"/>      
@@ -123,7 +123,7 @@
   <class id="13" language="java" name="org.pvg.plasmagraph.controllers.DataSetController.XColumnListener" 
     project="plasmagraph" file="/plasmagraph/src/org/pvg/plasmagraph/controllers/DataSetController.java" binary="false" 
     corner="BOTTOM_RIGHT">    
-    <position height="-1" width="-1" x="1099" y="481"/>    
+    <position height="-1" width="-1" x="971" y="426"/>    
     <display autosize="true" stereotype="true" package="true" initial-value="false" signature="true" accessors="true" 
       visibility="true">      
       <attributes public="false" package="false" protected="false" private="false" static="false"/>      
@@ -132,7 +132,7 @@
   </class>  
   <class id="14" language="java" name="org.pvg.plasmagraph.views.DataSetView" project="plasmagraph" 
     file="/plasmagraph/src/org/pvg/plasmagraph/views/DataSetView.java" binary="false" corner="BOTTOM_RIGHT">    
-    <position height="-1" width="-1" x="446" y="243"/>    
+    <position height="-1" width="-1" x="457" y="214"/>    
     <display autosize="true" stereotype="true" package="true" initial-value="false" signature="true" accessors="true" 
       visibility="true">      
       <attributes public="false" package="false" protected="false" private="false" static="false"/>      
@@ -141,7 +141,7 @@
   </class>  
   <class id="15" language="java" name="org.pvg.plasmagraph.models.DataSetModel" project="plasmagraph" 
     file="/plasmagraph/src/org/pvg/plasmagraph/models/DataSetModel.java" binary="false" corner="BOTTOM_RIGHT">    
-    <position height="-1" width="-1" x="867" y="241"/>    
+    <position height="-1" width="-1" x="837" y="215"/>    
     <display autosize="true" stereotype="true" package="true" initial-value="false" signature="true" accessors="true" 
       visibility="true">      
       <attributes public="false" package="false" protected="false" private="false" static="false"/>      
@@ -159,7 +159,7 @@
   </class>  
   <class id="17" language="java" name="org.pvg.plasmagraph.utils.template.Template" project="plasmagraph" 
     file="/plasmagraph/src/org/pvg/plasmagraph/utils/template/Template.java" binary="false" corner="BOTTOM_RIGHT">    
-    <position height="-1" width="-1" x="1075" y="149"/>    
+    <position height="-1" width="-1" x="836" y="104"/>    
     <display autosize="true" stereotype="true" package="true" initial-value="false" signature="true" accessors="true" 
       visibility="true">      
       <attributes public="false" package="false" protected="false" private="false" static="false"/>      
@@ -168,7 +168,7 @@
   </class>  
   <class id="18" language="java" name="org.pvg.plasmagraph.utils.data.HeaderData" project="plasmagraph" 
     file="/plasmagraph/src/org/pvg/plasmagraph/utils/data/HeaderData.java" binary="false" corner="BOTTOM_RIGHT">    
-    <position height="-1" width="-1" x="1067" y="247"/>    
+    <position height="-1" width="-1" x="999" y="104"/>    
     <display autosize="true" stereotype="true" package="true" initial-value="false" signature="true" accessors="true" 
       visibility="true">      
       <attributes public="false" package="false" protected="false" private="false" static="false"/>      
@@ -177,7 +177,7 @@
   </class>  
   <class id="19" language="java" name="org.pvg.plasmagraph.utils.data.GraphPair" project="plasmagraph" 
     file="/plasmagraph/src/org/pvg/plasmagraph/utils/data/GraphPair.java" binary="false" corner="BOTTOM_RIGHT">    
-    <position height="-1" width="-1" x="1075" y="339"/>    
+    <position height="-1" width="-1" x="1003" y="217"/>    
     <display autosize="true" stereotype="true" package="true" initial-value="false" signature="true" accessors="true" 
       visibility="true">      
       <attributes public="false" package="false" protected="false" private="false" static="false"/>      
@@ -188,106 +188,106 @@
     <end type="SOURCE" refId="12"/>    
     <end type="TARGET" refId="1"/>  
   </nesting>  
-  <association id="21">    
-    <end type="SOURCE" refId="12" navigable="false">      
-      <attribute id="22" name="data_view"/>      
-      <multiplicity id="23" minimum="0" maximum="1"/>    
-    </end>    
-    <end type="TARGET" refId="14" navigable="true"/>    
-    <display labels="true" multiplicity="true"/>  
-  </association>  
-  <nesting id="24">    
+  <nesting id="21">    
     <end type="SOURCE" refId="12"/>    
     <end type="TARGET" refId="3"/>  
   </nesting>  
-  <nesting id="25">    
-    <end type="SOURCE" refId="12"/>    
-    <end type="TARGET" refId="10"/>  
-  </nesting>  
-  <nesting id="26">    
-    <end type="SOURCE" refId="12"/>    
-    <end type="TARGET" refId="7"/>  
-  </nesting>  
-  <nesting id="27">    
-    <end type="SOURCE" refId="12"/>    
-    <end type="TARGET" refId="6"/>  
-  </nesting>  
-  <nesting id="28">    
-    <end type="SOURCE" refId="12"/>    
-    <end type="TARGET" refId="5"/>  
-  </nesting>  
-  <association id="29">    
-    <end type="SOURCE" refId="15" navigable="false">      
-      <attribute id="30" name="hd"/>      
-      <multiplicity id="31" minimum="0" maximum="1"/>    
-    </end>    
-    <end type="TARGET" refId="18" navigable="true"/>    
-    <display labels="true" multiplicity="true"/>  
-  </association>  
-  <nesting id="32">    
-    <end type="SOURCE" refId="12"/>    
-    <end type="TARGET" refId="13"/>  
-  </nesting>  
-  <nesting id="33">    
-    <end type="SOURCE" refId="12"/>    
-    <end type="TARGET" refId="9"/>  
-  </nesting>  
-  <nesting id="34">    
-    <end type="SOURCE" refId="12"/>    
-    <end type="TARGET" refId="2"/>  
-  </nesting>  
-  <nesting id="35">    
-    <end type="SOURCE" refId="12"/>    
-    <end type="TARGET" refId="4"/>  
-  </nesting>  
-  <nesting id="36">    
-    <end type="SOURCE" refId="12"/>    
-    <end type="TARGET" refId="8"/>  
-  </nesting>  
-  <association id="37">    
-    <end type="SOURCE" refId="14" navigable="false">      
-      <attribute id="38" name="data_model"/>      
-      <multiplicity id="39" minimum="0" maximum="1"/>    
-    </end>    
-    <end type="TARGET" refId="15" navigable="true"/>    
-    <display labels="true" multiplicity="true"/>  
-  </association>  
-  <association id="40">    
+  <association id="22">    
     <end type="SOURCE" refId="12" navigable="false">      
-      <attribute id="41" name="graph_controller"/>      
-      <multiplicity id="42" minimum="0" maximum="1"/>    
+      <attribute id="23" name="graph_controller"/>      
+      <multiplicity id="24" minimum="0" maximum="1"/>    
     </end>    
     <end type="TARGET" refId="16" navigable="true"/>    
     <display labels="true" multiplicity="true"/>  
   </association>  
-  <association id="43">    
+  <association id="25">    
     <end type="SOURCE" refId="15" navigable="false">      
-      <attribute id="44" name="t"/>      
-      <multiplicity id="45" minimum="0" maximum="1"/>    
+      <attribute id="26" name="t"/>      
+      <multiplicity id="27" minimum="0" maximum="1"/>    
     </end>    
     <end type="TARGET" refId="17" navigable="true"/>    
     <display labels="true" multiplicity="true"/>  
   </association>  
-  <nesting id="46">    
+  <nesting id="28">    
     <end type="SOURCE" refId="12"/>    
-    <end type="TARGET" refId="11"/>  
+    <end type="TARGET" refId="2"/>  
   </nesting>  
-  <association id="47">    
+  <nesting id="29">    
+    <end type="SOURCE" refId="12"/>    
+    <end type="TARGET" refId="5"/>  
+  </nesting>  
+  <nesting id="30">    
+    <end type="SOURCE" refId="12"/>    
+    <end type="TARGET" refId="8"/>  
+  </nesting>  
+  <nesting id="31">    
+    <end type="SOURCE" refId="12"/>    
+    <end type="TARGET" refId="6"/>  
+  </nesting>  
+  <association id="32">    
     <end type="SOURCE" refId="15" navigable="false">      
-      <attribute id="48" name="p"/>      
-      <multiplicity id="49" minimum="0" maximum="1"/>    
+      <attribute id="33" name="p"/>      
+      <multiplicity id="34" minimum="0" maximum="1"/>    
     </end>    
     <end type="TARGET" refId="19" navigable="true"/>    
     <display labels="true" multiplicity="true"/>  
   </association>  
-  <association id="50">    
-    <end type="SOURCE" refId="12" navigable="false">      
-      <attribute id="51" name="data_model"/>      
-      <multiplicity id="52" minimum="0" maximum="1"/>    
+  <nesting id="35">    
+    <end type="SOURCE" refId="12"/>    
+    <end type="TARGET" refId="10"/>  
+  </nesting>  
+  <nesting id="36">    
+    <end type="SOURCE" refId="12"/>    
+    <end type="TARGET" refId="11"/>  
+  </nesting>  
+  <association id="37">    
+    <end type="SOURCE" refId="15" navigable="false">      
+      <attribute id="38" name="hd"/>      
+      <multiplicity id="39" minimum="0" maximum="1"/>    
+    </end>    
+    <end type="TARGET" refId="18" navigable="true"/>    
+    <display labels="true" multiplicity="true"/>  
+  </association>  
+  <association id="40">    
+    <end type="SOURCE" refId="14" navigable="false">      
+      <attribute id="41" name="data_model"/>      
+      <multiplicity id="42" minimum="0" maximum="1"/>    
     </end>    
     <end type="TARGET" refId="15" navigable="true"/>    
     <display labels="true" multiplicity="true"/>  
   </association>  
+  <association id="43">    
+    <end type="SOURCE" refId="12" navigable="false">      
+      <attribute id="44" name="data_view"/>      
+      <multiplicity id="45" minimum="0" maximum="1"/>    
+    </end>    
+    <end type="TARGET" refId="14" navigable="true"/>    
+    <display labels="true" multiplicity="true"/>  
+  </association>  
+  <association id="46">    
+    <end type="SOURCE" refId="12" navigable="false">      
+      <attribute id="47" name="data_model"/>      
+      <multiplicity id="48" minimum="0" maximum="1"/>    
+    </end>    
+    <end type="TARGET" refId="15" navigable="true"/>    
+    <display labels="true" multiplicity="true"/>  
+  </association>  
+  <nesting id="49">    
+    <end type="SOURCE" refId="12"/>    
+    <end type="TARGET" refId="7"/>  
+  </nesting>  
+  <nesting id="50">    
+    <end type="SOURCE" refId="12"/>    
+    <end type="TARGET" refId="13"/>  
+  </nesting>  
+  <nesting id="51">    
+    <end type="SOURCE" refId="12"/>    
+    <end type="TARGET" refId="4"/>  
+  </nesting>  
+  <nesting id="52">    
+    <end type="SOURCE" refId="12"/>    
+    <end type="TARGET" refId="9"/>  
+  </nesting>  
   <classifier-display autosize="true" stereotype="true" package="true" initial-value="false" signature="true" 
     accessors="true" visibility="true">    
     <attributes public="false" package="false" protected="false" private="false" static="false"/>    

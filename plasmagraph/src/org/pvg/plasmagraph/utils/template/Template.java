@@ -31,7 +31,6 @@ import org.pvg.plasmagraph.utils.types.OutlierResponse;
  * should not be made more than once. (This class may be made into a singleton
  * someday, but not yet.)
  * 
- * @version 0.8.4
  * @author Plasma Visualization Group
  */
 public class Template {
@@ -40,7 +39,7 @@ public class Template {
     /** Collection of listeners for any change that occurs in this Template. */
     private Set <ChangeListener> listeners = new HashSet <> ();
     
-	// Classifications
+    // Classifications
     /** Type of the Chart. Can be XY/BarChart. */
 	private ChartType chart_type;
 	
@@ -90,20 +89,23 @@ public class Template {
 	/** Type of distance that will be used in the Outlier Scanning procedure. */
 	private OutlierDistanceType outlier_distance_type;
 	
+	// Program settings
+	//private boolean show_info_messages;
+	
 	// Constructors
 	/**
 	 *  <p>Constructor for Template objects. Provides default values to new Template object.
 	 */
 	public Template () {
 		// Use the defaults!
-		this.chart_name 					= "Empty vs. Variable";
+		this.chart_name 					= "Default Chart Name";
 		this.chart_type 					= ChartType.XY_GRAPH;
 		this.x_axis_label					= "X Axis";
 		this.y_axis_label					= "Y Axis";
 		this.using_legend 					= true;
 		this.using_tooltips 				= true;
 		this.generate_urls 					= false;
-		this.orientation 					=  PlotOrientation.VERTICAL;
+		this.orientation 					= PlotOrientation.VERTICAL;
 		this.x_axis_type					= AxisType.STANDARD;
 		this.y_axis_type					= AxisType.STANDARD;
 		this.default_interpolation_type 	= InterpolationType.NONE;
@@ -111,8 +113,9 @@ public class Template {
 		this.interpolation_lower_range 		= 0.0;
 		this.interpolation_upper_range		= 10.0;
 		this.interpolation_point_amount		= 5000;
-		this.outlier_distance_type 			= OutlierDistanceType.MAHALANOBIS;
-		this.outlier_distance				= 0.0;
+		this.outlier_distance_type 			= OutlierDistanceType.USER;
+		this.outlier_distance				= 10.0;
+		//this.show_info_messages 			= true;
 	}
 	
 	// Event Methods
@@ -303,10 +306,10 @@ public class Template {
 	 * <p>Getter method. Checks to see if the ChartName is currently in its default
 	 * state.
 	 * 
-	 * @return True if the chart_name variable is equal to "Empty vs. Variable"; else, False.
+	 * @return True if the chart_name variable is equal to "Default Chart Name"; else, False.
 	 */
 	public boolean isDefaultChartName () {
-		return (this.chart_name.equals ("Empty vs. Variable"));
+		return ("Default Chart Name".equals (this.chart_name));
 	}
 
 	/**
@@ -328,6 +331,16 @@ public class Template {
 	public boolean isDefaultYAxisLabel () {
 		return (this.y_axis_label.equals ("Y Axis"));
 	}
+	
+	/**
+	 * <p>Getter method. Checks to see if the user has selected to show popup messages
+	 * such as the rows removed while verifying data or R/R^2 values of an interpolation.
+	 * 
+	 * @return True if "show_info_messages" is set to True; else, False.
+	 */
+	/*public boolean isShowingInfoMessages () {
+		return (this.show_info_messages);
+	}*/
 
 	/**
 	 * <p>Sends a ChangeEvent to all listeners of this object,
@@ -407,6 +420,10 @@ public class Template {
     		this.outlier_distance = Double.parseDouble (output);
     		output = reader.readLine ();
     		this.outlier_distance_type = OutlierDistanceType.parse (output);
+    		
+    		// Options selections
+    		/*output = reader.readLine();
+            this.show_info_messages = new Boolean (output);*/
     		
     		// Fire messages to all listeners!
     		this.notifyListeners ();
@@ -499,6 +516,8 @@ public class Template {
             sb.append (this.outlier_distance + ls);
             sb.append (this.outlier_distance_type.toString () + ls);
             
+            // Options selections
+            /*sb.append (this.show_info_messages + ls);*/
 
             // Write it to the BufferedWriter
             writer.write (sb.toString ());
@@ -619,15 +638,6 @@ public class Template {
 	}
 	
 	/**
-	 * <p>Setter Method. Changes the "x_axis_column_name" variable.
-	 * 
-     * @param column_name The new String variable to replace this object's "x_axis_column_name" variable's contents.
-	 */
-/*	public void setXAxisColumn (String column_name) {
-		this.x_axis_column_name = column_name;
-	}*/
-	
-	/**
 	 * <p>Setter Method. Sets this object's X Axis AxisType to that of the parameter provided.
 	 * 
 	 * @param xAxisType An AxisType object specifying the type of Axis to use.
@@ -682,15 +692,6 @@ public class Template {
 	}
 	
 	/**
-	 * <p>Setter Method. Changes the "y_axis_column_name" variable.
-	 * 
-     * @param column_name The new String variable to replace this object's "y_axis_column_name" variable's contents.
-	 */
-/*	public void setYAxisColumn (String column_name) {
-		this.y_axis_column_name = column_name;
-	}
-*/
-	/**
 	 * <p>Setter Method. Sets this object's Y Axis AxisType to that of the parameter provided.
 	 * 
 	 * @param yAxisType An AxisType object specifying the type of Axis to use.
@@ -737,6 +738,15 @@ public class Template {
 	public void setOutlierDistance (double outlier_distance) {
 		this.outlier_distance = outlier_distance;
 	}
+	
+	/**
+	 * <p>Setter Method. Sets the visibility of popup messages in the program.
+	 * 
+	 * @param popups A boolean stating if popup messages will be shown or not.
+	 */
+	/*public void setShowInfoMessages (boolean messages) {
+		this.show_info_messages = messages;
+	}*/
 
 	/**
 	 * <p>Provides a textual representation of this Template object.
@@ -764,7 +774,8 @@ public class Template {
 	    sb.append ("Outlier Reaction: " + default_outlier_reaction.toString () + ls);
 	    sb.append ("Lower Interpolation Range: " + interpolation_lower_range + ls);
         sb.append ("Upper Interpolation Range: " + interpolation_upper_range + ls);
-        sb.append ("Interpolation Interval: " + interpolation_point_amount);
+        sb.append ("Interpolation Interval: " + interpolation_point_amount + ls);
+        /*sb.append ("Info Messages are being displayed:  " + show_info_messages);*/
 	    
 	    // Create the String to be returned.
 	    return (sb.toString ());

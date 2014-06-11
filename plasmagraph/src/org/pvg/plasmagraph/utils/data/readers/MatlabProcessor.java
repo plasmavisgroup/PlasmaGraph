@@ -88,21 +88,11 @@ public class MatlabProcessor implements FileProcessor {
 	public static final int mxOPAQUE_CLASS = 17;
 
 	/** Container for file location. */
-	File mat_file;
+	private File mat_file;
 	/** Container for MATlab data, as provided by JMatIO. */
-	Map <String, MLArray> mat_data;
-
-	/**
-	 * <p>Constructor. Creates a new MatlabProcessor with a default File location
-	 * as specified by the method call.
-	 * 
-	 * @param f A File object, containing the default file location for the
-	 *            process.
-	 */
-	public MatlabProcessor (File f) {
-		mat_file = f;
-		this.read ();
-	}
+	private Map <String, MLArray> mat_data;
+	/** Boolean specifying if informational messages will be shown or not. */
+	private boolean show_info_messages;
 
 	/**
 	 * <p>Constructor. Creates a new MatlabProcessor with a default File location
@@ -112,8 +102,32 @@ public class MatlabProcessor implements FileProcessor {
 	 *            process.
 	 */
 	public MatlabProcessor (String s) {
-		mat_file = new File (s);
+		this (new File (s));
+	}
+	
+	/**
+	 * <p>Constructor. Creates a new MatlabProcessor with a default File location
+	 * as specified by the method call.
+	 * 
+	 * @param f A File object, containing the default file location for the
+	 *            process.
+	 */
+	public MatlabProcessor (File f) {
+		this (f, true);
+	}
+	
+	/**
+	 * <p>Constructor. Creates a new MatlabProcessor with a default File location
+	 * as specified by the method call.
+	 * 
+	 * @param f A File object, containing the default file location for the
+	 *            process.
+	 * @param show_removed_rows Boolean indicating if information messages will be shown.
+	 */
+	public MatlabProcessor (File f, boolean show_removed_rows) {
+		this.mat_file = f;
 		this.read ();
+		this.show_info_messages = show_removed_rows;
 	}
 
 	/**
@@ -139,7 +153,6 @@ public class MatlabProcessor implements FileProcessor {
 			e.printStackTrace ();
 
 		}
-
 	}
 
 	/**
@@ -162,7 +175,7 @@ public class MatlabProcessor implements FileProcessor {
 			}
 		}
 
-		// If there's anything to remove, tell the user that it has mothing and
+		// If there's anything to remove, tell the user that it has nothing and
 		// remove it!
 		if (!remove_array.isEmpty ()) {
 
@@ -170,7 +183,9 @@ public class MatlabProcessor implements FileProcessor {
 				this.mat_data.remove (e.getKey ());
 			}
 
-			ExceptionHandler.showRemovedColumnDialog (remove_array);
+			if (this.show_info_messages) {
+				ExceptionHandler.showRemovedColumnDialog (remove_array);
+			}
 		}
 	}
 
@@ -487,7 +502,7 @@ public class MatlabProcessor implements FileProcessor {
 				p.getNumberOfColumns ());
 		
 		
-		// Before trying to populate the columns Map, check if there's a "header" column to use for
+		/*// Before trying to populate the columns Map, check if there's a "header" column to use for
 		// 	column name / variable translations.
 		Map <String, String> header_dictionary = new HashMap <> (this.mat_data.size () - 1);
 		
@@ -508,8 +523,6 @@ public class MatlabProcessor implements FileProcessor {
 						for (Entry <String, MLArray> c : this.mat_data.entrySet ()) {
 							
 							// If it's this one, save the name and run out.
-							System.out.println ("I am at: " + c_counter);
-							System.out.println ("But looking for: " + i);
 							if (c_counter == i) {
 								variable_name = c.getKey ();
 								//break;
@@ -529,12 +542,8 @@ public class MatlabProcessor implements FileProcessor {
 			}
 		}
 		
-		for (Map.Entry <String, String> translation : header_dictionary.entrySet ()) {
-			System.out.println ("Translation: " + translation.getKey () + " => " + translation.getValue ());
-		}
-
 		// Verify if said "header" column was ever found.
-		if (header_dictionary.isEmpty ()) {
+		if (header_dictionary.isEmpty ()) {*/
 			
 			// It wasn't. Follow standard procedure.
 			/** iterate over every group of data in the level 5 MAT-File **/
@@ -546,7 +555,6 @@ public class MatlabProcessor implements FileProcessor {
 				/** create and add the data column to the result set **/
 				if (!p.isGrouped ()) {
 
-					// Note: "header_dictionary"'s "get" method will translate a "header"-sourced name into the variable name.
 					if (variable_name.equals (hd.get (p.getXColumnIndex ()).getKey ())) {
 						// System.out.println ("Got the X Column.");
 
@@ -583,16 +591,16 @@ public class MatlabProcessor implements FileProcessor {
 				}
 			}
 			
-		} else {
+		/*} else {
 			
 			// It was! Follow modified procedure!
-			/** iterate over every group of data in the level 5 MAT-File **/
+			*//** iterate over every group of data in the level 5 MAT-File **//*
 			for (Entry <String, MLArray> e : this.mat_data.entrySet ()) {
 				
 				// Save the old name!
 				String variable_name = header_dictionary.get (e.getKey ());
 
-				/** create and add the data column to the result set **/
+				*//** create and add the data column to the result set **//*
 				if (!p.isGrouped ()) {
 
 					if (variable_name.equals (hd.get (p.getXColumnIndex ()).getKey ())) {
@@ -631,7 +639,7 @@ public class MatlabProcessor implements FileProcessor {
 				}
 			}
 			
-		}
+		}*/
 
 		// Now, verify the integrity of the data before saying it's all right!
 		try {
@@ -790,8 +798,10 @@ public class MatlabProcessor implements FileProcessor {
 		}
 		
 		// Finally, show the number of rows removed due to invalid data.
-		JOptionPane.showMessageDialog (null, "There were " + number_of_invalid_rows + 
-				"rows removed from the graph due to invalid data.");
+		if (show_info_messages) {
+			JOptionPane.showMessageDialog (null, "" + number_of_invalid_rows + 
+					" data points were omitted from the graph because they contained invalid data.");
+		}
 	}
 
 	/**

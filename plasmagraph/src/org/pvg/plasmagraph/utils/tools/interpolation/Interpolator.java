@@ -1,6 +1,7 @@
 package org.pvg.plasmagraph.utils.tools.interpolation;
 
 import java.math.BigDecimal;
+import java.text.DecimalFormat;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Comparator;
@@ -35,7 +36,7 @@ import org.pvg.plasmagraph.utils.types.InterpolationType;
 /**
  * TODO
  * 
- * @author Plasma Visualization Group
+ * @author Gerardo A. Navas Morales
  */
 public class Interpolator {
 	
@@ -122,8 +123,8 @@ public class Interpolator {
     		XYSeriesCollection grouped_interpolations = new XYSeriesCollection ();
     		
     		// Make each individual interpolation!
-    		for (Object s : grouped_sets.getSeries ()) {
-    			XYSeries set = (XYSeries) s;
+    		for (int collection_counter = 0; collection_counter < grouped_sets.getSeriesCount (); ++collection_counter) {
+    			XYSeries set = grouped_sets.getSeries (grouped_sets.getSeriesKey (collection_counter));
     			XYSeries interpolation = getInterpolation (set);
     			
     			// Get the name of the interpolation and add it to the name list!
@@ -141,15 +142,15 @@ public class Interpolator {
     		
     		// Combine both Collections, and then return an XYGraph of them all!
     		for (Object s : grouped_interpolations.getSeries ()) {
-    			if (s != null && grouped_sets.indexOf ((XYSeries) s) == -1) {
+    			if (s != null) {
     				grouped_sets.addSeries ((XYSeries) s);
     			}
     		}
     		
-    		g = new XYGraph (t, grouped_sets, p);
+    		g = new XYGraph (t, grouped_sets, p, this.getInterpolationValidity ());
     		
     	} else {
-    	
+    		
     		XYSeries original_dataset = ds.toXYGraphDataset (this.p);
     		
     		// Figure out the lower / upper boundaries of the interpolation!
@@ -157,35 +158,36 @@ public class Interpolator {
         	this.t.setUpperInterval (original_dataset.getMaxX ());
     		
     		// Check which of the different regressions you'll be doing.
-	        XYSeries interpolated_dataset = getInterpolation ();
+	        XYSeries interpolated_dataset = this.getInterpolation ();
 	        this.r_container_names.add (p.getName ());
 	        
 	        // Graph it!
-	        g = createDataset (original_dataset, 
+	        g = this.createDataset (original_dataset, 
 	        		interpolated_dataset, t, this.p);
     		
     	}
-    	
-    	if (grouped_error_counter != 0) {
-    		this.series_error_counter = grouped_error_counter;
-    		
-    		if (series_error_counter == 1) {
-    			JOptionPane.showMessageDialog (null, 
-    					"There was one data set that had less than three data points in it.\n"
-        				+ "As such, said data set was not interpolated due to lack of data.\n");
-    		} else {
-    			JOptionPane.showMessageDialog (null, 
-    					"There were " + this.series_error_counter 
-        				+ " data sets that had less than three data points in them.\n"
-        				+ "As such, said data sets were not interpolated due to lack of data.\n");
-    		}
-    	}
+    	//if (t.isShowingInfoMessages ()) {
+    		if (grouped_error_counter != 0) {
+        		this.series_error_counter = grouped_error_counter;
+        		
+        		if (series_error_counter == 1) {
+        			JOptionPane.showMessageDialog (null, 
+        					"There was one data set that had less than three data points in it.\n"
+            				+ "As such, said data set was not interpolated due to lack of data.\n");
+        		} else {
+        			JOptionPane.showMessageDialog (null, 
+        					"There were " + this.series_error_counter 
+            				+ " data sets that had less than three data points in them.\n"
+            				+ "As such, said data sets were not interpolated due to lack of data.\n");
+        		}
+        	}
+    	//}
     	
     	return (g);
 
     }
 
-    private XYSeries getInterpolation (XYSeries set) {
+	private XYSeries getInterpolation (XYSeries set) {
 
     	if (set.getItemCount () > 2) {
     		
@@ -397,6 +399,11 @@ public class Interpolator {
 			double [] y_column = new double [ds.size ()];
 			ds.orderData (x_column, y_column);
 			
+			// Test: Show what the hell the columns contain.
+			for (int i = 0; (i < x_column.length); ++i) {
+				System.out.println ("(" + x_column[i] + ", " + y_column[i] + ")");
+			}
+			
 	    	// Get Function to create data.
 	    	SplineInterpolator spline = new SplineInterpolator ();
 	    	PolynomialSplineFunction func = spline.interpolate (x_column, y_column);
@@ -415,11 +422,21 @@ public class Interpolator {
 	    	
 	    	return (regression_dataset);
 		} catch (NonMonotonicSequenceException ex)  {
+			
 			JOptionPane.showMessageDialog (null, "The Spline Interpolation of Graph " + 
 							this.p.getName () + " cannot be completed\n"
 							+ "due to multiple X values with the same number.\n"
 							+ "Please correct the data manually before attempting again.");
-			return null;
+			
+			return (null);
+			
+		} catch (Exception ex) {
+			
+			JOptionPane.showMessageDialog (null, ex.getMessage (), 
+					"Spline Interpolation Error", JOptionPane.ERROR_MESSAGE);
+			
+			return (null);
+			
 		}
 	}
 	
@@ -580,6 +597,13 @@ public class Interpolator {
 					+ "Please correct the data manually before attempting again.");
 			
 			return null;
+		} catch (Exception ex) {
+			
+			JOptionPane.showMessageDialog (null, ex.getMessage (), 
+					"Spline Interpolation Error", JOptionPane.ERROR_MESSAGE);
+			
+			return (null);
+			
 		}
 	}
 	
@@ -670,7 +694,7 @@ public class Interpolator {
 		}
 		
 		// Graph Interpolation and its original data.
-		return (new XYGraph (t, graph_data, p));
+		return (new XYGraph (t, graph_data, p, this.getInterpolationValidity ()));
 	}
     
 	/**
@@ -700,22 +724,53 @@ public class Interpolator {
     	
     }
     
+    private String getInterpolationValidity () {
+    	
+    	if (this.is_r_squared) {
+			
+    		return (this.getRSquaredValidity ());
+    		
+    	} else {
+    		
+    		return (this.getRValidity ());
+    		
+    	}
+    }
+    
     /**
      * Provides a window that states the R value for the interpolation
      * and if it matches with the standard table's values for the 
      * 99%, 98%, 95%, and 90% CI.
      */
     private void showRValidity () {
-    	StringBuilder sb = new StringBuilder ();
-
-    	for (int i = 0; (i < this.r_container.size ()); ++i) {
-    		sb.append ("Graph \"").append (this.r_container_names.get (i)).append ("\"'s R Value: ").append (this.r_container.get (i).getKey ()).append ("\n");
-        	sb.append (DataConfidence.provideCIValidity (this.r_container.get (i).getKey (), this.r_container.get (i).getValue ())).append ("\n\n");
-    	}
     	if (!this.r_container.isEmpty ()) {
-    		JOptionPane.showMessageDialog (null, sb.toString (), 
+    		JOptionPane.showMessageDialog (null, this.getRValidity (), 
     				"Interpolation Validity Check", JOptionPane.WARNING_MESSAGE);
     	}
+    }
+    
+    private String getRValidity () {
+    	StringBuilder sb = new StringBuilder ();
+
+    	// Set up the Number formatter.
+    	DecimalFormat df = new DecimalFormat ();
+    	df.setMaximumFractionDigits (4);
+    	
+    	sb.append ("R Values\n");
+    	
+    	for (int i = 0; (i < this.r_container.size ()); ++i) {
+    		
+    		String truncated_r_value = df.format (this.r_container.get (i).getKey ());
+    		
+    		sb.append (this.r_container_names.get (i))
+    			.append (": ")
+    			.append (truncated_r_value)
+    			.append (" - ")
+    			.append (DataConfidence.provideCIValidity (this.r_container.get (i).getKey (), this.r_container.get (i).getValue ()))
+    			.append ("\n");
+    	}
+    	System.out.println (sb.toString ());
+    	return (sb.toString ());
     }
     
     /**
@@ -723,19 +778,34 @@ public class Interpolator {
      * performed.
      */
     private void showRSquaredValidity () {
+		// Show the dialog.
+		if (!this.r_container.isEmpty ()) {
+			JOptionPane.showMessageDialog (null, this.getRSquaredValidity (), 
+					"R-Squared Calculation", JOptionPane.INFORMATION_MESSAGE);
+		}
+    }
+    
+    private String getRSquaredValidity () {
     	// Prepare the message
 		StringBuilder sb = new StringBuilder ();
 		
+		// Set up the Number formatter.
+    	DecimalFormat df = new DecimalFormat ();
+    	df.setMaximumFractionDigits (4);
+		
+		sb.append ("R-Squared Values\n");
+		
 		for (int i = 0; (i < this.r_container.size ()); ++i) {
-			sb.append ("The R-Squared value for regression \"").append (this.r_container_names.get (i)).append ("\" is: ").
-				append (this.r_container.get (i).getKey ()).append ("\n\n");
+			
+			String truncated_r_squared_value = df.format (this.r_container.get (i).getKey ());
+			
+			sb.append (this.r_container_names.get (i))
+				.append (": ")
+				.append (truncated_r_squared_value)
+				.append ("\n");
 		}
 		
-		// Show the dialog.
-		if (!this.r_container.isEmpty ()) {
-			JOptionPane.showMessageDialog (null, sb.toString (), 
-					"R-Squared Calculation", JOptionPane.INFORMATION_MESSAGE);
-		}
+		return (sb.toString ());
     }
     
     /**

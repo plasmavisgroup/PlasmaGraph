@@ -8,7 +8,6 @@ import org.pvg.plasmagraph.utils.data.DataSet;
 import org.pvg.plasmagraph.utils.data.HeaderData;
 import org.pvg.plasmagraph.utils.exceptions.FunctionNotImplementedException;
 import org.pvg.plasmagraph.utils.exceptions.InvalidParametersException;
-import org.pvg.plasmagraph.utils.graphs.BarGraph;
 import org.pvg.plasmagraph.utils.graphs.Graph;
 import org.pvg.plasmagraph.utils.graphs.XYGraph;
 import org.pvg.plasmagraph.utils.template.Template;
@@ -17,7 +16,9 @@ import org.pvg.plasmagraph.utils.tools.outlierscan.OutlierSearch;
 import org.pvg.plasmagraph.utils.types.ChartType;
 
 /**
- * TODO
+ * <p>Model Class for the Graph window's MVC.
+ * 
+ * <p>Handles the calling of classes when the Graph button has been pressed.
  * 
  * @author Plasma Visualization Group
  */
@@ -62,11 +63,11 @@ public class GraphModel {
 		
 		if (t.isSearching ()) {
 
-			return scannedGraphing (t.isInterpolating ()).getChart ();
+			return scannedGraphing ().getChart ();
 
 		} else {
 
-			return unscannedGraphing (t.isInterpolating ()).getChart ();
+			return unscannedGraphing ().getChart ();
 
 		}
 	}
@@ -79,19 +80,20 @@ public class GraphModel {
 	 * 
 	 * @param interpolation_switch
 	 */
-	public Graph unscannedGraphing (boolean interpolation_switch) {
+	public Graph unscannedGraphing () {
 		
-		//System.out.println ("Ready status: " + p.isReady ());
-		//System.out.println ("Grouped status: " + p.isGrouped ());
-		//System.out.println (p.toString ());
-		//System.out.println (p.getIndexes ());
+		/*System.out.println ("Ready status: " + p.isReady ());
+		System.out.println ("Grouped status: " + p.isGrouped ());
+		System.out.println (p.toString ());
+		System.out.println (p.getIndexes ());
+		System.out.println (t.isInterpolating ());*/
 
 		try {
 	
-			if (interpolation_switch) {
-
-					this.interpolator = new Interpolator (hd, t, p);
-					return (interpolator.interpolate ());
+			if (t.isInterpolating ()) {
+				
+				this.interpolator = new Interpolator (hd, t, p);
+				return (interpolator.interpolate ());
 
 			} else {
 
@@ -103,8 +105,9 @@ public class GraphModel {
 				} else {// if (t.getChartType ().equals (ChartType.BAR_GRAPH)) {
 
 					// Create the graph
-					return (new BarGraph (t, hd, p));
+					/*return (new BarGraph (t, hd, p));*/
 
+					return (this.graphEmptyChart ());
 				}
 			}
 		
@@ -122,14 +125,14 @@ public class GraphModel {
 	 * 
 	 * @param interpolation_switch
 	 */
-	public Graph scannedGraphing (boolean interpolation_switch) {
+	public Graph scannedGraphing () {
 		try {
 			
 			// Now, scan and show the graph after scanning, if requested.
 			DataSet ds = OutlierSearch.scanForOutliers (hd, t, p);
 
-			if (interpolation_switch) {
-
+			if (t.isInterpolating ()) {
+				
 				this.interpolator = new Interpolator (ds, t, p);
 				return (interpolator.interpolate ());
 
@@ -142,8 +145,9 @@ public class GraphModel {
 				} else {// if (t.getChartType ().equals (ChartType.BAR_GRAPH)) {
 
 					// Create the graph
-					return (new BarGraph (t, ds, p));
+					/*return (new BarGraph (t, ds, p));*/
 
+					return (this.graphEmptyChart ());
 				}
 			}
 		} catch (FunctionNotImplementedException ex) {
@@ -166,11 +170,9 @@ public class GraphModel {
 			// Create a dummy XYGraph.
 			return (new XYGraph (t));
 
-		} else {// if (t.getChartType ().equals (ChartType.BAR_GRAPH)) {
+		} else {
 
-			// Create a dummy BarGraph.
-			return (new BarGraph (t));
-
+			return (new XYGraph (t));
 		}
 	}
 

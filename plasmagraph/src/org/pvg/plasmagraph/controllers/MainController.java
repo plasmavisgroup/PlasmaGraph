@@ -12,7 +12,6 @@ import javax.swing.event.ChangeListener;
 
 import org.pvg.plasmagraph.models.MainModel;
 import org.pvg.plasmagraph.utils.exceptions.TemplateGroupByColumnNotFoundException;
-//import org.pvg.plasmagraph.views.AestheticView;
 import org.pvg.plasmagraph.views.DataSetView;
 import org.pvg.plasmagraph.views.MainView;
 import org.pvg.plasmagraph.views.ToolView;
@@ -65,10 +64,13 @@ public class MainController {
 		main_view.addTemplateSaveMenuListener (new TemplateSaveMenuListener ());
 		// Help
         this.addHelpMenuListener();
-		// Exit
+		// Options
+        /*main_view.addShowInfoMessagesListener (new InfoMessageMenuListener ());*/
 		main_view.addExitMenuListener (new ExitMenuListener ());
 		// Tabs
 		//main_view.addTabListener (new TabListener ());
+		// Template
+		/*main_model.addTemplateChangeListener (new MainViewTemplateListener ());*/
 		// Finish up setup by preparing tabs.
 		setUpTabs ();
 	}
@@ -167,7 +169,36 @@ public class MainController {
 
 	}
 
-	// Exit Action Listener Inner Class
+	// Options Listener Inner Classes
+	
+	/*class InfoMessageMenuListener implements ItemListener {
+
+		@SuppressWarnings ("unused")
+		@Override
+		public void itemStateChanged (final ItemEvent e) {
+			SwingWorker <Void, Void> info_message_worker = new SwingWorker <Void, Void> () {
+				
+				@Override
+				protected Void doInBackground () throws Exception {
+					int source = e.getStateChange ();
+					
+					if (source == ItemEvent.SELECTED) {
+						
+						main_model.getTemplate ().setShowInfoMessages (true);
+						
+					} else { //if (source == ItemEvent.DESELECTED) {
+						
+						main_model.getTemplate ().setShowInfoMessages (false);
+						
+					}
+					System.out.println ("Ding!");
+					return null;
+				}
+			};
+		}
+		
+	}*/
+	
 	class ExitMenuListener implements ActionListener {
 
 		@Override
@@ -229,6 +260,38 @@ public class MainController {
 			}
 		}
 	}
+	
+	/**
+	 * Listener for the Template that contains all settings for the program.
+	 * Relies on ChangeListener in order to know that a change has occurred in
+	 * the Template.
+	 * 
+	 * @author Plasma Visualization Group
+	 *//*
+	class MainViewTemplateListener implements ChangeListener {
+
+		*//**
+		 * Updates the MainView's current Template-based state.
+		 *//*
+		@Override
+		public void stateChanged (ChangeEvent e) {
+			SwingWorker <Void, Void> main_template_worker = new SwingWorker <Void, Void> () {
+
+				@Override
+				protected Void doInBackground () throws Exception {
+					
+					main_view.updateView ();
+					
+					return null;
+					
+				}
+
+			};
+
+			main_template_worker.run ();
+		}
+
+	}*/
 	
 	 /**
      * Displays a help manual when the main menu option "Help >> User Guide" is clicked on.

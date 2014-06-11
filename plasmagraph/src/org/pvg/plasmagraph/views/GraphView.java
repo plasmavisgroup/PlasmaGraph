@@ -108,7 +108,7 @@ public class GraphView extends JFrame {
 			if (this.graph_model.getTemplate ().isSearching ()) {
 				
 				this.checkAndDisplayGraph (
-						this.graph_model.unscannedGraphing (false).getChart ());
+						this.graph_model.unscannedGraphing ().getChart ());
 			}
 			
 			// Create the graph.
@@ -128,21 +128,13 @@ public class GraphView extends JFrame {
 			this.pack ();
 			this.setVisible (true);
 			
-			// Display any extra information!
-			if (this.graph_model.getInterpolation () != null) {
-				
-				this.graph_model.getInterpolation ().showInterpolationValidity ();
-				
-			}
-			
-		} /*else {
-			JOptionPane.showMessageDialog (this, "Due to the previously-mentioned error, "
-					+ "the graph will not change.");
-		}*/
+		}
 	}
 
 	private void initComponents () {
-		// Set default operation responses.
+		// Set default names and operation responses.
+		setTitle ("PlasmaGraph");
+        setName ("PlasmaGraph");
 		setDefaultCloseOperation (javax.swing.WindowConstants.EXIT_ON_CLOSE);
 		
 		// Create the chart and make it visible!

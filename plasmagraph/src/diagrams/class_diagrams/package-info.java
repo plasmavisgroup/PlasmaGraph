@@ -5,4 +5,4 @@
  * Contains all the UML Class diagrams made via Eclipse
  * @author Plasma Visualization Group
  */
-package diagrams;
+package diagrams.class_diagrams;

@@ -131,15 +131,19 @@ public class ClusterScanning implements ScanMethod {
 		sb.append ("Outliers found: ")
 				.append ("\n");
 		
-		int count = 0;
-		for (DoublePoint p : outliers) {
-			
-			sb.append (p.toString ());
-			
-			if (count == 4) {
-				sb.append ("\n");
+		if (outliers.size () <= 120) {
+			int count = 0;
+			for (DoublePoint p : outliers) {
+				
+				sb.append (p.toString ());
+				
+				if (count % 5 == 0) {
+					sb.append (System.getProperty ("line.separator"));
+				}
+				++count;
 			}
-			++count;
+		} else {
+			sb.append ("Number of points exceeds amount viewable in screen.");
 		}
 		
 		JOptionPane.showMessageDialog (null, sb.toString (), 

@@ -39,9 +39,11 @@ public class HeaderData implements Iterable<HeaderColumn> {
 	private ArrayList <HeaderColumn> columns;
 	/** Container for Files containing data for this object. */
 	private Pair <File, FileType> file;
+	/** Contains information regarding the popups that will be shown. */
+	/*private Template t;*/
 
 	/**
-	 * <p>Constructor. Creates a new ArrayList of HeaderColumns for this object.
+	 * <p>Basic constructor. Creates a new ArrayList of HeaderColumns for this object.
 	 * There should only exist one HeaderData for any given time.
 	 */
 	public HeaderData () {
@@ -49,6 +51,17 @@ public class HeaderData implements Iterable<HeaderColumn> {
 		this.listeners = new HashSet <> ();
 		this.file = null;
 	}
+	
+	/**
+	 * <p>Constructor. Creates a new ArrayList of HeaderColumns for this object.
+	 * There should only exist one HeaderData for any given time.
+	 */
+	/*public HeaderData (Template t) {
+		this.columns = new ArrayList <> ();
+		this.listeners = new HashSet <> ();
+		this.file = null;
+		this.t = t;
+	}*/
 
 	/**
 	 * <p>Allows a new HeaderColumn into the HeaderData if and only if its length
@@ -60,7 +73,7 @@ public class HeaderData implements Iterable<HeaderColumn> {
 	public boolean add (HeaderColumn o) {
 		boolean b = this.columns.add (o);
 		this.notifyListeners ();
-		System.out.println ("Adding new column to HeaderList: " + o.toString ());
+		//System.out.println ("Adding new column to HeaderList: " + o.toString ());
 		return (b);
 	}
 	
@@ -252,56 +265,18 @@ public class HeaderData implements Iterable<HeaderColumn> {
 	private DataSet getData (Pair <File, FileType> e, GraphPair p) 
 			throws FunctionNotImplementedException, InvalidDataSizeException {
 		
-		DataSet ds;
-		
-		if (p.isGrouped ()) {
-			ds = new DataSet (p);
+		DataSet ds = new DataSet (p);
 			
-			/*if (e.getValue ().equals (FileType.CSV)) {
-				
-				CSVProcessor csv_reader = new CSVProcessor (e.getKey ());
-				
-				csv_reader.toDataSet (ds, p, this);
-				
-			} else */if (e.getValue ().equals (FileType.MAT)) {
-				
-				MatlabProcessor mat_reader = new MatlabProcessor (e.getKey ());
-				
-				mat_reader.toDataSet (ds, p, this);
-				
-				//System.out.println ("Derp: " + ds.toString ());
-				
-			} else {
-				
-				throw (new FunctionNotImplementedException 
-						("Extracting data from non-CSV / MAT files."));
-				
-			}
+		if (e.getValue ().equals (FileType.MAT)) {
+			
+			MatlabProcessor mat_reader = new MatlabProcessor (e.getKey ());//, t.isShowingInfoMessages ());
+			
+			mat_reader.toDataSet (ds, p, this);
 			
 		} else {
 			
-			ds = new DataSet (p);
-			
-			/*if (e.getValue ().equals (FileType.CSV)) {
-				
-				CSVProcessor csv_reader = new CSVProcessor (e.getKey ());
-				
-				csv_reader.toDataSet (ds, p, this);
-				
-			} else */if (e.getValue ().equals (FileType.MAT)) {
-				
-				MatlabProcessor mat_reader = new MatlabProcessor (e.getKey ());
-				
-				mat_reader.toDataSet (ds, p, this);
-				
-				//System.out.println ("Derp: " + ds.toString ());
-				
-			} else {
-				
-				throw (new FunctionNotImplementedException 
-						("Extracting data from non-CSV / MAT files."));
-				
-			}
+			throw (new FunctionNotImplementedException 
+					("Extracting data from non-MAT files."));
 			
 		}
 		

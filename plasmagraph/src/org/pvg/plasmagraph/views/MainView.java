@@ -1,6 +1,7 @@
 package org.pvg.plasmagraph.views;
 
 import java.awt.event.ActionListener;
+
 import javax.swing.JTabbedPane;
 
 import org.pvg.plasmagraph.models.MainModel;
@@ -16,7 +17,7 @@ public class MainView extends javax.swing.JFrame {
     // Externally-referenced variables.
     /** Reference to model related to this controller. */
     @SuppressWarnings ("unused")
-    private MainModel main_model;
+	private MainModel main_model;
     
     
     /**
@@ -30,6 +31,22 @@ public class MainView extends javax.swing.JFrame {
         // Initialize visual components.
         initComponents ();
     }
+    
+    /**
+     * Updates the view based on the MainModel's template object reference.
+     */
+    /*public void updateView () {
+		this.setInfoMessageCheckBox (this.main_model.getTemplate ().isShowingInfoMessages ());
+	}
+    
+    *//**
+     * <p>Allows the MainController to change the current setting of the CheckBox if needed.
+     * 
+     * @param b Boolean defining the state that the CheckBox must be in.
+     *//*
+    private void setInfoMessageCheckBox (boolean b) {
+		this.ignore_popups_check_box.setSelected (b);
+	}*/
      
     /**
      * Initializes the visual components of this view form.
@@ -48,45 +65,46 @@ public class MainView extends javax.swing.JFrame {
         //help_menu_about = new javax.swing.JMenuItem();
         help_menu_manual = new javax.swing.JMenuItem();
         options_menu = new javax.swing.JMenu ();
+        //ignore_popups_check_box = new javax.swing.JCheckBoxMenuItem ();
         exit_menu_option = new javax.swing.JMenuItem ();
         
-        setDefaultCloseOperation (javax.swing.WindowConstants.EXIT_ON_CLOSE);
+        // Set default names and operation responses.
         setTitle ("PlasmaGraph");
         setName ("PlasmaGraph");
+        setDefaultCloseOperation (javax.swing.WindowConstants.EXIT_ON_CLOSE);
         
+        // ====================================================================== //
         // Data Menu
         data_menu.setText ("Data");
         data_menu.setToolTipText ("Manages all Data-related operations.");
         
-        // Import Data
+        // Import Data Option
         import_data_option.setAccelerator (javax.swing.KeyStroke.getKeyStroke (
                 java.awt.event.KeyEvent.VK_D,
                 java.awt.event.InputEvent.CTRL_MASK));
         import_data_option.setText ("Import Data");
         data_menu.add (import_data_option);
         
-        // Reset Data
-        //reset_data_option.setText ("Reset Data");
-        //data_menu.add (reset_data_option);
-        
-        // Display dataset from MATLAB in a log
+        // View Data Option
         matfile_log.setText ("View data");
         data_menu.add (matfile_log);
         
         menu_bar.add (data_menu);
         
+        // ====================================================================== //
+        
         // Template Menu
         template_menu.setText ("Templates"); 
         template_menu.setToolTipText ("Manages all Template-related operations."); 
         
-        // Import Template
+        // Import Template Option
         import_template_option.setAccelerator (javax.swing.KeyStroke
                 .getKeyStroke (java.awt.event.KeyEvent.VK_T,
                         java.awt.event.InputEvent.CTRL_MASK));
         import_template_option.setText ("Import Template"); 
         template_menu.add (import_template_option);
         
-        // Save Template
+        // Save Template Option
         save_template_option.setAccelerator (javax.swing.KeyStroke
                 .getKeyStroke (java.awt.event.KeyEvent.VK_S,
                         java.awt.event.InputEvent.CTRL_MASK));
@@ -95,18 +113,36 @@ public class MainView extends javax.swing.JFrame {
         
         menu_bar.add (template_menu);
         
+        // ====================================================================== //
+        
         // Help Menu
         help_menu.setText ("Help"); //$NON-NLS-1$
+        help_menu_manual.setText ("User Guide");
         help_menu.setToolTipText ("Shows information about PlasmaGraph."); //$NON-NLS-1$
-        help_menu_manual.setText("User Guide");
-        help_menu.add(help_menu_manual);
+        help_menu.add (help_menu_manual);
+        
         menu_bar.add (help_menu);
         
-        // Exit Program
+        // ====================================================================== //
+        
+        // Options Menu
+        options_menu.setText ("Options");
+        options_menu.setToolTipText ("Manages program-related operations and settings.");
+        
+        // Ignore Popups Menu Option
+        /*ignore_popups_check_box.setText ("Show Informational Messages?");
+        ignore_popups_check_box.setToolTipText ("Controls whether the user will see informative popup messages. Does not control error messages.");
+        this.updateView ();
+        options_menu.add (ignore_popups_check_box);*/
+        
+        // Exit Menu Option
         exit_menu_option.setText ("Close");
+        exit_menu_option.setToolTipText ("Closes the program.");
         options_menu.add (exit_menu_option);
         
         menu_bar.add (options_menu);
+        
+        // ====================================================================== //
         
         // Prepare JMenuBar
         setJMenuBar (menu_bar);
@@ -133,7 +169,6 @@ public class MainView extends javax.swing.JFrame {
     
     private javax.swing.JMenu data_menu;
     private javax.swing.JMenuItem import_data_option;
-    //private javax.swing.JMenuItem reset_data_option;
     private javax.swing.JMenuItem matfile_log;
 
     private javax.swing.JMenu template_menu;
@@ -145,6 +180,7 @@ public class MainView extends javax.swing.JFrame {
     private javax.swing.JMenuItem help_menu_manual; 
     
     private javax.swing.JMenu options_menu;
+    //private javax.swing.JCheckBoxMenuItem ignore_popups_check_box;
     private javax.swing.JMenuItem exit_menu_option;
     // End of variables declaration
     
@@ -169,17 +205,7 @@ public class MainView extends javax.swing.JFrame {
         this.import_data_option.addActionListener (dataImportMenuListener);
         
     }
-    
-    /**
-     * Creates a new ActionListener for the Reset Data menu function.
-     * 
-     * @param dataResetMenuListener
-     *            Action Listener for the Reset Data menu function.
-     */
-    /*public void addDataResetMenuListener (ActionListener dataResetMenuListener) {
-		this.reset_data_option.addActionListener (dataResetMenuListener);
-	}
-    */
+
     /**
      * Creates a new ActionListener for the View Data menu function.
      * 
@@ -232,7 +258,17 @@ public class MainView extends javax.swing.JFrame {
         return this.help_menu;
     }
     
-    // Exit Listener Method
+    // Options Listener Methods
+    /**
+     * Creates a new ActionListener for the Exit menu function.
+     * 
+     * @param exitMenuListener
+     *            Action Listener for the Exit menu function.
+     */
+    /*public void addShowInfoMessagesListener (ItemListener infoMessagesListener) {
+        this.ignore_popups_check_box.addItemListener (infoMessagesListener);
+    }*/
+    
     /**
      * Creates a new ActionListener for the Exit menu function.
      * 
