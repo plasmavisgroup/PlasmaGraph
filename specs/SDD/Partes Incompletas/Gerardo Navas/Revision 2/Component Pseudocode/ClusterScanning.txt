@@ -1,0 +1,16 @@
+DataSet scan (HeaderData, Template, GraphPair):
+	Obtain the DataSet object from the HeaderData and GraphPair objects.
+
+	If the Template object's Outlier Distance Type is equal to the Mahalanobis setting:
+		Create a new MahalanobisDistance object.
+	Otherwise:
+		Create a new CartesianDistance object whose distance is equal to the Template object's Outlier Distance value.
+
+	Obtain a List of clustered data points via the DBSCANClusterer object.
+
+	If the Template object's Outlier Response is to warn the user:
+		Show a window describing which points are considered outliers based on the Template object's Outlier Distance Type.
+
+	Ask the user if they wish to remove the outlier points.
+	If the user affirms:
+		Return a DataSet containing the largest cluster of points provided by the DBSCANClusterer object.

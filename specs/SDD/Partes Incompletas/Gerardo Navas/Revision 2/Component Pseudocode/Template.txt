@@ -1,0 +1,70 @@
+void openTemplate (File):
+	Create a Reader object containing the File object to read from.
+	Open the File object via the Reader object.
+
+	Obtain a line of text from the File object.
+	Place its contents into this Template object's Chart Type variable.
+
+	Obtain a line of text from the File object.
+	PPlace its contents into this Template object's Chart Name variable.
+	Obtain a line of text from the File object.
+	PPlace its contents into this Template object's X Axis Label variable.
+	Obtain a line of text from the File object.
+	PPlace its contents into this Template object's Y Axis Label variable.
+
+	Obtain a line of text from the File object.
+	Place its contents into this Template object's Using Legend variable.
+	Obtain a line of text from the File object.
+	Place its contents into this Template object's Using Tooltips variable.
+	Obtain a line of text from the File object.
+	Place its contents into this Template object's Generate URLs variable.
+
+	Obtain a line of text from the File object.
+	Place its contents into this Template object's Orientation variable.
+
+	Obtain a line of text from the File object.
+	Place its contents into this Template object's X Axis Type variable.
+	Obtain a line of text from the File object.
+	Place its contents into this Template object's Y Axis Type variable.
+
+	Obtain a line of text from the File object.
+	Place its contents into this Template object's Default Interpolation Type variable.
+
+	Obtain a line of text from the File object.
+	Place its contents into this Template object's Default Outlier Reaction variable.
+
+	Obtain a line of text from the File object.
+	Place its contents into this Template object's Interpolation Lower Range variable.
+	Obtain a line of text from the File objobject.ect
+	Place its contents into this Template object's Interpolation Upper Range variable.
+	Obtain a line of text from the File object
+	Place its contents into this Template object's Interpolation Point Amount variable.
+
+	Obtain a line of text from the File object
+	Place its contents into this Template object's Outlier Distance variable.
+	Obtain a line of text from the File object
+	Place its contents into this Template object's Outlier Distance Type variable.
+
+	Notify all windows about changes in this object.
+
+void saveTemplate (String):
+	Create a Writer object containing the File object to write to.
+	Open the File object via the Writer object.
+
+	Write the contents of the Chart Type variable to the File.
+	Write the contents of the Chart Name variable to the File.
+	Write the contents of the X Axis Label variable to the File.
+	Write the contents of the Y Axis Label variable to the File.
+	Write the contents of the Using Legend variable to the File.
+	Write the contents of the Using Tooltips variable to the File.
+	Write the contents of the Generate URLs variable to the File.
+	Write the contents of the Orientation variable to the File.
+	Write the contents of the X Axis Type variable to the File.
+	Write the contents of the Y Axis Type variable to the File.
+	Write the contents of the Default Interpolation Type variable to the File.
+	Write the contents of the Default Outlier Reaction variable to the File.
+	Write the contents of the Interpolation Lower Range variable to the File.
+	Write the contents of the Interpolation Upper Range variable to the File.
+	Write the contents of the Interpolation Point Amount variable to the File.
+	Write the contents of the Outlier Distance variable to the File.
+	Write the contents of the Outlier Distance Type variable to the File.

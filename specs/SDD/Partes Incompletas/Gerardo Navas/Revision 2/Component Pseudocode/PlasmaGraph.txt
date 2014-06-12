@@ -1,0 +1,10 @@
+void main (String [] args):
+	Start a new java process with the following:
+		Initialize the Template, HeaderData, and GraphPair objects
+		Initialize the Graph MVC objects
+		Initialize the Data Set MVC objects
+		Initialize the Tool MVC objects
+		Initialize the Main MVC objects
+
+		Set the main and graph views to be visible
+		Ask the user for a data file to use

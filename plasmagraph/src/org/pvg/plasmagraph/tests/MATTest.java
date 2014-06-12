@@ -8,10 +8,8 @@ import java.nio.ByteBuffer;
 import java.nio.charset.Charset;
 import java.nio.file.Files;
 import java.nio.file.Paths;
-import java.sql.Time;
 import java.util.ArrayList;
 import java.util.Collection;
-import java.util.Map;
 import java.util.Map.Entry;
 import java.util.Random;
 import java.util.logging.Level;
@@ -200,6 +198,7 @@ public class MATTest {
 		MatlabProcessor mlr = new MatlabProcessor (dummyMat);
 
 		String str1 = mlr.toString ();
+		@SuppressWarnings ("unused")
 		String str2 = readFile ("./test/matlab/Parameter2013-06-11.txt",
 				Charset.defaultCharset ());
 
@@ -267,7 +266,7 @@ public class MATTest {
 	 * assertEquals ("Checking for equality: ", data, data2); }
 	 */
 
-	@Test
+/*	@Test
 	public void testPrint () {
 		File dummyMat = new File ("./test/matlab/Parameter2013-06-11.mat");
 		MatlabProcessor mlr = new MatlabProcessor (dummyMat);
@@ -280,7 +279,7 @@ public class MATTest {
 		File dummyMat = new File ("./test/matlab/Parameter2013-06-11.mat");
 		MatlabProcessor mlr = new MatlabProcessor (dummyMat);
 
-	}
+	}*/
 
 	// =================================================================
 

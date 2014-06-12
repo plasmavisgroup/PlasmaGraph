@@ -11,7 +11,7 @@ import org.pvg.plasmagraph.utils.graphs.XYGraph;
 import org.pvg.plasmagraph.utils.types.ChartType;
 
 /**
- * TODO
+ * <p>Graphical User Interface class designed to present the organization of the Graph Window, including the graph it contains.
  * 
  * @author Plasma Visualization Group
  */
@@ -108,7 +108,7 @@ public class GraphView extends JFrame {
 			if (this.graph_model.getTemplate ().isSearching ()) {
 				
 				this.checkAndDisplayGraph (
-						this.graph_model.unscannedGraphing (false).getChart ());
+						this.graph_model.unscannedGraphing ().getChart ());
 			}
 			
 			// Create the graph.
@@ -128,21 +128,18 @@ public class GraphView extends JFrame {
 			this.pack ();
 			this.setVisible (true);
 			
-			// Display any extra information!
-			if (this.graph_model.getInterpolation () != null) {
-				
-				this.graph_model.getInterpolation ().showInterpolationValidity ();
-				
+			// Display the errors that occurred!
+			if (this.graph_model.getLogSize () > 0) {
+				JOptionPane.showMessageDialog (this, this.graph_model.getLog (), "Graph Messages", JOptionPane.INFORMATION_MESSAGE);
 			}
 			
-		} /*else {
-			JOptionPane.showMessageDialog (this, "Due to the previously-mentioned error, "
-					+ "the graph will not change.");
-		}*/
+		}
 	}
 
 	private void initComponents () {
-		// Set default operation responses.
+		// Set default names and operation responses.
+		setTitle ("PlasmaGraph");
+        setName ("PlasmaGraph");
 		setDefaultCloseOperation (javax.swing.WindowConstants.EXIT_ON_CLOSE);
 		
 		// Create the chart and make it visible!
@@ -150,7 +147,7 @@ public class GraphView extends JFrame {
 		//this.graphUpdate ();
 		
 		// Change background color.
-		chart.getPlot ().setBackgroundPaint (Color.WHITE);
+		chart.setBackgroundPaint (Color.WHITE);
 		
 		if (ChartType.XY_GRAPH.equals (
 				this.graph_model.getTemplate ().getChartType ())) {
@@ -166,13 +163,9 @@ public class GraphView extends JFrame {
 		}
 		
 		setContentPane (new org.jfree.chart.ChartPanel (chart, false, true, false, false, true));
-		this.setLocation (300, 120);
+		this.setLocation (360, 120);
 		this.pack ();
 		this.setVisible (true);
 
-	}
-	
-	private void log (String string) {
-		System.out.println (string);
 	}
 }

@@ -22,8 +22,6 @@ public class OutlierDistanceType {
     public static final OutlierDistanceType MAHALANOBIS = new OutlierDistanceType ("Mahalanobis Distance");
     /** Reference for the "User-Provided Distance" Distance Calculation. */
     public static final OutlierDistanceType USER = new OutlierDistanceType ("User-Provided Distance");
-    /** Reference for the "Standard Deviation" Distance Calculation. */
-    //public static final OutlierDistanceType STDEV = new OutlierDistanceType ("Standard Deviation");
     
     /** Name of chart type. */
     private String name;
@@ -64,9 +62,8 @@ public class OutlierDistanceType {
 	 */
     public static String [] getOptions () {
     	return (new String []
-    			{OutlierDistanceType.MAHALANOBIS.toString (),
-    			OutlierDistanceType.USER.toString ()
-    			//OutlierDistanceType.STDEV.toString ()
+    			{OutlierDistanceType.USER.toString ()
+    			//, OutlierDistanceType.MAHALANOBIS.toString ()
     			});
     }
 

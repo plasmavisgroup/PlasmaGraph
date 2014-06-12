@@ -1,0 +1,8 @@
+TODO
+=====
+
+1. Create diagram frame boundaries and label frames as needed.
+2. Flesh out Create Graph Activity Diagram.
+3. Missing Loading Data, Templates, and DataFilter diagram.
+4. Restructure Edit DataFilter diagram.
+5. Restructure Interpolate Data diagram and Weak Outlier Diagram. (2 Images.)

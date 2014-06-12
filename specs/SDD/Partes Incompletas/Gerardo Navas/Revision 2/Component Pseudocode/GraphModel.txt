@@ -1,0 +1,14 @@
+JFreeChart graph ():
+	If the user has selected to use the Outlier Search feature:
+		Create a new DataSet object
+		Perform the Outlier Search on the HeaderData object columns dictated by the GraphPair object
+		Store the Outlier Search results in the DataSet object
+		If the user has selected to use the Interpolation feature:
+			Return an interpolated XYGraph object using the DataSet, Template, and GraphPair objects
+		Otherwise:
+			Return an XYGraph object using the DataSet, Template, and GraphPair objects
+	Otherwise:
+		If the user has selected to use the Interpolation feature:
+			Return an interpolated XYGraph object using the HeaderData, Template, and GraphPair objects
+		Otherwise:
+			Return an XYGraph object using the HeaderData, Template, and GraphPair objects

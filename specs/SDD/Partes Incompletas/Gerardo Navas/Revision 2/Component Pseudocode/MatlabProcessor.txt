@@ -1,0 +1,43 @@
+boolean getHeaders (HeaderData):
+	If the file hasn't been read yet:
+		Read the data file's contents
+		Store its contents within this MatlabProcessor object's HashMap
+
+	For each MLArray object in the HashMap:
+		If the MLArray is empty or only contains null or NaN values:
+			Remove that MLArray from the HashMap
+
+	If the HashMap contains two or more MLArrays:
+		If each MLArray in the HashMap contains the same number of rows:
+
+			For each MLArray in the HashMap:
+				Create a new HeaderColumn object containing the MLArray's name and data type
+				Add the HeaderColumn object to the HeaderData object
+
+			Set the HeaderData object's file to that used in this MatlabProcessor object
+
+			Return true
+
+		Otherwise:
+			Open an error window explaining that the data file contained MLArrays with different numbers of rows
+
+	Otherwise:
+		Open an error window explaining that the data file contained less than two graphable columns and cannot be used
+
+void toDataSet (DataSet, GraphPair, HeaderData):
+	If the file hasn't been read yet:
+		Read the data file's contents
+		Store its contents within this MatlabProcessor object's HashMap
+
+	Create a list object
+
+	For each MLArray in this MatlabProcessor object's HashMap:
+		If the MLArray's name is the same as that of a column in the GraphPair object:
+			Add that MLArray to the list object
+
+	For each row in the MLArrays in the list:
+		If the row only contains valid values:
+			Add that row's X Column MLArray value to the DataSet object's X Column
+			Add that row's Y Column MLArray value to the DataSet object's Y Column
+			If the GraphPair contains a Group column:
+				Add that row's Group Column MLArray value to the DataSet object's Group Column

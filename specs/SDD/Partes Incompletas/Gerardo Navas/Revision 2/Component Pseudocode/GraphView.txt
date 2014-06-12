@@ -1,0 +1,27 @@
+void graphUpdate ():
+	If the HeaderData object is empty:
+		Show an error window explaining that the Import Data procedure must be successfully completed before being able to graph
+		Show an empty graph in the GraphView window
+
+	If the HeaderData object does not contain valid column data types:
+		Show an error window explaining that the selected columns must be of the proper type for the selected chart type
+		Show an empty graph in the GraphView window
+
+	If the GraphPair object is not ready to be graphed:
+		Show an error window explaining that the X and Y Columns must be selected before graphing
+		Show an empty graph in the GraphView window
+
+	If the X and Y Columns to be graphed from the HeaderData object are the same column:
+		Show an error window explaining that the X and Y Columns can not be the same column
+		Show an empty graph in the GraphView window
+
+	If there is a valid Group Column:
+		If the X and Y Columns to be graphed from the HeaderData object are the same as the Group Column:
+			Show an error window explaining that the X and Y Columns can not be the same as the Group Column
+			Show an empty graph in the GraphView window
+
+	Otherwise:
+		If the user has selected to perform the Outlier Search function:
+			Show a graph of the data without the scan
+
+		Show a graph of the data using the HeaderData, Template, and GraphPair objects

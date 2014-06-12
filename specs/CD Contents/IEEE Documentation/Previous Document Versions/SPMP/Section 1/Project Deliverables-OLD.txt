@@ -1,0 +1,12 @@
+Project Deliverables
+===================
+
+Content:
+
+The client, Professor Angel Gonzales-Lizardo of the Polytechnic University of Puerto Rico's Plasma Laboratory, must receive the following items at his office in the PUPR Plasma Lab by <Enter Date Here> at <Enter Time Here> AST:
+
+A. 
+
+B.
+
+Additionally, a copy of all of these products must be also provided to the class' professor, the Computer Science Senior Project professor Luis A. Ortiz, by that same date and time. Said copy will be used to evaluate the quality of the work performed in the project for the purpose of giving a final grade and confirming successful completion of the Computer Science course "Computer Science Senior Project".

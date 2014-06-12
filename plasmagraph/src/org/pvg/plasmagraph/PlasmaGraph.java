@@ -7,6 +7,7 @@ import org.pvg.plasmagraph.controllers.*;
 import org.pvg.plasmagraph.models.*;
 import org.pvg.plasmagraph.utils.data.GraphPair;
 import org.pvg.plasmagraph.utils.data.HeaderData;
+import org.pvg.plasmagraph.utils.data.MessageLog;
 import org.pvg.plasmagraph.utils.template.*;
 import org.pvg.plasmagraph.views.*;
 
@@ -28,28 +29,29 @@ public class PlasmaGraph {
             public void run () {
                 // Create all necessary objects.
                 Template t = new Template ();
-                HeaderData hd = new HeaderData ();
                 GraphPair p = new GraphPair ();
+                MessageLog ml = new MessageLog ();
+                HeaderData hd = new HeaderData (ml);
                 
                 // Graph MVC
-                GraphModel graph_model = new GraphModel (hd, p, t);
+                GraphModel graph_model = new GraphModel (hd, p, t, ml);
                 GraphView graph_view = new GraphView (graph_model);
 				GraphController graph_controller = new GraphController (graph_model, graph_view);
                       
                 // Data Set MVC
-                DataSetModel data_model = new DataSetModel (t, hd, p);
+                DataSetModel data_model = new DataSetModel (t, hd, p, ml);
                 DataSetView data_view = new DataSetView (data_model);
                 DataSetController data_controller = new DataSetController (data_model, data_view, graph_controller);
                 
                 // Tool MVC
-                ToolModel tool_model = new ToolModel (t, hd, p);
+                ToolModel tool_model = new ToolModel (t, hd, p, ml);
                 ToolView tool_view = new ToolView (tool_model);
                 ToolController tool_controller = new ToolController (tool_model, tool_view, graph_controller);
                 
                 // Main MVC
-                MainModel main_model = new MainModel (t, hd, p);
+                MainModel main_model = new MainModel (t, hd, p, ml);
                 MainView main_view = new MainView (main_model);
-                MainController main_controller = new MainController (main_model, main_view, data_view, tool_view); // aesthetic_view, data_view, tool_view);
+                MainController main_controller = new MainController (main_model, main_view, data_view, tool_view);
             
                 // Set the currently-visible views.
                 main_view.setVisible (true);

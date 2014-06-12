@@ -4,6 +4,7 @@ package org.pvg.plasmagraph.models;
 
 import org.pvg.plasmagraph.utils.data.GraphPair;
 import org.pvg.plasmagraph.utils.data.HeaderData;
+import org.pvg.plasmagraph.utils.data.MessageLog;
 import org.pvg.plasmagraph.utils.template.Template;
 
 
@@ -16,12 +17,17 @@ import org.pvg.plasmagraph.utils.template.Template;
  */
 public class ToolModel {
     // Externally-contained variables.
-    /** Reference to MainModel's Template, passed via constructor reference. */
+	// Externally-contained variables.
+    /** Reference to PlasmaGraph's Template, passed via constructor reference. */
     private Template t;
-    /** Reference to MainModel's DataSet, passed via constructor reference. */
-    private HeaderData hd;
-    /** Reference to MainModel's GraphPair, passed via constructor reference. */
+    /** Reference to PlasmaGraph's HeaderData, passed via constructor reference. */
+    @SuppressWarnings ("unused")
+	private HeaderData hd;
+    /** Reference to PlasmaGraph's GraphPair, passed via constructor reference. */
     private GraphPair p;
+    /** Reference to PlasmaGraph's MessageLog, passed via constructor reference. */
+    @SuppressWarnings ("unused")
+	private MessageLog ml;
     
     /**
      * Creates a new ToolModel with references to MainModel's graph-manipulation
@@ -30,13 +36,15 @@ public class ToolModel {
      * @param t_reference Template reference provided by PlasmaGraph.
      * @param hd_reference HeaderData reference provided by PlasmaGraph.
      * @param p_reference GraphPair reference provided by PlasmaGraph.
+     * @param ml 
      */
     public ToolModel (Template t_reference, HeaderData hd_reference,
-            GraphPair p_reference) {
+            GraphPair p_reference, MessageLog ml_reference) {
         // Update currently-used Template and Data Sources.
         t = t_reference;
         hd = hd_reference;
         p = p_reference;
+        ml = ml_reference;
     }
     
     /**

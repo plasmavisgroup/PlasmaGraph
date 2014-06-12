@@ -4,6 +4,11 @@ import javax.swing.JOptionPane;
 
 public class InvalidDataSizeException extends Exception {
 	
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 6497515755900453564L;
+	@SuppressWarnings ("unused")
 	private String message;
 	
 	public InvalidDataSizeException (String s) {

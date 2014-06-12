@@ -1,0 +1,4 @@
+DataSet populateData (GraphPair):
+	Prepare a new DataSet object using the GraphPair object
+	Read the data file in the HeaderData object
+	Place the contents of the columns specified in the GraphPair object into the DataSet object

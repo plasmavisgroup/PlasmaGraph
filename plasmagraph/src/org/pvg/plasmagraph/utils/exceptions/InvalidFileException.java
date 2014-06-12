@@ -4,6 +4,11 @@ import javax.swing.JOptionPane;
 
 public class InvalidFileException extends Exception {
 
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 9187370569779363503L;
+
 	public InvalidFileException () {
 	}
 

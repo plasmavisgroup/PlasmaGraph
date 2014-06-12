@@ -2,7 +2,6 @@ package org.pvg.plasmagraph.views;
 
 import java.awt.event.ActionListener;
 import java.awt.event.FocusAdapter;
-import java.awt.event.FocusListener;
 import java.awt.event.ItemListener;
 
 import javax.swing.JOptionPane;
@@ -14,11 +13,7 @@ import org.pvg.plasmagraph.utils.types.OutlierDistanceType;
 import org.pvg.plasmagraph.utils.types.OutlierResponse;
 
 /**
-* View for the optional tools modification pane.
-* Defines the visual organization of a JPanel embedded
-* into MainView's JTabbedPane, and communicates changes
-* done to the View to the Model via the Controller's Listeners.
-*
+* <p>Graphical User Interface class designed to present the organization of the Tools Tab on the Settings Window.
 * @author Plasma Visualization Group
 */
 @SuppressWarnings ("serial")
@@ -152,9 +147,7 @@ public class ToolView extends javax.swing.JPanel {
         
         if (o_type.equals (OutlierDistanceType.MAHALANOBIS.toString ())) {
             return (OutlierDistanceType.MAHALANOBIS);
-        } /*else if (o_type.equals (OutlierDistanceType.STDEV.toString ())) {
-            return (OutlierDistanceType.STDEV);
-        } */else {
+        } else {
             return (OutlierDistanceType.USER);
         }
     }
@@ -197,7 +190,7 @@ public class ToolView extends javax.swing.JPanel {
         		OutlierDistanceType.getOptions ());
         outlier_distance_type_combo_box.setModel (distance_model);
 
-        maximum_distance_label.setText ("Manual Maximum Distance");
+        maximum_distance_label.setText ("Maximum Manual Cartesian Distance");
         maximum_distance_text_box.setText (Double.toString (
         		this.tool_model.getTemplate ().getOutlierDistance ()));
         
