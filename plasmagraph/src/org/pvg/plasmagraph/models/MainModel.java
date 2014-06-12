@@ -10,6 +10,7 @@ import javax.swing.filechooser.FileNameExtensionFilter;
 import org.pvg.plasmagraph.utils.FileUtilities;
 import org.pvg.plasmagraph.utils.data.GraphPair;
 import org.pvg.plasmagraph.utils.data.HeaderData;
+import org.pvg.plasmagraph.utils.data.MessageLog;
 import org.pvg.plasmagraph.utils.data.readers.MatlabProcessor;
 import org.pvg.plasmagraph.utils.exceptions.ExceptionHandler;
 import org.pvg.plasmagraph.utils.types.ExceptionType;
@@ -34,6 +35,8 @@ public class MainModel {
 	private HeaderData hd;
     /** Reference to PlasmaGraph's GraphPair, passed via constructor reference. */
 	private GraphPair p;
+	/** Reference to PlasmaGraph's MessageLog, passed via constructor reference. */
+    private MessageLog ml;
     
     // Constants
     // TODO: Change to NIO 2.0 Path class!
@@ -51,13 +54,15 @@ public class MainModel {
      *            Settings - Template reference provided by PlasmaGraph.
      * @param hd_reference Header - HeaderData reference provided by PlasmaGraph.
      * @param p_reference Graphing Pairs - GraphPair reference provided by PlasmaGraph.
+     * @param ml 
      */
     public MainModel (Template t_reference, HeaderData hd_reference,
-            GraphPair p_reference) {
+            GraphPair p_reference, MessageLog ml_reference) {
         // Update currently-used Template, Data, and Data Filter Sources.
         t = t_reference;
         hd = hd_reference;
         p = p_reference;
+        ml = ml_reference;
     }
     
     /**
@@ -95,7 +100,7 @@ public class MainModel {
                  if (FileUtilities.getExtension (f).equals (
                          mat_filter.getExtensions ()[0])) {
                      
-                      MatlabProcessor mat = new MatlabProcessor (f);//, t.isShowingInfoMessages ());
+                      MatlabProcessor mat = new MatlabProcessor (f, ml);//, t.isShowingInfoMessages ());
                       try {
                      	 if (mat.getHeaders (hd)) {
                  		 	JOptionPane.showMessageDialog (null, "Data extracted successfully.");
@@ -324,7 +329,7 @@ public class MainModel {
 		
 		if (FileType.MAT.equals (e.getValue ())) {
 			
-			MatlabProcessor mat_reader = new MatlabProcessor (e.getKey ());//, t.isShowingInfoMessages ());
+			MatlabProcessor mat_reader = new MatlabProcessor (e.getKey (), ml);//, t.isShowingInfoMessages ());
 			
 			sb.append (e.getKey ().getName ()).append ("\n\n");
 			sb.append (mat_reader.toString ());

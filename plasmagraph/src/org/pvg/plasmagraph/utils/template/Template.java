@@ -319,7 +319,8 @@ public class Template {
 	 * @return True if the x_axis_label variable is equal to "X Axis"; else, False.
 	 */
 	public boolean isDefaultXAxisLabel () {
-		return (this.x_axis_label.equals ("X Axis"));
+		return ("X Axis".equals (this.x_axis_label) ||
+				"".equals (x_axis_label));
 	}
 
 	/**
@@ -329,7 +330,8 @@ public class Template {
 	 * @return True if the x_axis_label variable is equal to "Y Axis"; else, False.
 	 */
 	public boolean isDefaultYAxisLabel () {
-		return (this.y_axis_label.equals ("Y Axis"));
+		return ("Y Axis".equals (this.y_axis_label) ||
+				"".equals (y_axis_label));
 	}
 	
 	/**

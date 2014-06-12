@@ -128,6 +128,11 @@ public class GraphView extends JFrame {
 			this.pack ();
 			this.setVisible (true);
 			
+			// Display the errors that occurred!
+			if (this.graph_model.getLogSize () > 0) {
+				JOptionPane.showMessageDialog (this, this.graph_model.getLog (), "Graph Messages", JOptionPane.INFORMATION_MESSAGE);
+			}
+			
 		}
 	}
 
@@ -158,7 +163,7 @@ public class GraphView extends JFrame {
 		}
 		
 		setContentPane (new org.jfree.chart.ChartPanel (chart, false, true, false, false, true));
-		this.setLocation (300, 120);
+		this.setLocation (360, 120);
 		this.pack ();
 		this.setVisible (true);
 

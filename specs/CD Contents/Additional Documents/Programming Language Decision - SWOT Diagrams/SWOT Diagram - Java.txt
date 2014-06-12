@@ -1,0 +1,20 @@
+SWOT Diagram - Java
+===================
+
+Strengths:
+	Portable (Linux / Windows / Mac.)
+	High-level (Over C / C++.)
+	GUI-friendly (Native GUI support.)
+	Popular language.
+
+Weaknesses:
+	Object-Oriented (This process deals with few OO-centric concepts, so it's not as good a fit on the paradigm as something like C/C++.)
+	Amount of processing. (May be demanding if done incorrectly?)
+
+Opportunities
+	Large variety of tools to use.
+	Higher-quality tools due to lots of use and Open Source nature.
+
+Threats
+	Very popular language.
+	Possible Virtual Machine vulnerabilities due to large number of possible attack vectors. (Short expected runtime / few uses that should not allow for attacks.)

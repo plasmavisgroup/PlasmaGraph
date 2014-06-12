@@ -12,13 +12,13 @@ import java.util.Map;
 import java.util.Map.Entry;
 import java.util.Set;
 
-import javax.swing.JOptionPane;
-
+import javax.swing.SwingWorker;
 import org.apache.commons.math3.util.Pair;
 import org.pvg.plasmagraph.utils.data.DataSet;
 import org.pvg.plasmagraph.utils.data.GraphPair;
 import org.pvg.plasmagraph.utils.data.HeaderColumn;
 import org.pvg.plasmagraph.utils.data.HeaderData;
+import org.pvg.plasmagraph.utils.data.MessageLog;
 import org.pvg.plasmagraph.utils.exceptions.ExceptionHandler;
 import org.pvg.plasmagraph.utils.exceptions.FunctionNotImplementedException;
 import org.pvg.plasmagraph.utils.exceptions.InvalidDataSizeException;
@@ -93,6 +93,30 @@ public class MatlabProcessor implements FileProcessor {
 	private Map <String, MLArray> mat_data;
 	/** Boolean specifying if informational messages will be shown or not. */
 	private boolean show_info_messages;
+	/** Container for PlasmaGraph's MessageLog object. */
+	private MessageLog ml;
+	
+	/**
+	 * <p>Default Constructor. Creates a new MatlabProcessor with a default File location
+	 * as specified by the method call.
+	 * 
+	 * @param s A String object, containing the default file location for the
+	 *            process.
+	 */
+	public MatlabProcessor (String s) {
+		this (new File (s), new MessageLog ());
+	}
+	
+	/**
+	 * <p>Default Constructor. Creates a new MatlabProcessor with a default File location
+	 * as specified by the method call.
+	 * 
+	 * @param f A File object, containing the default file location for the
+	 *            process.
+	 */
+	public MatlabProcessor (File f) {
+		this (f, true, new MessageLog ());
+	}
 
 	/**
 	 * <p>Constructor. Creates a new MatlabProcessor with a default File location
@@ -101,8 +125,8 @@ public class MatlabProcessor implements FileProcessor {
 	 * @param s A String object, containing the default file location for the
 	 *            process.
 	 */
-	public MatlabProcessor (String s) {
-		this (new File (s));
+	public MatlabProcessor (String s, MessageLog ml) {
+		this (new File (s), ml);
 	}
 	
 	/**
@@ -112,8 +136,8 @@ public class MatlabProcessor implements FileProcessor {
 	 * @param f A File object, containing the default file location for the
 	 *            process.
 	 */
-	public MatlabProcessor (File f) {
-		this (f, true);
+	public MatlabProcessor (File f, MessageLog ml) {
+		this (f, true, ml);
 	}
 	
 	/**
@@ -124,10 +148,12 @@ public class MatlabProcessor implements FileProcessor {
 	 *            process.
 	 * @param show_removed_rows Boolean indicating if information messages will be shown.
 	 */
-	public MatlabProcessor (File f, boolean show_removed_rows) {
+	public MatlabProcessor (File f, boolean show_removed_rows, MessageLog ml) {
 		this.mat_file = f;
 		this.read ();
 		this.show_info_messages = show_removed_rows;
+		
+		this.ml = ml;
 	}
 
 	/**
@@ -799,9 +825,24 @@ public class MatlabProcessor implements FileProcessor {
 		
 		// Finally, show the number of rows removed due to invalid data.
 		if (show_info_messages) {
-			JOptionPane.showMessageDialog (null, "" + number_of_invalid_rows + 
-					" data points were omitted from the graph because they contained invalid data.");
+			this.recordRowsRemoved (number_of_invalid_rows);
 		}
+	}
+
+	private void recordRowsRemoved (final int number_of_invalid_rows) {
+		SwingWorker <Void, Void> messagelog_worker = new SwingWorker <Void, Void> () {
+
+			@Override
+			protected Void doInBackground () throws Exception {
+				ml.add ("" + number_of_invalid_rows + 
+						" data points were omitted from the graph because they contained invalid data.");
+				
+				return (null);
+			}
+			
+		};
+		
+		messagelog_worker.run ();
 	}
 
 	/**

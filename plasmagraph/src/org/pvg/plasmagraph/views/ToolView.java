@@ -147,9 +147,7 @@ public class ToolView extends javax.swing.JPanel {
         
         if (o_type.equals (OutlierDistanceType.MAHALANOBIS.toString ())) {
             return (OutlierDistanceType.MAHALANOBIS);
-        } /*else if (o_type.equals (OutlierDistanceType.STDEV.toString ())) {
-            return (OutlierDistanceType.STDEV);
-        } */else {
+        } else {
             return (OutlierDistanceType.USER);
         }
     }
@@ -192,7 +190,7 @@ public class ToolView extends javax.swing.JPanel {
         		OutlierDistanceType.getOptions ());
         outlier_distance_type_combo_box.setModel (distance_model);
 
-        maximum_distance_label.setText ("Manual Maximum Distance");
+        maximum_distance_label.setText ("Maximum Manual Cartesian Distance");
         maximum_distance_text_box.setText (Double.toString (
         		this.tool_model.getTemplate ().getOutlierDistance ()));
         

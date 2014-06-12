@@ -79,8 +79,8 @@ public final class InterpolationType {
     			InterpolationType.LINEAR.toString (), 
     			InterpolationType.QUADRATIC.toString (),
     			InterpolationType.CUBIC.toString (), 
-    			//InterpolationType.QUARTIC.toString (), 
-    			InterpolationType.SPLINE.toString ()});
+    			InterpolationType.QUARTIC.toString ()
+    			});
     }
 
     /**

@@ -39,30 +39,33 @@ public class HeaderData implements Iterable<HeaderColumn> {
 	private ArrayList <HeaderColumn> columns;
 	/** Container for Files containing data for this object. */
 	private Pair <File, FileType> file;
-	/** Contains information regarding the popups that will be shown. */
-	/*private Template t;*/
-
+	/** Container for PlasmaGraph's MessageLog object. */
+	private MessageLog ml;
+	
 	/**
-	 * <p>Basic constructor. Creates a new ArrayList of HeaderColumns for this object.
+	 * <p>Default / test constructor. Creates a new ArrayList of HeaderColumns for this object.
 	 * There should only exist one HeaderData for any given time.
 	 */
 	public HeaderData () {
 		this.columns = new ArrayList <> ();
 		this.listeners = new HashSet <> ();
 		this.file = null;
+		this.ml = new MessageLog ();
 	}
 	
 	/**
 	 * <p>Constructor. Creates a new ArrayList of HeaderColumns for this object.
-	 * There should only exist one HeaderData for any given time.
+	 * <p>Contains the MessageLog object to pass messages to and from the FileProcessors used
+	 * in this object.
+	 * <p>There should only exist one HeaderData for any given time.
 	 */
-	/*public HeaderData (Template t) {
+	public HeaderData (MessageLog ml) {
 		this.columns = new ArrayList <> ();
 		this.listeners = new HashSet <> ();
 		this.file = null;
-		this.t = t;
-	}*/
-
+		this.ml = ml;
+	}
+	
 	/**
 	 * <p>Allows a new HeaderColumn into the HeaderData if and only if its length
 	 * is the same as every other column. (Read: The first one is checked.)
@@ -73,7 +76,6 @@ public class HeaderData implements Iterable<HeaderColumn> {
 	public boolean add (HeaderColumn o) {
 		boolean b = this.columns.add (o);
 		this.notifyListeners ();
-		//System.out.println ("Adding new column to HeaderList: " + o.toString ());
 		return (b);
 	}
 	
@@ -269,7 +271,7 @@ public class HeaderData implements Iterable<HeaderColumn> {
 			
 		if (e.getValue ().equals (FileType.MAT)) {
 			
-			MatlabProcessor mat_reader = new MatlabProcessor (e.getKey ());//, t.isShowingInfoMessages ());
+			MatlabProcessor mat_reader = new MatlabProcessor (e.getKey (), ml);//, t.isShowingInfoMessages ());
 			
 			mat_reader.toDataSet (ds, p, this);
 			

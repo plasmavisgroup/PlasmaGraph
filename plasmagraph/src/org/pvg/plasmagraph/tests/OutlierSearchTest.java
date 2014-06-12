@@ -13,6 +13,7 @@ import org.jfree.chart.plot.PlotOrientation;
 import org.junit.Test;
 import org.pvg.plasmagraph.utils.data.GraphPair;
 import org.pvg.plasmagraph.utils.data.HeaderData;
+import org.pvg.plasmagraph.utils.data.MessageLog;
 //import org.pvg.plasmagraph.utils.data.readers.CSVProcessor;
 import org.pvg.plasmagraph.utils.data.readers.MatlabProcessor;
 import org.pvg.plasmagraph.utils.graphs.XYGraph;
@@ -53,7 +54,7 @@ public class OutlierSearchTest {
 		p.changeY (7, hd.get (7).getKey ());
 		
 		// Perform the procedure.
-		XYGraph g = new XYGraph (t, OutlierSearch.scanForOutliers (hd, t, p), p);
+		XYGraph g = new XYGraph (t, OutlierSearch.scanForOutliers (hd, t, p, new MessageLog ()), p);
 		g.testGraph ();
 		
 		// Check if it worked.

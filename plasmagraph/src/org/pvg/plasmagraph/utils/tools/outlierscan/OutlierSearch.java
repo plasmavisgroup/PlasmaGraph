@@ -3,6 +3,7 @@ package org.pvg.plasmagraph.utils.tools.outlierscan;
 import org.pvg.plasmagraph.utils.data.DataSet;
 import org.pvg.plasmagraph.utils.data.GraphPair;
 import org.pvg.plasmagraph.utils.data.HeaderData;
+import org.pvg.plasmagraph.utils.data.MessageLog;
 import org.pvg.plasmagraph.utils.exceptions.FunctionNotImplementedException;
 import org.pvg.plasmagraph.utils.template.Template;
 import org.pvg.plasmagraph.utils.tools.outlierscan.methods.ClusterScanning;
@@ -21,14 +22,15 @@ public class OutlierSearch {
      * @param p GraphPair object containing specific column index values being graphed.
      * @throws FunctionNotImplementedException 
      */
-    public static DataSet scanForOutliers (HeaderData hd, Template t, GraphPair p) throws FunctionNotImplementedException {
+    public static DataSet scanForOutliers (HeaderData hd, Template t, GraphPair p, MessageLog ml) throws FunctionNotImplementedException {
 
     	// XY Graphs require a clustering method.
     	if (t.getChartType () == ChartType.XY_GRAPH) {
     		
+    		// Clusster Distances!
     		ScanMethod sm = new ClusterScanning ();
     		
-    		return (sm.scan (hd, t, p));
+    		return (sm.scan (hd, t, p, ml));
     		
     	} // Bar Charts require a simple y-value method, like the Modified Thompson Tau!
     	else if (t.getChartType () == ChartType.BAR_GRAPH) {
@@ -36,7 +38,7 @@ public class OutlierSearch {
     		// Modified Thompson Tau!
     		ScanMethod sm = new ModifiedThompsonTauScanning ();
         	
-    		return (sm.scan (hd, t, p));
+    		return (sm.scan (hd, t, p, ml));
     		
     	}
     	else {

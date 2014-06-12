@@ -77,7 +77,7 @@ public class ExceptionHandler {
 	}
 
 	public static void showRemovedColumnDialog (
-			ArrayList <Entry <String, MLArray>> remove_array) {
+		ArrayList <Entry <String, MLArray>> remove_array) {
 		
 		StringBuilder sb = new StringBuilder ();
 		

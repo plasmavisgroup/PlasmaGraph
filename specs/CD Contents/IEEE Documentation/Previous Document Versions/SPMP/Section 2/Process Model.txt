@@ -1,0 +1,15 @@
+Process Model
+
+Description:
+
+Content: 
+
+This project's completion will be measured via the milestones presented in Appendix A. Said milestones include document and product completion, as well as the necessary miscellaneous events that must be organized and vetted by the university to prove completion of the Computer Science Senior Project. The milestone documents include not only the four design documents (SRS, SDD, STD, SPMP), but also all reference documentation created for the product. (Chief of which is the Java Documentation that will be generated from our code documentation.) Product completion will be measured by the completion of the various modules that will compose the product, as per the Program Flow diagram presented in <?>.
+
+Started: Wednesday, August 21, 2013 4:00 PM-4:30 PM (UTC-04:00)
+End: Approximately December 5, 2013. (Tentative.)
+Why not before FA-13 Trimester end?: Classes, work, etc. (Other obligations.) Also, buffer time for any necessary additional features that creep up suddenly, testing time, data cleanup tuning time, and other miscellaneous things that may require additional time.
+
+Project Deliverables will be completed once steps <?> are done. Once this occurs, documents will be combined into their final form, the product will be compiled one last time and tested, and, upon the success of the final tests, the final product's presentation will be organized and delivered on <?>. Furthermore, the product will also be provided to both the client and the class professor (Luis A. Ortiz), along with all relevant documentation requested by both parties.
+
+For additional specifics on the schedule for this project, please refer to the PlasmaGraph Gantt Chart provided in Appendix B of this document, which presents a schedule of this project's relevant milestones.

@@ -1,0 +1,40 @@
+5.1 Work Packages
+
+Description
+
+> This subsection of the SPMP shall specify the work packages for the activities and tasks that must be completed in order to satisfy the project agreement. Each work package shall be uniquely identified; identification may be based on a numbering scheme and descriptive titles. A diagram depicting the breakdown of activities into subactivities and tasks (a work breakdown schedule) may be used to depict hierarchical relationships among work packages.
+
+Content: 
+
+As mentioned in this project's SRS, the requirements for PlasmaGraph stipulate a number of important functions that it must perform. This product must include the following modules:
+
+A. PlasmaGraph: The product. This package contains a number of important sub-packages.
+	1. Plasma Data Sanitizer: The product must take as input a CSV file, read and analyze its contents, edit (or purge) the data as necessary in order to standardize it, and the provide necessary vector to pass said data to the next module, the Data Graph Interface Module.
+
+	This module consists of a Data Sanitizer sub-module and the transport code sub-module that manages data through the product.
+
+	2. Data Graph Interface Module: This module must take as input the data provided to it by the Plasma Data Sanitizer. With it, this module will obtain from the user data regarding how s/he wishes to graph the sanitized data, and graph it in said manner. It must also provide a GUI for editing said options, and the ability to save both the options chosen and/or the graph as an image.
+
+	This module consists of the program's GUI sub-module and back-end code, and the Graph sub-module. The GUI sub-module will include the image-saving and template-loading/saving functions.
+
+B. Product Documentation: Documents that will explain how to use the product correctly, and how to resolve potential problems.
+	1. JavaDocs: Internal product documentation that will make editing the product in the future easier, in the case of errors in need of fixing or additional features that will be included. These are generated from in-code comments, and only require minor work in order to create.
+
+	2. User Manual: External product documentation that will describe why the product exists, what it is, and how to use it.
+
+C. Software Specification Documents: The supporting documentation for the product, specifying the design of the product and the group responsible for completing it.
+	1. Software Requirements Specification (SRS): Describes the product from an external viewpoint. It includes what it does and how it does it, and elaborates on requirements the product needs to be used.
+
+	2. Software Design Description (SDD): Details the product's internal structure and processes.
+
+	3. Software Test Document (STD): Details all testing the product undergoes, and the degree of success or failure on each. This includes product testing.
+
+	4. Software Project Management Plan (SPMP): Details the project group's structure, composition, and behavior. Explains risks inherent to the project's completion, and steps taken to reduce said risk.
+
+	5. Product / Project Description Presentation: Showcases the work performed in the SRS and SPMP documents. Describes what the product is, what it will do, and how the project group will work in order to complete said product. This item will be used in the mid-schedule presentation of this project, before actual work on the product begins.
+	
+	6. Final Project Presentation: Showcases the work performed in completion of the product. Performs similar work to that of the "Product / Project Description Presentation", but includes information regarding internal workings, test completion, the complete schedule of the project, and an explanation of how the product works. This item will be used in the final presentation of this project.
+
+The component parts for the Software Specification Documents (C) are detailed in the IEEE 830 / 1016 / 829 / 1058 documents provided by the Senior Project Professor.
+
+All presentations will be created via a "Powerpoint" program and will contain information from other work packages, carefully selected so as to showcase important aspects of the project's progress.

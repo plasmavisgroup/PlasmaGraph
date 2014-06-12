@@ -1,0 +1,27 @@
+Definitions and Acronyms
+
+Description:
+
+> This subsection of the SPMP shall define any terms that are not commonly used by the audience. It will also expand and define any acronyms used in these documents.
+
+Content:
+
+Definitions
+
+	PlasmaGraph: The product; a CSV-File sanitizer and grapher.
+	Client: Professor Angel Gonzales-Lizardo; Person responsible for the request of this product.
+	Senior Project Professor: Professor Luis A. Ortiz; Overseer of the project's progress.
+	JFreeChart: A set of tools written in the programming language "Java" that create graphical representations of data provided to it.
+	Java: Programming language relied on for its portability between multiple types of computers and flexible capabilities.
+
+Acronyms
+
+	PUPR: Polytechnic University of Puerto Rico; university where the Plasma Laboratory is located, as well as where the group's members study.
+	SPMP: Software Project Management Plan
+	SRS: Software Resource Specifications
+	SDD: Software Design Documents
+	STD: Software Testing Documentation
+	CSV: Comma-Separated Values; a type of computer file characterized by data separated by commas and terminated by an end-of-line character, with the first set of data usually representing the table column header.
+	GUI: Graphical User Interface.
+	PNG: Portable Network Graphics; a type of computer file that holds an image. 
+	JPG / JPEG: Joint Photographic Expert Group; another type of computer file that holds an image.

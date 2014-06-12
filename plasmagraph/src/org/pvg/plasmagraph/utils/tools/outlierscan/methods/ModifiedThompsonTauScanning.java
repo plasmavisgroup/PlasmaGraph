@@ -8,6 +8,7 @@ import org.apache.commons.math3.stat.inference.TTest;
 import org.pvg.plasmagraph.utils.data.GraphPair;
 import org.pvg.plasmagraph.utils.data.DataSet;
 import org.pvg.plasmagraph.utils.data.HeaderData;
+import org.pvg.plasmagraph.utils.data.MessageLog;
 import org.pvg.plasmagraph.utils.exceptions.FunctionNotImplementedException;
 import org.pvg.plasmagraph.utils.template.Template;
 
@@ -23,7 +24,7 @@ import org.pvg.plasmagraph.utils.template.Template;
 public class ModifiedThompsonTauScanning implements ScanMethod {
 
 	@Override
-	public DataSet scan (HeaderData hd, Template t, GraphPair dr) throws FunctionNotImplementedException {
+	public DataSet scan (HeaderData hd, Template t, GraphPair dr, MessageLog ml) throws FunctionNotImplementedException {
 		// TODO Auto-generated method stub
 		throw (new FunctionNotImplementedException ("1-Dimensional Outlier Scanning"));
 	}

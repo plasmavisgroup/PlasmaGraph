@@ -7,6 +7,7 @@ import javax.swing.DefaultComboBoxModel;
 import org.pvg.plasmagraph.utils.data.GraphPair;
 import org.pvg.plasmagraph.utils.data.HeaderColumn;
 import org.pvg.plasmagraph.utils.data.HeaderData;
+import org.pvg.plasmagraph.utils.data.MessageLog;
 import org.pvg.plasmagraph.utils.template.Template;
 import org.pvg.plasmagraph.utils.types.ColumnType;
 
@@ -19,12 +20,15 @@ import org.pvg.plasmagraph.utils.types.ColumnType;
  */
 public class DataSetModel {
     // Externally-contained variables.
-    /** Reference to MainModel's Template, passed via constructor reference. */
+    /** Reference to PlasmaGraph's Template, passed via constructor reference. */
     private Template t;
-    /** Reference to MainModel's HeaderData, passed via constructor reference. */
+    /** Reference to PlasmaGraph's HeaderData, passed via constructor reference. */
     private HeaderData hd;
-    /** Reference to MainModel's GraphPair, passed via constructor reference. */
+    /** Reference to PlasmaGraph's GraphPair, passed via constructor reference. */
     private GraphPair p;
+    /** Reference to PlasmaGraph's MessageLog, passed via constructor reference. */
+    @SuppressWarnings ("unused")
+	private MessageLog ml;
     
     /**
      * Creates a new HeaderDataModel with references to the data and settings,
@@ -34,13 +38,15 @@ public class DataSetModel {
      *            Settings - Template reference provided by PlasmaGraph.
      * @param hd_reference Data - HeaderData reference provided by PlasmaGraph.
      * @param p_reference Pairs - GraphPair reference provided by PlasmaGraph.
+     * @param ml 
      */
     public DataSetModel (Template t_reference, HeaderData hd_reference,
-            GraphPair p_reference) {
+            GraphPair p_reference, MessageLog ml_reference) {
         // Update currently-used Template and Data Sources.
         t = t_reference;
         hd = hd_reference;
         p = p_reference;
+        ml = ml_reference;
     }
     
     /**

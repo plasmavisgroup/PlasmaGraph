@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import javax.swing.JOptionPane;
+import javax.swing.SwingWorker;
 
 import org.apache.commons.math3.ml.clustering.Cluster;
 import org.apache.commons.math3.ml.clustering.DBSCANClusterer;
@@ -11,6 +12,7 @@ import org.apache.commons.math3.ml.clustering.DoublePoint;
 import org.pvg.plasmagraph.utils.data.DataSet;
 import org.pvg.plasmagraph.utils.data.GraphPair;
 import org.pvg.plasmagraph.utils.data.HeaderData;
+import org.pvg.plasmagraph.utils.data.MessageLog;
 import org.pvg.plasmagraph.utils.exceptions.FunctionNotImplementedException;
 import org.pvg.plasmagraph.utils.template.Template;
 import org.pvg.plasmagraph.utils.tools.outlierscan.distances.CartesianDistance;
@@ -28,7 +30,7 @@ import org.pvg.plasmagraph.utils.types.OutlierResponse;
 public class ClusterScanning implements ScanMethod {
 
 	@Override
-	public DataSet scan (HeaderData hd, Template t, GraphPair p) throws FunctionNotImplementedException {
+	public DataSet scan (HeaderData hd, Template t, GraphPair p, MessageLog ml) throws FunctionNotImplementedException {
 
 		// Prepare tools for Outlier Scan use.
     	ArrayList <DoublePoint> data_array = new ArrayList <> ();
@@ -41,7 +43,7 @@ public class ClusterScanning implements ScanMethod {
 		populate (data_array, original, p);
 		
 		// Separate the main values from the outliers, and ask if they'll be removed.
-		search (dbl_cluster, data_array, t);
+		search (dbl_cluster, data_array, t, ml);
 			
 		// Add the core data to the returning DataSet!
 		return (this.toDataSet (data_array, original, p));
@@ -65,9 +67,10 @@ public class ClusterScanning implements ScanMethod {
 	 * 
 	 * @param outlier_array Data container for the DataSet to scan through.
 	 * @param t Template object of the PlasmaGraph program that defines graph qualities.
+	 * @param ml 
 	 */
 	private static void search (List <Cluster<DoublePoint>> dbl_cluster, 
-			ArrayList<DoublePoint> data_array, Template t) {
+			ArrayList<DoublePoint> data_array, Template t, MessageLog ml) {
 		
 		// Determine the clusters of the data with a maximum distance
 		// provided by whatever the user chose!
@@ -93,9 +96,9 @@ public class ClusterScanning implements ScanMethod {
 		
 		// Determine if the user wants to be told of the outliers.
 		if (t.getOutlierResponse () == OutlierResponse.WARN) {
-			process (dbl_cluster, data_array, d.getDistanceType (), true);
+			process (dbl_cluster, data_array, d.getDistanceType (), ml, true);
 		} else {
-			process (dbl_cluster, data_array, d.getDistanceType (), false);
+			process (dbl_cluster, data_array, d.getDistanceType (), ml, false);
 		}
 	}
 	
@@ -107,47 +110,18 @@ public class ClusterScanning implements ScanMethod {
 	 * @param outlier_array 
 	 * @param distance_type The type of distance being used as provided by
 	 * the OutlierDistance class.
+	 * @param ml 
 	 * @param ask Boolean stating whether the user will be prompted if they
 	 * want to remove the outliers or not.
 	 */
 	private static void process (List<Cluster<DoublePoint>> dbl_cluster,
-			ArrayList<DoublePoint> data_array, String distance_type, boolean ask) {
+			ArrayList<DoublePoint> data_array, String distance_type, MessageLog ml, boolean ask) {
 		
 		// Prepare the outlier container.
 		List <DoublePoint> outliers = getOutliers (dbl_cluster, data_array);
 		
 		// Generate the message.
-		StringBuilder sb = new StringBuilder ();
-		
-		sb.append ("Distance Type used: ")
-				.append (distance_type)
-				.append ("\n");
-		sb.append ("Total number of points: ")
-				.append (data_array.size ())
-				.append ("\n");
-		sb.append ("Number of outliers found: ")
-				.append (outliers.size ())
-				.append ("\n");
-		sb.append ("Outliers found: ")
-				.append ("\n");
-		
-		if (outliers.size () <= 120) {
-			int count = 0;
-			for (DoublePoint p : outliers) {
-				
-				sb.append (p.toString ());
-				
-				if (count % 5 == 0) {
-					sb.append (System.getProperty ("line.separator"));
-				}
-				++count;
-			}
-		} else {
-			sb.append ("Number of points exceeds amount viewable in screen.");
-		}
-		
-		JOptionPane.showMessageDialog (null, sb.toString (), 
-				"Outlier Scan: Results", JOptionPane.INFORMATION_MESSAGE);
+		createMessage (data_array, outliers, ml);
 		
 		// Determine if User Validation will be performed, and return that.
 		if (outliers.size () != 0) { // If there are things to remove...
@@ -166,6 +140,52 @@ public class ClusterScanning implements ScanMethod {
 		}
 	}
 	
+	private static void createMessage (final ArrayList<DoublePoint> data_array,
+			final List <DoublePoint> outliers, final MessageLog ml) {
+		
+		SwingWorker <Void, Void> messagelog_worker = new SwingWorker <Void, Void> () {
+
+			@Override
+			protected Void doInBackground () throws Exception {
+				StringBuilder sb = new StringBuilder ();
+				String ls = System.getProperty ("line.separator");
+				
+				sb.append ("Total number of points: ")
+						.append (data_array.size ())
+						.append (ls);
+				
+				sb.append ("Number of outliers found: ")
+						.append (outliers.size ())
+						.append (ls);
+				
+				sb.append ("Outliers found: ")
+						.append (ls);
+				
+				if (outliers.size () <= ((2 * data_array.size ()) / 3)) {
+					int count = 0;
+					for (DoublePoint p : outliers) {
+						
+						sb.append (p.toString ());
+						
+						if (count % 5 == 0) {
+							sb.append (ls);
+						}
+						++count;
+					}
+				} else {
+					sb.append ("Number of points exceeds amount viewable in screen.");
+				}
+				
+				// Place this message into the MessageLog.
+				ml.add (sb.toString ());
+				return null;
+			}
+			
+		};
+		
+		messagelog_worker.run ();
+	}
+
 	/**
 	 * Provides a list of outliers from the total group of clustered data.
 	 * Assumes largest concentration of points is the line/curve, and all other
