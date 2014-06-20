@@ -3,6 +3,7 @@ package org.pvg.plasmagraph.models;
 import javax.swing.event.ChangeListener;
 
 import org.jfree.chart.JFreeChart;
+import org.pvg.plasmagraph.controllers.MessageLogController;
 import org.pvg.plasmagraph.utils.data.GraphPair;
 import org.pvg.plasmagraph.utils.data.DataSet;
 import org.pvg.plasmagraph.utils.data.HeaderData;
@@ -34,27 +35,35 @@ public class GraphModel {
     private GraphPair p;
     /** Reference to PlasmaGraph's MessageLog, passed via constructor reference. */
     private MessageLog ml;
+    /** Reference to PlasmaGraph's MessageLog Controller, passed via constructor reference. */
+    private MessageLogController ml_controller;
 	/** Reference to Interpolator object. */
 	private Interpolator interpolator;
 
 	/**
 	 * <p>Constructor for GraphModels. Used only by the PlasmaGraph class, and only
 	 * used once.
+	 * @param ml_controller 
 	 * 
-	 * @param hd
+	 * @param hd_reference
 	 *            Reference to HeaderData object.
-	 * @param p
+	 * @param p_reference
 	 *            Reference to GraphPair object.
-	 * @param t
+	 * @param t_reference
 	 *            Reference to Template object.
-	 * @param ml 
+	 * @param ml_reference 
+	 * 			  Reference to MessageLog object.
+	 * @param ml_controller_reference
 	 * 			  Reference to MessageLog object.
 	 */
-	public GraphModel (HeaderData hd_reference, GraphPair p_reference, Template t_reference, MessageLog ml_reference) {
+	public GraphModel (HeaderData hd_reference, GraphPair p_reference, 
+			Template t_reference, MessageLog ml_reference, 
+			MessageLogController ml_controller_reference) {
 		this.hd = hd_reference;
 		this.p = p_reference;
 		this.t = t_reference;
 		this.ml = ml_reference;
+		this.ml_controller = ml_controller_reference;
 	}
 
 	/**
@@ -269,8 +278,8 @@ public class GraphModel {
 	 * 
 	 * @return The string of all the messages in the MessageLog.
 	 */
-	public String getLog () {
-		return (this.ml.toString ());
+	public void updateLog () {
+		this.ml_controller.append (ml);
 	}
 
 	/**

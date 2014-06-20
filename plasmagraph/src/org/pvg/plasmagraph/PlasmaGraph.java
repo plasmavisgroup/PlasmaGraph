@@ -33,8 +33,12 @@ public class PlasmaGraph {
                 MessageLog ml = new MessageLog ();
                 HeaderData hd = new HeaderData (ml);
                 
+                // MessageLog MVC
+                MessageLogView ml_view = new MessageLogView ();
+                MessageLogController ml_controller = new MessageLogController (ml_view);
+                
                 // Graph MVC
-                GraphModel graph_model = new GraphModel (hd, p, t, ml);
+                GraphModel graph_model = new GraphModel (hd, p, t, ml, ml_controller);
                 GraphView graph_view = new GraphView (graph_model);
 				GraphController graph_controller = new GraphController (graph_model, graph_view);
                       
@@ -56,6 +60,7 @@ public class PlasmaGraph {
                 // Set the currently-visible views.
                 main_view.setVisible (true);
                 graph_view.setVisible (true);
+                ml_view.setVisible (true);
                 
                 // Start off by running the Import Data function!
                 main_model.importData (); 

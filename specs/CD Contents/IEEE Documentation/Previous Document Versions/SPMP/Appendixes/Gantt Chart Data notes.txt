@@ -1,5 +1,0 @@
-Gantt Chart Data
-
-A. Project Specifications
-B. Product Creation
-C. Manual and Project Polish

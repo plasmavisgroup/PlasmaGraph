@@ -4,6 +4,8 @@ import org.pvg.plasmagraph.models.GraphModel;
 import org.pvg.plasmagraph.views.GraphView;
 
 /**
+ * Controller for the graph container pane, GraphView. 
+ * Controls a JPanel and allows for communication between its View and Model.
  * 
  * @author Plasma Visualization Group
  */

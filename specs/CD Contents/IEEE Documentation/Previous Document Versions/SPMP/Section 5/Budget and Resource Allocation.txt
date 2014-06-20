@@ -1,3 +1,0 @@
-5.4. Budget and Resource Allocation
-
-The resources required (and their budget allocated) are as described in Appendix C: Project Budget.
