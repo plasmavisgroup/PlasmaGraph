@@ -1,9 +1,0 @@
-Informacion de Referencia
-=========================
-
-Importante: Por favor de no utilizar la informacion aqui hasta llegar a la etapa "Release Candidate" de un Documento.
-
-Nombre de Projecto: 
-(Temporero)	<Project Name>
-(Final)		PlasmaGraph
-
